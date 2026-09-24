@@ -1,0 +1,3 @@
+experiment_id,title,status,family,date_started,date_closed,dataset,primary_metric,result,decision,notes
+R000,ORB Baseline,REJECTED,ORB,2026-08-19,2026-08-19,MES 1m/5m,Net PnL,-796.02,REJECT,PF approx 0.84; 79 trades
+R001,VWAP Statistical Behavior,PLANNED,VWAP,2026-09-24,,,Forward return distribution,,,Initial research line
