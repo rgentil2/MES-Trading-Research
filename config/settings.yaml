@@ -1,0 +1,18 @@
+project:
+  timezone: America/New_York
+  instrument: MES
+
+costs:
+  commission_round_trip_usd: 1.88
+  slippage_round_trip_usd: 2.50
+  total_round_trip_usd: 4.38
+
+research:
+  forward_horizons_minutes: [5, 10, 15, 30]
+  session_start: "09:30"
+  session_end: "16:00"
+
+validation:
+  in_sample_pct: 0.60
+  validation_pct: 0.20
+  out_of_sample_pct: 0.20
