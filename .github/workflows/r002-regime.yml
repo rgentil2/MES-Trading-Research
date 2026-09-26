@@ -1,0 +1,75 @@
+name: R002 VWAP regime research
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/r002_vwap_regimes.py"
+      - "research/R002_REGIME_RESEARCH_PLAN.md"
+      - "tests/test_r002_regimes.py"
+      - "research/r001_vwap_analysis.py"
+      - "src/data_pipeline.py"
+      - "data/raw/**"
+      - "config/settings.yaml"
+      - "requirements.txt"
+      - ".github/workflows/r002-regime.yml"
+  workflow_dispatch:
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run relevant unit tests
+        env:
+          PYTHONPATH: .
+        run: pytest -q tests/test_data_pipeline.py tests/test_r001_vwap.py tests/test_r002_regimes.py
+
+      - name: Build continuous MES dataset
+        run: python -m src.data_pipeline
+
+      - name: Run R002 development research
+        env:
+          PYTHONPATH: .
+        run: |
+          python research/r002_vwap_regimes.py \
+            --start 2020-01-01 \
+            --end 2024-12-31 \
+            --output-dir results/R002/development_2020_2024
+
+      - name: Verify holdout isolation
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          events = pd.read_parquet("results/R002/development_2020_2024/events.parquet")
+          years = pd.to_datetime(events["timestamp_et"], utc=True).dt.year
+          assert years.max() <= 2024, f"Holdout leak detected: max year {years.max()}"
+          print("R002 holdout isolation verified.")
+          PY
+
+      - name: Upload R002 artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: r002-vwap-regimes-development-2020-2024
+          path: |
+            results/R002/development_2020_2024/SUMMARY.md
+            results/R002/development_2020_2024/primary_hypotheses.csv
+            results/R002/development_2020_2024/regime_cells.csv
+            results/R002/development_2020_2024/yearly_stability.csv
+            results/R002/development_2020_2024/regime_thresholds.json
+            results/R002/development_2020_2024/events.parquet
+          retention-days: 30
+          compression-level: 6
