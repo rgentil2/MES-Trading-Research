@@ -65,7 +65,14 @@ def prepare_features(df: pd.DataFrame, start: str, end: str) -> pd.DataFrame:
 
     for h in HORIZONS:
         future_close = group["close"].shift(-h)
-        data[f"fwd_{h}m"] = future_close / data["close"] - 1.0
+        future_ts = group["timestamp_et"].shift(-h)
+        exact_horizon = (future_ts - data["timestamp_et"]) == pd.Timedelta(minutes=h)
+        data[f"exact_{h}m"] = exact_horizon.fillna(False)
+        data[f"fwd_{h}m"] = np.where(
+            data[f"exact_{h}m"],
+            future_close / data["close"] - 1.0,
+            np.nan,
+        )
 
     return data
 
@@ -129,6 +136,9 @@ def add_forward_extrema(features: pd.DataFrame) -> pd.DataFrame:
             target = pos[: n - h]
             future_high[target] = high_windows.max(axis=1)
             future_low[target] = low_windows.min(axis=1)
+        valid_window = out[f"exact_{h}m"].fillna(False).to_numpy(dtype=bool)
+        future_high[~valid_window] = np.nan
+        future_low[~valid_window] = np.nan
         out[f"future_high_{h}m"] = future_high
         out[f"future_low_{h}m"] = future_low
     return out
