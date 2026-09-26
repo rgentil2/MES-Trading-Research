@@ -12,7 +12,7 @@ import pandas as pd
 import yaml
 
 COLUMNS = ["timestamp", "open", "high", "low", "close", "volume"]
-CONTRACT_RE = re.compile(r"MES (\\d{2})-(\\d{2})\\.Last\\.txt$")
+CONTRACT_RE = re.compile(r"MES ([0-9]{2})-([0-9]{2})[.]Last[.]txt$")
 
 
 @dataclass(frozen=True)
