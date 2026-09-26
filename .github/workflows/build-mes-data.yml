@@ -1,0 +1,69 @@
+name: Build MES continuous dataset
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data/raw/**"
+      - "src/data_pipeline.py"
+      - "config/settings.yaml"
+      - "requirements.txt"
+      - ".github/workflows/build-mes-data.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run data-pipeline unit test
+        run: pytest -q tests/test_data_pipeline.py
+
+      - name: Build continuous MES dataset
+        run: python -m src.data_pipeline
+
+      - name: Verify baseline QC
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          qc = json.loads(Path("results/data_quality/qc_summary.json").read_text())
+          expected = {
+              "contracts": 28,
+              "raw_rows": 2443438,
+              "continuous_rows": 2365496,
+              "overlap_rows_removed": 77942,
+              "rollovers": 27,
+              "duplicate_timestamps": 0,
+          }
+          for key, value in expected.items():
+              assert qc[key] == value, f"{key}: expected {value}, got {qc[key]}"
+          assert qc["timestamp_sorted"] is True
+          print("Baseline QC verified.")
+          PY
+
+      - name: Upload processed dataset and QC
+        uses: actions/upload-artifact@v4
+        with:
+          name: mes-continuous-1m-2020-2026
+          path: |
+            data/processed/MES_CONTINUOUS_1M_2020_2026.parquet
+            results/data_quality/raw_manifest.csv
+            results/data_quality/rollover_transitions.csv
+            results/data_quality/qc_summary.json
+          retention-days: 30
+          compression-level: 6
