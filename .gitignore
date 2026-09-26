@@ -20,9 +20,12 @@ Thumbs.db
 secrets.*
 credentials.*
 
-# Large/local market data
+# Raw MES market data is intentionally versioned for reproducibility
 data/raw/*
 !data/raw/.gitkeep
+!data/raw/*.txt
+
+# Processed datasets are reproducible outputs
 data/processed/*
 !data/processed/.gitkeep
 

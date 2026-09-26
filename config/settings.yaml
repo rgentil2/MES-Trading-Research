@@ -2,6 +2,14 @@ project:
   timezone: America/New_York
   instrument: MES
 
+data:
+  raw_dir: data/raw
+  processed_dir: data/processed
+  raw_pattern: "MES ??-??.Last.txt"
+  timestamp_timezone: UTC
+  tick_size: 0.25
+  rollover_policy: ninjatrader_implicit
+
 costs:
   commission_round_trip_usd: 1.88
   slippage_round_trip_usd: 2.50
