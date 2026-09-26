@@ -2,4 +2,4 @@ experiment_id,title,status,family,date_started,date_closed,dataset,primary_metri
 R000,ORB Baseline,REJECTED,ORB,2026-08-19,2026-08-19,MES 1m/5m,Net PnL,-796.02,REJECT,PF approx 0.84; 79 trades
 R001,VWAP Unconditional ±2σ Reversion,REJECTED,VWAP,2026-09-24,2026-09-26,MES 1m 2020-2024,15m directional return,"LOWER -0.083 bps; UPPER +0.378 bps",REJECT_H001_H002,"Exact-minute horizon enforced; p=0.8174 lower and p=0.1971 upper; 2025/2026 unopened"
 R002,VWAP Trend/Volatility Regimes,REJECTED,VWAP,2026-09-26,2026-09-26,MES 1m 2020-2024,15m continuation score,"H003 +0.056 bps; H004 -0.666 bps",REJECT_H003_H004,"H003 q=0.9282; H004 q=0.9282 and only 80 events; 2025/2026 unopened"
-R003,Opening Range Breakout Statistical Behavior,PLANNED,ORB,2026-09-26,,MES 1m 2020-2024,30m directional return,,,Pre-registered first close outside 15m opening range
+R003,Opening Range Breakout Statistical Behavior,REJECTED,ORB,2026-09-26,2026-09-26,MES 1m 2020-2024,30m directional return,"UPPER +1.955 bps; LOWER -1.921 bps",REJECT_H005_H006,"H005 q=0.1335 despite 4/5 positive years; H006 has opposite sign; 2025/2026 unopened"
