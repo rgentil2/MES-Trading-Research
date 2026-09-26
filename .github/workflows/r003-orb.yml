@@ -1,0 +1,74 @@
+name: R003 ORB behavior research
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/r003_orb_behavior.py"
+      - "research/R003_ORB_RESEARCH_PLAN.md"
+      - "tests/test_r003_orb.py"
+      - "research/r001_vwap_analysis.py"
+      - "research/r002_vwap_regimes.py"
+      - "src/data_pipeline.py"
+      - "data/raw/**"
+      - "config/settings.yaml"
+      - "requirements.txt"
+      - ".github/workflows/r003-orb.yml"
+  workflow_dispatch:
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run relevant unit tests
+        env:
+          PYTHONPATH: .
+        run: pytest -q tests/test_data_pipeline.py tests/test_r001_vwap.py tests/test_r002_regimes.py tests/test_r003_orb.py
+
+      - name: Build continuous MES dataset
+        run: python -m src.data_pipeline
+
+      - name: Run R003 development research
+        env:
+          PYTHONPATH: .
+        run: |
+          python research/r003_orb_behavior.py \
+            --start 2020-01-01 \
+            --end 2024-12-31 \
+            --output-dir results/R003/development_2020_2024
+
+      - name: Verify holdout isolation
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          events = pd.read_parquet("results/R003/development_2020_2024/events.parquet")
+          years = pd.to_datetime(events["timestamp_et"], utc=True).dt.year
+          assert years.max() <= 2024, f"Holdout leak detected: max year {years.max()}"
+          print("R003 holdout isolation verified.")
+          PY
+
+      - name: Upload R003 artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: r003-orb-development-2020-2024
+          path: |
+            results/R003/development_2020_2024/SUMMARY.md
+            results/R003/development_2020_2024/primary_hypotheses.csv
+            results/R003/development_2020_2024/yearly_stability.csv
+            results/R003/development_2020_2024/events.parquet
+          retention-days: 30
+          compression-level: 6
