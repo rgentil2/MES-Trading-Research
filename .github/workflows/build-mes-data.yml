@@ -30,6 +30,8 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run data-pipeline unit test
+        env:
+          PYTHONPATH: .
         run: pytest -q tests/test_data_pipeline.py
 
       - name: Build continuous MES dataset
