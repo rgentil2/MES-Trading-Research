@@ -9,7 +9,7 @@ Current source set:
 - 28 quarterly MES contracts
 - MAR20 through DEC26
 - Raw files are preserved without modification
-- Raw timestamps are interpreted as UTC and an America/New_York timestamp is added during processing
+- Raw timestamps are interpreted as UTC and an America/New_York timestamp is added during processing\n- NinjaTrader exports these minute bars with end-of-bar timestamps
 
 ## Frozen rollover methodology
 
@@ -46,6 +46,10 @@ results/data_quality/raw_manifest.csv
 results/data_quality/rollover_transitions.csv
 results/data_quality/qc_summary.json
 ```
+
+## RTH timestamp convention
+
+Because NinjaTrader minute exports use end-of-bar timestamps, the RTH bars used for research are those with timestamps **after 09:30 ET and through 16:00 ET inclusive**. Thus, the 09:31 bar contains the 09:30:00–09:30:59 interval.
 
 ## Critical downstream rule
 
