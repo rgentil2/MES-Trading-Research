@@ -1,0 +1,71 @@
+name: R001 VWAP development research
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/r001_vwap_analysis.py"
+      - "research/R001_VWAP_RESEARCH_PLAN.md"
+      - "tests/test_r001_vwap.py"
+      - "src/data_pipeline.py"
+      - "data/raw/**"
+      - "config/settings.yaml"
+      - "requirements.txt"
+      - ".github/workflows/r001-vwap.yml"
+  workflow_dispatch:
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run unit tests
+        env:
+          PYTHONPATH: .
+        run: pytest -q tests/test_data_pipeline.py tests/test_r001_vwap.py
+
+      - name: Build continuous MES dataset
+        run: python -m src.data_pipeline
+
+      - name: Run R001 development research
+        run: |
+          python research/r001_vwap_analysis.py \
+            --start 2020-01-01 \
+            --end 2024-12-31 \
+            --label development_2020_2024 \
+            --output-dir results/R001/development_2020_2024
+
+      - name: Verify holdout isolation
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          events = pd.read_parquet("results/R001/development_2020_2024/events.parquet")
+          years = pd.to_datetime(events["timestamp_et"], utc=True).dt.year
+          assert years.max() <= 2024, f"Holdout leak detected: max year {years.max()}"
+          print("Holdout isolation verified.")
+          PY
+
+      - name: Upload R001 development artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: r001-vwap-development-2020-2024
+          path: |
+            results/R001/development_2020_2024/SUMMARY.md
+            results/R001/development_2020_2024/sensitivity_summary.csv
+            results/R001/development_2020_2024/segmentation_2sigma_15m.csv
+            results/R001/development_2020_2024/events.parquet
+          retention-days: 30
+          compression-level: 6
