@@ -1,0 +1,59 @@
+name: R009 OOS Validation 2025
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/active/R009_OVERNIGHT_GAP/R009_VALIDATION_2025_PLAN.md"
+      - "research/active/R009_OVERNIGHT_GAP/r009_validate_2025.py"
+      - "research/active/R009_OVERNIGHT_GAP/r009_overnight_gap.py"
+      - "src/research_utils.py"
+      - "src/data_pipeline.py"
+      - "data/raw/**"
+      - "requirements.txt"
+      - ".github/workflows/r009-validation-2025.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Build dataset
+        run: python -m src.data_pipeline
+      - name: Run frozen 2025 validation
+        env:
+          PYTHONPATH: .
+        run: |
+          python research/active/R009_OVERNIGHT_GAP/r009_validate_2025.py \
+            --warmup-start 2024-09-01 \
+            --validation-start 2025-01-01 \
+            --validation-end 2025-12-31 \
+            --output-dir results/R009/validation_2025
+      - name: Verify validation isolation
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          e = pd.read_parquet("results/R009/validation_2025/events.parquet")
+          ts = pd.to_datetime(e["signal_timestamp_et"], utc=True).dt.tz_convert("America/New_York")
+          assert ts.dt.year.min() == 2025
+          assert ts.dt.year.max() == 2025
+          assert ((ts.dt.hour * 60 + ts.dt.minute) == 571).all()
+          print("R009 2025 validation isolation verified")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r009-oos-validation-2025
+          path: |
+            results/R009/validation_2025/SUMMARY.md
+            results/R009/validation_2025/validation_summary.csv
+            results/R009/validation_2025/yearly_stability.csv
+            results/R009/validation_2025/side_breakdown.csv
+            results/R009/validation_2025/events.parquet
+          retention-days: 30
