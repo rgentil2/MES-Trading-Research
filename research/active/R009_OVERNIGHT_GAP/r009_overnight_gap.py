@@ -92,8 +92,14 @@ def build_session_gaps(features: pd.DataFrame) -> pd.DataFrame:
     sessions["gap_bps"] = sessions["gap_log"] * 10000.0
     sessions["abs_gap_log"] = sessions["gap_log"].abs()
 
-    sessions["gap_threshold"] = (
-        sessions["abs_gap_log"]
+    # Reference uses the previous 60 ELIGIBLE gaps. A contract rollover makes
+    # that day's gap ineligible, but it must not reset the 60-session reference
+    # window for subsequent same-contract gaps.
+    sessions["gap_threshold"] = np.nan
+    eligible_mask = sessions["gap_log"].notna()
+    eligible_abs_gap = sessions.loc[eligible_mask, "abs_gap_log"]
+    eligible_threshold = (
+        eligible_abs_gap
         .shift(1)
         .rolling(
             REFERENCE_SESSIONS,
@@ -101,6 +107,7 @@ def build_session_gaps(features: pd.DataFrame) -> pd.DataFrame:
         )
         .quantile(GAP_QUANTILE)
     )
+    sessions.loc[eligible_mask, "gap_threshold"] = eligible_threshold
 
     return sessions
 
