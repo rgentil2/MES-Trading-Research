@@ -1,13 +1,9 @@
 # Research
 
-Cada experimento debe tener:
+- `active/`: experimentos actuales.
+- `archive/`: experimentos cerrados.
+- `experiment_registry.csv`: historial maestro.
 
-1. ID único.
-2. Pregunta de investigación.
-3. Hipótesis escrita antes de ver el resultado.
-4. Dataset identificado.
-5. Métricas definidas.
-6. Resultado reproducible.
-7. Decisión explícita.
+Cada experimento debe pre-registrar pregunta, hipótesis, dataset, ventana de entrada <= 11:30 ET, métricas y gate antes de ejecutar.
 
-Use `EXPERIMENT_TEMPLATE.md` para nuevos experimentos.
+Los experimentos rechazados se archivan; no se borran del historial científico.

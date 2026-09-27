@@ -19,8 +19,13 @@ research:
   forward_horizons_minutes: [5, 10, 15, 30]
   session_start: "09:30"
   session_end: "16:00"
+  entry_start: "09:30"
+  entry_cutoff: "11:30"
+  allow_exit_after_entry_cutoff: true
 
 validation:
-  in_sample_pct: 0.60
-  validation_pct: 0.20
-  out_of_sample_pct: 0.20
+  development_start: "2020-01-01"
+  development_end: "2024-12-31"
+  validation_start: "2025-01-01"
+  validation_end: "2025-12-31"
+  pseudo_forward_start: "2026-01-01"
