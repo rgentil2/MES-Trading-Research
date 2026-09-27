@@ -17,6 +17,8 @@ Laboratorio cuantitativo para investigar y validar estrategias intradía sobre M
 Hipótesis → estadística → candidate → estrategia → backtest con costos → robustez/OOS → Monte Carlo → forward → fondeo.
 
 ## Estado
-R000–R004 están cerrados en `research/archive/`.
+R000–R005 están cerrados y archivados en `research/archive/`.
 
-Experimento activo: **R005 — Morning Opening Range Breakout**.
+R005 fue la primera prueba bajo la restricción de entrada <= 11:30 ET. Ninguna de sus dos hipótesis superó el gate, por lo que 2025 y 2026 continúan sin abrirse.
+
+La próxima hipótesis debe pertenecer a una nueva línea de investigación y quedar pre-registrada antes de ejecutarse.

@@ -4,4 +4,4 @@ R001,VWAP Unconditional ±2σ Reversion,REJECTED,VWAP,2026-09-24,2026-09-26,MES 
 R002,VWAP Trend/Volatility Regimes,REJECTED,VWAP,2026-09-26,2026-09-26,MES 1m 2020-2024,15m continuation score,"H003 +0.056 bps; H004 -0.666 bps",REJECT_H003_H004,"2025/2026 unopened"
 R003,Opening Range Breakout Statistical Behavior,REJECTED,ORB,2026-09-26,2026-09-26,MES 1m 2020-2024,30m directional return,"UPPER +1.955 bps; LOWER -1.921 bps",REJECT_H005_H006,"2025/2026 unopened"
 R004,Standardized 5m Shock Reversion,REJECTED,Return Shock,2026-09-26,2026-09-26,MES 1m 2020-2024,15m reversion score,"POSITIVE +0.120 bps; NEGATIVE -0.259 bps",REJECT_H007_H008,"2025/2026 unopened"
-R005,Morning Opening Range Breakout,PLANNED,ORB,2026-09-27,,MES 1m 2020-2024,30m directional return,,,First breakout must occur by 11:30 ET; exits may occur later; 2025/2026 unopened
+R005,Morning Opening Range Breakout,REJECTED,ORB,2026-09-27,2026-09-27,MES 1m 2020-2024,30m directional return,"UPPER +2.076 bps; LOWER -2.011 bps",REJECT_H009_H010,"UPPER n=641 q=0.1089 CI crosses zero; LOWER opposite sign; entry cutoff 11:30 ET; 2025/2026 unopened"
