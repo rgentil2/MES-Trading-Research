@@ -1,0 +1,61 @@
+name: R010 Previous Day Levels research
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/active/R010_PREV_DAY_LEVELS/**"
+      - "src/research_utils.py"
+      - "tests/test_r010_prev_day_levels.py"
+      - "src/data_pipeline.py"
+      - "data/raw/**"
+      - "requirements.txt"
+      - ".github/workflows/r010-prev-day-levels.yml"
+  workflow_dispatch:
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Tests
+        env:
+          PYTHONPATH: .
+        run: pytest -q tests/test_data_pipeline.py tests/test_r010_prev_day_levels.py
+      - name: Build dataset
+        run: python -m src.data_pipeline
+      - name: Run R010 development
+        env:
+          PYTHONPATH: .
+        run: |
+          python research/active/R010_PREV_DAY_LEVELS/r010_prev_day_levels.py \
+            --start 2020-01-01 \
+            --end 2024-12-31 \
+            --output-dir results/R010/development_2020_2024
+      - name: Verify holdout and cutoff
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          e = pd.read_parquet("results/R010/development_2020_2024/events.parquet")
+          ts = pd.to_datetime(e["timestamp_et"], utc=True).dt.tz_convert("America/New_York")
+          minute = ts.dt.hour * 60 + ts.dt.minute
+          assert ts.dt.year.max() <= 2024
+          assert minute.max() <= 690
+          print("R010 isolation/cutoff verified")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r010-prev-day-levels-development-2020-2024
+          path: |
+            results/R010/development_2020_2024/SUMMARY.md
+            results/R010/development_2020_2024/primary_hypothesis.csv
+            results/R010/development_2020_2024/yearly_stability.csv
+            results/R010/development_2020_2024/side_breakdown.csv
+            results/R010/development_2020_2024/events.parquet
+          retention-days: 30
