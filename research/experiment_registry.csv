@@ -11,3 +11,7 @@ R008,Strong Opening Drive Continuation,REJECTED,Opening Drive,2026-09-27,2026-09
 R009,Strong RTH Overnight Gap Continuation,REJECTED_OOS,Gap,2026-09-27,2026-09-27,MES 1m 2020-2024 + OOS 2025,30m directional return,"DEV +5.201 bps; OOS2025 +4.696 bps",FAIL_H014_VALIDATION,"OOS n=69 continuation=63.77% but p=0.3620 CI [-5.402,14.794]; 2026 unopened"
 R010,Previous RTH High Low Breakout,REJECTED,Key Levels,2026-09-27,2026-09-27,MES 1m 2020-2024,30m directional return,"Mean +0.797 bps; n=975",REJECT_H015,"p=0.4264 CI [-1.168,2.762]; 3/5 positive years; 2025/2026 unopened"
 R011,High Volume Directional Impulse,REJECTED,Volume,2026-09-27,2026-09-27,MES 1m 2020-2024,15m directional return,"Mean -0.558 bps; n=904",REJECT_H016,"p=0.4581 CI [-2.031,0.916]; 2/5 positive years; 2025/2026 unopened"
+R012,Low Volatility Persistence,OOS_CONFIRMATORY,Volatility,2026-09-27,,MES 1m OOS 2025,30m future RV discount,,,Derived from R006 opposite-sign discovery; 2024 warmup only; 2026 unopened
+R013,Bullish Efficient Momentum,OOS_CONFIRMATORY,Momentum,2026-09-27,,MES 1m OOS 2025,15m directional return,,,Derived from R007 UP descriptive result; 2024 warmup only; 2026 unopened
+R014,Five Bar Streak Exhaustion,PLANNED,Mean Reversion,2026-09-27,,MES 1m 2020-2024,15m reversion score,,,Five same-sign 1m returns + q80 5m magnitude; first event <=11:30 ET; 2025/2026 unopened
+R015,Previous Session Closing Strength,PLANNED,Session Structure,2026-09-27,,MES 1m 2020-2024,09:30-10:00 directional return,,,Prev CLV <=0.20 or >=0.80; same contract only; 2025/2026 unopened
