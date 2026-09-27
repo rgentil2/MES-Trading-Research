@@ -1,0 +1,65 @@
+name: R009 Overnight Gap research
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/active/R009_OVERNIGHT_GAP/**"
+      - "src/research_utils.py"
+      - "tests/test_r009_overnight_gap.py"
+      - "src/data_pipeline.py"
+      - "data/raw/**"
+      - "requirements.txt"
+      - ".github/workflows/r009-overnight-gap.yml"
+  workflow_dispatch:
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      - name: Tests
+        env:
+          PYTHONPATH: .
+        run: pytest -q tests/test_data_pipeline.py tests/test_r009_overnight_gap.py
+
+      - name: Build dataset
+        run: python -m src.data_pipeline
+
+      - name: Run R009 development
+        env:
+          PYTHONPATH: .
+        run: |
+          python research/active/R009_OVERNIGHT_GAP/r009_overnight_gap.py \
+            --start 2020-01-01 \
+            --end 2024-12-31 \
+            --output-dir results/R009/development_2020_2024
+
+      - name: Verify holdout and signal time
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          e = pd.read_parquet("results/R009/development_2020_2024/events.parquet")
+          ts = pd.to_datetime(e["signal_timestamp_et"], utc=True).dt.tz_convert("America/New_York")
+          assert ts.dt.year.max() <= 2024
+          assert ((ts.dt.hour * 60 + ts.dt.minute) == 571).all()
+          print("R009 isolation verified")
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r009-overnight-gap-development-2020-2024
+          path: |
+            results/R009/development_2020_2024/SUMMARY.md
+            results/R009/development_2020_2024/primary_hypothesis.csv
+            results/R009/development_2020_2024/yearly_stability.csv
+            results/R009/development_2020_2024/side_breakdown.csv
+            results/R009/development_2020_2024/events.parquet
+          retention-days: 30
