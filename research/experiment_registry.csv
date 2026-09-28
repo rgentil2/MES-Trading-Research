@@ -42,3 +42,8 @@ R039,Overnight Gap Alignment,REJECTED,Cross Session Direction,2026-09-28,2026-09
 R040,Previous Day Gap Alignment,REJECTED,Cross Session Direction,2026-09-28,2026-09-28,MES 1m 2020-2025,30m directional return bps,"Mean +1.949 bps; n=113",REJECT_H051,"p=0.6214 CI [-5.785,9.682]; sample gate failed; 2026 unopened"
 R041,Triple Cross Session Alignment,REJECTED,Cross Session Direction,2026-09-28,2026-09-28,MES 1m 2020-2025,30m directional return bps,"Mean +2.274 bps; n=99",REJECT_H052,"p=0.5914 CI [-6.028,10.576]; 3/6 positive years; 2026 unopened"
 R042,Previous Day Overnight Conflict,REJECTED_NEAR_MISS,Cross Session Direction,2026-09-28,2026-09-28,MES 1m 2020-2025,30m overnight-direction return bps,"Mean +5.545 bps; n=112",REJECT_H053,"p=0.0865 q=0.4324 CI [-0.795,11.885]; 4/6 positive years; sample gate failed; 2026 unopened"
+R043,Three Day Streak Exhaustion,PLANNED,Multi Day Context,2026-09-28,,MES 1m 2020-2025,30m reversion bps,,,B08 H054; prior 3 same-sign RTH days + q60 magnitude; 2026 unopened
+R044,Five Day Range Breakout at Open,PLANNED,Multi Day Context,2026-09-28,,MES 1m 2020-2025,30m continuation bps,,,B08 H055; current open outside prior 5-session range; 2026 unopened
+R045,Five Day Overextension Reversion,PLANNED,Multi Day Context,2026-09-28,,MES 1m 2020-2025,30m reversion bps,,,B08 H056; prior five-day return q80; 2026 unopened
+R046,High Five Day Range Persistence,PLANNED,Multi Day Context,2026-09-28,,MES 1m 2020-2025,opening range expansion pct,,,B08 H057; prior 5-session avg range q80; 2026 unopened
+R047,Low Five Day Range Persistence,PLANNED,Multi Day Context,2026-09-28,,MES 1m 2020-2025,opening range discount pct,,,B08 H058; prior 5-session avg range q20; 2026 unopened
