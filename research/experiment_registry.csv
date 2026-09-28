@@ -28,3 +28,8 @@ R025,Previous Day Wide Range Persistence,PASS_DEV_AWAITING_CONFIRMATION,Previous
 R026,Previous Trend Day Continuation,REJECTED_NO_EVENTS,Previous Day Context,2026-09-27,2026-09-27,MES 1m 2020-2025,opening directional return bps,"0 eligible events",REJECT_H035,"Frozen combined threshold produced no events; not relaxed; 2026 unopened"
 R027,Previous Late Day Impulse Continuation,REJECTED,Previous Day Context,2026-09-27,2026-09-27,MES 1m 2020-2025,opening directional return bps,"Mean -1.908 bps; n=289",REJECT_H036,"p=0.3231 CI [-5.693,1.877]; 2/6 positive years; 2026 unopened"
 R028,Previous Close VWAP Stretch Reversion,REJECTED,Previous Day Context,2026-09-27,2026-09-27,MES 1m 2020-2025,opening reversion bps,"Mean +2.968 bps; n=270",REJECT_H037,"p=0.1782 CI [-1.352,7.287]; 4/6 positive years; 2026 unopened"
+R029,Strong 5m Opening Impulse Continuation,PLANNED,Opening Microstructure,2026-09-27,,MES 1m 2020-2025,15m directional return bps,,,B04 H038; q80 first5 return + body/range>=0.70; 2026 unopened
+R030,5m Opening Rejection Reversal,PLANNED,Opening Microstructure,2026-09-27,,MES 1m 2020-2025,15m reversion return bps,,,B04 H039; q70 first5 range + wick rejection; 2026 unopened
+R031,Wide First15 Range Persistence,PLANNED,Opening Microstructure,2026-09-27,,MES 1m 2020-2025,next30 range expansion pct,,,B04 H040; first15 range q80; 2026 unopened
+R032,Narrow First15 Range Persistence,PLANNED,Opening Microstructure,2026-09-27,,MES 1m 2020-2025,next30 range discount pct,,,B04 H041; first15 range q20; 2026 unopened
+R033,Three Bar Opening Sequence Continuation,PLANNED,Opening Microstructure,2026-09-27,,MES 1m 2020-2025,15m directional return bps,,,B04 H042; first3 same sign + volume q70; 2026 unopened
