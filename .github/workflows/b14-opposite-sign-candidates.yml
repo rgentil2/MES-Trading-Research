@@ -1,0 +1,60 @@
+name: B14 Opposite Sign Candidates
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/B14_OPPOSITE_SIGN_CANDIDATES_PRE_REGISTRATION.md"
+      - "research/active/B14_OPPOSITE_SIGN_CANDIDATES/**"
+      - "research/archive/B12/**"
+      - "research/archive/B13/**"
+      - "research/active/R063_FINAL_REGIME_ENGINE/**"
+      - "tests/test_b14_opposite_sign_candidates.py"
+      - "src/**"
+      - "data/raw/**"
+      - "requirements.txt"
+      - ".github/workflows/b14-opposite-sign-candidates.yml"
+  workflow_dispatch:
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Tests
+        env:
+          PYTHONPATH: .
+        run: pytest -q tests/test_data_pipeline.py tests/test_b14_opposite_sign_candidates.py
+      - name: Build dataset
+        run: python -m src.data_pipeline
+      - name: Run frozen B14
+        env:
+          PYTHONPATH: .
+        run: python research/active/B14_OPPOSITE_SIGN_CANDIDATES/b14_opposite_sign_candidates.py
+      - name: Verify 2026 isolation
+        run: |
+          python - <<'PY'
+          import glob
+          import pandas as pd
+          for f in glob.glob("results/B14/*.parquet"):
+              d=pd.read_parquet(f)
+              if d.empty:
+                  continue
+              for col in ["block_end_ts","entry_clock_et"]:
+                  if col in d.columns:
+                      ts=pd.to_datetime(d[col],utc=True,errors="coerce").dropna().dt.tz_convert("America/New_York")
+                      if len(ts):
+                          assert ts.dt.year.max()<=2025,(f,col,ts.dt.year.max())
+          print("B14 verified: 2026 unopened.")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b14-opposite-sign-candidates
+          path: results/B14/**
+          retention-days: 30
