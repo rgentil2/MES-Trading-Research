@@ -63,3 +63,11 @@ The evidence now supports modeling MES range/volatility as a persistent state pr
 - rolling intraday windows.
 
 Directional sign remains substantially less predictable than movement magnitude.
+
+### C007 — Persistence through +120 minutes
+B10 extended B09 without changing the state definition:
+- HIGH effect: +54.2% at +15m versus +53.1% at +120m;
+- LOW discount: +35.5% at +15m versus +33.7% at +120m;
+- no half-effect decay point observed by +120m.
+
+Continuous exact-state runs are much shorter, so the persistence should be interpreted as persistent **predictive information about range magnitude**, not continuous occupancy of the identical extreme state.
