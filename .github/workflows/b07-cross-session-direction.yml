@@ -1,0 +1,55 @@
+name: B07 Cross Session Direction
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/B07_CROSS_SESSION_DIRECTION_PRE_REGISTRATION.md"
+      - "research/active/B07_CROSS_SESSION_DIRECTION/**"
+      - "tests/test_b07_cross_session_direction.py"
+      - "src/**"
+      - "data/raw/**"
+      - "requirements.txt"
+      - ".github/workflows/b07-cross-session-direction.yml"
+  workflow_dispatch:
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Tests
+        env:
+          PYTHONPATH: .
+        run: pytest -q tests/test_data_pipeline.py tests/test_b07_cross_session_direction.py
+      - name: Build dataset
+        run: python -m src.data_pipeline
+      - name: Run frozen B07
+        env:
+          PYTHONPATH: .
+        run: python research/active/B07_CROSS_SESSION_DIRECTION/b07_cross_session_direction.py
+      - name: Verify 2026 isolation
+        run: |
+          python - <<'PY'
+          import glob
+          import pandas as pd
+          for f in glob.glob("results/B07/*.parquet"):
+              d=pd.read_parquet(f)
+              if d.empty:
+                  continue
+              if "first_rth_ts" in d.columns:
+                  ts=pd.to_datetime(d["first_rth_ts"],utc=True).dt.tz_convert("America/New_York")
+                  assert ts.dt.year.max()<=2025,(f,ts.dt.year.max())
+          print("B07 verified: 2026 unopened.")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b07-cross-session-direction
+          path: results/B07/**
+          retention-days: 30
