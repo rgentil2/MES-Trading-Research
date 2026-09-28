@@ -1,0 +1,55 @@
+name: B08 Multi Day Context
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/B08_MULTI_DAY_CONTEXT_PRE_REGISTRATION.md"
+      - "research/active/B08_MULTI_DAY_CONTEXT/**"
+      - "tests/test_b08_multi_day_context.py"
+      - "src/**"
+      - "data/raw/**"
+      - "requirements.txt"
+      - ".github/workflows/b08-multi-day-context.yml"
+  workflow_dispatch:
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Tests
+        env:
+          PYTHONPATH: .
+        run: pytest -q tests/test_data_pipeline.py tests/test_b08_multi_day_context.py
+      - name: Build dataset
+        run: python -m src.data_pipeline
+      - name: Run frozen B08
+        env:
+          PYTHONPATH: .
+        run: python research/active/B08_MULTI_DAY_CONTEXT/b08_multi_day_context.py
+      - name: Verify 2026 isolation
+        run: |
+          python - <<'PY'
+          import glob
+          import pandas as pd
+          for f in glob.glob("results/B08/*.parquet"):
+              d=pd.read_parquet(f)
+              if d.empty:
+                  continue
+              if "first_ts" in d.columns:
+                  ts=pd.to_datetime(d["first_ts"],utc=True).dt.tz_convert("America/New_York")
+                  assert ts.dt.year.max()<=2025,(f,ts.dt.year.max())
+          print("B08 verified: 2026 unopened.")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b08-multi-day-context
+          path: results/B08/**
+          retention-days: 30
