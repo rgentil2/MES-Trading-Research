@@ -1,0 +1,53 @@
+name: R018 H017 Range Reversion
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/active/R018_H017_RANGE_REVERSION/**"
+      - "tests/test_r018_h017_range_reversion.py"
+      - "src/**"
+      - "data/raw/**"
+      - "requirements.txt"
+      - ".github/workflows/r018-h017-range-reversion.yml"
+  workflow_dispatch:
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Tests
+        env:
+          PYTHONPATH: .
+        run: pytest -q tests/test_data_pipeline.py tests/test_r018_h017_range_reversion.py
+      - name: Build dataset
+        run: python -m src.data_pipeline
+      - name: Run frozen R018
+        env:
+          PYTHONPATH: .
+        run: python research/active/R018_H017_RANGE_REVERSION/r018_h017_range_reversion.py
+      - name: Verify 2026 isolation
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          for f in ["results/R018/trades.parquet","results/R018/h017_regimes.parquet"]:
+              d=pd.read_parquet(f)
+              if d.empty:
+                  continue
+              col="timestamp_et" if "timestamp_et" in d.columns else "h017_time"
+              ts=pd.to_datetime(d[col],utc=True).dt.tz_convert("America/New_York")
+              assert ts.dt.year.max()<=2025
+          print("R018 verified: 2026 unopened.")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r018-h017-range-reversion
+          path: results/R018/**
+          retention-days: 30
