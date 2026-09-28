@@ -1,0 +1,52 @@
+name: B11 Extended Regime Persistence
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/B11_EXTENDED_REGIME_PERSISTENCE_PRE_REGISTRATION.md"
+      - "research/active/B11_EXTENDED_REGIME_PERSISTENCE/**"
+      - "tests/test_b11_extended_regime_persistence.py"
+      - "src/**"
+      - "data/raw/**"
+      - "requirements.txt"
+      - ".github/workflows/b11-extended-regime-persistence.yml"
+  workflow_dispatch:
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Tests
+        env:
+          PYTHONPATH: .
+        run: pytest -q tests/test_data_pipeline.py tests/test_b11_extended_regime_persistence.py
+      - name: Build dataset
+        run: python -m src.data_pipeline
+      - name: Run frozen B11
+        env:
+          PYTHONPATH: .
+        run: python research/active/B11_EXTENDED_REGIME_PERSISTENCE/b11_extended_regime_persistence.py
+      - name: Verify 2026 isolation
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          for f in ["results/B11/blocks.parquet","results/B11/events.parquet"]:
+              d=pd.read_parquet(f)
+              if len(d):
+                  ts=pd.to_datetime(d["block_end_ts"],utc=True).dt.tz_convert("America/New_York")
+                  assert ts.dt.year.max()<=2025,(f,ts.dt.year.max())
+          print("B11 verified: 2026 unopened.")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b11-extended-regime-persistence
+          path: results/B11/**
+          retention-days: 30
