@@ -1,0 +1,31 @@
+name: Quote ES MBP-10 Databento
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/ES_RESEARCH_FOCUS.md"
+      - "tools/databento_quote_es_mbp10.py"
+      - ".github/workflows/databento-es-mbp10-quote.yml"
+  workflow_dispatch:
+
+jobs:
+  quote:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Databento client
+        run: pip install databento
+      - name: Metadata-only ES MBP-10 quote
+        env:
+          DATABENTO_API_KEY: ${{ secrets.DATABENTO_API_KEY }}
+        run: python tools/databento_quote_es_mbp10.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: databento-es-mbp10-quote
+          path: results/databento_es_quote/**
+          retention-days: 30
