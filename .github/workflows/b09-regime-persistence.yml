@@ -1,0 +1,52 @@
+name: B09 Regime Persistence
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/B09_REGIME_PERSISTENCE_PRE_REGISTRATION.md"
+      - "research/active/B09_REGIME_PERSISTENCE/**"
+      - "tests/test_b09_regime_persistence.py"
+      - "src/**"
+      - "data/raw/**"
+      - "requirements.txt"
+      - ".github/workflows/b09-regime-persistence.yml"
+  workflow_dispatch:
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Tests
+        env:
+          PYTHONPATH: .
+        run: pytest -q tests/test_data_pipeline.py tests/test_b09_regime_persistence.py
+      - name: Build dataset
+        run: python -m src.data_pipeline
+      - name: Run frozen B09
+        env:
+          PYTHONPATH: .
+        run: python research/active/B09_REGIME_PERSISTENCE/b09_regime_persistence.py
+      - name: Verify 2026 isolation
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          for f in ["results/B09/blocks.parquet","results/B09/events.parquet"]:
+              d=pd.read_parquet(f)
+              if len(d):
+                  ts=pd.to_datetime(d["block_end_ts"],utc=True).dt.tz_convert("America/New_York")
+                  assert ts.dt.year.max()<=2025,(f,ts.dt.year.max())
+          print("B09 verified: 2026 unopened.")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b09-regime-persistence
+          path: results/B09/**
+          retention-days: 30
