@@ -71,3 +71,13 @@ B10 extended B09 without changing the state definition:
 - no half-effect decay point observed by +120m.
 
 Continuous exact-state runs are much shorter, so the persistence should be interpreted as persistent **predictive information about range magnitude**, not continuous occupancy of the identical extreme state.
+
+### C008 — Extended persistence through +240 minutes
+B11 shows gradual but still substantial decay:
+- HIGH effect: +54.2% at +15m, +49.0% at +180m, +44.0% at +240m;
+- LOW discount: +35.5% at +15m, +30.5% at +180m, +25.4% at +240m;
+- marginal same-extreme probability at +240m remains ~43–44% versus a ~20% unconditional reference.
+
+No 50%-of-initial-effect decay point was reached by +240m.
+
+This supports an observed predictive range-regime life of at least four hours for morning detections, while directional sign remains unresolved.
