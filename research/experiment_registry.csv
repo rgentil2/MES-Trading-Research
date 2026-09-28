@@ -47,3 +47,8 @@ R044,Five Day Range Breakout at Open,REJECTED,Multi Day Context,2026-09-28,2026-
 R045,Five Day Overextension Reversion,REJECTED,Multi Day Context,2026-09-28,2026-09-28,MES 1m 2020-2025,30m reversion bps,"Mean +0.992 bps; n=271",REJECT_H056,"p=0.6430 CI [-3.203,5.187]; 4/6 positive years; 2026 unopened"
 R046,High Five Day Range Persistence,PASS_DEV_AWAITING_CONFIRMATION,Multi Day Context,2026-09-28,,MES 1m 2020-2025,opening range expansion pct,"Mean +42.483%; n=271; q=3.06e-29",PASS_H057_DEV,"CI [35.119,49.848]; 6/6 positive years; 2026 unopened"
 R047,Low Five Day Range Persistence,PASS_DEV_AWAITING_CONFIRMATION,Multi Day Context,2026-09-28,,MES 1m 2020-2025,opening range discount pct,"Mean +25.911%; n=350; q=6.85e-40",PASS_H058_DEV,"CI [22.104,29.718]; 6/6 positive years; 2026 unopened"
+R048,HIGH Next15 Persistence,PLANNED,Volatility Persistence,2026-09-28,,MES 1m 2020-2025,next15 range expansion pct,,,B09 H059; same-clock q80 15m range state; 2026 unopened
+R049,LOW Next15 Persistence,PLANNED,Volatility Persistence,2026-09-28,,MES 1m 2020-2025,next15 range discount pct,,,B09 H060; same-clock q20 15m range state; 2026 unopened
+R050,HIGH One Hour Persistence,PLANNED,Volatility Persistence,2026-09-28,,MES 1m 2020-2025,plus60 range expansion pct,,,B09 H061; current HIGH 15m block to +60m; 2026 unopened
+R051,LOW One Hour Persistence,PLANNED,Volatility Persistence,2026-09-28,,MES 1m 2020-2025,plus60 range discount pct,,,B09 H062; current LOW 15m block to +60m; 2026 unopened
+R052,Extreme State Self Transition,PLANNED,Volatility Persistence,2026-09-28,,MES 1m 2020-2025,HIGH and LOW self transition probabilities,,,B09 H063; exact binomial vs 20pct + BH; 2026 unopened
