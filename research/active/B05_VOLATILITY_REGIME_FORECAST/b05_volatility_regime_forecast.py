@@ -107,6 +107,10 @@ def build_base_sessions(raw):
     s = pd.DataFrame(rows).sort_values(
         "first_ts"
     ).reset_index(drop=True)
+    s = s[
+        (s["year"] >= 2020)
+        & (s["year"] <= 2025)
+    ].copy().reset_index(drop=True)
 
     s["prev_contract"] = s["contract"].shift(1)
     s["prev_day_range_bps"] = s["full_rth_range_bps"].shift(1)
