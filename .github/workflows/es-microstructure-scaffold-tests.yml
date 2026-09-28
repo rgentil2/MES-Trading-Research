@@ -1,0 +1,23 @@
+name: ES Microstructure Scaffold Tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/es_microstructure.py"
+      - "tests/test_es_microstructure.py"
+      - "research/es/**"
+      - "docs/ES_DATA_PIPELINE.md"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pandas numpy pytest
+      - run: pytest -q tests/test_es_microstructure.py
