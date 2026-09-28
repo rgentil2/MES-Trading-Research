@@ -42,3 +42,24 @@ The same broad state-persistence effect is now visible at:
 - rolling intraday RV30.
 
 This strengthens the case for treating volatility/range as a persistent latent state rather than a sequence of independent observations.
+
+### C006 — Intraday persistence and transition dynamics
+B09 development shows that same-clock 15-minute HIGH/LOW states persist strongly:
+- HIGH: +54.2% next block and +52.3% even at +60m;
+- LOW: +35.5% next-block discount and +34.1% at +60m;
+- HIGH->HIGH: 53.9%;
+- LOW->LOW: 52.6%;
+- HIGH->LOW only 2.5%;
+- LOW->HIGH only 3.9%.
+
+The tested effect shows little decay from +15m through +60m.
+
+## Updated working model
+The evidence now supports modeling MES range/volatility as a persistent state process across:
+- multi-day context;
+- prior session;
+- overnight;
+- opening;
+- rolling intraday windows.
+
+Directional sign remains substantially less predictable than movement magnitude.
