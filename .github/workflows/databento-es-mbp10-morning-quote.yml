@@ -1,0 +1,29 @@
+name: Quote ES MBP-10 Morning Window
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "tools/databento_quote_es_mbp10_morning.py"
+      - ".github/workflows/databento-es-mbp10-morning-quote.yml"
+  workflow_dispatch:
+
+jobs:
+  quote:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install databento
+      - name: Metadata-only morning-window quote
+        env:
+          DATABENTO_API_KEY: ${{ secrets.DATABENTO_API_KEY }}
+        run: python tools/databento_quote_es_mbp10_morning.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: databento-es-mbp10-morning-quote
+          path: results/databento_es_morning_quote/**
+          retention-days: 30
