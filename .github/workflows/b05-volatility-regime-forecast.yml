@@ -1,0 +1,54 @@
+name: B05 Volatility Regime Forecast
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/B05_VOLATILITY_REGIME_FORECAST_PRE_REGISTRATION.md"
+      - "research/active/B05_VOLATILITY_REGIME_FORECAST/**"
+      - "tests/test_b05_volatility_regime_forecast.py"
+      - "src/**"
+      - "data/raw/**"
+      - "requirements.txt"
+      - ".github/workflows/b05-volatility-regime-forecast.yml"
+  workflow_dispatch:
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Tests
+        env:
+          PYTHONPATH: .
+        run: pytest -q tests/test_data_pipeline.py tests/test_b05_volatility_regime_forecast.py
+      - name: Build dataset
+        run: python -m src.data_pipeline
+      - name: Run frozen B05
+        env:
+          PYTHONPATH: .
+        run: python research/active/B05_VOLATILITY_REGIME_FORECAST/b05_volatility_regime_forecast.py
+      - name: Verify 2026 isolation
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          s=pd.read_parquet("results/B05/regime_session_features.parquet")
+          ts=pd.to_datetime(s["first_ts"],utc=True).dt.tz_convert("America/New_York")
+          assert ts.dt.year.max()<=2025
+          e=pd.read_parquet("results/B05/H045_events.parquet")
+          if len(e):
+              t=pd.to_datetime(e["timestamp_et"],utc=True).dt.tz_convert("America/New_York")
+              assert t.dt.year.max()<=2025
+          print("B05 verified: 2026 unopened.")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b05-volatility-regime-forecast
+          path: results/B05/**
+          retention-days: 30
