@@ -1,0 +1,57 @@
+name: R063 Final Regime Engine Audit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/active/R063_FINAL_REGIME_ENGINE/**"
+      - "research/archive/B05/**"
+      - "research/archive/B11/**"
+      - "research/archive/R017/**"
+      - "tests/test_r063_final_regime_engine.py"
+      - "src/**"
+      - "data/raw/**"
+      - "requirements.txt"
+      - ".github/workflows/r063-final-regime-engine-audit.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Tests
+        env:
+          PYTHONPATH: .
+        run: pytest -q tests/test_data_pipeline.py tests/test_r063_final_regime_engine.py
+      - name: Build dataset
+        run: python -m src.data_pipeline
+      - name: Run frozen v1 development audit
+        env:
+          PYTHONPATH: .
+        run: python research/active/R063_FINAL_REGIME_ENGINE/regime_engine_v1.py
+      - name: Verify strict 2026 isolation
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          for f, col in [
+              ("results/R063/session_outputs.parquet", "first_ts"),
+              ("results/R063/dynamic_outputs.parquet", "block_end_ts"),
+          ]:
+              d=pd.read_parquet(f)
+              if len(d):
+                  ts=pd.to_datetime(d[col],utc=True).dt.tz_convert("America/New_York")
+                  assert ts.dt.year.max()<=2025,(f,ts.dt.year.max())
+          print("R063 audit verified: 2026 unopened.")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r063-final-regime-engine-audit
+          path: results/R063/**
+          retention-days: 30
