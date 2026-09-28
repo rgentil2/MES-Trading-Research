@@ -1,0 +1,25 @@
+name: Quote Databento MBP-10
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "tools/quote_databento_mbp10.py"
+      - ".github/workflows/quote-databento-mbp10.yml"
+  workflow_dispatch:
+
+jobs:
+  quote:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Databento client
+        run: pip install databento
+      - name: Quote MBP-10 only
+        env:
+          DATABENTO_API_KEY: ${{ secrets.DATABENTO_API_KEY }}
+        run: python tools/quote_databento_mbp10.py
