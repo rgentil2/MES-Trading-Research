@@ -1,0 +1,56 @@
+name: B06 HIGH Regime Strategies
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/B06_HIGH_REGIME_STRATEGIES_PRE_REGISTRATION.md"
+      - "research/active/B06_HIGH_REGIME_STRATEGIES/**"
+      - "research/archive/B05/**"
+      - "research/archive/R017/**"
+      - "tests/test_b06_high_regime_strategies.py"
+      - "src/**"
+      - "data/raw/**"
+      - "requirements.txt"
+      - ".github/workflows/b06-high-regime-strategies.yml"
+  workflow_dispatch:
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Tests
+        env:
+          PYTHONPATH: .
+        run: pytest -q tests/test_data_pipeline.py tests/test_b06_high_regime_strategies.py
+      - name: Build dataset
+        run: python -m src.data_pipeline
+      - name: Run frozen B06
+        env:
+          PYTHONPATH: .
+        run: python research/active/B06_HIGH_REGIME_STRATEGIES/b06_high_regime_strategies.py
+      - name: Verify 2026 isolation
+        run: |
+          python - <<'PY'
+          import glob
+          import pandas as pd
+          for f in glob.glob("results/B06/H*_trades.parquet"):
+              d=pd.read_parquet(f)
+              if d.empty:
+                  continue
+              ts=pd.to_datetime(d["timestamp_et"],utc=True).dt.tz_convert("America/New_York")
+              assert ts.dt.year.max()<=2025,(f,ts.dt.year.max())
+          print("B06 verified: 2026 unopened.")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b06-high-regime-strategies
+          path: results/B06/**
+          retention-days: 30
