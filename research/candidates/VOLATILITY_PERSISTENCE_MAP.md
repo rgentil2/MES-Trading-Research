@@ -27,3 +27,18 @@ previous day → overnight/open → first 15m → next 30m.
 This should currently be treated as a **regime-forecasting capability**, not as proof of a profitable directional trading strategy.
 
 2026 remains unopened.
+
+### C005 — Five-day range regime
+B08 development:
+- high prior five-day average range → next opening range ~42% above baseline;
+- low prior five-day average range → next opening range ~26% below baseline.
+
+## Extended working interpretation
+The same broad state-persistence effect is now visible at:
+- multi-day (5-session regime);
+- previous day;
+- overnight;
+- first 15 minutes;
+- rolling intraday RV30.
+
+This strengthens the case for treating volatility/range as a persistent latent state rather than a sequence of independent observations.
