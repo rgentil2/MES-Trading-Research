@@ -1,0 +1,57 @@
+name: R016 H017 Price Behavior
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/active/R016_H017_PRICE_BEHAVIOR/**"
+      - "tests/test_r016_h017_price_behavior.py"
+      - "src/**"
+      - "data/raw/**"
+      - "requirements.txt"
+      - ".github/workflows/r016-h017-price-behavior.yml"
+  workflow_dispatch:
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Tests
+        env:
+          PYTHONPATH: .
+        run: pytest -q tests/test_data_pipeline.py tests/test_r016_h017_price_behavior.py
+      - name: Build dataset
+        run: python -m src.data_pipeline
+      - name: Run frozen R016
+        env:
+          PYTHONPATH: .
+        run: python research/active/R016_H017_PRICE_BEHAVIOR/r016_h017_price_behavior.py
+      - name: Verify no 2026 use
+        run: |
+          python - <<'PY'
+          import pandas as pd, glob
+          for f in glob.glob("results/R016/*events*.parquet"):
+              d=pd.read_parquet(f)
+              if d.empty:
+                  continue
+              col="timestamp_et" if "timestamp_et" in d.columns else "regime_timestamp_et"
+              ts=pd.to_datetime(d[col],utc=True).dt.tz_convert("America/New_York")
+              assert ts.dt.year.max() <= 2025, (f, ts.dt.year.max())
+          h21=pd.read_parquet("results/R016/H021_events.parquet")
+          if len(h21):
+              ts=pd.to_datetime(h21["timestamp_et"],utc=True).dt.tz_convert("America/New_York")
+              assert ts.dt.year.min()==2025 and ts.dt.year.max()==2025
+          print("R016 holdout policy verified; 2026 unopened.")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r016-h017-price-behavior
+          path: results/R016/**
+          retention-days: 30
