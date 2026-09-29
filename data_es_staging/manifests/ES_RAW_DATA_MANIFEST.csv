@@ -40,7 +40,7 @@
 "ES DEC24","Minute Last","ES_DEC24_Minute_Last.txt","4498629","1b4a89623476fc423bd77c13048af826bbe526dee94056c34374817e892f2796","yes","minute_uploaded","4b109d7ef3d61b27773f14dfa2037ff2c129d5dc"
 "ES DEC24","Tick Last","ES_DEC24_Tick_Last.txt","2649052050","4eb7bc44ee25b77793a121c0d18cab469c399d87edc1d3862a557fba02e955fa","yes","pending",""
 "ES MAR25","Tick Last","ES_MAR25_Tick_Last.txt","2233119011","ae6418893fb4f4e615e45d4deae733565b9fc2b0c69e9e5290236343041f46c1","yes","pending",""
-"ES MAR25","Minute Last","ES_MAR25_Minute_Last.txt","4334301","ab8c15bac4f18fab6a8be67978669a8d665f39619c9ed260ab5ec03180143edd","yes","pending",""
+"ES MAR25","Minute Last","ES_MAR25_Minute_Last.txt","4334301","ab8c15bac4f18fab6a8be67978669a8d665f39619c9ed260ab5ec03180143edd","yes","minute_uploaded","6243559bd34490dc246f063603430d82622cb5ae"
 "ES JUN25","Tick Last","ES_JUN25_Tick_Last.txt","50","fd683d6b2d9894c784c5b273c35f3650baacd903d16460cc127a5fc570dbeabd","yes","pending",""
 "ES JUN25","Minute Last","ES_JUN25_Minute_Last.txt","4453411","3f8282673651683da12408d65d8978ec5837749acc5c9f9d58f7dd3ebf3679c9","yes","pending",""
 "ES SEP25","Tick Last","ES_SEP25_Tick_Last.txt","50","6c7a52359b39fd86dbbe5b870c6e0415c789557468084f7cb99fcd2d31cd84b2","yes","pending",""
