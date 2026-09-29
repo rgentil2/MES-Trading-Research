@@ -1,0 +1,3 @@
+source,instrument,contract,interval,data_type,start_date,end_date,rows,file_size_bytes,sha256,timezone,status,notes
+NinjaTrader,ES,ES DEC26,Minute,Last,,,,,,,pending,
+NinjaTrader,ES,ES DEC26,Tick,Last,,,,,,,pending,
