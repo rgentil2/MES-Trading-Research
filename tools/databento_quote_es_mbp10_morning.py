@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import os
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, datetime, time as dtime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -19,6 +20,7 @@ START_LOCAL = dtime(9, 20)
 END_LOCAL = dtime(11, 40)
 
 YEARS = range(2020, 2025)
+MAX_WORKERS = 16
 
 
 def daterange(start: date, end: date):
@@ -62,23 +64,20 @@ def main():
     yearly = []
     daily = []
 
+    tasks = []
     for year in YEARS:
-        year_cost = 0.0
-        queried_days = 0
-        nonzero_days = 0
-
         for d in daterange(date(year, 1, 1), date(year + 1, 1, 1)):
-            if d.weekday() >= 5:
-                continue
+            if d.weekday() < 5:
+                tasks.append((year, d, to_iso_utc(d, START_LOCAL), to_iso_utc(d, END_LOCAL)))
 
-            start = to_iso_utc(d, START_LOCAL)
-            end = to_iso_utc(d, END_LOCAL)
-            cost = get_cost_retry(client, start, end)
-            queried_days += 1
-            if cost > 0:
-                nonzero_days += 1
-                year_cost += cost
-
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
+        futures = {
+            pool.submit(get_cost_retry, client, start, end): (year, d, start, end)
+            for year, d, start, end in tasks
+        }
+        for fut in as_completed(futures):
+            year, d, start, end = futures[fut]
+            cost = fut.result()
             daily.append(
                 {
                     "date": d.isoformat(),
@@ -89,12 +88,15 @@ def main():
                 }
             )
 
+    daily.sort(key=lambda r: r["date"])
+    for year in YEARS:
+        yr = [r for r in daily if r["year"] == year]
         yearly.append(
             {
                 "year": year,
-                "cost_usd": year_cost,
-                "weekdays_queried": queried_days,
-                "nonzero_days": nonzero_days,
+                "cost_usd": sum(r["cost_usd"] for r in yr),
+                "weekdays_queried": len(yr),
+                "nonzero_days": sum(r["cost_usd"] > 0 for r in yr),
             }
         )
 
