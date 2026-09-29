@@ -21,3 +21,8 @@ holdout/**
 
 # Small samples may be committed deliberately under samples/
 !samples/**
+
+# Approved cloud copy of ES Minute Last (each file is small enough for normal Git)
+!raw_minutes/
+!raw_minutes/**
+!raw_minutes/**/*.txt
