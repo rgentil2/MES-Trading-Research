@@ -1,0 +1,3 @@
+source,instrument,contract,interval,data_type,start_date,end_date,rows,file_size_bytes,sha256,timezone,status,notes
+NinjaTrader,ES,ES DEC26,Tick,Last,2026-06-12,2026-09-25,10113428,485253104,07faf27144bf26bc87fc6be893385f7214367bd06cfb6f4f95224435423c5d68,likely UTC,qc_pass,"Schema timestamp;last;bid;ask;volume. 2026 holdout QC only."
+NinjaTrader,ES,ES DEC26,Minute,Last,2026-06-12,2026-09-25,36507,1732086,16dc66c648aaa181252f5d5aadf50324d5444e13bc3b20804b951baed900eb87,likely UTC,qc_pass,"36,489/36,507 exact OHLCV matches vs Tick aggregation."
