@@ -1,0 +1,23 @@
+# Large/local-only ES data
+raw/**
+processed/**
+holdout/**
+
+# Keep folder placeholders/documentation if added later
+!raw/.gitkeep
+!processed/.gitkeep
+!holdout/.gitkeep
+
+# Common large market-data exports
+*.zip
+*.7z
+*.gz
+*.dbn
+*.parquet
+*.feather
+*.h5
+*.hdf5
+*.txt
+
+# Small samples may be committed deliberately under samples/
+!samples/**
