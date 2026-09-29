@@ -18,7 +18,7 @@ START_LOCAL = dtime(9, 30)
 END_LOCAL = dtime(11, 30)
 START_DATE = date(2020, 1, 1)
 END_DATE = date(2025, 1, 1)
-MAX_WORKERS = 8
+MAX_WORKERS = 32
 
 
 def weekdays(start: date, end: date):
