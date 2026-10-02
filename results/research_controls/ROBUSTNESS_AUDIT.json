@@ -1,0 +1,3927 @@
+{
+  "stage": "DEVELOPMENT_RETROSPECTIVE_DIAGNOSTIC",
+  "loaded_years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "loaded_contract_files": [
+    "MES 03-20.Last.txt",
+    "MES 06-20.Last.txt",
+    "MES 09-20.Last.txt",
+    "MES 12-20.Last.txt",
+    "MES 03-21.Last.txt",
+    "MES 06-21.Last.txt",
+    "MES 09-21.Last.txt",
+    "MES 12-21.Last.txt",
+    "MES 03-22.Last.txt",
+    "MES 06-22.Last.txt",
+    "MES 09-22.Last.txt",
+    "MES 12-22.Last.txt",
+    "MES 03-23.Last.txt",
+    "MES 06-23.Last.txt",
+    "MES 09-23.Last.txt",
+    "MES 12-23.Last.txt",
+    "MES 03-24.Last.txt",
+    "MES 06-24.Last.txt",
+    "MES 09-24.Last.txt",
+    "MES 12-24.Last.txt"
+  ],
+  "source_file_sha256": {
+    "MES 03-20.Last.txt": "025ca2a2aa0a64a20245c2367d19f325cc1dbdfdd053943ff676e81eaae2af88",
+    "MES 06-20.Last.txt": "2133207512418d153b36bc9fe0182837eca1d32b30f322556aabf1c4285659c2",
+    "MES 09-20.Last.txt": "2b2731ab22dcb4f428411f0a6c018a684d19d912024c31308f4cd0d45416e364",
+    "MES 12-20.Last.txt": "6990eab5f902258bc325b8b456a167a5961fd816581ed16bd245b490c525f55e",
+    "MES 03-21.Last.txt": "68a5d42825b81c10c45e178d08e4c3247de41fc095eeabfe6eca8260ce9dd95a",
+    "MES 06-21.Last.txt": "d379c004e656684624200fd1b7c5a380f68e620108bb41304177dc164be447dd",
+    "MES 09-21.Last.txt": "6a1196d7ee3a7c5a591097d68365d22848129e45788c3b94efdcf28d93f12bb6",
+    "MES 12-21.Last.txt": "19896adf049a760f7a5811ba656973e3a4e267ddaf2f6f0b0275917217acac21",
+    "MES 03-22.Last.txt": "e8bdfd353e8c9ceb51fadc7d1d549fd2ceda59c756760577a811194a0c31d875",
+    "MES 06-22.Last.txt": "0cb50fa8324dc2a79d96890fc011dc1fe5c449355ee189d3e1d5638d42ef3fe1",
+    "MES 09-22.Last.txt": "e0a329bfaf8ec443673717845daa980517d4922e7b268d31e18331d996d45d29",
+    "MES 12-22.Last.txt": "63514eb2479f29716e3a8ef54f4ee16a9f3fcc502ac73b49fd88c73cc1deaf47",
+    "MES 03-23.Last.txt": "df0e8f38f9a2bbd736f523d16e83684412a2d8df0f469a0e46f84ffff63dbe41",
+    "MES 06-23.Last.txt": "db11822085b032c6aa49a360264d8df245f6b3755c9b946221e16db80389ff61",
+    "MES 09-23.Last.txt": "29bcd8b255da01529a807c3da16ad095cd220218df7ac981c7d8e940c9a5a529",
+    "MES 12-23.Last.txt": "f9eb3289b453f126069e781c73ad2183d9188eb043294eb72e6301a837fe5d8f",
+    "MES 03-24.Last.txt": "47928c143e909298f69c78f90d89c0ca0f45b7fa301acd191ca137ea0d68c5ca",
+    "MES 06-24.Last.txt": "a89b7f192c7a149c91e1a74822f816539e10ddd49619180969faea5fb56104f4",
+    "MES 09-24.Last.txt": "874a27c08ebcb688e469439c1c42dd0ac895f38783876459beada55bd24b7976",
+    "MES 12-24.Last.txt": "17ddf1d0b80723c82dda0fd5acbf1b58f520aea4c44d229d5692b6a80bd94076"
+  },
+  "holdout_2025_loaded": false,
+  "holdout_2026_loaded": false,
+  "source_scope": "Subset 2020-2024 of archived B14; not a reproduction of its 2020-2025 primary gate.",
+  "cost_round_trip_usd": 4.38,
+  "original_statuses_changed": false,
+  "strategy_authorized": false,
+  "MES": {
+    "H080": {
+      "authority": "DIAGNOSTIC_ONLY_NO_PROMOTION",
+      "instrument": "MES",
+      "strategy_authorized": false,
+      "baseline": {
+        "trades": 240,
+        "active_days": 240,
+        "net_expectancy_usd": 2.593958333333337,
+        "net_pnl_usd": 622.5500000000009,
+        "profit_factor": 1.0960912152671662,
+        "no_losing_trades": false,
+        "positive_trade_fraction": 0.4875
+      },
+      "stress_1_5x_costs": {
+        "trades": 240,
+        "active_days": 240,
+        "net_expectancy_usd": 0.4039583333333373,
+        "net_pnl_usd": 96.95000000000095,
+        "profit_factor": 1.0143663044589633,
+        "no_losing_trades": false,
+        "positive_trade_fraction": 0.48333333333333334
+      },
+      "inference": {
+        "estimable": true,
+        "SESSION_CLUSTER_T": {
+          "estimable": true,
+          "mean": 2.593958333333337,
+          "se": 4.936432607538099,
+          "degrees_of_freedom": 239,
+          "ci95": [
+            -7.1305147849093675,
+            12.318431451576041
+          ],
+          "p_two_sided": 0.599742106454681
+        },
+        "HC3_EVENT_DIAGNOSTIC": {
+          "estimable": true,
+          "mean": 2.593958333333337,
+          "se": 4.94674909236972,
+          "degrees_of_freedom": 239,
+          "ci95": [
+            -7.150837634909724,
+            12.338754301576397
+          ],
+          "p_two_sided": 0.6005027789536835
+        },
+        "CALENDAR_HAC20_T_APPROX": {
+          "estimable": true,
+          "mean": 2.593958333333337,
+          "se": 5.333453001681385,
+          "degrees_of_freedom": 239,
+          "ci95": [
+            -7.9126209042849105,
+            13.100537570951584
+          ],
+          "p_two_sided": 0.6271602451751864
+        },
+        "note": "HC3 alone does not address within-session dependence. Calendar-HAC t inference is approximate; bootstrap is also reported.",
+        "lag_calendar_days": 20
+      },
+      "calendar_bootstrap": {
+        "resamples": 10000,
+        "valid_resamples": 10000,
+        "seed": 20261002,
+        "block_calendar_days": 20,
+        "ci95_net_expectancy_usd": [
+          -7.484690800845012,
+          13.574653337169162
+        ],
+        "sampling": "moving calendar blocks; all trades of a selected day retained; event-weighted mean"
+      },
+      "best_two_share_of_positive_day_gains": 0.06371940872714676,
+      "remove_best_1_days": {
+        "omitted_days": [
+          "2024-08-06"
+        ],
+        "remaining": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 1.6398744769874518,
+          "net_pnl_usd": 391.930000000001,
+          "profit_factor": 1.0604947875667183,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        }
+      },
+      "remove_best_2_days": {
+        "omitted_days": [
+          "2024-08-06",
+          "2022-04-29"
+        ],
+        "remaining": {
+          "trades": 238,
+          "active_days": 238,
+          "net_expectancy_usd": 0.7145378151260545,
+          "net_pnl_usd": 170.06000000000097,
+          "profit_factor": 1.0262489311193228,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4831932773109244
+        }
+      },
+      "leave_one_day_out": {
+        "2021-09-23": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.9264853556485395,
+          "net_pnl_usd": 699.430000000001,
+          "profit_factor": 1.1092541855023386,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2021-10-01": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5603765690376608,
+          "net_pnl_usd": 611.930000000001,
+          "profit_factor": 1.0944520076434618,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2021-10-04": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 3.0363179916318033,
+          "net_pnl_usd": 725.680000000001,
+          "profit_factor": 1.1138212657298676,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2021-10-05": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.7695815899581633,
+          "net_pnl_usd": 661.930000000001,
+          "profit_factor": 1.1027943770809523,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2021-10-06": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.2674895397489574,
+          "net_pnl_usd": 541.9300000000009,
+          "profit_factor": 1.0836474376190435,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2021-10-12": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5812970711297107,
+          "net_pnl_usd": 616.9300000000009,
+          "profit_factor": 1.095223762645206,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2021-10-13": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.3197907949790832,
+          "net_pnl_usd": 554.4300000000009,
+          "profit_factor": 1.085576825123404,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2021-11-09": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5708368200836857,
+          "net_pnl_usd": 614.4300000000009,
+          "profit_factor": 1.0948378851443339,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2021-11-23": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.3041004184100453,
+          "net_pnl_usd": 550.6800000000009,
+          "profit_factor": 1.0849980088720956,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2021-11-24": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6754393305439366,
+          "net_pnl_usd": 639.4300000000009,
+          "profit_factor": 1.0989544805984657,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2021-11-30": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.492384937238498,
+          "net_pnl_usd": 595.680000000001,
+          "profit_factor": 1.091943803887793,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2021-12-01": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5237656903765733,
+          "net_pnl_usd": 603.180000000001,
+          "profit_factor": 1.0931014363904095,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2021-12-02": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.7538912133891253,
+          "net_pnl_usd": 658.180000000001,
+          "profit_factor": 1.1021525319294567,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2021-12-03": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 3.402426778242682,
+          "net_pnl_usd": 813.180000000001,
+          "profit_factor": 1.1293202568021234,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2021-12-06": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.4714644351464474,
+          "net_pnl_usd": 590.680000000001,
+          "profit_factor": 1.091172048886049,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2021-12-10": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.3093305439330583,
+          "net_pnl_usd": 551.930000000001,
+          "profit_factor": 1.0851909476225317,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2021-12-14": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.2047280334728074,
+          "net_pnl_usd": 526.930000000001,
+          "profit_factor": 1.081332172613811,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2021-12-16": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5656066945606733,
+          "net_pnl_usd": 613.1800000000009,
+          "profit_factor": 1.0946449463938979,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2021-12-17": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.8061924686192508,
+          "net_pnl_usd": 670.680000000001,
+          "profit_factor": 1.1042949269198412,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2021-12-20": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.7120502092050245,
+          "net_pnl_usd": 648.1800000000009,
+          "profit_factor": 1.1004445918324652,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-01-04": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5394560669456103,
+          "net_pnl_usd": 606.9300000000009,
+          "profit_factor": 1.0936802526417175,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-01-06": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 1.8700000000000039,
+          "net_pnl_usd": 446.9300000000009,
+          "profit_factor": 1.0689840925859042,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-01-07": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.4348535564853595,
+          "net_pnl_usd": 581.930000000001,
+          "profit_factor": 1.0898214776329966,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-01-10": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 3.3135146443514683,
+          "net_pnl_usd": 791.9300000000009,
+          "profit_factor": 1.1255166926597944,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-01-11": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.3877824267782466,
+          "net_pnl_usd": 570.680000000001,
+          "profit_factor": 1.0880850288790724,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-01-12": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.8532635983263632,
+          "net_pnl_usd": 681.9300000000009,
+          "profit_factor": 1.1062302160963087,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-01-14": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.3511715481171582,
+          "net_pnl_usd": 561.9300000000009,
+          "profit_factor": 1.08673445762602,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-01-19": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6388284518828486,
+          "net_pnl_usd": 630.6800000000009,
+          "profit_factor": 1.0974683994244747,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-01-20": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5708368200836857,
+          "net_pnl_usd": 614.4300000000009,
+          "profit_factor": 1.0948378851443339,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-01-21": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.999707112970715,
+          "net_pnl_usd": 716.9300000000009,
+          "profit_factor": 1.1122947327531656,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-01-24": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 3.1879916317991666,
+          "net_pnl_usd": 761.9300000000009,
+          "profit_factor": 1.120190366219934,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-01-25": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 3.1043096234309657,
+          "net_pnl_usd": 741.9300000000009,
+          "profit_factor": 1.1166674004931314,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-01-26": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.032133891213393,
+          "net_pnl_usd": 485.68000000000086,
+          "profit_factor": 1.0749651938494216,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-01-27": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.9264853556485395,
+          "net_pnl_usd": 699.430000000001,
+          "profit_factor": 1.1092541855023383,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-01-28": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.2988702928870333,
+          "net_pnl_usd": 549.430000000001,
+          "profit_factor": 1.0848050701216596,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-01-31": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 3.1723012552301295,
+          "net_pnl_usd": 758.180000000001,
+          "profit_factor": 1.119528117910615,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-02-02": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.492384937238498,
+          "net_pnl_usd": 595.680000000001,
+          "profit_factor": 1.091943803887793,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-02-04": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.638828451882849,
+          "net_pnl_usd": 630.680000000001,
+          "profit_factor": 1.0974683994244747,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-02-10": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 3.083389121338916,
+          "net_pnl_usd": 736.930000000001,
+          "profit_factor": 1.1157901187236423,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-02-17": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.7748117154811758,
+          "net_pnl_usd": 663.180000000001,
+          "profit_factor": 1.1030084916225416,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-02-18": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.3041004184100458,
+          "net_pnl_usd": 550.680000000001,
+          "profit_factor": 1.0849980088720956,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-02-22": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.8898744769874516,
+          "net_pnl_usd": 690.680000000001,
+          "profit_factor": 1.10774013705404,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-02-23": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.664979079497912,
+          "net_pnl_usd": 636.930000000001,
+          "profit_factor": 1.0985294754623816,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-02-24": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5603765690376608,
+          "net_pnl_usd": 611.930000000001,
+          "profit_factor": 1.0944520076434618,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-02-25": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 1.917071129707117,
+          "net_pnl_usd": 458.180000000001,
+          "profit_factor": 1.0707205413398286,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-02-28": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6597489539748995,
+          "net_pnl_usd": 635.680000000001,
+          "profit_factor": 1.0983170961440607,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-03-01": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.900334728033477,
+          "net_pnl_usd": 693.180000000001,
+          "profit_factor": 1.1081723004130704,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-03-02": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.0059832635983303,
+          "net_pnl_usd": 479.430000000001,
+          "profit_factor": 1.0740005000972412,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-03-03": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.9630962343096274,
+          "net_pnl_usd": 708.180000000001,
+          "profit_factor": 1.110772378388609,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-03-04": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6126778242677866,
+          "net_pnl_usd": 624.430000000001,
+          "profit_factor": 1.0964093712076532,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-03-07": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 3.020627615062766,
+          "net_pnl_usd": 721.930000000001,
+          "profit_factor": 1.1131665245416469,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-03-08": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 1.812468619246866,
+          "net_pnl_usd": 433.180000000001,
+          "profit_factor": 1.0668617663311077,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-03-10": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.3407112970711337,
+          "net_pnl_usd": 559.430000000001,
+          "profit_factor": 1.086348580125148,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-03-14": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.94740585774059,
+          "net_pnl_usd": 704.430000000001,
+          "profit_factor": 1.1101212157214635,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-03-15": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.4348535564853595,
+          "net_pnl_usd": 581.930000000001,
+          "profit_factor": 1.0898214776329966,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-03-16": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5969874476987487,
+          "net_pnl_usd": 620.680000000001,
+          "profit_factor": 1.095802578896514,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-03-25": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6126778242677866,
+          "net_pnl_usd": 624.430000000001,
+          "profit_factor": 1.096409371207653,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-04-08": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5289958158995858,
+          "net_pnl_usd": 604.430000000001,
+          "profit_factor": 1.0932943751408455,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-04-22": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5289958158995858,
+          "net_pnl_usd": 604.430000000001,
+          "profit_factor": 1.0932943751408455,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-04-25": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.1315062761506316,
+          "net_pnl_usd": 509.4300000000009,
+          "profit_factor": 1.0786310301077062,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-04-26": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.921255230125527,
+          "net_pnl_usd": 698.180000000001,
+          "profit_factor": 1.1090376395220447,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-04-27": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 1.8804602510460289,
+          "net_pnl_usd": 449.4300000000009,
+          "profit_factor": 1.0693699700867763,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-04-28": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6911297071129745,
+          "net_pnl_usd": 643.1800000000009,
+          "profit_factor": 1.0995926052668659,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-04-29": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 1.676485355648539,
+          "net_pnl_usd": 400.68000000000086,
+          "profit_factor": 1.0618453588197707,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-05-02": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.1994979079497945,
+          "net_pnl_usd": 525.6800000000009,
+          "profit_factor": 1.081139233863375,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-05-03": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6388284518828486,
+          "net_pnl_usd": 630.6800000000009,
+          "profit_factor": 1.0974683994244745,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-05-05": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 3.1670711297071166,
+          "net_pnl_usd": 756.9300000000009,
+          "profit_factor": 1.1193075424471497,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-05-06": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5551464435146483,
+          "net_pnl_usd": 610.680000000001,
+          "profit_factor": 1.0942590688930256,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-05-09": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.931715481171552,
+          "net_pnl_usd": 700.680000000001,
+          "profit_factor": 1.109470816062844,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-05-10": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.638828451882849,
+          "net_pnl_usd": 630.680000000001,
+          "profit_factor": 1.0974683994244745,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-05-11": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.7434309623431004,
+          "net_pnl_usd": 655.680000000001,
+          "profit_factor": 1.1017250500728402,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-05-12": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.4871548117154854,
+          "net_pnl_usd": 594.430000000001,
+          "profit_factor": 1.091750865137357,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-05-13": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.759121338912138,
+          "net_pnl_usd": 659.430000000001,
+          "profit_factor": 1.1023663972827722,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-05-18": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.816652719665276,
+          "net_pnl_usd": 673.180000000001,
+          "profit_factor": 1.1047244057740144,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-05-19": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5185355648535603,
+          "net_pnl_usd": 601.930000000001,
+          "profit_factor": 1.0929084976399734,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-05-20": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.628368200836824,
+          "net_pnl_usd": 628.180000000001,
+          "profit_factor": 1.097044542731392,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-05-24": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6335983263598366,
+          "net_pnl_usd": 629.430000000001,
+          "profit_factor": 1.0972564301452752,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-05-31": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.4610041841004224,
+          "net_pnl_usd": 588.180000000001,
+          "profit_factor": 1.090786171385177,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-06-01": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 3.004937238493728,
+          "net_pnl_usd": 718.180000000001,
+          "profit_factor": 1.1125125526585005,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-06-02": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.738200836820088,
+          "net_pnl_usd": 654.430000000001,
+          "profit_factor": 1.1015114334730396,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-06-07": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.984016736401678,
+          "net_pnl_usd": 713.180000000001,
+          "profit_factor": 1.1116417845027715,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-06-09": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.419163179916322,
+          "net_pnl_usd": 578.180000000001,
+          "profit_factor": 1.0892426613816886,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-06-10": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.445313807531385,
+          "net_pnl_usd": 584.430000000001,
+          "profit_factor": 1.090207355133869,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-06-13": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6858995815899624,
+          "net_pnl_usd": 641.930000000001,
+          "profit_factor": 1.0993798147184861,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-06-14": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.4348535564853595,
+          "net_pnl_usd": 581.930000000001,
+          "profit_factor": 1.0898214776329966,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-06-16": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.7852719665272008,
+          "net_pnl_usd": 665.680000000001,
+          "profit_factor": 1.1034369702328142,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-06-17": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.3407112970711337,
+          "net_pnl_usd": 559.430000000001,
+          "profit_factor": 1.086348580125148,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-06-22": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 3.3239748953974937,
+          "net_pnl_usd": 794.430000000001,
+          "profit_factor": 1.1259628404626076,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-06-24": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.570836820083686,
+          "net_pnl_usd": 614.430000000001,
+          "profit_factor": 1.0948378851443339,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-06-30": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.727740585774063,
+          "net_pnl_usd": 651.930000000001,
+          "profit_factor": 1.1010844486894826,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-07-01": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.8428033472803387,
+          "net_pnl_usd": 679.430000000001,
+          "profit_factor": 1.105799565857867,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-07-13": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.827112970711301,
+          "net_pnl_usd": 675.680000000001,
+          "profit_factor": 1.1051542188212482,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-07-21": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.4400836820083724,
+          "net_pnl_usd": 583.180000000001,
+          "profit_factor": 1.0900144163834329,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-08-26": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 3.072928870292891,
+          "net_pnl_usd": 734.430000000001,
+          "profit_factor": 1.1153519945467627,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-09-01": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.382552301255234,
+          "net_pnl_usd": 569.430000000001,
+          "profit_factor": 1.0878920901286364,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-09-06": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.0948953974895437,
+          "net_pnl_usd": 500.680000000001,
+          "profit_factor": 1.077280458854654,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-09-07": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.4976150627615104,
+          "net_pnl_usd": 596.930000000001,
+          "profit_factor": 1.0921367426382291,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-09-08": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6126778242677866,
+          "net_pnl_usd": 624.430000000001,
+          "profit_factor": 1.0964093712076532,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-09-14": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 1.8961506276150668,
+          "net_pnl_usd": 453.180000000001,
+          "profit_factor": 1.0699487863380845,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-09-15": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.957866108786615,
+          "net_pnl_usd": 706.930000000001,
+          "profit_factor": 1.1105552393046374,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-09-19": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.492384937238498,
+          "net_pnl_usd": 595.680000000001,
+          "profit_factor": 1.091943803887793,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-09-22": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.372092050209209,
+          "net_pnl_usd": 566.930000000001,
+          "profit_factor": 1.0875062126277641,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-09-23": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.429623430962347,
+          "net_pnl_usd": 580.680000000001,
+          "profit_factor": 1.0896285388825606,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-09-28": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.638828451882849,
+          "net_pnl_usd": 630.680000000001,
+          "profit_factor": 1.097468399424475,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-09-29": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 3.093849372384941,
+          "net_pnl_usd": 739.430000000001,
+          "profit_factor": 1.116228587237066,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-09-30": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6126778242677866,
+          "net_pnl_usd": 624.430000000001,
+          "profit_factor": 1.096409371207653,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-10-03": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.8898744769874516,
+          "net_pnl_usd": 690.680000000001,
+          "profit_factor": 1.10774013705404,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-10-04": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6492887029288745,
+          "net_pnl_usd": 633.180000000001,
+          "profit_factor": 1.0978925837686742,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-10-06": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5237656903765733,
+          "net_pnl_usd": 603.180000000001,
+          "profit_factor": 1.0931014363904095,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-10-07": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.900334728033477,
+          "net_pnl_usd": 693.180000000001,
+          "profit_factor": 1.1081723004130701,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-10-10": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.4505439330543974,
+          "net_pnl_usd": 585.680000000001,
+          "profit_factor": 1.090400293884305,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-10-12": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.2988702928870333,
+          "net_pnl_usd": 549.430000000001,
+          "profit_factor": 1.0848050701216596,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-10-13": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.628368200836824,
+          "net_pnl_usd": 628.180000000001,
+          "profit_factor": 1.0970445427313917,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-10-14": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 3.7110041841004224,
+          "net_pnl_usd": 886.930000000001,
+          "profit_factor": 1.1427226617061128,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-10-18": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.712050209205025,
+          "net_pnl_usd": 648.180000000001,
+          "profit_factor": 1.1004445918324652,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-10-20": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6335983263598366,
+          "net_pnl_usd": 629.430000000001,
+          "profit_factor": 1.097256430145275,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-10-21": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 3.350125523012556,
+          "net_pnl_usd": 800.680000000001,
+          "profit_factor": 1.1270797589439754,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-10-25": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.7068200836820124,
+          "net_pnl_usd": 646.930000000001,
+          "profit_factor": 1.1002314714394612,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-10-26": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6858995815899624,
+          "net_pnl_usd": 641.930000000001,
+          "profit_factor": 1.0993798147184863,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-10-27": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.3773221757322216,
+          "net_pnl_usd": 568.180000000001,
+          "profit_factor": 1.0876991513782004,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-10-28": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.999707112970715,
+          "net_pnl_usd": 716.9300000000009,
+          "profit_factor": 1.1122947327531658,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-11-01": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.8218828451882882,
+          "net_pnl_usd": 674.4300000000009,
+          "profit_factor": 1.104939270499124,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-11-03": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 1.906610878661092,
+          "net_pnl_usd": 455.680000000001,
+          "profit_factor": 1.0703346638389566,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-11-04": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 1.8229288702928905,
+          "net_pnl_usd": 435.68000000000086,
+          "profit_factor": 1.0672476438319798,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2022-11-10": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6231380753138116,
+          "net_pnl_usd": 626.930000000001,
+          "profit_factor": 1.096832737135408,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-12-01": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.7643514644351503,
+          "net_pnl_usd": 660.680000000001,
+          "profit_factor": 1.10258034565049,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-12-08": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.7905020920502133,
+          "net_pnl_usd": 666.930000000001,
+          "profit_factor": 1.1036513343984486,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-12-13": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.853263598326364,
+          "net_pnl_usd": 681.930000000001,
+          "profit_factor": 1.106230216096309,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-12-15": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.712050209205025,
+          "net_pnl_usd": 648.180000000001,
+          "profit_factor": 1.1004445918324655,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-12-16": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6597489539748995,
+          "net_pnl_usd": 635.680000000001,
+          "profit_factor": 1.098317096144061,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2022-12-23": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.4871548117154854,
+          "net_pnl_usd": 594.430000000001,
+          "profit_factor": 1.091750865137357,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2023-01-03": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.7800418410041883,
+          "net_pnl_usd": 664.430000000001,
+          "profit_factor": 1.1032226893236767,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-01-06": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.105355648535569,
+          "net_pnl_usd": 503.180000000001,
+          "profit_factor": 1.0776663363555261,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2023-01-12": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.0059832635983303,
+          "net_pnl_usd": 479.430000000001,
+          "profit_factor": 1.0740005000972412,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2023-01-18": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.9892468619246904,
+          "net_pnl_usd": 714.430000000001,
+          "profit_factor": 1.1118593487253519,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-01-23": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5812970711297116,
+          "net_pnl_usd": 616.9300000000011,
+          "profit_factor": 1.095223762645206,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2023-01-26": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.476694560669461,
+          "net_pnl_usd": 591.9300000000011,
+          "profit_factor": 1.091364987636485,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2023-02-02": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6597489539749,
+          "net_pnl_usd": 635.6800000000011,
+          "profit_factor": 1.098317096144061,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-02-03": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.612677824267787,
+          "net_pnl_usd": 624.4300000000011,
+          "profit_factor": 1.0964093712076532,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-02-14": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.649288702928875,
+          "net_pnl_usd": 633.1800000000011,
+          "profit_factor": 1.0978925837686746,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-02-23": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.8741841004184145,
+          "net_pnl_usd": 686.9300000000011,
+          "profit_factor": 1.1070925236500604,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-03-07": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.7015899581590004,
+          "net_pnl_usd": 645.6800000000011,
+          "profit_factor": 1.100018433579476,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-03-10": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.3982426778242725,
+          "net_pnl_usd": 573.1800000000011,
+          "profit_factor": 1.0884709063799445,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2023-03-13": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.283179916317996,
+          "net_pnl_usd": 545.6800000000011,
+          "profit_factor": 1.0842262538703515,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2023-03-16": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.9840167364016783,
+          "net_pnl_usd": 713.1800000000011,
+          "profit_factor": 1.1116417845027717,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-03-17": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.842803347280339,
+          "net_pnl_usd": 679.4300000000011,
+          "profit_factor": 1.105799565857867,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-05-04": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5551464435146487,
+          "net_pnl_usd": 610.6800000000011,
+          "profit_factor": 1.0942590688930256,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2023-08-24": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.842803347280339,
+          "net_pnl_usd": 679.4300000000011,
+          "profit_factor": 1.105799565857867,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-08-25": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.565606694560674,
+          "net_pnl_usd": 613.1800000000011,
+          "profit_factor": 1.0946449463938979,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2023-09-15": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5237656903765737,
+          "net_pnl_usd": 603.1800000000011,
+          "profit_factor": 1.0931014363904095,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2023-09-27": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.450543933054398,
+          "net_pnl_usd": 585.6800000000011,
+          "profit_factor": 1.090400293884305,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2023-10-03": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.670209205020925,
+          "net_pnl_usd": 638.1800000000011,
+          "profit_factor": 1.0987419369312919,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-10-04": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.539456066945611,
+          "net_pnl_usd": 606.9300000000011,
+          "profit_factor": 1.0936802526417175,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2023-10-05": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6388284518828495,
+          "net_pnl_usd": 630.6800000000011,
+          "profit_factor": 1.097468399424475,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-10-06": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.811422594142264,
+          "net_pnl_usd": 671.9300000000011,
+          "profit_factor": 1.1045096245971606,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-10-10": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.7905020920502137,
+          "net_pnl_usd": 666.9300000000011,
+          "profit_factor": 1.1036513343984486,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-10-13": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.7591213389121383,
+          "net_pnl_usd": 659.4300000000011,
+          "profit_factor": 1.1023663972827726,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-10-17": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.696359832635988,
+          "net_pnl_usd": 644.4300000000011,
+          "profit_factor": 1.0998054782045765,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-10-18": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5551464435146487,
+          "net_pnl_usd": 610.6800000000011,
+          "profit_factor": 1.0942590688930256,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2023-10-19": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6388284518828495,
+          "net_pnl_usd": 630.6800000000011,
+          "profit_factor": 1.097468399424475,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-10-20": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.8271129707113016,
+          "net_pnl_usd": 675.6800000000011,
+          "profit_factor": 1.1051542188212482,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-10-23": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6597489539749,
+          "net_pnl_usd": 635.6800000000011,
+          "profit_factor": 1.098317096144061,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-11-01": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6440585774058625,
+          "net_pnl_usd": 631.9300000000011,
+          "profit_factor": 1.0976804506164446,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-11-10": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6179079497907995,
+          "net_pnl_usd": 625.6800000000011,
+          "profit_factor": 1.0966210133099432,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-11-29": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.649288702928875,
+          "net_pnl_usd": 633.1800000000011,
+          "profit_factor": 1.0978925837686746,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2023-12-08": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.4087029288702975,
+          "net_pnl_usd": 575.6800000000011,
+          "profit_factor": 1.0888567838808165,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-01-11": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.3459414225941466,
+          "net_pnl_usd": 560.6800000000011,
+          "profit_factor": 1.086541518875584,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-02-02": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6702092050209245,
+          "net_pnl_usd": 638.180000000001,
+          "profit_factor": 1.0987419369312919,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-02-05": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.382552301255234,
+          "net_pnl_usd": 569.430000000001,
+          "profit_factor": 1.0878920901286364,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-02-07": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.4714644351464474,
+          "net_pnl_usd": 590.680000000001,
+          "profit_factor": 1.091172048886049,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-02-23": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.445313807531385,
+          "net_pnl_usd": 584.430000000001,
+          "profit_factor": 1.090207355133869,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-03-08": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.664979079497912,
+          "net_pnl_usd": 636.930000000001,
+          "profit_factor": 1.0985294754623816,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-03-12": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.1785774058577445,
+          "net_pnl_usd": 520.680000000001,
+          "profit_factor": 1.0803674788616306,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-03-14": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.4034728033472845,
+          "net_pnl_usd": 574.430000000001,
+          "profit_factor": 1.0886638451303805,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-04-05": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.581297071129711,
+          "net_pnl_usd": 616.930000000001,
+          "profit_factor": 1.095223762645206,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-04-12": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6492887029288745,
+          "net_pnl_usd": 633.180000000001,
+          "profit_factor": 1.0978925837686746,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-04-15": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.717280334728037,
+          "net_pnl_usd": 649.4300000000009,
+          "profit_factor": 1.100657794806459,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-04-17": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.7957322175732253,
+          "net_pnl_usd": 668.1800000000009,
+          "profit_factor": 1.1038657818691118,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-04-18": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5865271966527232,
+          "net_pnl_usd": 618.1800000000009,
+          "profit_factor": 1.095416701395642,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-04-23": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.534225941422598,
+          "net_pnl_usd": 605.6800000000009,
+          "profit_factor": 1.0934873138912815,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-04-24": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.7486610878661124,
+          "net_pnl_usd": 656.9300000000009,
+          "profit_factor": 1.1019387495422357,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-04-29": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.434853556485359,
+          "net_pnl_usd": 581.9300000000009,
+          "profit_factor": 1.0898214776329966,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-04-30": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.691129707112975,
+          "net_pnl_usd": 643.180000000001,
+          "profit_factor": 1.0995926052668663,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-05-02": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.9787866108786654,
+          "net_pnl_usd": 711.930000000001,
+          "profit_factor": 1.1114243054077404,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-05-03": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.319790794979084,
+          "net_pnl_usd": 554.4300000000011,
+          "profit_factor": 1.085576825123404,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-05-23": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.508075313807536,
+          "net_pnl_usd": 599.4300000000011,
+          "profit_factor": 1.0925226201391014,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-05-24": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.471464435146448,
+          "net_pnl_usd": 590.6800000000011,
+          "profit_factor": 1.091172048886049,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-05-31": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.670209205020925,
+          "net_pnl_usd": 638.1800000000011,
+          "profit_factor": 1.0987419369312916,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-06-03": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5551464435146487,
+          "net_pnl_usd": 610.6800000000011,
+          "profit_factor": 1.0942590688930256,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-06-07": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.319790794979084,
+          "net_pnl_usd": 554.4300000000011,
+          "profit_factor": 1.085576825123404,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-06-12": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.717280334728038,
+          "net_pnl_usd": 649.4300000000011,
+          "profit_factor": 1.1006577948064589,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-06-24": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5812970711297116,
+          "net_pnl_usd": 616.9300000000011,
+          "profit_factor": 1.095223762645206,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-06-28": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.4662343096234354,
+          "net_pnl_usd": 589.4300000000011,
+          "profit_factor": 1.090979110135613,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-07-01": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.487154811715486,
+          "net_pnl_usd": 594.4300000000011,
+          "profit_factor": 1.091750865137357,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-07-11": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.895104602510465,
+          "net_pnl_usd": 691.9300000000011,
+          "profit_factor": 1.1079561765917347,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-07-12": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.7382008368200883,
+          "net_pnl_usd": 654.4300000000011,
+          "profit_factor": 1.1015114334730396,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-07-18": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.9317154811715525,
+          "net_pnl_usd": 700.6800000000011,
+          "profit_factor": 1.1094708160628441,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-07-22": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.4191631799163225,
+          "net_pnl_usd": 578.1800000000011,
+          "profit_factor": 1.0892426613816886,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-07-23": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.670209205020925,
+          "net_pnl_usd": 638.1800000000011,
+          "profit_factor": 1.0987419369312916,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-07-24": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.7800418410041887,
+          "net_pnl_usd": 664.4300000000011,
+          "profit_factor": 1.1032226893236765,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-07-26": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5185355648535612,
+          "net_pnl_usd": 601.9300000000011,
+          "profit_factor": 1.0929084976399734,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-07-29": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.356401673640172,
+          "net_pnl_usd": 563.1800000000011,
+          "profit_factor": 1.086927396376456,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-07-30": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.8375732217573266,
+          "net_pnl_usd": 678.1800000000011,
+          "profit_factor": 1.1055843664517657,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-07-31": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.183807531380758,
+          "net_pnl_usd": 521.9300000000011,
+          "profit_factor": 1.0805604176120667,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-08-01": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.0896652719665316,
+          "net_pnl_usd": 499.4300000000011,
+          "profit_factor": 1.077087520104218,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-08-06": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 1.6398744769874518,
+          "net_pnl_usd": 391.930000000001,
+          "profit_factor": 1.0604947875667183,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-08-07": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.7225104602510504,
+          "net_pnl_usd": 650.6800000000011,
+          "profit_factor": 1.1008710804094497,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-08-08": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 1.9066108786610925,
+          "net_pnl_usd": 455.6800000000011,
+          "profit_factor": 1.0703346638389566,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-08-09": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.1628870292887075,
+          "net_pnl_usd": 516.9300000000011,
+          "profit_factor": 1.0797886626103226,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-08-12": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.2570292887029333,
+          "net_pnl_usd": 539.4300000000011,
+          "profit_factor": 1.0832615601181714,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-08-14": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.7225104602510504,
+          "net_pnl_usd": 650.6800000000011,
+          "profit_factor": 1.1008710804094497,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-08-21": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.2884100418410087,
+          "net_pnl_usd": 546.9300000000011,
+          "profit_factor": 1.0844191926207876,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-08-23": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5342259414225987,
+          "net_pnl_usd": 605.6800000000011,
+          "profit_factor": 1.0934873138912815,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-08-26": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.539456066945611,
+          "net_pnl_usd": 606.9300000000011,
+          "profit_factor": 1.0936802526417175,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-08-27": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.732970711297076,
+          "net_pnl_usd": 653.1800000000011,
+          "profit_factor": 1.1012978996946392,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-08-28": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.685899581589963,
+          "net_pnl_usd": 641.9300000000011,
+          "profit_factor": 1.0993798147184861,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-09-03": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.7120502092050254,
+          "net_pnl_usd": 648.1800000000011,
+          "profit_factor": 1.1004445918324652,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-09-04": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.241338912133896,
+          "net_pnl_usd": 535.6800000000011,
+          "profit_factor": 1.0826827438668631,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-09-05": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 3.140920502092055,
+          "net_pnl_usd": 750.6800000000011,
+          "profit_factor": 1.1182059676157095,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-09-06": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 3.3082845188284566,
+          "net_pnl_usd": 790.6800000000011,
+          "profit_factor": 1.125293751317226,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-09-10": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.539456066945611,
+          "net_pnl_usd": 606.9300000000011,
+          "profit_factor": 1.0936802526417175,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-09-11": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 3.3553556485355696,
+          "net_pnl_usd": 801.9300000000011,
+          "profit_factor": 1.1273034086002387,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-09-12": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.2779497907949837,
+          "net_pnl_usd": 544.4300000000011,
+          "profit_factor": 1.0840333151199155,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-09-13": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.471464435146448,
+          "net_pnl_usd": 590.6800000000011,
+          "profit_factor": 1.091172048886049,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-10-01": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.4923849372384983,
+          "net_pnl_usd": 595.6800000000011,
+          "profit_factor": 1.091943803887793,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-10-02": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.0687447698744816,
+          "net_pnl_usd": 494.4300000000011,
+          "profit_factor": 1.0763157651024737,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-10-04": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.9107949790795025,
+          "net_pnl_usd": 695.6800000000011,
+          "profit_factor": 1.1086048011040324,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-10-15": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5342259414225987,
+          "net_pnl_usd": 605.6800000000011,
+          "profit_factor": 1.0934873138912815,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-10-21": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.586527196652724,
+          "net_pnl_usd": 618.1800000000011,
+          "profit_factor": 1.095416701395642,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-10-30": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.0321338912133933,
+          "net_pnl_usd": 485.680000000001,
+          "profit_factor": 1.0749651938494216,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-10-31": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.806192468619251,
+          "net_pnl_usd": 670.6800000000011,
+          "profit_factor": 1.1042949269198414,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-11-05": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.6388284518828495,
+          "net_pnl_usd": 630.6800000000011,
+          "profit_factor": 1.097468399424475,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-11-06": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.0582845188284558,
+          "net_pnl_usd": 491.930000000001,
+          "profit_factor": 1.0759298876016017,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-11-14": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.5760669456066987,
+          "net_pnl_usd": 615.680000000001,
+          "profit_factor": 1.09503082389477,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-11-15": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.45577405857741,
+          "net_pnl_usd": 586.930000000001,
+          "profit_factor": 1.090593232634741,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-11-19": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.900334728033477,
+          "net_pnl_usd": 693.180000000001,
+          "profit_factor": 1.1081723004130706,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        },
+        "2024-11-20": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.3773221757322216,
+          "net_pnl_usd": 568.180000000001,
+          "profit_factor": 1.0876991513782004,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-11-21": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 1.775857740585778,
+          "net_pnl_usd": 424.430000000001,
+          "profit_factor": 1.0655111950780556,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-11-22": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.372092050209209,
+          "net_pnl_usd": 566.930000000001,
+          "profit_factor": 1.0875062126277641,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.48535564853556484
+        },
+        "2024-12-13": {
+          "trades": 239,
+          "active_days": 239,
+          "net_expectancy_usd": 2.748661087866113,
+          "net_pnl_usd": 656.930000000001,
+          "profit_factor": 1.1019387495422357,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4895397489539749
+        }
+      },
+      "annual": {
+        "2020": {
+          "trades": 0,
+          "active_days": 0,
+          "net_expectancy_usd": null,
+          "net_pnl_usd": 0.0,
+          "profit_factor": null,
+          "no_losing_trades": false,
+          "positive_trade_fraction": null
+        },
+        "2021": {
+          "trades": 20,
+          "active_days": 20,
+          "net_expectancy_usd": -1.8799999999999977,
+          "net_pnl_usd": -37.59999999999995,
+          "profit_factor": 0.9298886796322887,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.6
+        },
+        "2022": {
+          "trades": 111,
+          "active_days": 111,
+          "net_expectancy_usd": -4.312432432432428,
+          "net_pnl_usd": -478.6799999999995,
+          "profit_factor": 0.8734594826082128,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.42342342342342343
+        },
+        "2023": {
+          "trades": 35,
+          "active_days": 35,
+          "net_expectancy_usd": -4.237142857142854,
+          "net_pnl_usd": -148.2999999999999,
+          "profit_factor": 0.7954793065879662,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.37142857142857144
+        },
+        "2024": {
+          "trades": 74,
+          "active_days": 74,
+          "net_expectancy_usd": 17.39364864864865,
+          "net_pnl_usd": 1287.13,
+          "profit_factor": 1.8972548308841974,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.6081081081081081
+        }
+      },
+      "leave_one_year_out": {
+        "2020": {
+          "trades": 240,
+          "active_days": 240,
+          "net_expectancy_usd": 2.593958333333337,
+          "net_pnl_usd": 622.5500000000009,
+          "profit_factor": 1.0960912152671662,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4875
+        },
+        "2021": {
+          "trades": 220,
+          "active_days": 220,
+          "net_expectancy_usd": 3.0006818181818216,
+          "net_pnl_usd": 660.1500000000008,
+          "profit_factor": 1.1110905434627132,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4772727272727273
+        },
+        "2022": {
+          "trades": 129,
+          "active_days": 129,
+          "net_expectancy_usd": 8.53666666666667,
+          "net_pnl_usd": 1101.2300000000005,
+          "profit_factor": 1.4084802219650434,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5426356589147286
+        },
+        "2023": {
+          "trades": 205,
+          "active_days": 205,
+          "net_expectancy_usd": 3.7602439024390284,
+          "net_pnl_usd": 770.8500000000008,
+          "profit_factor": 1.133976289750992,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5073170731707317
+        },
+        "2024": {
+          "trades": 166,
+          "active_days": 166,
+          "net_expectancy_usd": -4.003493975903611,
+          "net_pnl_usd": -664.5799999999994,
+          "profit_factor": 0.8682492040394749,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.43373493975903615
+        }
+      }
+    },
+    "H081": {
+      "authority": "DIAGNOSTIC_ONLY_NO_PROMOTION",
+      "instrument": "MES",
+      "strategy_authorized": false,
+      "baseline": {
+        "trades": 145,
+        "active_days": 145,
+        "net_expectancy_usd": 7.870000000000004,
+        "net_pnl_usd": 1141.1500000000005,
+        "profit_factor": 1.3383350529524078,
+        "no_losing_trades": false,
+        "positive_trade_fraction": 0.5310344827586206
+      },
+      "stress_1_5x_costs": {
+        "trades": 145,
+        "active_days": 145,
+        "net_expectancy_usd": 5.680000000000004,
+        "net_pnl_usd": 823.6000000000006,
+        "profit_factor": 1.2337136808769653,
+        "no_losing_trades": false,
+        "positive_trade_fraction": 0.5103448275862069
+      },
+      "inference": {
+        "estimable": true,
+        "SESSION_CLUSTER_T": {
+          "estimable": true,
+          "mean": 7.870000000000004,
+          "se": 6.044707914692517,
+          "degrees_of_freedom": 144,
+          "ci95": [
+            -4.07781894440916,
+            19.81781894440917
+          ],
+          "p_two_sided": 0.19500703995113397
+        },
+        "HC3_EVENT_DIAGNOSTIC": {
+          "estimable": true,
+          "mean": 7.870000000000004,
+          "se": 6.065660171328691,
+          "degrees_of_freedom": 144,
+          "ci95": [
+            -4.119232652449102,
+            19.85923265244911
+          ],
+          "p_two_sided": 0.1965449182423699
+        },
+        "CALENDAR_HAC20_T_APPROX": {
+          "estimable": true,
+          "mean": 7.870000000000004,
+          "se": 6.0622526903025165,
+          "degrees_of_freedom": 144,
+          "ci95": [
+            -4.1124975104154755,
+            19.852497510415482
+          ],
+          "p_two_sided": 0.19629492785447894
+        },
+        "note": "HC3 alone does not address within-session dependence. Calendar-HAC t inference is approximate; bootstrap is also reported.",
+        "lag_calendar_days": 20
+      },
+      "calendar_bootstrap": {
+        "resamples": 10000,
+        "valid_resamples": 10000,
+        "seed": 20261002,
+        "block_calendar_days": 20,
+        "ci95_net_expectancy_usd": [
+          -3.903036595394735,
+          19.683123082822068
+        ],
+        "sampling": "moving calendar blocks; all trades of a selected day retained; event-weighted mean"
+      },
+      "best_two_share_of_positive_day_gains": 0.09304185432400161,
+      "remove_best_1_days": {
+        "omitted_days": [
+          "2024-08-06"
+        ],
+        "remaining": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 6.323125000000004,
+          "net_pnl_usd": 910.5300000000005,
+          "profit_factor": 1.2699594407087202,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        }
+      },
+      "remove_best_2_days": {
+        "omitted_days": [
+          "2024-08-06",
+          "2022-03-08"
+        ],
+        "remaining": {
+          "trades": 143,
+          "active_days": 143,
+          "net_expectancy_usd": 5.043076923076927,
+          "net_pnl_usd": 721.1600000000005,
+          "profit_factor": 1.2138138779189052,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5244755244755245
+        }
+      },
+      "leave_one_day_out": {
+        "2020-07-09": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.607847222222227,
+          "net_pnl_usd": 1095.5300000000007,
+          "profit_factor": 1.324809359471543,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2020-07-10": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.293611111111115,
+          "net_pnl_usd": 1194.2800000000007,
+          "profit_factor": 1.3597543158890384,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2020-09-08": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.685972222222227,
+          "net_pnl_usd": 1106.7800000000007,
+          "profit_factor": 1.3281448275044176,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2020-09-11": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.102638888888894,
+          "net_pnl_usd": 1166.7800000000007,
+          "profit_factor": 1.348582849597127,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2020-10-15": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.06791666666667,
+          "net_pnl_usd": 1161.7800000000007,
+          "profit_factor": 1.3465713663523466,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2020-10-28": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.955069444444449,
+          "net_pnl_usd": 1145.5300000000007,
+          "profit_factor": 1.3400752866294983,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2020-10-29": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.19118055555556,
+          "net_pnl_usd": 1035.5300000000007,
+          "profit_factor": 1.3070201966295465,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2020-10-30": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.241527777777783,
+          "net_pnl_usd": 1186.7800000000007,
+          "profit_factor": 1.3566892381304456,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2021-01-27": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.685972222222227,
+          "net_pnl_usd": 1106.7800000000007,
+          "profit_factor": 1.3281448275044176,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-02-10": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.73805555555556,
+          "net_pnl_usd": 1114.2800000000007,
+          "profit_factor": 1.3303684728596672,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-02-17": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.120000000000005,
+          "net_pnl_usd": 1169.2800000000007,
+          "profit_factor": 1.3495908464410964,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2021-02-18": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.172083333333338,
+          "net_pnl_usd": 1176.7800000000007,
+          "profit_factor": 1.3526238984061536,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2021-02-23": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.701597222222226,
+          "net_pnl_usd": 1253.0300000000007,
+          "profit_factor": 1.3842518767479515,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2021-02-25": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.790138888888894,
+          "net_pnl_usd": 1121.7800000000007,
+          "profit_factor": 1.3325921182149167,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-03-02": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.356111111111115,
+          "net_pnl_usd": 1059.2800000000007,
+          "profit_factor": 1.3140617402545036,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-03-03": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.53666666666667,
+          "net_pnl_usd": 1229.2800000000007,
+          "profit_factor": 1.374243083864329,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2021-03-04": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.50194444444445,
+          "net_pnl_usd": 1224.2800000000007,
+          "profit_factor": 1.3721543844290225,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2021-03-05": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.389097222222226,
+          "net_pnl_usd": 1208.0300000000007,
+          "profit_factor": 1.3654097448244986,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2021-03-08": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.9116666666666715,
+          "net_pnl_usd": 1139.2800000000007,
+          "profit_factor": 1.3377806240438324,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-03-19": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.05055555555556,
+          "net_pnl_usd": 1159.2800000000007,
+          "profit_factor": 1.3455678732289824,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2021-03-25": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.868263888888894,
+          "net_pnl_usd": 1133.0300000000007,
+          "profit_factor": 1.335927586247791,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-05-11": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.920347222222227,
+          "net_pnl_usd": 1140.5300000000007,
+          "profit_factor": 1.3381512316030406,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-05-12": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.22416666666667,
+          "net_pnl_usd": 1184.2800000000007,
+          "profit_factor": 1.3556706139573715,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2021-05-19": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.486319444444449,
+          "net_pnl_usd": 1078.0300000000007,
+          "profit_factor": 1.3196208536426275,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-06-18": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.607847222222227,
+          "net_pnl_usd": 1095.5300000000007,
+          "profit_factor": 1.324809359471543,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-07-08": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.764097222222227,
+          "net_pnl_usd": 1118.0300000000007,
+          "profit_factor": 1.331480295537292,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-07-19": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 6.948125000000004,
+          "net_pnl_usd": 1000.5300000000005,
+          "profit_factor": 1.296643184971715,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-07-20": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.623472222222226,
+          "net_pnl_usd": 1241.7800000000007,
+          "profit_factor": 1.379492758716586,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2021-08-04": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.9116666666666715,
+          "net_pnl_usd": 1139.2800000000007,
+          "profit_factor": 1.3377806240438324,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-08-19": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.798819444444449,
+          "net_pnl_usd": 1123.0300000000007,
+          "profit_factor": 1.332962725774125,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-08-26": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.937708333333338,
+          "net_pnl_usd": 1143.0300000000007,
+          "profit_factor": 1.3390814486081115,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2021-09-10": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.712013888888894,
+          "net_pnl_usd": 1110.5300000000007,
+          "profit_factor": 1.3292566501820424,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-09-16": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.684236111111115,
+          "net_pnl_usd": 1250.5300000000007,
+          "profit_factor": 1.383191459371342,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2021-09-17": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.6772916666666715,
+          "net_pnl_usd": 1105.5300000000007,
+          "profit_factor": 1.3277742199452094,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-09-20": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.7293750000000045,
+          "net_pnl_usd": 1113.0300000000007,
+          "profit_factor": 1.329997865300459,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-09-21": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.434236111111115,
+          "net_pnl_usd": 1070.5300000000007,
+          "profit_factor": 1.317397208287378,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-09-24": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.781458333333338,
+          "net_pnl_usd": 1120.5300000000007,
+          "profit_factor": 1.3322215106557085,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-09-28": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.2866666666666715,
+          "net_pnl_usd": 1049.2800000000007,
+          "profit_factor": 1.3110968797808373,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-09-29": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.824861111111115,
+          "net_pnl_usd": 1126.7800000000007,
+          "profit_factor": 1.3340745484517498,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-10-04": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.120000000000005,
+          "net_pnl_usd": 1169.2800000000007,
+          "profit_factor": 1.3495908464410964,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2021-10-06": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.198125000000005,
+          "net_pnl_usd": 1180.5300000000007,
+          "profit_factor": 1.354145542469386,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2021-10-12": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.764097222222227,
+          "net_pnl_usd": 1118.0300000000007,
+          "profit_factor": 1.331480295537292,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-11-23": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.685972222222227,
+          "net_pnl_usd": 1106.7800000000007,
+          "profit_factor": 1.3281448275044176,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-11-30": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.30229166666667,
+          "net_pnl_usd": 1195.5300000000007,
+          "profit_factor": 1.3602665091638892,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2021-12-01": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.606111111111115,
+          "net_pnl_usd": 1239.2800000000007,
+          "profit_factor": 1.3784396175539206,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2021-12-02": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.929027777777782,
+          "net_pnl_usd": 1141.7800000000007,
+          "profit_factor": 1.3385850821864593,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2021-12-03": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.712013888888894,
+          "net_pnl_usd": 1110.5300000000007,
+          "profit_factor": 1.3292566501820424,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2021-12-20": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.102638888888894,
+          "net_pnl_usd": 1166.7800000000007,
+          "profit_factor": 1.348582849597127,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2022-01-07": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.642569444444449,
+          "net_pnl_usd": 1100.5300000000007,
+          "profit_factor": 1.3262917897083761,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2022-01-11": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.5210416666666715,
+          "net_pnl_usd": 1083.0300000000007,
+          "profit_factor": 1.3211032838794605,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2022-01-14": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.120000000000005,
+          "net_pnl_usd": 1169.2800000000007,
+          "profit_factor": 1.3495908464410964,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2022-01-21": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.250208333333338,
+          "net_pnl_usd": 1188.0300000000007,
+          "profit_factor": 1.3571991244633128,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2022-01-25": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.75368055555556,
+          "net_pnl_usd": 1260.5300000000007,
+          "profit_factor": 1.3874429069360004,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2022-01-26": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 9.00541666666667,
+          "net_pnl_usd": 1296.7800000000007,
+          "profit_factor": 1.403075957118124,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2022-01-27": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 6.774513888888894,
+          "net_pnl_usd": 975.5300000000007,
+          "profit_factor": 1.2892310337875499,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2022-01-28": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.1825000000000045,
+          "net_pnl_usd": 1034.2800000000007,
+          "profit_factor": 1.3066495890703382,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2022-01-31": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.866527777777783,
+          "net_pnl_usd": 1276.7800000000007,
+          "profit_factor": 1.3944075299409058,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2022-02-01": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.529722222222227,
+          "net_pnl_usd": 1084.2800000000007,
+          "profit_factor": 1.3214738914386688,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2022-02-11": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.772777777777782,
+          "net_pnl_usd": 1119.2800000000007,
+          "profit_factor": 1.3318509030965002,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2022-02-24": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.720694444444449,
+          "net_pnl_usd": 1111.7800000000007,
+          "profit_factor": 1.3296272577412507,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2022-02-25": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 6.783194444444449,
+          "net_pnl_usd": 976.7800000000007,
+          "profit_factor": 1.2896016413467581,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2022-03-04": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.2606250000000045,
+          "net_pnl_usd": 1045.5300000000007,
+          "profit_factor": 1.3099850571032126,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2022-03-08": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 6.609583333333338,
+          "net_pnl_usd": 951.7800000000007,
+          "profit_factor": 1.2821894901625928,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2022-03-10": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.415138888888894,
+          "net_pnl_usd": 1211.7800000000007,
+          "profit_factor": 1.3669603083995263,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2022-03-14": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.493263888888894,
+          "net_pnl_usd": 1223.0300000000007,
+          "profit_factor": 1.371633201254345,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2022-03-15": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.642569444444449,
+          "net_pnl_usd": 1100.5300000000007,
+          "profit_factor": 1.3262917897083761,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2022-04-25": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.139097222222227,
+          "net_pnl_usd": 1028.0300000000007,
+          "profit_factor": 1.304796551274297,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2022-04-27": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.3387500000000045,
+          "net_pnl_usd": 1056.7800000000007,
+          "profit_factor": 1.313320525136087,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2022-04-28": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.668611111111115,
+          "net_pnl_usd": 1104.2800000000007,
+          "profit_factor": 1.3274036123860011,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2022-05-02": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.571388888888894,
+          "net_pnl_usd": 1234.2800000000007,
+          "profit_factor": 1.3763381518487914,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2022-05-06": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.2085416666666715,
+          "net_pnl_usd": 1038.0300000000007,
+          "profit_factor": 1.307761411747963,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2022-05-10": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.981111111111115,
+          "net_pnl_usd": 1149.2800000000007,
+          "profit_factor": 1.3415688127654388,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2022-05-11": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.173819444444449,
+          "net_pnl_usd": 1033.0300000000007,
+          "profit_factor": 1.30627898151113,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2022-05-12": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 6.783194444444449,
+          "net_pnl_usd": 976.7800000000007,
+          "profit_factor": 1.2896016413467581,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2022-05-19": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.059236111111115,
+          "net_pnl_usd": 1160.5300000000007,
+          "profit_factor": 1.3460694327649652,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2022-06-23": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.746736111111115,
+          "net_pnl_usd": 1115.5300000000007,
+          "profit_factor": 1.3307390804188755,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2022-09-28": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.017569444444449,
+          "net_pnl_usd": 1010.5300000000007,
+          "profit_factor": 1.2996080454453813,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2022-09-30": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.34569444444445,
+          "net_pnl_usd": 1201.7800000000007,
+          "profit_factor": 1.3628332744602545,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2022-10-12": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.4168750000000045,
+          "net_pnl_usd": 1068.0300000000007,
+          "profit_factor": 1.3166559931689614,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2022-10-14": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 9.760625000000005,
+          "net_pnl_usd": 1405.5300000000007,
+          "profit_factor": 1.4521628073065118,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2022-10-21": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 9.16166666666667,
+          "net_pnl_usd": 1319.2800000000007,
+          "profit_factor": 1.4129576706492921,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2022-11-11": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.998472222222227,
+          "net_pnl_usd": 1151.7800000000007,
+          "profit_factor": 1.3425663477296181,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2022-12-23": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.929027777777782,
+          "net_pnl_usd": 1141.7800000000007,
+          "profit_factor": 1.3385850821864593,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2023-01-12": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.720694444444447,
+          "net_pnl_usd": 1111.7800000000004,
+          "profit_factor": 1.3296272577412507,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2023-02-10": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.8335416666666715,
+          "net_pnl_usd": 1128.0300000000007,
+          "profit_factor": 1.334445156010958,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2023-02-17": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.024513888888894,
+          "net_pnl_usd": 1155.5300000000007,
+          "profit_factor": 1.3440654347528331,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2023-03-07": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.276250000000005,
+          "net_pnl_usd": 1191.7800000000007,
+          "profit_factor": 1.3587310856327564,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2023-03-08": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.850902777777782,
+          "net_pnl_usd": 1130.5300000000007,
+          "profit_factor": 1.3351863711293745,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2023-03-10": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.8335416666666715,
+          "net_pnl_usd": 1128.0300000000007,
+          "profit_factor": 1.334445156010958,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2023-03-13": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.764097222222227,
+          "net_pnl_usd": 1118.0300000000007,
+          "profit_factor": 1.331480295537292,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2023-03-15": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.772777777777782,
+          "net_pnl_usd": 1119.2800000000007,
+          "profit_factor": 1.3318509030965002,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2023-03-20": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.198125000000005,
+          "net_pnl_usd": 1180.5300000000007,
+          "profit_factor": 1.354145542469386,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2023-03-24": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.625208333333338,
+          "net_pnl_usd": 1098.0300000000007,
+          "profit_factor": 1.3255505745899596,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2023-04-28": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.215486111111115,
+          "net_pnl_usd": 1183.0300000000007,
+          "profit_factor": 1.3551618752551815,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2023-05-23": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.97243055555556,
+          "net_pnl_usd": 1148.0300000000007,
+          "profit_factor": 1.3410706009578248,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2023-05-30": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.955069444444449,
+          "net_pnl_usd": 1145.5300000000007,
+          "profit_factor": 1.3400752866294983,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2023-06-05": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.790138888888894,
+          "net_pnl_usd": 1121.7800000000007,
+          "profit_factor": 1.3325921182149167,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2023-08-18": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.076597222222226,
+          "net_pnl_usd": 1163.0300000000007,
+          "profit_factor": 1.3470736744097214,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2023-08-21": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.217222222222227,
+          "net_pnl_usd": 1039.2800000000007,
+          "profit_factor": 1.3081320193071713,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2023-08-25": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 6.809236111111115,
+          "net_pnl_usd": 980.5300000000005,
+          "profit_factor": 1.290713464024383,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2023-09-01": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.720694444444449,
+          "net_pnl_usd": 1111.7800000000007,
+          "profit_factor": 1.3296272577412507,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2023-09-21": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.876944444444449,
+          "net_pnl_usd": 1134.2800000000007,
+          "profit_factor": 1.3362981938069993,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2023-09-28": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.277986111111115,
+          "net_pnl_usd": 1048.0300000000007,
+          "profit_factor": 1.310726272221629,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2023-10-02": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.015833333333338,
+          "net_pnl_usd": 1154.2800000000007,
+          "profit_factor": 1.343565367248959,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2023-10-05": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.180763888888894,
+          "net_pnl_usd": 1178.0300000000007,
+          "profit_factor": 1.3531307329824098,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2023-10-06": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.946388888888894,
+          "net_pnl_usd": 1144.2800000000007,
+          "profit_factor": 1.339578183285802,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2023-10-13": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.562708333333338,
+          "net_pnl_usd": 1233.0300000000007,
+          "profit_factor": 1.3758137862089144,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2023-10-18": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.232847222222226,
+          "net_pnl_usd": 1185.5300000000007,
+          "profit_factor": 1.3561797347722369,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2023-10-23": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.7554166666666715,
+          "net_pnl_usd": 1116.7800000000007,
+          "profit_factor": 1.3311096879780837,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2023-10-24": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.172083333333338,
+          "net_pnl_usd": 1176.7800000000007,
+          "profit_factor": 1.3526238984061536,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2023-10-25": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.685972222222227,
+          "net_pnl_usd": 1106.7800000000007,
+          "profit_factor": 1.3281448275044176,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2023-10-26": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.625208333333338,
+          "net_pnl_usd": 1098.0300000000007,
+          "profit_factor": 1.3255505745899596,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2023-10-31": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.05055555555556,
+          "net_pnl_usd": 1159.2800000000007,
+          "profit_factor": 1.3455678732289824,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2023-12-21": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.9637500000000045,
+          "net_pnl_usd": 1146.7800000000007,
+          "profit_factor": 1.3405727590497771,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2024-01-11": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.1304166666666715,
+          "net_pnl_usd": 1026.7800000000007,
+          "profit_factor": 1.3044259437150887,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2024-02-01": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.937708333333338,
+          "net_pnl_usd": 1143.0300000000007,
+          "profit_factor": 1.3390814486081115,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2024-02-13": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.20680555555556,
+          "net_pnl_usd": 1181.7800000000007,
+          "profit_factor": 1.3546535182356454,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2024-02-16": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.14604166666667,
+          "net_pnl_usd": 1173.0300000000007,
+          "profit_factor": 1.3511056702265216,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2024-03-05": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.354375000000005,
+          "net_pnl_usd": 1203.0300000000007,
+          "profit_factor": 1.3633477903689564,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2024-03-14": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.041875000000005,
+          "net_pnl_usd": 1158.0300000000007,
+          "profit_factor": 1.345066687326428,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2024-03-15": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.859583333333338,
+          "net_pnl_usd": 1131.7800000000007,
+          "profit_factor": 1.3355569786885828,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2024-04-10": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.981111111111115,
+          "net_pnl_usd": 1149.2800000000007,
+          "profit_factor": 1.3415688127654388,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2024-04-16": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.06791666666667,
+          "net_pnl_usd": 1161.7800000000007,
+          "profit_factor": 1.3465713663523466,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2024-04-17": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.310972222222226,
+          "net_pnl_usd": 1196.7800000000007,
+          "profit_factor": 1.3607790884508366,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2024-04-19": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.555763888888894,
+          "net_pnl_usd": 1088.0300000000007,
+          "profit_factor": 1.3225857141162936,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2024-04-24": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.6772916666666715,
+          "net_pnl_usd": 1105.5300000000007,
+          "profit_factor": 1.3277742199452094,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2024-05-03": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.460277777777782,
+          "net_pnl_usd": 1074.2800000000007,
+          "profit_factor": 1.3185090309650027,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2024-06-04": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.538402777777782,
+          "net_pnl_usd": 1085.5300000000007,
+          "profit_factor": 1.321844498997877,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2024-06-24": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.015833333333338,
+          "net_pnl_usd": 1154.2800000000007,
+          "profit_factor": 1.343565367248959,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2024-07-26": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.97243055555556,
+          "net_pnl_usd": 1148.0300000000007,
+          "profit_factor": 1.3410706009578248,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2024-07-29": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.512361111111115,
+          "net_pnl_usd": 1081.7800000000007,
+          "profit_factor": 1.3207326763202523,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2024-08-06": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 6.323125000000004,
+          "net_pnl_usd": 910.5300000000005,
+          "profit_factor": 1.2699594407087202,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2024-08-09": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.19118055555556,
+          "net_pnl_usd": 1035.5300000000007,
+          "profit_factor": 1.3070201966295465,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2024-08-13": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.241527777777783,
+          "net_pnl_usd": 1186.7800000000007,
+          "profit_factor": 1.3566892381304456,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2024-08-19": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.36305555555556,
+          "net_pnl_usd": 1204.2800000000007,
+          "profit_factor": 1.3638626949188901,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2024-08-23": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.19118055555556,
+          "net_pnl_usd": 1035.5300000000007,
+          "profit_factor": 1.3070201966295465,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2024-08-29": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.093958333333338,
+          "net_pnl_usd": 1165.5300000000007,
+          "profit_factor": 1.3480794156119529,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2024-09-04": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.321388888888894,
+          "net_pnl_usd": 1054.2800000000007,
+          "profit_factor": 1.3125793100176706,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2024-09-05": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.824861111111115,
+          "net_pnl_usd": 1126.7800000000007,
+          "profit_factor": 1.3340745484517498,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2024-10-01": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.764097222222227,
+          "net_pnl_usd": 1118.0300000000007,
+          "profit_factor": 1.331480295537292,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2024-10-03": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.850902777777782,
+          "net_pnl_usd": 1130.5300000000007,
+          "profit_factor": 1.3351863711293745,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2024-10-31": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.258888888888894,
+          "net_pnl_usd": 1189.2800000000007,
+          "profit_factor": 1.3577093942028027,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2024-11-01": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.22416666666667,
+          "net_pnl_usd": 1184.2800000000007,
+          "profit_factor": 1.3556706139573715,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        },
+        "2024-11-15": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 7.6772916666666715,
+          "net_pnl_usd": 1105.5300000000007,
+          "profit_factor": 1.3277742199452094,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5277777777777778
+        },
+        "2024-11-21": {
+          "trades": 144,
+          "active_days": 144,
+          "net_expectancy_usd": 8.666875000000005,
+          "net_pnl_usd": 1248.0300000000007,
+          "profit_factor": 1.382132665433747,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5347222222222222
+        }
+      },
+      "annual": {
+        "2020": {
+          "trades": 8,
+          "active_days": 8,
+          "net_expectancy_usd": 4.526249999999999,
+          "net_pnl_usd": 36.209999999999994,
+          "profit_factor": 1.2423694779116465,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.375
+        },
+        "2021": {
+          "trades": 40,
+          "active_days": 40,
+          "net_expectancy_usd": -2.1924999999999972,
+          "net_pnl_usd": -87.69999999999989,
+          "profit_factor": 0.9060232959355345,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.575
+        },
+        "2022": {
+          "trades": 35,
+          "active_days": 35,
+          "net_expectancy_usd": 15.298571428571433,
+          "net_pnl_usd": 535.4500000000002,
+          "profit_factor": 1.4205545083254785,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5714285714285714
+        },
+        "2023": {
+          "trades": 31,
+          "active_days": 31,
+          "net_expectancy_usd": 7.71677419354839,
+          "net_pnl_usd": 239.22000000000008,
+          "profit_factor": 1.55866417561887,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5161290322580645
+        },
+        "2024": {
+          "trades": 31,
+          "active_days": 31,
+          "net_expectancy_usd": 13.482903225806457,
+          "net_pnl_usd": 417.97000000000014,
+          "profit_factor": 1.7098313604945403,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.4838709677419355
+        }
+      },
+      "leave_one_year_out": {
+        "2020": {
+          "trades": 137,
+          "active_days": 137,
+          "net_expectancy_usd": 8.065255474452558,
+          "net_pnl_usd": 1104.9400000000005,
+          "profit_factor": 1.3427828655101381,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5401459854014599
+        },
+        "2021": {
+          "trades": 105,
+          "active_days": 105,
+          "net_expectancy_usd": 11.703333333333337,
+          "net_pnl_usd": 1228.8500000000004,
+          "profit_factor": 1.503703430438222,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5142857142857142
+        },
+        "2022": {
+          "trades": 110,
+          "active_days": 110,
+          "net_expectancy_usd": 5.5063636363636395,
+          "net_pnl_usd": 605.7000000000004,
+          "profit_factor": 1.288478024804252,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5181818181818182
+        },
+        "2023": {
+          "trades": 114,
+          "active_days": 114,
+          "net_expectancy_usd": 7.9116666666666715,
+          "net_pnl_usd": 901.9300000000005,
+          "profit_factor": 1.3062955064116495,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.5350877192982456
+        },
+        "2024": {
+          "trades": 114,
+          "active_days": 114,
+          "net_expectancy_usd": 6.3436842105263205,
+          "net_pnl_usd": 723.1800000000005,
+          "profit_factor": 1.2597619979813288,
+          "no_losing_trades": false,
+          "positive_trade_fraction": 0.543859649122807
+        }
+      }
+    }
+  },
+  "ES": {
+    "status": "NOT_RUN_NO_DIRECTIONAL_OUTCOMES_AVAILABLE",
+    "reason": "ES-B01 remains planned; same diagnostics are available once ES data and operational definitions pass their gates. No Last-only delta or MES-to-ES transfer is assumed."
+  }
+}
