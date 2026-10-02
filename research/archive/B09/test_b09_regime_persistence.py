@@ -1,4 +1,4 @@
-from research.active.B09_REGIME_PERSISTENCE.b09_regime_persistence import (
+from research.archive.B09.b09_regime_persistence import (
     ANCHOR_BLOCKS,
     HIGH_Q,
     LOW_Q,

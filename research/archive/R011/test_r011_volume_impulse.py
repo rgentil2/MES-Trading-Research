@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from research.active.R011_VOLUME_IMPULSE.r011_volume_impulse import (
+from research.archive.R011.r011_volume_impulse import (
     EFFICIENCY_MIN,
     ENTRY_CUTOFF_MINUTE,
     START_MINUTE,

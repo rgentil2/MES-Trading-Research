@@ -1,4 +1,4 @@
-from research.active.B13_HIGH_DIRECTIONAL_TRIGGERS.b13_high_directional_triggers import (
+from research.archive.B13.b13_high_directional_triggers import (
     BODY_RATIO_MIN,
     CLV_LOWER,
     CLV_UPPER,

@@ -1,4 +1,4 @@
-from research.active.B06_HIGH_REGIME_STRATEGIES.b06_high_regime_strategies import (
+from research.archive.B06.b06_high_regime_strategies import (
     H017_ACTIVE_MINUTES,
     UPDATE_MINUTE,
 )

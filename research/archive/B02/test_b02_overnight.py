@@ -1,4 +1,4 @@
-from research.active.B02_OVERNIGHT.b02_overnight import (
+from research.archive.B02.b02_overnight import (
     ENTRY_CUTOFF,
     H028_Q,
     H030_Q,

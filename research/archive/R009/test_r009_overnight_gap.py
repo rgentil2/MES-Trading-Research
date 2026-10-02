@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from research.active.R009_OVERNIGHT_GAP.r009_overnight_gap import (
+from research.archive.R009.r009_overnight_gap import (
     GAP_QUANTILE,
     REFERENCE_SESSIONS,
     build_session_gaps,

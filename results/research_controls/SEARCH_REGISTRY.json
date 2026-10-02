@@ -1,0 +1,1152 @@
+{
+  "schema_version": 1,
+  "historical_baseline_commit": "873c6b9a22907d91626d0bc73b38c087ed872eae",
+  "recording_limit": "Counts cover the current experiment CSV and surviving frozen definitions only; unrecorded variants and older versions are unknown. Experiments and hypothesis definitions overlap and must not be added as independent trials. No retrospective global p-value is claimed.",
+  "raw_market_data_loaded": false,
+  "holdout_outcomes_loaded": false,
+  "historical_global_adjustment": null,
+  "strategy_authorized": false,
+  "data_policy": {
+    "MES": "2020-2025 already researched; 2026 final strategy holdout",
+    "ES": "2020-2024 development; 2025 candidate validation; 2026 final strategy holdout",
+    "this_control": "no raw data or historical outcome artifacts loaded"
+  },
+  "summary": {
+    "mes_registered_experiments": 73,
+    "mes_declared_hypotheses": 81,
+    "es_planned_unrun_hypotheses": 5,
+    "future_families": 0,
+    "future_alpha_allocated": 0
+  },
+  "historical_experiments": [
+    {
+      "experiment_id": "R000",
+      "title": "ORB Baseline",
+      "status": "REJECTED",
+      "family": "ORB",
+      "dataset": "MES 1m/5m"
+    },
+    {
+      "experiment_id": "R001",
+      "title": "VWAP Unconditional \u00b12\u03c3 Reversion",
+      "status": "REJECTED",
+      "family": "VWAP",
+      "dataset": "MES 1m 2020-2024"
+    },
+    {
+      "experiment_id": "R002",
+      "title": "VWAP Trend/Volatility Regimes",
+      "status": "REJECTED",
+      "family": "VWAP",
+      "dataset": "MES 1m 2020-2024"
+    },
+    {
+      "experiment_id": "R003",
+      "title": "Opening Range Breakout Statistical Behavior",
+      "status": "REJECTED",
+      "family": "ORB",
+      "dataset": "MES 1m 2020-2024"
+    },
+    {
+      "experiment_id": "R004",
+      "title": "Standardized 5m Shock Reversion",
+      "status": "REJECTED",
+      "family": "Return Shock",
+      "dataset": "MES 1m 2020-2024"
+    },
+    {
+      "experiment_id": "R005",
+      "title": "Morning Opening Range Breakout",
+      "status": "REJECTED",
+      "family": "ORB",
+      "dataset": "MES 1m 2020-2024"
+    },
+    {
+      "experiment_id": "R006",
+      "title": "Morning Volatility Compression to Expansion",
+      "status": "REJECTED",
+      "family": "Volatility",
+      "dataset": "MES 1m 2020-2024"
+    },
+    {
+      "experiment_id": "R007",
+      "title": "Morning Efficient Momentum",
+      "status": "REJECTED",
+      "family": "Momentum",
+      "dataset": "MES 1m 2020-2024"
+    },
+    {
+      "experiment_id": "R008",
+      "title": "Strong Opening Drive Continuation",
+      "status": "REJECTED",
+      "family": "Opening Drive",
+      "dataset": "MES 1m 2020-2024"
+    },
+    {
+      "experiment_id": "R009",
+      "title": "Strong RTH Overnight Gap Continuation",
+      "status": "REJECTED_OOS",
+      "family": "Gap",
+      "dataset": "MES 1m 2020-2024 + OOS 2025"
+    },
+    {
+      "experiment_id": "R010",
+      "title": "Previous RTH High Low Breakout",
+      "status": "REJECTED",
+      "family": "Key Levels",
+      "dataset": "MES 1m 2020-2024"
+    },
+    {
+      "experiment_id": "R011",
+      "title": "High Volume Directional Impulse",
+      "status": "REJECTED",
+      "family": "Volume",
+      "dataset": "MES 1m 2020-2024"
+    },
+    {
+      "experiment_id": "R012",
+      "title": "Low Volatility Persistence",
+      "status": "PASS_OOS_AWAITING_2026",
+      "family": "Volatility",
+      "dataset": "MES 1m OOS 2025"
+    },
+    {
+      "experiment_id": "R013",
+      "title": "Bullish Efficient Momentum",
+      "status": "REJECTED_OOS",
+      "family": "Momentum",
+      "dataset": "MES 1m OOS 2025"
+    },
+    {
+      "experiment_id": "R014",
+      "title": "Five Bar Streak Exhaustion",
+      "status": "REJECTED",
+      "family": "Mean Reversion",
+      "dataset": "MES 1m 2020-2024"
+    },
+    {
+      "experiment_id": "R015",
+      "title": "Previous Session Closing Strength",
+      "status": "REJECTED",
+      "family": "Session Structure",
+      "dataset": "MES 1m 2020-2024"
+    },
+    {
+      "experiment_id": "R016",
+      "title": "H017 Price Behavior Block",
+      "status": "CLOSED_MIXED",
+      "family": "H017 Strategy Research",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R017",
+      "title": "H017 Trading Filter",
+      "status": "REJECTED",
+      "family": "H017 Strategy Research",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R018",
+      "title": "H017 Short Range Edge Reversion",
+      "status": "REJECTED",
+      "family": "H017 Strategy Research",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R019",
+      "title": "Overnight Inventory Correction",
+      "status": "REJECTED",
+      "family": "Overnight",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R020",
+      "title": "Overnight High Low Breakout",
+      "status": "REJECTED",
+      "family": "Overnight",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R021",
+      "title": "Overnight Compression Opening Expansion",
+      "status": "REJECTED_OPPOSITE_DISCOVERY",
+      "family": "Overnight",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R022",
+      "title": "Opening Location Reversion",
+      "status": "REJECTED",
+      "family": "Overnight",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R023",
+      "title": "Efficient Overnight Trend Continuation",
+      "status": "REJECTED_NO_EVENTS",
+      "family": "Overnight",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R024",
+      "title": "Previous Day Narrow Range Persistence",
+      "status": "PASS_DEV_AWAITING_CONFIRMATION",
+      "family": "Previous Day Context",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R025",
+      "title": "Previous Day Wide Range Persistence",
+      "status": "PASS_DEV_AWAITING_CONFIRMATION",
+      "family": "Previous Day Context",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R026",
+      "title": "Previous Trend Day Continuation",
+      "status": "REJECTED_NO_EVENTS",
+      "family": "Previous Day Context",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R027",
+      "title": "Previous Late Day Impulse Continuation",
+      "status": "REJECTED",
+      "family": "Previous Day Context",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R028",
+      "title": "Previous Close VWAP Stretch Reversion",
+      "status": "REJECTED",
+      "family": "Previous Day Context",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R029",
+      "title": "Strong 5m Opening Impulse Continuation",
+      "status": "REJECTED",
+      "family": "Opening Microstructure",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R030",
+      "title": "5m Opening Rejection Reversal",
+      "status": "REJECTED_OPPOSITE_SMALL_N",
+      "family": "Opening Microstructure",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R031",
+      "title": "Wide First15 Range Persistence",
+      "status": "PASS_DEV_AWAITING_CONFIRMATION",
+      "family": "Opening Microstructure",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R032",
+      "title": "Narrow First15 Range Persistence",
+      "status": "PASS_DEV_AWAITING_CONFIRMATION",
+      "family": "Opening Microstructure",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R033",
+      "title": "Three Bar Opening Sequence Continuation",
+      "status": "REJECTED",
+      "family": "Opening Microstructure",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R034",
+      "title": "Staged Volatility Regime Forecast",
+      "status": "PASS_DEV_AWAITING_VALIDATION",
+      "family": "Volatility Regime Model",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R035",
+      "title": "ORB Continuation in HIGH Regime",
+      "status": "REJECTED",
+      "family": "Regime Conditioned Strategy",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R036",
+      "title": "Previous Day Breakout in HIGH Regime",
+      "status": "REJECTED",
+      "family": "Regime Conditioned Strategy",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R037",
+      "title": "Volume Impulse in HIGH Regime",
+      "status": "REJECTED",
+      "family": "Regime Conditioned Strategy",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R038",
+      "title": "Previous Day Overnight Alignment",
+      "status": "REJECTED",
+      "family": "Cross Session Direction",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R039",
+      "title": "Overnight Gap Alignment",
+      "status": "REJECTED",
+      "family": "Cross Session Direction",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R040",
+      "title": "Previous Day Gap Alignment",
+      "status": "REJECTED",
+      "family": "Cross Session Direction",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R041",
+      "title": "Triple Cross Session Alignment",
+      "status": "REJECTED",
+      "family": "Cross Session Direction",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R042",
+      "title": "Previous Day Overnight Conflict",
+      "status": "REJECTED_NEAR_MISS",
+      "family": "Cross Session Direction",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R043",
+      "title": "Three Day Streak Exhaustion",
+      "status": "REJECTED",
+      "family": "Multi Day Context",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R044",
+      "title": "Five Day Range Breakout at Open",
+      "status": "REJECTED",
+      "family": "Multi Day Context",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R045",
+      "title": "Five Day Overextension Reversion",
+      "status": "REJECTED",
+      "family": "Multi Day Context",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R046",
+      "title": "High Five Day Range Persistence",
+      "status": "PASS_DEV_AWAITING_CONFIRMATION",
+      "family": "Multi Day Context",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R047",
+      "title": "Low Five Day Range Persistence",
+      "status": "PASS_DEV_AWAITING_CONFIRMATION",
+      "family": "Multi Day Context",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R048",
+      "title": "HIGH Next15 Persistence",
+      "status": "PASS_DEV_AWAITING_CONFIRMATION",
+      "family": "Volatility Persistence",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R049",
+      "title": "LOW Next15 Persistence",
+      "status": "PASS_DEV_AWAITING_CONFIRMATION",
+      "family": "Volatility Persistence",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R050",
+      "title": "HIGH One Hour Persistence",
+      "status": "PASS_DEV_AWAITING_CONFIRMATION",
+      "family": "Volatility Persistence",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R051",
+      "title": "LOW One Hour Persistence",
+      "status": "PASS_DEV_AWAITING_CONFIRMATION",
+      "family": "Volatility Persistence",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R052",
+      "title": "Extreme State Self Transition",
+      "status": "PASS_DEV_AWAITING_CONFIRMATION",
+      "family": "Volatility Persistence",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R053",
+      "title": "HIGH Persistence to 90 Minutes",
+      "status": "PASS_DEV_AWAITING_CONFIRMATION",
+      "family": "Volatility Persistence",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R054",
+      "title": "LOW Persistence to 90 Minutes",
+      "status": "PASS_DEV_AWAITING_CONFIRMATION",
+      "family": "Volatility Persistence",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R055",
+      "title": "HIGH Persistence to 120 Minutes",
+      "status": "PASS_DEV_AWAITING_CONFIRMATION",
+      "family": "Volatility Persistence",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R056",
+      "title": "LOW Persistence to 120 Minutes",
+      "status": "PASS_DEV_AWAITING_CONFIRMATION",
+      "family": "Volatility Persistence",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R057",
+      "title": "Extreme State Information at 120 Minutes",
+      "status": "PASS_DEV_AWAITING_CONFIRMATION",
+      "family": "Volatility Persistence",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R058",
+      "title": "HIGH Persistence to 180 Minutes",
+      "status": "PASS_DEV_AWAITING_CONFIRMATION",
+      "family": "Volatility Persistence",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R059",
+      "title": "LOW Persistence to 180 Minutes",
+      "status": "PASS_DEV_AWAITING_CONFIRMATION",
+      "family": "Volatility Persistence",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R060",
+      "title": "HIGH Persistence to 240 Minutes",
+      "status": "PASS_DEV_AWAITING_CONFIRMATION",
+      "family": "Volatility Persistence",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R061",
+      "title": "LOW Persistence to 240 Minutes",
+      "status": "PASS_DEV_AWAITING_CONFIRMATION",
+      "family": "Volatility Persistence",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R062",
+      "title": "Extreme State Information at 240 Minutes",
+      "status": "PASS_DEV_AWAITING_CONFIRMATION",
+      "family": "Volatility Persistence",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R063",
+      "title": "Final MES Volatility Regime Engine v1",
+      "status": "FROZEN_AWAITING_2026_VALIDATION",
+      "family": "Volatility Regime Engine",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R064",
+      "title": "Final Regime Engine 2026 Validation",
+      "status": "SUPERSEDED_NOT_RUN",
+      "family": "Independent Validation",
+      "dataset": "MES 1m 2026 holdout"
+    },
+    {
+      "experiment_id": "R065",
+      "title": "Direct HIGH Regime Dynamic Breakout",
+      "status": "REJECTED",
+      "family": "Strategy Architecture",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R066",
+      "title": "HIGH Breakout Pullback Confirmation",
+      "status": "REJECTED",
+      "family": "Strategy Architecture",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R067",
+      "title": "NORMAL to HIGH Transition Breakout",
+      "status": "REJECTED",
+      "family": "Strategy Architecture",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R068",
+      "title": "HIGH Block Directional Close Continuation",
+      "status": "REJECTED",
+      "family": "Strategy Architecture",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R069",
+      "title": "HIGH VWAP Displacement Continuation",
+      "status": "REJECTED_OPPOSITE_DISCOVERY",
+      "family": "Strategy Architecture",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R070",
+      "title": "HIGH Block Rejection Reversal",
+      "status": "REJECTED_OPPOSITE_DISCOVERY",
+      "family": "Strategy Architecture",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R071",
+      "title": "HIGH VWAP Displacement Reversion",
+      "status": "REJECTED_POST_HOC",
+      "family": "Strategy Candidate",
+      "dataset": "MES 1m 2020-2025"
+    },
+    {
+      "experiment_id": "R072",
+      "title": "HIGH Rejection Signal Failure Inverse",
+      "status": "REJECTED_PROMISING_POST_HOC",
+      "family": "Strategy Candidate",
+      "dataset": "MES 1m 2020-2025"
+    }
+  ],
+  "historical_hypotheses": [
+    {
+      "id": "H001",
+      "title": "",
+      "definition_path": "research/archive/R001/R001_VWAP_RESEARCH_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H002",
+      "title": "",
+      "definition_path": "research/archive/R001/R001_VWAP_RESEARCH_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H003",
+      "title": "Trend-aligned high-volatility continuation",
+      "definition_path": "research/archive/R002/R002_REGIME_RESEARCH_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H004",
+      "title": "Counter-trend low-volatility reversion",
+      "definition_path": "research/archive/R002/R002_REGIME_RESEARCH_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H005",
+      "title": "",
+      "definition_path": "research/archive/R003/R003_ORB_RESEARCH_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H006",
+      "title": "",
+      "definition_path": "research/archive/R003/R003_ORB_RESEARCH_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H007",
+      "title": "",
+      "definition_path": "research/archive/R004/R004_SHOCK_REVERSION_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H008",
+      "title": "",
+      "definition_path": "research/archive/R004/R004_SHOCK_REVERSION_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H009",
+      "title": "",
+      "definition_path": "research/archive/R005/R005_MORNING_ORB_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H010",
+      "title": "",
+      "definition_path": "research/archive/R005/R005_MORNING_ORB_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H011",
+      "title": "",
+      "definition_path": "research/archive/R006/R006_VOL_COMPRESSION_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H012",
+      "title": "",
+      "definition_path": "research/archive/R007/R007_EFFICIENT_MOMENTUM_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H013",
+      "title": "",
+      "definition_path": "research/archive/R008/R008_OPENING_DRIVE_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H014",
+      "title": "",
+      "definition_path": "research/archive/R009/R009_OVERNIGHT_GAP_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H015",
+      "title": "",
+      "definition_path": "research/archive/R010/R010_PREV_DAY_LEVELS_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H016",
+      "title": "",
+      "definition_path": "research/archive/R011/R011_VOLUME_IMPULSE_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H017",
+      "title": "Low-volatility persistence (confirmatory OOS)",
+      "definition_path": "research/B01_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H018",
+      "title": "Bullish efficient momentum (confirmatory OOS)",
+      "definition_path": "research/B01_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H019",
+      "title": "Five-bar streak exhaustion",
+      "definition_path": "research/B01_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H020",
+      "title": "Previous-session closing-strength continuation",
+      "definition_path": "research/B01_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H021",
+      "title": "Absolute-return persistence (confirmatory 2025)",
+      "definition_path": "research/archive/R016/R016_H017_PRICE_BEHAVIOR_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H022",
+      "title": "Short impulse mean reversion inside H017",
+      "definition_path": "research/archive/R016/R016_H017_PRICE_BEHAVIOR_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H023",
+      "title": "Short-range breakout failure inside H017",
+      "definition_path": "research/archive/R016/R016_H017_PRICE_BEHAVIOR_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H024",
+      "title": "S1 \u2014 Morning ORB continuation",
+      "definition_path": "research/archive/R017/R017_H017_FILTER_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H025",
+      "title": "S2 \u2014 Previous RTH high/low breakout",
+      "definition_path": "research/archive/R017/R017_H017_FILTER_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H026",
+      "title": "S3 \u2014 High-volume directional impulse",
+      "definition_path": "research/archive/R017/R017_H017_FILTER_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H027",
+      "title": "",
+      "definition_path": "research/archive/R018/R018_H017_RANGE_REVERSION_PLAN.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H028",
+      "title": "Overnight Inventory Correction",
+      "definition_path": "research/archive/B02/B02_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H029",
+      "title": "Overnight High/Low Breakout",
+      "definition_path": "research/archive/B02/B02_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H030",
+      "title": "Overnight Compression \u2192 Opening Expansion",
+      "definition_path": "research/archive/B02/B02_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H031",
+      "title": "Opening Location Reversion",
+      "definition_path": "research/archive/B02/B02_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H032",
+      "title": "Efficient Overnight Trend Continuation",
+      "definition_path": "research/archive/B02/B02_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H033",
+      "title": "Previous-Day Narrow Range Persistence",
+      "definition_path": "research/archive/B03/B03_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H034",
+      "title": "Previous-Day Wide Range Persistence",
+      "definition_path": "research/archive/B03/B03_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H035",
+      "title": "Previous Trend-Day Continuation",
+      "definition_path": "research/archive/B03/B03_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H036",
+      "title": "Previous Late-Day Impulse Continuation",
+      "definition_path": "research/archive/B03/B03_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H037",
+      "title": "Previous Close-to-VWAP Stretch Reversion",
+      "definition_path": "research/archive/B03/B03_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H038",
+      "title": "R029 \u2014 Strong 5m Opening Impulse Continuation",
+      "definition_path": "research/archive/B04/B04_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H039",
+      "title": "R030 \u2014 5m Opening Rejection Reversal",
+      "definition_path": "research/archive/B04/B04_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H040",
+      "title": "R031 \u2014 Wide First-15m Range Persistence",
+      "definition_path": "research/archive/B04/B04_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H041",
+      "title": "R032 \u2014 Narrow First-15m Range Persistence",
+      "definition_path": "research/archive/B04/B04_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H042",
+      "title": "R033 \u2014 Three-Bar Opening Sequence Continuation",
+      "definition_path": "research/archive/B04/B04_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H043",
+      "title": "Frozen volatility-engine stage",
+      "definition_path": "research/archive/B05/B05_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H044",
+      "title": "Frozen volatility-engine stage",
+      "definition_path": "research/archive/B05/B05_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H045",
+      "title": "Frozen volatility-engine stage",
+      "definition_path": "research/archive/B05/B05_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H046",
+      "title": "R035 \u2014 ORB continuation in HIGH regime",
+      "definition_path": "research/archive/B06/B06_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H047",
+      "title": "R036 \u2014 Previous RTH high/low breakout in HIGH regime",
+      "definition_path": "research/archive/B06/B06_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H048",
+      "title": "R037 \u2014 High-volume impulse in HIGH regime",
+      "definition_path": "research/archive/B06/B06_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H049",
+      "title": "R038 \u2014 Previous Day + Overnight Alignment",
+      "definition_path": "research/archive/B07/B07_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H050",
+      "title": "R039 \u2014 Overnight + Gap Alignment",
+      "definition_path": "research/archive/B07/B07_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H051",
+      "title": "R040 \u2014 Previous Day + Gap Alignment",
+      "definition_path": "research/archive/B07/B07_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H052",
+      "title": "R041 \u2014 Triple Alignment",
+      "definition_path": "research/archive/B07/B07_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H053",
+      "title": "R042 \u2014 Strong Previous-Day / Overnight Conflict",
+      "definition_path": "research/archive/B07/B07_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H054",
+      "title": "R043 \u2014 Three-Day Streak Exhaustion",
+      "definition_path": "research/archive/B08/B08_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H055",
+      "title": "R044 \u2014 Five-Day Range Breakout at the Open",
+      "definition_path": "research/archive/B08/B08_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H056",
+      "title": "R045 \u2014 Five-Day Overextension Reversion",
+      "definition_path": "research/archive/B08/B08_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H057",
+      "title": "R046 \u2014 High Five-Day Range Persistence",
+      "definition_path": "research/archive/B08/B08_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H058",
+      "title": "R047 \u2014 Low Five-Day Range Persistence",
+      "definition_path": "research/archive/B08/B08_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H059",
+      "title": "R048 \u2014 HIGH persists into the next 15-minute block",
+      "definition_path": "research/archive/B09/B09_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H060",
+      "title": "R049 \u2014 LOW persists into the next 15-minute block",
+      "definition_path": "research/archive/B09/B09_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H061",
+      "title": "R050 \u2014 HIGH persists for one hour",
+      "definition_path": "research/archive/B09/B09_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H062",
+      "title": "R051 \u2014 LOW persists for one hour",
+      "definition_path": "research/archive/B09/B09_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H063",
+      "title": "R052 \u2014 Extreme-state self-transition",
+      "definition_path": "research/archive/B09/B09_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H064",
+      "title": "R053 \u2014 HIGH persists to +90 minutes",
+      "definition_path": "research/archive/B10/B10_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H065",
+      "title": "R054 \u2014 LOW persists to +90 minutes",
+      "definition_path": "research/archive/B10/B10_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H066",
+      "title": "R055 \u2014 HIGH persists to +120 minutes",
+      "definition_path": "research/archive/B10/B10_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H067",
+      "title": "R056 \u2014 LOW persists to +120 minutes",
+      "definition_path": "research/archive/B10/B10_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H068",
+      "title": "R057 \u2014 Extreme-state information remains above unconditional at +120m",
+      "definition_path": "research/archive/B10/B10_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H069",
+      "title": "R058 \u2014 HIGH persists to +180m",
+      "definition_path": "research/archive/B11/B11_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H070",
+      "title": "R059 \u2014 LOW persists to +180m",
+      "definition_path": "research/archive/B11/B11_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H071",
+      "title": "R060 \u2014 HIGH persists to +240m",
+      "definition_path": "research/archive/B11/B11_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H072",
+      "title": "R061 \u2014 LOW persists to +240m",
+      "definition_path": "research/archive/B11/B11_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H073",
+      "title": "R062 \u2014 Extreme-state information remains at +240m",
+      "definition_path": "research/archive/B11/B11_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H074",
+      "title": "R065 \u2014 Direct HIGH-Regime Dynamic Breakout",
+      "definition_path": "research/archive/B12/B12_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H075",
+      "title": "R066 \u2014 HIGH Breakout + Pullback Confirmation",
+      "definition_path": "research/archive/B12/B12_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H076",
+      "title": "R067 \u2014 NORMAL\u2192HIGH Transition Breakout",
+      "definition_path": "research/archive/B12/B12_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H077",
+      "title": "R068 \u2014 HIGH Block Directional Close Continuation",
+      "definition_path": "research/archive/B13/B13_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H078",
+      "title": "R069 \u2014 HIGH VWAP Displacement Continuation",
+      "definition_path": "research/archive/B13/B13_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H079",
+      "title": "R070 \u2014 HIGH Block Rejection Reversal",
+      "definition_path": "research/archive/B13/B13_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H080",
+      "title": "R071 \u2014 HIGH VWAP Displacement Reversion",
+      "definition_path": "research/archive/B14/B14_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    },
+    {
+      "id": "H081",
+      "title": "R072 \u2014 HIGH Rejection Signal Failure / Exact Inverse",
+      "definition_path": "research/archive/B14/B14_PRE_REGISTRATION.md",
+      "instrument": "MES",
+      "independent_confirmation_claimed": false
+    }
+  ],
+  "planned_es_units": [
+    {
+      "id": "H-ES-001",
+      "title": "Aggressive-flow continuation",
+      "definition_path": "research/es/ES_B01_MICROSTRUCTURE_PRE_REGISTRATION.md",
+      "instrument": "ES",
+      "independent_confirmation_claimed": false,
+      "status": "PRE_REGISTERED_NOT_RUN",
+      "eligible_for_outcome_run": false
+    },
+    {
+      "id": "H-ES-002",
+      "title": "Price/Delta divergence",
+      "definition_path": "research/es/ES_B01_MICROSTRUCTURE_PRE_REGISTRATION.md",
+      "instrument": "ES",
+      "independent_confirmation_claimed": false,
+      "status": "PRE_REGISTERED_NOT_RUN",
+      "eligible_for_outcome_run": false
+    },
+    {
+      "id": "H-ES-003",
+      "title": "Absorption proxy",
+      "definition_path": "research/es/ES_B01_MICROSTRUCTURE_PRE_REGISTRATION.md",
+      "instrument": "ES",
+      "independent_confirmation_claimed": false,
+      "status": "PRE_REGISTERED_NOT_RUN",
+      "eligible_for_outcome_run": false
+    },
+    {
+      "id": "H-ES-004",
+      "title": "Price + Delta acceptance",
+      "definition_path": "research/es/ES_B01_MICROSTRUCTURE_PRE_REGISTRATION.md",
+      "instrument": "ES",
+      "independent_confirmation_claimed": false,
+      "status": "PRE_REGISTERED_NOT_RUN",
+      "eligible_for_outcome_run": false
+    },
+    {
+      "id": "H-ES-005",
+      "title": "Trade-intensity volatility",
+      "definition_path": "research/es/ES_B01_MICROSTRUCTURE_PRE_REGISTRATION.md",
+      "instrument": "ES",
+      "independent_confirmation_claimed": false,
+      "status": "PRE_REGISTERED_NOT_RUN",
+      "eligible_for_outcome_run": false
+    }
+  ],
+  "future_family_freezes": {},
+  "future_family_evaluations": []
+}

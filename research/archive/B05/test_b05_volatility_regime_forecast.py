@@ -1,4 +1,4 @@
-from research.active.B05_VOLATILITY_REGIME_FORECAST.b05_volatility_regime_forecast import (
+from research.archive.B05.b05_volatility_regime_forecast import (
     ENTRY_CUTOFF,
     HIGH_Q,
     H017_Q,

@@ -7,7 +7,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from research.r001_vwap_analysis import clustered_mean_stats, prepare_features
+from research.archive.R001.r001_vwap_analysis import clustered_mean_stats, prepare_features
 
 PRIMARY_THRESHOLD = 2.0
 PRIMARY_HORIZON = 15

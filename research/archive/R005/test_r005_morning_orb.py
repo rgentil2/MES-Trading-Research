@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 from src.research_utils import add_forward_extrema, prepare_rth_features
-from research.active.R005_MORNING_ORB.r005_morning_orb import build_events
+from research.archive.R005.r005_morning_orb import build_events
 
 
 def _session(date, breakout_minute):

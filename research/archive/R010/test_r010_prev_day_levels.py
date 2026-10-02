@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from research.active.R010_PREV_DAY_LEVELS.r010_prev_day_levels import (
+from research.archive.R010.r010_prev_day_levels import (
     ENTRY_CUTOFF_MINUTE,
     add_previous_levels,
 )

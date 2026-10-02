@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 
-from research.r001_vwap_analysis import add_forward_extrema, prepare_features
-from research.r003_orb_behavior import build_opening_range_events
+from research.archive.R001.r001_vwap_analysis import add_forward_extrema, prepare_features
+from research.archive.R003.r003_orb_behavior import build_opening_range_events
 
 
 def test_first_close_outside_15m_opening_range_is_event():

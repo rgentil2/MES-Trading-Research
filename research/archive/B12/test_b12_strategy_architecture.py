@@ -1,4 +1,4 @@
-from research.active.B12_STRATEGY_ARCHITECTURE.b12_strategy_architecture import (
+from research.archive.B12.b12_strategy_architecture import (
     COMMISSION_RT,
     COST_RT,
     ENTRY_CUTOFF_MINUTE,

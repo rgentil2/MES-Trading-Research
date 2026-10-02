@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from research.active.R008_OPENING_DRIVE.r008_opening_drive import (
+from research.archive.R008.r008_opening_drive import (
     DRIVE_QUANTILE,
     REFERENCE_SESSIONS,
     SIGNAL_MINUTE,

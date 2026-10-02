@@ -1,4 +1,4 @@
-from research.active.B04_OPENING_MICROSTRUCTURE.b04_opening_microstructure import (
+from research.archive.B04.b04_opening_microstructure import (
     H038_BODY_MIN,H038_Q,H039_RANGE_Q,H039_WICK_MIN,H040_Q,H041_Q,H042_VOLUME_Q,REF
 )
 def test_b04_frozen_parameters():

@@ -1,6 +1,6 @@
 import pandas as pd
 
-from research.r001_vwap_analysis import prepare_features, rth_mask
+from research.archive.R001.r001_vwap_analysis import prepare_features, rth_mask
 
 
 def test_rth_mask_uses_ninjatrader_end_of_bar_timestamps():

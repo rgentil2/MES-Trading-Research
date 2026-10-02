@@ -1,4 +1,4 @@
-from research.active.B14_OPPOSITE_SIGN_CANDIDATES.b14_opposite_sign_candidates import (
+from research.archive.B14.b14_opposite_sign_candidates import (
     STRESS_COST_RT,
 )
 from research.archive.B12.b12_strategy_architecture import COST_RT

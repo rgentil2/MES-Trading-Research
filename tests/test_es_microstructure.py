@@ -9,15 +9,18 @@ def ts(values):
 
 def test_backward_asof_and_classifier():
     trades = pd.DataFrame({
+        "contract": ["ES JUN24"] * 2,
         "timestamp": ts(["2024-06-03 13:30:00.150", "2024-06-03 13:30:00.250"]),
         "price": [5000.25, 5000.00],
         "volume": [3, 2],
     })
     bids = pd.DataFrame({
+        "contract": ["ES JUN24"] * 2,
         "timestamp": ts(["2024-06-03 13:30:00.100", "2024-06-03 13:30:00.200"]),
         "price": [5000.00, 5000.00],
     })
     asks = pd.DataFrame({
+        "contract": ["ES JUN24"] * 2,
         "timestamp": ts(["2024-06-03 13:30:00.120", "2024-06-03 13:30:00.220"]),
         "price": [5000.25, 5000.25],
     })
@@ -30,6 +33,7 @@ def test_backward_asof_and_classifier():
 
 def test_aggregate_flow():
     df = pd.DataFrame({
+        "contract": ["ES JUN24"] * 3,
         "timestamp": ts(["2024-06-03 13:30:01", "2024-06-03 13:30:02", "2024-06-03 13:30:03"]),
         "price": [5000.25, 5000.00, 5000.25],
         "volume": [3, 2, 5],

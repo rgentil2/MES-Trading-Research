@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from research.active.R006_VOL_COMPRESSION.r006_vol_compression import (
+from research.archive.R006.r006_vol_compression import (
     ENTRY_CUTOFF_MINUTE,
     START_MINUTE,
     add_volatility_features,

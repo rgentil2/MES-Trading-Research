@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from research.active.R007_EFFICIENT_MOMENTUM.r007_efficient_momentum import (
+from research.archive.R007.r007_efficient_momentum import (
     EFFICIENCY_MIN,
     ENTRY_CUTOFF_MINUTE,
     START_MINUTE,

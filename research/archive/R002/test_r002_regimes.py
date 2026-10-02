@@ -1,6 +1,6 @@
 import pandas as pd
 
-from research.r002_vwap_regimes import (
+from research.archive.R002.r002_vwap_regimes import (
     assign_volatility_regime,
     benjamini_hochberg,
 )

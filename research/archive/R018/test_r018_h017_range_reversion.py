@@ -1,4 +1,4 @@
-from research.active.R018_H017_RANGE_REVERSION.r018_h017_range_reversion import (
+from research.archive.R018.r018_h017_range_reversion import (
     ACTIVE_MINUTES, COST_RT, EDGE_HIGH, EDGE_LOW, ENTRY_CUTOFF, HORIZON
 )
 

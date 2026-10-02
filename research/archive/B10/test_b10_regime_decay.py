@@ -1,4 +1,4 @@
-from research.active.B10_REGIME_DECAY.b10_regime_decay import (
+from research.archive.B10.b10_regime_decay import (
     ANCHOR_BLOCKS,
     HIGH_Q,
     LOW_Q,

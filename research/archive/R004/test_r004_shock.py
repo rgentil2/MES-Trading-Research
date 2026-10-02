@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 
-from research.r001_vwap_analysis import prepare_features
-from research.r004_shock_reversion import add_shock_features
+from research.archive.R001.r001_vwap_analysis import prepare_features
+from research.archive.R004.r004_shock_reversion import add_shock_features
 
 
 def test_shock_z_requires_exact_60m_history():

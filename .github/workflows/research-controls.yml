@@ -1,0 +1,94 @@
+name: MES ES Research Controls and Robustness
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/**'
+      - 'tools/*.py'
+      - 'src/**'
+      - 'tests/**'
+      - 'results/development/**'
+      - 'config/settings.yaml'
+      - '.github/workflows/research-controls.yml'
+  pull_request:
+    paths:
+      - 'research/**'
+      - 'tools/*.py'
+      - 'src/**'
+      - 'tests/**'
+      - 'results/development/**'
+      - 'config/settings.yaml'
+      - '.github/workflows/research-controls.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mes-es-research-controls-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  controls-and-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Test controls, contract isolation and frozen research helpers
+        env:
+          PYTHONPATH: .
+        run: python -m pytest -q tests research/archive
+      - name: Check accumulated history and family definitions before outcomes
+        env:
+          SEARCH_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        shell: bash
+        run: |
+          if [[ -n "$SEARCH_BASE_SHA" && "$SEARCH_BASE_SHA" != "0000000000000000000000000000000000000000" ]]; then
+            python tools/research_governance.py --check --base-ref "$SEARCH_BASE_SHA"
+          else
+            python tools/research_governance.py --check
+          fi
+          python tools/research_governance.py
+      - name: Audit archived MES B14 on 2020-2024 only
+        env:
+          PYTHONPATH: .
+        run: python tools/audit_research_robustness.py
+      - name: Verify outcome isolation and diagnostic authority
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('results/research_controls/ROBUSTNESS_AUDIT.json').read_text())
+          assert r['loaded_years']==list(range(2020,2025))
+          assert r['holdout_2025_loaded'] is False and r['holdout_2026_loaded'] is False
+          assert r['original_statuses_changed'] is False and r['strategy_authorized'] is False
+          assert r['cost_round_trip_usd']==4.38
+          assert len(r['loaded_contract_files'])==20
+          assert r['ES']['status']=='NOT_RUN_NO_DIRECTIONAL_OUTCOMES_AVAILABLE'
+          print('PASS: diagnostic outcomes restricted to 2020-2024; ES outcomes not opened; frozen statuses/costs retained.')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mes-es-research-controls
+          path: results/research_controls/**
+          if-no-files-found: error
+      - name: Persist current audit reports
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        shell: bash
+        run: |
+          git add -f results/research_controls/SEARCH_REGISTRY.json results/research_controls/SEARCH_REGISTRY.md results/research_controls/ROBUSTNESS_AUDIT.json results/research_controls/ROBUSTNESS_AUDIT.md
+          if ! git diff --cached --quiet; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m 'Record MES development robustness and MES ES accumulated search controls'
+            git push origin HEAD:main
+          fi

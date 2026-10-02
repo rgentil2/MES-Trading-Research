@@ -6,8 +6,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from research.r001_vwap_analysis import clustered_mean_stats, prepare_features
-from research.r002_vwap_regimes import benjamini_hochberg
+from research.archive.R001.r001_vwap_analysis import clustered_mean_stats, prepare_features
+from research.archive.R002.r002_vwap_regimes import benjamini_hochberg
 
 SHOCK_THRESHOLD = 2.0
 

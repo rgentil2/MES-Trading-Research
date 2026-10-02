@@ -1,4 +1,4 @@
-from research.active.B03_PREVIOUS_DAY.b03_previous_day import (
+from research.archive.B03.b03_previous_day import (
     LATE_Q, NARROW_Q, REF, TREND_EFF_MIN, TREND_Q, VWAP_Q, WIDE_Q
 )
 

@@ -1,4 +1,4 @@
-from research.active.B07_CROSS_SESSION_DIRECTION.b07_cross_session_direction import (
+from research.archive.B07.b07_cross_session_direction import (
     MAG_Q,
     REF,
 )
