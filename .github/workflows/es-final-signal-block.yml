@@ -6,6 +6,11 @@ on:
     paths:
       - "research/es_final_block.py"
       - ".github/workflows/es-final-signal-block.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "research/es_final_block.py"
+      - ".github/workflows/es-final-signal-block.yml"
   workflow_dispatch:
 
 permissions:
