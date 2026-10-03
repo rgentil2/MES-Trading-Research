@@ -1,0 +1,29 @@
+{
+  "version": "MES-MS1-20261003",
+  "authority": "DESCRIPTIVE_FEATURE_MAP_ONLY",
+  "base_commit": "27ac8ef15729832841e382f15cbad5d20b1a4503",
+  "config": {
+    "window": 252,
+    "minimum_valid": 126,
+    "atr_sessions": 14,
+    "trend_sessions": 10,
+    "overnight_min_bars": 800,
+    "q_low": 0.3333333333333333,
+    "q_high": 0.6666666666666666,
+    "trend_neutral_atr": 1.0,
+    "overnight_flat_atr": 0.1,
+    "cusum_k": 0.5,
+    "cusum_h": 5.0,
+    "transition_sessions": 5
+  },
+  "outcomes_permitted": false,
+  "fingerprints": {
+    "src/mes_market_state_v1.py": "e432919e232770e2cc5285866927b8f9e5bfb136e02188d1a04da77132a75da4",
+    "src/data_pipeline.py": "b66800bd35a7c77cb504ce8d951a81326fbad79a1bec767dd90db2e4982f934e",
+    "tools/audit_mes_market_state.py": "2df6fc140f9a87ee25b121ba615782ffcc3768cd362d462602450530fc78e40e",
+    "tests/test_mes_market_state_v1.py": "5717113472460c654c90ad8b437a317eb838cff8b6a45eaee7e0614e78d71516",
+    "research/market_state/MES_MS1_PROTOCOL.md": "812a01160823a1608f07f5c8c9e9fd4c9d916f780dfc719c5476edc700194e74",
+    "requirements.txt": "37a5d310ef0fdb1f221b39da20714784dea71d736801118dcdc48336fe7ef3ed",
+    ".github/workflows/mes-market-state-v1.yml": "3dd0d7c4b8004a5ed0402c73d2a7bb28b0cc1835305064b8b26c8750aa7f22f3"
+  }
+}
