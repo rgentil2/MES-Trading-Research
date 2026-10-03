@@ -22,3 +22,18 @@ La investigación nueva se centra en ES. Su bloque ES-B01 permanece pre-registra
 
 Consulta la [política de controles MES/ES](research/RESEARCH_CONTROLS_POLICY.md), el [registro acumulado](results/research_controls/SEARCH_REGISTRY.md) y la [auditoría de robustez](results/research_controls/ROBUSTNESS_AUDIT.md).
 Las variantes de una misma pregunta se congelan y evalúan juntas. Los resultados de desarrollo reutilizado siguen siendo exploratorios.
+
+## MES Market State V1 — mapa descriptivo separado
+
+La auditoría [MES-MS1](research/market_state/MES_MS1_PROTOCOL.md) usa exclusivamente
+el subconjunto de contratos MES 2020–2024 y conserva R063. Produce atributos
+causales a las 09:30 ET, R0–R4, episodios y transiciones. La primera ejecución
+pasó las pruebas de causalidad y gobierno de investigación, pero su uso como
+filtro de trading sigue pendiente: sólo clasificó 381/1.294 fechas laborables.
+
+Consultar primero la [revisión de cobertura y siguiente trabajo](results/market_state/MES_MS1_REVIEW.md),
+el [informe original](results/market_state/MES_MS1_REPORT.md) y el
+[artifact completo conservado](results/market_state/MES_MS1_FIRST_RUN.zip).
+El subconjunto termina con una preapertura incompleta el 16/12/2024; no cubre
+el año completo. No se probaron estrategias, no se modificaron umbrales después
+de la ejecución y no se abrió MES 2026. MES 2025 ya es desarrollo reutilizado.

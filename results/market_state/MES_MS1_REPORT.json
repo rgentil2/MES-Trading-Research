@@ -1,0 +1,696 @@
+{
+  "version": "MES-MS1-20261003",
+  "authority": "DESCRIPTIVE_ONLY_NO_STRATEGY_PROMOTION",
+  "source_scope": "ET calendar 2020-2024 only; MES 2025 already researched",
+  "source_files": [
+    {
+      "file": "MES 03-20.Last.txt",
+      "contract": "MES 03-20",
+      "raw_rows": 67365,
+      "raw_start_utc": "2020-01-01 23:01:00",
+      "raw_end_utc": "2020-03-12 04:00:00",
+      "rows_used": 67365,
+      "overlap_rows_removed": 0,
+      "size_bytes": 3272338,
+      "sha256": "025ca2a2aa0a64a20245c2367d19f325cc1dbdfdd053943ff676e81eaae2af88"
+    },
+    {
+      "file": "MES 06-20.Last.txt",
+      "contract": "MES 06-20",
+      "raw_rows": 88719,
+      "raw_start_utc": "2020-03-08 08:27:00",
+      "raw_end_utc": "2020-06-11 04:00:00",
+      "rows_used": 85642,
+      "overlap_rows_removed": 3077,
+      "size_bytes": 4341492,
+      "sha256": "2133207512418d153b36bc9fe0182837eca1d32b30f322556aabf1c4285659c2"
+    },
+    {
+      "file": "MES 09-20.Last.txt",
+      "contract": "MES 09-20",
+      "raw_rows": 91080,
+      "raw_start_utc": "2020-06-07 18:20:00",
+      "raw_end_utc": "2020-09-10 04:00:00",
+      "rows_used": 88254,
+      "overlap_rows_removed": 2826,
+      "size_bytes": 4457099,
+      "sha256": "2b2731ab22dcb4f428411f0a6c018a684d19d912024c31308f4cd0d45416e364"
+    },
+    {
+      "file": "MES 12-20.Last.txt",
+      "contract": "MES 12-20",
+      "raw_rows": 90517,
+      "raw_start_utc": "2020-09-06 22:01:00",
+      "raw_end_utc": "2020-12-10 05:00:00",
+      "rows_used": 88191,
+      "overlap_rows_removed": 2326,
+      "size_bytes": 4423296,
+      "sha256": "6990eab5f902258bc325b8b456a167a5961fd816581ed16bd245b490c525f55e"
+    },
+    {
+      "file": "MES 03-21.Last.txt",
+      "contract": "MES 03-21",
+      "raw_rows": 87447,
+      "raw_start_utc": "2020-12-06 15:02:00",
+      "raw_end_utc": "2021-03-11 05:00:00",
+      "rows_used": 85171,
+      "overlap_rows_removed": 2276,
+      "size_bytes": 4266964,
+      "sha256": "68a5d42825b81c10c45e178d08e4c3247de41fc095eeabfe6eca8260ce9dd95a"
+    },
+    {
+      "file": "MES 06-21.Last.txt",
+      "contract": "MES 06-21",
+      "raw_rows": 91352,
+      "raw_start_utc": "2021-03-07 23:01:00",
+      "raw_end_utc": "2021-06-10 04:00:00",
+      "rows_used": 87918,
+      "overlap_rows_removed": 3434,
+      "size_bytes": 4448325,
+      "sha256": "d379c004e656684624200fd1b7c5a380f68e620108bb41304177dc164be447dd"
+    },
+    {
+      "file": "MES 09-21.Last.txt",
+      "contract": "MES 09-21",
+      "raw_rows": 91206,
+      "raw_start_utc": "2021-06-06 22:01:00",
+      "raw_end_utc": "2021-09-09 04:00:00",
+      "rows_used": 88783,
+      "overlap_rows_removed": 2423,
+      "size_bytes": 4430414,
+      "sha256": "6a1196d7ee3a7c5a591097d68365d22848129e45788c3b94efdcf28d93f12bb6"
+    },
+    {
+      "file": "MES 12-21.Last.txt",
+      "contract": "MES 12-21",
+      "raw_rows": 91867,
+      "raw_start_utc": "2021-09-05 22:01:00",
+      "raw_end_utc": "2021-12-09 05:00:00",
+      "rows_used": 89064,
+      "overlap_rows_removed": 2803,
+      "size_bytes": 4479382,
+      "sha256": "19896adf049a760f7a5811ba656973e3a4e267ddaf2f6f0b0275917217acac21"
+    },
+    {
+      "file": "MES 03-22.Last.txt",
+      "contract": "MES 03-22",
+      "raw_rows": 91821,
+      "raw_start_utc": "2021-12-05 16:31:00",
+      "raw_end_utc": "2022-03-10 05:00:00",
+      "rows_used": 87807,
+      "overlap_rows_removed": 4014,
+      "size_bytes": 4485955,
+      "sha256": "e8bdfd353e8c9ceb51fadc7d1d549fd2ceda59c756760577a811194a0c31d875"
+    },
+    {
+      "file": "MES 06-22.Last.txt",
+      "contract": "MES 06-22",
+      "raw_rows": 95076,
+      "raw_start_utc": "2022-03-06 19:28:00",
+      "raw_end_utc": "2022-06-13 04:00:00",
+      "rows_used": 90828,
+      "overlap_rows_removed": 4248,
+      "size_bytes": 4645136,
+      "sha256": "0cb50fa8324dc2a79d96890fc011dc1fe5c449355ee189d3e1d5638d42ef3fe1"
+    },
+    {
+      "file": "MES 09-22.Last.txt",
+      "contract": "MES 09-22",
+      "raw_rows": 91721,
+      "raw_start_utc": "2022-06-09 04:01:00",
+      "raw_end_utc": "2022-09-12 04:00:00",
+      "rows_used": 88999,
+      "overlap_rows_removed": 2722,
+      "size_bytes": 4491576,
+      "sha256": "e0a329bfaf8ec443673717845daa980517d4922e7b268d31e18331d996d45d29"
+    },
+    {
+      "file": "MES 12-22.Last.txt",
+      "contract": "MES 12-22",
+      "raw_rows": 91348,
+      "raw_start_utc": "2022-09-08 04:02:00",
+      "raw_end_utc": "2022-12-12 05:00:00",
+      "rows_used": 88607,
+      "overlap_rows_removed": 2741,
+      "size_bytes": 4478289,
+      "sha256": "63514eb2479f29716e3a8ef54f4ee16a9f3fcc502ac73b49fd88c73cc1deaf47"
+    },
+    {
+      "file": "MES 03-23.Last.txt",
+      "contract": "MES 03-23",
+      "raw_rows": 89190,
+      "raw_start_utc": "2022-12-08 05:01:00",
+      "raw_end_utc": "2023-03-13 04:00:00",
+      "rows_used": 86467,
+      "overlap_rows_removed": 2723,
+      "size_bytes": 4363389,
+      "sha256": "df0e8f38f9a2bbd736f523d16e83684412a2d8df0f469a0e46f84ffff63dbe41"
+    },
+    {
+      "file": "MES 06-23.Last.txt",
+      "contract": "MES 06-23",
+      "raw_rows": 82323,
+      "raw_start_utc": "2023-03-09 05:02:00",
+      "raw_end_utc": "2023-06-12 04:00:00",
+      "rows_used": 79606,
+      "overlap_rows_removed": 2717,
+      "size_bytes": 4017200,
+      "sha256": "db11822085b032c6aa49a360264d8df245f6b3755c9b946221e16db80389ff61"
+    },
+    {
+      "file": "MES 09-23.Last.txt",
+      "contract": "MES 09-23",
+      "raw_rows": 91391,
+      "raw_start_utc": "2023-06-08 04:01:00",
+      "raw_end_utc": "2023-09-11 03:59:00",
+      "rows_used": 88689,
+      "overlap_rows_removed": 2702,
+      "size_bytes": 4450767,
+      "sha256": "29bcd8b255da01529a807c3da16ad095cd220218df7ac981c7d8e940c9a5a529"
+    },
+    {
+      "file": "MES 12-23.Last.txt",
+      "contract": "MES 12-23",
+      "raw_rows": 90257,
+      "raw_start_utc": "2023-09-07 04:01:00",
+      "raw_end_utc": "2023-12-11 05:00:00",
+      "rows_used": 87596,
+      "overlap_rows_removed": 2661,
+      "size_bytes": 4405215,
+      "sha256": "f9eb3289b453f126069e781c73ad2183d9188eb043294eb72e6301a837fe5d8f"
+    },
+    {
+      "file": "MES 03-24.Last.txt",
+      "contract": "MES 03-24",
+      "raw_rows": 88995,
+      "raw_start_utc": "2023-12-07 05:01:00",
+      "raw_end_utc": "2024-03-11 04:00:00",
+      "rows_used": 86377,
+      "overlap_rows_removed": 2618,
+      "size_bytes": 4330154,
+      "sha256": "47928c143e909298f69c78f90d89c0ca0f45b7fa301acd191ca137ea0d68c5ca"
+    },
+    {
+      "file": "MES 06-24.Last.txt",
+      "contract": "MES 06-24",
+      "raw_rows": 97637,
+      "raw_start_utc": "2024-03-07 05:01:00",
+      "raw_end_utc": "2024-06-17 04:00:00",
+      "rows_used": 94924,
+      "overlap_rows_removed": 2713,
+      "size_bytes": 4759463,
+      "sha256": "a89b7f192c7a149c91e1a74822f816539e10ddd49619180969faea5fb56104f4"
+    },
+    {
+      "file": "MES 09-24.Last.txt",
+      "contract": "MES 09-24",
+      "raw_rows": 91309,
+      "raw_start_utc": "2024-06-13 04:02:00",
+      "raw_end_utc": "2024-09-16 04:00:00",
+      "rows_used": 88672,
+      "overlap_rows_removed": 2637,
+      "size_bytes": 4458657,
+      "sha256": "874a27c08ebcb688e469439c1c42dd0ac895f38783876459beada55bd24b7976"
+    },
+    {
+      "file": "MES 12-24.Last.txt",
+      "contract": "MES 12-24",
+      "raw_rows": 91923,
+      "raw_start_utc": "2024-09-12 04:01:00",
+      "raw_end_utc": "2024-12-16 05:00:00",
+      "rows_used": 89228,
+      "overlap_rows_removed": 2695,
+      "size_bytes": 4482118,
+      "sha256": "17ddf1d0b80723c82dda0fd5acbf1b58f520aea4c44d229d5692b6a80bd94076"
+    }
+  ],
+  "source_rollovers": [
+    {
+      "old_contract": "MES 03-20",
+      "new_contract": "MES 06-20",
+      "old_last_timestamp_utc": "2020-03-12 04:00:00",
+      "new_first_timestamp_used_utc": "2020-03-12 04:04:00",
+      "gap_minutes": 4.0,
+      "overlap_rows_removed_from_new": 3077
+    },
+    {
+      "old_contract": "MES 06-20",
+      "new_contract": "MES 09-20",
+      "old_last_timestamp_utc": "2020-06-11 04:00:00",
+      "new_first_timestamp_used_utc": "2020-06-11 04:01:00",
+      "gap_minutes": 1.0,
+      "overlap_rows_removed_from_new": 2826
+    },
+    {
+      "old_contract": "MES 09-20",
+      "new_contract": "MES 12-20",
+      "old_last_timestamp_utc": "2020-09-10 04:00:00",
+      "new_first_timestamp_used_utc": "2020-09-10 04:01:00",
+      "gap_minutes": 1.0,
+      "overlap_rows_removed_from_new": 2326
+    },
+    {
+      "old_contract": "MES 12-20",
+      "new_contract": "MES 03-21",
+      "old_last_timestamp_utc": "2020-12-10 05:00:00",
+      "new_first_timestamp_used_utc": "2020-12-10 05:04:00",
+      "gap_minutes": 4.0,
+      "overlap_rows_removed_from_new": 2276
+    },
+    {
+      "old_contract": "MES 03-21",
+      "new_contract": "MES 06-21",
+      "old_last_timestamp_utc": "2021-03-11 05:00:00",
+      "new_first_timestamp_used_utc": "2021-03-11 05:01:00",
+      "gap_minutes": 1.0,
+      "overlap_rows_removed_from_new": 3434
+    },
+    {
+      "old_contract": "MES 06-21",
+      "new_contract": "MES 09-21",
+      "old_last_timestamp_utc": "2021-06-10 04:00:00",
+      "new_first_timestamp_used_utc": "2021-06-10 04:01:00",
+      "gap_minutes": 1.0,
+      "overlap_rows_removed_from_new": 2423
+    },
+    {
+      "old_contract": "MES 09-21",
+      "new_contract": "MES 12-21",
+      "old_last_timestamp_utc": "2021-09-09 04:00:00",
+      "new_first_timestamp_used_utc": "2021-09-09 04:01:00",
+      "gap_minutes": 1.0,
+      "overlap_rows_removed_from_new": 2803
+    },
+    {
+      "old_contract": "MES 12-21",
+      "new_contract": "MES 03-22",
+      "old_last_timestamp_utc": "2021-12-09 05:00:00",
+      "new_first_timestamp_used_utc": "2021-12-09 05:01:00",
+      "gap_minutes": 1.0,
+      "overlap_rows_removed_from_new": 4014
+    },
+    {
+      "old_contract": "MES 03-22",
+      "new_contract": "MES 06-22",
+      "old_last_timestamp_utc": "2022-03-10 05:00:00",
+      "new_first_timestamp_used_utc": "2022-03-10 05:02:00",
+      "gap_minutes": 2.0,
+      "overlap_rows_removed_from_new": 4248
+    },
+    {
+      "old_contract": "MES 06-22",
+      "new_contract": "MES 09-22",
+      "old_last_timestamp_utc": "2022-06-13 04:00:00",
+      "new_first_timestamp_used_utc": "2022-06-13 04:01:00",
+      "gap_minutes": 1.0,
+      "overlap_rows_removed_from_new": 2722
+    },
+    {
+      "old_contract": "MES 09-22",
+      "new_contract": "MES 12-22",
+      "old_last_timestamp_utc": "2022-09-12 04:00:00",
+      "new_first_timestamp_used_utc": "2022-09-12 04:01:00",
+      "gap_minutes": 1.0,
+      "overlap_rows_removed_from_new": 2741
+    },
+    {
+      "old_contract": "MES 12-22",
+      "new_contract": "MES 03-23",
+      "old_last_timestamp_utc": "2022-12-12 05:00:00",
+      "new_first_timestamp_used_utc": "2022-12-12 05:01:00",
+      "gap_minutes": 1.0,
+      "overlap_rows_removed_from_new": 2723
+    },
+    {
+      "old_contract": "MES 03-23",
+      "new_contract": "MES 06-23",
+      "old_last_timestamp_utc": "2023-03-13 04:00:00",
+      "new_first_timestamp_used_utc": "2023-03-13 04:01:00",
+      "gap_minutes": 1.0,
+      "overlap_rows_removed_from_new": 2717
+    },
+    {
+      "old_contract": "MES 06-23",
+      "new_contract": "MES 09-23",
+      "old_last_timestamp_utc": "2023-06-12 04:00:00",
+      "new_first_timestamp_used_utc": "2023-06-12 04:01:00",
+      "gap_minutes": 1.0,
+      "overlap_rows_removed_from_new": 2702
+    },
+    {
+      "old_contract": "MES 09-23",
+      "new_contract": "MES 12-23",
+      "old_last_timestamp_utc": "2023-09-11 03:59:00",
+      "new_first_timestamp_used_utc": "2023-09-11 04:00:00",
+      "gap_minutes": 1.0,
+      "overlap_rows_removed_from_new": 2661
+    },
+    {
+      "old_contract": "MES 12-23",
+      "new_contract": "MES 03-24",
+      "old_last_timestamp_utc": "2023-12-11 05:00:00",
+      "new_first_timestamp_used_utc": "2023-12-11 05:01:00",
+      "gap_minutes": 1.0,
+      "overlap_rows_removed_from_new": 2618
+    },
+    {
+      "old_contract": "MES 03-24",
+      "new_contract": "MES 06-24",
+      "old_last_timestamp_utc": "2024-03-11 04:00:00",
+      "new_first_timestamp_used_utc": "2024-03-11 04:01:00",
+      "gap_minutes": 1.0,
+      "overlap_rows_removed_from_new": 2713
+    },
+    {
+      "old_contract": "MES 06-24",
+      "new_contract": "MES 09-24",
+      "old_last_timestamp_utc": "2024-06-17 04:00:00",
+      "new_first_timestamp_used_utc": "2024-06-17 04:01:00",
+      "gap_minutes": 1.0,
+      "overlap_rows_removed_from_new": 2637
+    },
+    {
+      "old_contract": "MES 09-24",
+      "new_contract": "MES 12-24",
+      "old_last_timestamp_utc": "2024-09-16 04:00:00",
+      "new_first_timestamp_used_utc": "2024-09-16 04:01:00",
+      "gap_minutes": 1.0,
+      "overlap_rows_removed_from_new": 2695
+    }
+  ],
+  "input_rows": 1738188,
+  "excluded_out_of_scope_rows": 0,
+  "weekday_rows": 1294,
+  "episodes": 484,
+  "states": {
+    "R0": {
+      "weekday_rows": 913,
+      "episodes": 358,
+      "median_observed_sessions": 1.0,
+      "max_observed_sessions": 21
+    },
+    "R1": {
+      "weekday_rows": 63,
+      "episodes": 22,
+      "median_observed_sessions": 3.0,
+      "max_observed_sessions": 6
+    },
+    "R2": {
+      "weekday_rows": 65,
+      "episodes": 20,
+      "median_observed_sessions": 3.0,
+      "max_observed_sessions": 10
+    },
+    "R3": {
+      "weekday_rows": 124,
+      "episodes": 43,
+      "median_observed_sessions": 2.0,
+      "max_observed_sessions": 7
+    },
+    "R4": {
+      "weekday_rows": 129,
+      "episodes": 41,
+      "median_observed_sessions": 3.0,
+      "max_observed_sessions": 12
+    }
+  },
+  "r0_reasons": {
+    "UNKNOWN_CONTRACT_WARMUP": 228,
+    "UNKNOWN_PREVIOUS_RTH": 169,
+    "TRANSITION_CUSUM_ALERT": 163,
+    "UNKNOWN_BAND_OR_DEGENERATE_REFERENCE": 153,
+    "UNKNOWN_REFERENCE_WARMUP": 150,
+    "UNKNOWN_OVERNIGHT_COVERAGE": 32,
+    "UNKNOWN_NO_OVERNIGHT": 18
+  },
+  "change_alerts": 49,
+  "annual": {
+    "2020": {
+      "weekday_rows": 262,
+      "classified_rows": 0,
+      "r0_rows": 262
+    },
+    "2021": {
+      "weekday_rows": 261,
+      "classified_rows": 121,
+      "r0_rows": 140
+    },
+    "2022": {
+      "weekday_rows": 260,
+      "classified_rows": 86,
+      "r0_rows": 174
+    },
+    "2023": {
+      "weekday_rows": 260,
+      "classified_rows": 92,
+      "r0_rows": 168
+    },
+    "2024": {
+      "weekday_rows": 251,
+      "classified_rows": 82,
+      "r0_rows": 169
+    }
+  },
+  "config": {
+    "window": 252,
+    "minimum_valid": 126,
+    "atr_sessions": 14,
+    "trend_sessions": 10,
+    "overnight_min_bars": 800,
+    "q_low": 0.3333333333333333,
+    "q_high": 0.6666666666666666,
+    "trend_neutral_atr": 1.0,
+    "overnight_flat_atr": 0.1,
+    "cusum_k": 0.5,
+    "cusum_h": 5.0,
+    "transition_sessions": 5
+  },
+  "freeze": {
+    "version": "MES-MS1-20261003",
+    "authority": "DESCRIPTIVE_FEATURE_MAP_ONLY",
+    "base_commit": "27ac8ef15729832841e382f15cbad5d20b1a4503",
+    "config": {
+      "window": 252,
+      "minimum_valid": 126,
+      "atr_sessions": 14,
+      "trend_sessions": 10,
+      "overnight_min_bars": 800,
+      "q_low": 0.3333333333333333,
+      "q_high": 0.6666666666666666,
+      "trend_neutral_atr": 1.0,
+      "overnight_flat_atr": 0.1,
+      "cusum_k": 0.5,
+      "cusum_h": 5.0,
+      "transition_sessions": 5
+    },
+    "outcomes_permitted": false,
+    "fingerprints": {
+      "src/mes_market_state_v1.py": "e432919e232770e2cc5285866927b8f9e5bfb136e02188d1a04da77132a75da4",
+      "src/data_pipeline.py": "b66800bd35a7c77cb504ce8d951a81326fbad79a1bec767dd90db2e4982f934e",
+      "tools/audit_mes_market_state.py": "2df6fc140f9a87ee25b121ba615782ffcc3768cd362d462602450530fc78e40e",
+      "tests/test_mes_market_state_v1.py": "5717113472460c654c90ad8b437a317eb838cff8b6a45eaee7e0614e78d71516",
+      "research/market_state/MES_MS1_PROTOCOL.md": "812a01160823a1608f07f5c8c9e9fd4c9d916f780dfc719c5476edc700194e74",
+      "requirements.txt": "37a5d310ef0fdb1f221b39da20714784dea71d736801118dcdc48336fe7ef3ed",
+      ".github/workflows/mes-market-state-v1.yml": "3dd0d7c4b8004a5ed0402c73d2a7bb28b0cc1835305064b8b26c8750aa7f22f3"
+    }
+  },
+  "strategy_authorized": false,
+  "forward_returns_computed": false,
+  "pnl_computed": false,
+  "contract_2025_opened": false,
+  "contract_2026_opened": false,
+  "calendar_2025_features_computed": false,
+  "calendar_2026_features_computed": false,
+  "prefix_invariance_verified": [
+    "2021-12-31",
+    "2022-06-30",
+    "2022-12-30",
+    "2023-06-30",
+    "2023-12-29",
+    "2024-06-28",
+    "2024-12-31"
+  ],
+  "transition_counts": {
+    "R0": {
+      "R0": 792,
+      "R1": 17,
+      "R2": 9,
+      "R3": 33,
+      "R4": 26
+    },
+    "R1": {
+      "R0": 12,
+      "R1": 41,
+      "R2": 9,
+      "R3": 0,
+      "R4": 0
+    },
+    "R2": {
+      "R0": 11,
+      "R1": 5,
+      "R2": 45,
+      "R3": 0,
+      "R4": 0
+    },
+    "R3": {
+      "R0": 23,
+      "R1": 0,
+      "R2": 0,
+      "R3": 81,
+      "R4": 15
+    },
+    "R4": {
+      "R0": 26,
+      "R1": 0,
+      "R2": 2,
+      "R3": 10,
+      "R4": 88
+    }
+  },
+  "transition_proportions": {
+    "R0": {
+      "R0": 0.9030786773,
+      "R1": 0.0193842645,
+      "R2": 0.0102622577,
+      "R3": 0.0376282782,
+      "R4": 0.0296465222
+    },
+    "R1": {
+      "R0": 0.1935483871,
+      "R1": 0.6612903226,
+      "R2": 0.1451612903,
+      "R3": 0.0,
+      "R4": 0.0
+    },
+    "R2": {
+      "R0": 0.1803278689,
+      "R1": 0.0819672131,
+      "R2": 0.737704918,
+      "R3": 0.0,
+      "R4": 0.0
+    },
+    "R3": {
+      "R0": 0.1932773109,
+      "R1": 0.0,
+      "R2": 0.0,
+      "R3": 0.6806722689,
+      "R4": 0.1260504202
+    },
+    "R4": {
+      "R0": 0.2063492063,
+      "R1": 0.0,
+      "R2": 0.0158730159,
+      "R3": 0.0793650794,
+      "R4": 0.6984126984
+    }
+  },
+  "internal_folds": [
+    {
+      "fold": 1,
+      "train_start": "2020-01-01",
+      "train_end": "2021-12-31",
+      "test_start": "2022-01-01",
+      "test_end": "2022-06-30",
+      "status": "INTERNAL_REUSED_DATA_SCAFFOLD_NO_STRATEGY_TEST",
+      "test_weekday_rows": 129,
+      "test_state_counts": {
+        "R0": 84,
+        "R1": 28,
+        "R2": 17,
+        "R3": 0,
+        "R4": 0
+      },
+      "test_episode_ids_observed": 52
+    },
+    {
+      "fold": 2,
+      "train_start": "2020-07-01",
+      "train_end": "2022-06-30",
+      "test_start": "2022-07-01",
+      "test_end": "2022-12-31",
+      "status": "INTERNAL_REUSED_DATA_SCAFFOLD_NO_STRATEGY_TEST",
+      "test_weekday_rows": 131,
+      "test_state_counts": {
+        "R0": 90,
+        "R1": 7,
+        "R2": 17,
+        "R3": 4,
+        "R4": 13
+      },
+      "test_episode_ids_observed": 43
+    },
+    {
+      "fold": 3,
+      "train_start": "2021-01-01",
+      "train_end": "2022-12-31",
+      "test_start": "2023-01-01",
+      "test_end": "2023-06-30",
+      "status": "INTERNAL_REUSED_DATA_SCAFFOLD_NO_STRATEGY_TEST",
+      "test_weekday_rows": 130,
+      "test_state_counts": {
+        "R0": 84,
+        "R1": 0,
+        "R2": 0,
+        "R3": 26,
+        "R4": 20
+      },
+      "test_episode_ids_observed": 43
+    },
+    {
+      "fold": 4,
+      "train_start": "2021-07-01",
+      "train_end": "2023-06-30",
+      "test_start": "2023-07-01",
+      "test_end": "2023-12-31",
+      "status": "INTERNAL_REUSED_DATA_SCAFFOLD_NO_STRATEGY_TEST",
+      "test_weekday_rows": 130,
+      "test_state_counts": {
+        "R0": 84,
+        "R1": 8,
+        "R2": 4,
+        "R3": 22,
+        "R4": 12
+      },
+      "test_episode_ids_observed": 37
+    },
+    {
+      "fold": 5,
+      "train_start": "2022-01-01",
+      "train_end": "2023-12-31",
+      "test_start": "2024-01-01",
+      "test_end": "2024-06-30",
+      "status": "INTERNAL_REUSED_DATA_SCAFFOLD_NO_STRATEGY_TEST",
+      "test_weekday_rows": 130,
+      "test_state_counts": {
+        "R0": 101,
+        "R1": 0,
+        "R2": 0,
+        "R3": 13,
+        "R4": 16
+      },
+      "test_episode_ids_observed": 44
+    },
+    {
+      "fold": 6,
+      "train_start": "2022-07-01",
+      "train_end": "2024-06-30",
+      "test_start": "2024-07-01",
+      "test_end": "2024-12-31",
+      "status": "INTERNAL_REUSED_DATA_SCAFFOLD_NO_STRATEGY_TEST",
+      "test_weekday_rows": 121,
+      "test_state_counts": {
+        "R0": 68,
+        "R1": 12,
+        "R2": 14,
+        "R3": 15,
+        "R4": 12
+      },
+      "test_episode_ids_observed": 49
+    }
+  ],
+  "environment": {
+    "python": "3.12.14",
+    "numpy": "2.5.3",
+    "pandas": "3.0.6"
+  }
+}
