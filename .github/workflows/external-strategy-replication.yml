@@ -1,0 +1,30 @@
+name: External Strategy Replication
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/external_strategy_replication.py"
+      - ".github/workflows/external-strategy-replication.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas numpy
+      - name: Run frozen external replications
+        run: python research/external_strategy_replication.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: external-strategy-replication-results
+          path: results/external_strategy_replication/
+          retention-days: 30
