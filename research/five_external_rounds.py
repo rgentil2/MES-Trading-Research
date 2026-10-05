@@ -1449,3 +1449,5 @@ def main():
 
 if __name__=="__main__":
     main()
+
+# PR trigger only; 25-strategy preregistered logic unchanged
