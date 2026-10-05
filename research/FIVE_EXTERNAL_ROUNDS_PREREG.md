@@ -133,14 +133,13 @@ Source: NinjaTrader Support Forum Bollinger strategy example.
 - Exit when Close crosses below upper band.
 - No source stop; RTH flat.
 
-## R3-S3 SMA5/Close stop-entry 1R
-Source: NinjaTrader Support Forum "Declaring variables and performing calculations".
-- Long stop-entry level=min(SMA5,Close); short stop-entry level=max(SMA5,Close), as posted.
-- Long risk reference=lowest Low of prior 10 completed bars.
-- Short risk reference=highest High of prior 10 completed bars.
-- Target=1:1 from entry-level risk.
-- Entry orders valid during following 1m bar only; if both directions could trigger same bar, skip.
-- RTH flat.
+## R3-S3 Prior-day close cross PT25
+Source: NinjaTrader Support Forum "Using percentages in an indicator" base Strategy Builder script.
+- Long when Low crosses above prior RTH Close.
+- Short when High crosses below prior RTH Close.
+- Entry next 1m open.
+- PT=25 ticks.
+- No source stop; RTH flat.
 
 ## R3-S4 Prior-day high/low breakout with signal-bar stop
 Source: NinjaTrader Support Forum "Setting the stop at the low of entry candle".
