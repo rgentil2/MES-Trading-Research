@@ -47,7 +47,7 @@ def fetch_month(year, mon):
     r.raise_for_status()
     return url,r.text
 
-def parse_month(html, nominal_year):
+def parse_month(html, nominal_year, nominal_month_idx):
     soup=BeautifulSoup(html,"html.parser")
     table=soup.select_one("table.calendar__table")
     if not table:
@@ -55,7 +55,6 @@ def parse_month(html, nominal_year):
     current_date=""
     current_time=""
     current_year=nominal_year
-    prev_month=None
     out=[]
     for tr in table.select("tr.calendar__row"):
         event_cell=tr.select_one("td.calendar__event")
@@ -67,9 +66,17 @@ def parse_month(html, nominal_year):
                 m=re.search(r"\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\b",d,re.I)
                 if m:
                     idx=MONTHS.index(m.group(1).lower())+1
-                    if prev_month is not None and idx<prev_month: current_year+=1
-                    prev_month=idx
-                current_date=f"{d} {current_year}"
+                    # Monthly views can show adjacent-month days.
+                    # Infer year relative to the requested month, not row order.
+                    if nominal_month_idx == 1 and idx == 12:
+                        row_year = nominal_year - 1
+                    elif nominal_month_idx == 12 and idx == 1:
+                        row_year = nominal_year + 1
+                    else:
+                        row_year = nominal_year
+                else:
+                    row_year = nominal_year
+                current_date=f"{d} {row_year}"
         time_cell=tr.select_one("td.calendar__time")
         if time_cell:
             t=clean(time_cell.get_text(" "))
@@ -105,7 +112,7 @@ def main():
     for y in range(START_YEAR,END_YEAR+1):
         for mon in MONTHS:
             url,html=fetch_month(y,mon)
-            rows=parse_month(html,y)
+            rows=parse_month(html,y,MONTHS.index(mon)+1)
             print(y,mon,"rows",len(rows))
             for r in rows:
                 r["source_url"]=url
