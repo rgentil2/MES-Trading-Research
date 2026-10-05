@@ -1,0 +1,44 @@
+name: MES Market State V2 descriptive audit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/mes_market_state_v2.py'
+      - 'tests/test_mes_market_state_v2.py'
+      - 'tools/audit_mes_market_state_v2.py'
+      - 'research/market_state/MES_MS2_PROTOCOL.md'
+      - 'research/market_state/MES_MS2_FREEZE.json'
+      - '.github/workflows/mes-market-state-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  descriptive-map-v2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install frozen dependencies
+        run: pip install numpy pandas pyyaml pytest pandas_market_calendars==5.4.0
+      - name: Run V2 unit tests before data
+        env:
+          PYTHONPATH: .
+        run: python -m pytest -q tests/test_mes_market_state_v2.py
+      - name: Verify V2 freeze before data
+        run: python tools/audit_mes_market_state_v2.py --preflight
+      - name: Build descriptive 2020-2024 V2 map
+        run: python tools/audit_mes_market_state_v2.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mes-market-state-v2-2020-2024
+          path: |
+            results/market_state/MES_MS2_*
+          if-no-files-found: error
