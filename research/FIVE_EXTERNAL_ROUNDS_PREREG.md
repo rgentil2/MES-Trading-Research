@@ -266,3 +266,45 @@ For every strategy report:
 - primary gate pass/fail
 
 No thresholds, indicator periods, time windows, stops, targets, direction rules, or source interpretations may be changed after first outcomes from this 25-strategy block are viewed.
+
+
+---
+
+## Pre-result roster audit
+
+This section was added **after the workflow completed but before any strategy-result logs/artifacts were inspected**. It does not change code, parameters, or strategy logic. It corrects the documentation roster to match the already-frozen implementation in `research/five_external_rounds.py`.
+
+Exact implemented composition:
+
+### NinjaTrader / NinjaTrader Forum (15)
+1. R1-S1 SampleMACrossOver 10/25
+2. R1-S2 SamplePriceModification 20/100 BE50
+3. R1-S3 SMA5/30 lookback2 PT1
+4. R1-S4 EMA20/40 + RSI14s3 PT200 dynEMA40
+5. R1-S5 Basic Donchian20 long
+6. R2-S1 Contrarian MACD 10/10
+7. R2-S2 MFI14+MACD 5m long
+8. R2-S3 InsideBar directional close SL10 PT25
+9. R2-S4 InsideBar structural bracket
+10. R2-S5 Bollinger100 1.5dev short $2500/$5000
+11. R3-S1 VWAP lower2 10-12pt mean reversion
+12. R3-S2 Bollinger(2,14) lower-to-upper long
+13. R3-S3 PriorClose cross PT25
+14. R3-S4 PriorHighLow breakout signalbar stop
+15. R3-S5 PriorClose cross short SL100 PT200
+
+### TradingView open-source (5)
+16. R4-S4 TV-Bollinger20x2 + EMA9 long
+17. R4-S5 TV-SuperTrend10x3 L/S
+18. R5-S1 TV-NY ORB15 fixed1.5xRange
+19. R5-S2 TV-ORB15 stop-order 2R
+20. R5-S3 TV-RSI14 40/60 TP5 SL2
+
+### Other published systems (5)
+21. R4-S1 Connors RSI2<5 / SMA200
+22. R4-S2 Connors Double7
+23. R4-S3 Larry Williams Oops FPO
+24. R5-S4 Gap fade open -> prior close
+25. R5-S5 Turtle S1 20/10 + 2N
+
+The common gates, MES 2020-2024 sample, $4.38 round-trip cost, Forex Factory USD High/Medium T-5/T+5 overlay, and 2025/2026 exclusion remain unchanged.
