@@ -355,7 +355,7 @@ def build_events(mes_sessions,es_sessions,mes_atr,es_atr):
             'accept_close_frac_5':accept_close,
             'accept_volume_frac_5':accept_vol,
             'reentry_depth_atr_5':float(np.max(penetration))/atr,
-            'continuation_5_atr':direction*cont/atr if direction==-1 else cont/atr,
+            'continuation_5_atr':cont/atr,
             'mfe_5_atr':max(mfe,0.0)/atr,
             'mae_5_atr':max(mae,0.0)/atr,
             'confirm_mean_mes_rvol':float(mconf['rvol'].mean()),
