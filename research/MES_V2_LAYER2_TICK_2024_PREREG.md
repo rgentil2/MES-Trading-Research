@@ -119,3 +119,5 @@ If this gate fails, do not invest resources acquiring/uploading JUN24/SEP24/DEC2
 If it passes, next step is to acquire the rest of 2024 and repeat the same frozen feature definitions on the additional quarters.
 
 No 2025/2026 use is allowed.
+
+<!-- trigger QC run -->
