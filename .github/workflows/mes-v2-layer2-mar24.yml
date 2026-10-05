@@ -1,0 +1,67 @@
+name: MES V2 Layer2 MAR24 Microstructure
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/mes_v2_layer2_mar24.py"
+      - "research/MES_V2_LAYER2_MAR24_PREREG.md"
+      - ".github/workflows/mes-v2-layer2-mar24.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "research/mes_v2_layer2_mar24.py"
+      - "research/MES_V2_LAYER2_MAR24_PREREG.md"
+      - ".github/workflows/mes-v2-layer2-mar24.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout without LFS smudge
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+          fetch-depth: 1
+
+      - name: Pull MAR24 Tick and Minute only
+        shell: bash
+        run: |
+          git lfs install
+          git lfs pull --include="data_es_staging/raw_lfs/ES_MAR24/ES_MAR24_Tick_Last.txt,data_es_staging/raw_lfs/ES_MAR24/ES_MAR24_Minute_Last.txt" --exclude=""
+
+      - name: Verify forbidden Tick files were not materialized
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          bad=[]
+          for y in ("25","26"):
+              for p in Path("data_es_staging/raw_lfs").glob(f"ES_*{y}/*_Tick_Last.txt"):
+                  if p.exists() and p.stat().st_size > 1000:
+                      bad.append(str(p))
+          if bad:
+              raise SystemExit("Forbidden holdout Tick objects materialized: "+", ".join(bad))
+          print("PASS: Tick 2025/2026 remain unmaterialized.")
+          PY
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install pandas numpy scikit-learn
+
+      - name: Run preregistered MAR24 pilot
+        run: python research/mes_v2_layer2_mar24.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mes-v2-layer2-mar24-results
+          path: results/mes_v2_layer2_mar24/
+          retention-days: 30
