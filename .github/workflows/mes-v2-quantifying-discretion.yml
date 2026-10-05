@@ -1,0 +1,61 @@
+name: MES V2 Quantifying Discretion
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/mes_v2_quantifying_discretion.py"
+      - "research/MES_V2_QUANTIFYING_DISCRETION_PREREG.md"
+      - ".github/workflows/mes-v2-quantifying-discretion.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout without LFS smudge
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+          fetch-depth: 1
+
+      - name: Pull ES development LFS only
+        shell: bash
+        run: |
+          git lfs install
+          git lfs pull --include="data_es_staging/raw_lfs/ES_*20/*,data_es_staging/raw_lfs/ES_*21/*,data_es_staging/raw_lfs/ES_*22/*,data_es_staging/raw_lfs/ES_*23/*,data_es_staging/raw_lfs/ES_*24/*" --exclude=""
+
+      - name: Verify ES holdouts not materialized
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          bad=[]
+          for y in ("25","26"):
+              for p in Path("data_es_staging/raw_lfs").glob(f"ES_*{y}/*_Minute_Last.txt"):
+                  if p.exists() and p.stat().st_size > 1000:
+                      bad.append(str(p))
+          if bad:
+              raise SystemExit("Holdout objects materialized: "+", ".join(bad))
+          print("PASS: ES 2025/2026 remain pointers.")
+          PY
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install pandas numpy scikit-learn
+
+      - name: Run preregistered Layer 1
+        run: python research/mes_v2_quantifying_discretion.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mes-v2-quantifying-discretion-results
+          path: results/mes_v2_quantifying_discretion/
+          retention-days: 30
