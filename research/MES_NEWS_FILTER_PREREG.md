@@ -22,11 +22,11 @@ NinjaTrader minute bars are end-of-bar labeled.
 
 For a news event at 10:00 ET:
 - Flat deadline is 09:55 ET.
-- An open trade exits at the close of the bar labeled 09:55.
+- An open trade exits at the first executable 1-minute price at 09:55, modeled as the OPEN of the bar that starts at 09:55 (NinjaTrader EOB label 09:56).
 - No new entry whose actual entry timestamp lies within 09:55 through 10:05 inclusive is allowed.
 - A new entry after 10:05 is allowed.
 
-If a pre-existing SL/TP is touched intrabar before the forced-flat bar closes, the original SL/TP takes precedence.
+At the forced-flat minute, NEWS exit takes precedence before that minute's SL/TP path because the position is closed at the minute open.
 
 ## Data
 
