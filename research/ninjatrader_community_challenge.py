@@ -81,8 +81,13 @@ def enrich_sessions(sessions):
 
 def common_path_exit(g,start_idx,direction,entry,stop,target,entry_ts,events,eod_idx=389):
     deadlines=set(news_deadlines(events,entry_ts,g.iloc[eod_idx]["timestamp_et"]))
+    # NinjaTrader bars are EOB labeled. A forced flat at T-5 uses the OPEN
+    # of the bar starting at T-5, whose label is T-5 + 1 minute.
+    deadline_labels={d+pd.Timedelta(minutes=1) for d in deadlines}
     for i in range(start_idx,eod_idx+1):
         b=g.iloc[i]
+        if b["timestamp_et"] in deadline_labels:
+            return float(b["open"]),i,"NEWS"
         if direction==1:
             if stop is not None and b["low"]<=stop:
                 fill=min(stop,float(b["open"])) if float(b["open"])<stop else stop
@@ -97,8 +102,6 @@ def common_path_exit(g,start_idx,direction,entry,stop,target,entry_ts,events,eod
             if target is not None and b["low"]<=target:
                 fill=min(target,float(b["open"])) if float(b["open"])<target else target
                 return float(fill),i,"TP"
-        if b["timestamp_et"] in deadlines:
-            return float(b["close"]),i,"NEWS"
     return float(g.iloc[eod_idx]["close"]),eod_idx,"EOD"
 
 
@@ -201,21 +204,21 @@ def channel5_es30(sessions,news_by_date):
             news_dl=news_deadlines(events,entry_ts,g.iloc[-1]["timestamp_et"])
             # News can flatten even within entry block.
             for k in range(entry_idx, int(b30.loc[entry_block,"end_idx"])+1):
-                if g.iloc[k]["timestamp_et"] in set(news_dl):
-                    normal_exit=(float(g.iloc[k]["close"]),k,"NEWS"); break
+                if g.iloc[k]["timestamp_et"] in {d+pd.Timedelta(minutes=1) for d in news_dl}:
+                    normal_exit=(float(g.iloc[k]["open"]),k,"NEWS"); break
             if normal_exit is None:
                 q=entry_block
                 while q < len(b30)-1 and normal_exit is None:
                     exit_level=float(b30.loc[max(0,q-4):q,"low"].min())
                     s=int(b30.loc[q+1,"start_idx"]); e=int(b30.loc[q+1,"end_idx"])
-                    deadlines=set(news_deadlines(events,entry_ts,g.iloc[e]["timestamp_et"]))
+                    deadlines={d+pd.Timedelta(minutes=1) for d in news_deadlines(events,entry_ts,g.iloc[e]["timestamp_et"])}
                     for k in range(s,e+1):
                         bar=g.iloc[k]
                         if bar["low"]<=exit_level:
                             fill=min(exit_level,float(bar["open"]))
                             normal_exit=(fill,k,"CHANNEL"); break
                         if bar["timestamp_et"] in deadlines:
-                            normal_exit=(float(bar["close"]),k,"NEWS"); break
+                            normal_exit=(float(bar["open"]),k,"NEWS"); break
                     q+=1
             if normal_exit is None:
                 normal_exit=(float(g.iloc[-1]["close"]),389,"EOD")
@@ -265,8 +268,8 @@ def range_breakout_0930_1030(full, sessions, news_by_date):
         stop=long_stop if direction==1 else short_stop
         # scan from entry bar through 18:00 EOB label
         scan=day[(day["timestamp_et"]>=entry_bar_label)&(day["minute"]<=1080)]
-        deadlines=set(news_deadlines(events,entry_ts,
-                         scan.iloc[-1]["timestamp_et"] if len(scan) else entry_bar_label))
+        deadlines={d+pd.Timedelta(minutes=1) for d in news_deadlines(events,entry_ts,
+                         scan.iloc[-1]["timestamp_et"] if len(scan) else entry_bar_label)}
         exit_px=None; reason=None
         for _,bar in scan.iterrows():
             if direction==1 and float(bar["low"])<=stop:
@@ -274,7 +277,7 @@ def range_breakout_0930_1030(full, sessions, news_by_date):
             if direction==-1 and float(bar["high"])>=stop:
                 exit_px=max(stop,float(bar["open"])); reason="SL"; break
             if bar["timestamp_et"] in deadlines:
-                exit_px=float(bar["close"]); reason="NEWS"; break
+                exit_px=float(bar["open"]); reason="NEWS"; break
         if exit_px is None:
             if len(scan):
                 exit_px=float(scan.iloc[-1]["close"]); reason="TIME18"
