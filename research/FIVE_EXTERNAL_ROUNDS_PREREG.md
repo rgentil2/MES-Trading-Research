@@ -160,47 +160,80 @@ Locked before running this 25-strategy block on MES 2020-2024.
 - Exit at first subsequent session open profitable versus entry (FPO).
 - News flat can close earlier.
 
-# Round 4
+# Round 4 — External + TradingView
 
-## R4-S1 — NinjaTrader Bollinger100 fade
-- Source: NinjaTrader Support Forum MultiFadeAtEachBollinger.
-- Bollinger length=100, deviation=1.5.
-- Short-only visible source leg: if Close>upper band, short next 1m open.
-- Source PT=$2,500 and SL=$5,000.
-- One MES translation: PT=500 index points, SL=1,000 index points.
+## R4-S1 — External Connors RSI(2)
+- Daily RTH; Close>SMA200 and RSI2<5.
+- Buy next RTH open.
+- Exit next RTH open after completed Close>SMA5.
+- No stop in original.
+
+## R4-S2 — External Connors Double 7
+- Daily RTH; Close>SMA200 and Close<=lowest close of 7-day window.
+- Buy next RTH open.
+- Exit next RTH open after completed Close>=highest close of 7-day window.
+- No stop.
+
+## R4-S3 — External Larry Williams Oops + FPO
+- If current RTH open<prior RTH Low, buy stop at prior Low.
+- If current RTH open>prior RTH High, sell stop at prior High.
+- Initial stop=current day extreme observed through entry.
+- Exit at first subsequent profitable session open.
+- News flat can close earlier.
+
+## R4-S4 — TradingView Bollinger Bands + EMA9
+- Source: TradingView open-source script by D499; public source mirror confirms defaults.
+- 1-minute, long-only exposed source.
+- EMA9.
+- Bollinger length=20, StdDev=2, Close source.
+- Signal when prior Close is below current lower Bollinger band.
+- Entry next 1m open.
+- Exit next 1m open after completed Close>=EMA9.
+- No invented stop; RTH close flat.
+
+## R4-S5 — TradingView SuperTrend Long/Short
+- Source: TradingView open-source SuperTrend Strategy [Long/Short].
+- ATR length=10; factor=3.0.
+- Bullish flip closes short/opens long; bearish flip closes long/opens short.
+- SuperTrend line is the dynamic stop.
+- New reversal entry only if execution is <=11:30; exits remain active later.
 - RTH close flat.
 
-## R4-S2 — NinjaTrader VWAP 2-sigma mean reversion
-- Source: NinjaTrader Support Forum ES VWAP strategy request.
-- Long-only.
-- Session VWAP and weighted sigma.
-- VWAP-to-lower-2σ distance 10-12 points for >=15 completed minutes.
-- Signal on touch/cross lower 2σ.
-- Entry next 1m open.
-- Stop=5 points.
-- Dynamic target=session VWAP.
-- RTH flat.
+# Round 5 — TradingView + structural external systems
 
-## R4-S3 — NinjaTrader Bollinger(2,14) lower-to-upper
-- Source: NinjaTrader Support Forum Bollinger strategy example.
-- Period=14, std dev=2.
-- Long when Close crosses above lower band.
-- Entry next 1m open.
-- Exit when Close crosses below upper band.
-- No source stop; RTH flat.
+## R5-S1 — TradingView NY Opening Range Breakout
+- Source: TradingView open-source strategy by shui2967.
+- OR=09:30-09:45 ET.
+- Completed close above OR high => long next bar; below OR low => short next bar.
+- User entry cutoff reduces source's noon cutoff to 11:30.
+- Stop=opposite OR edge.
+- Fixed target=entry +/-1.5*OR range.
+- One trade per direction per day.
+- RTH close flat.
 
-## R4-S4 — TradingView RSI14 40/60 TP/SL
-- Source: TradingView open-source "RSI Strategy With TP/SL - Lower TF".
+## R5-S2 — TradingView 15-Min ORB 2R
+- Source: TradingView open-source strategy by Hardest_Easy_Money.
+- OR=first 15 minutes.
+- Source's one-pip/two-pip buffers translated once, before outcomes, to one/two MES minimum ticks.
+- Buy stop=OR high+1 tick; sell stop=OR low-1 tick.
+- Long SL=OR low-2 ticks; short SL=OR high+2 ticks.
+- TP=2R, the published preferred target.
+- Cancel unfilled orders one hour after OR completion.
+- Opposite order canceled after trigger.
+- Optional breakeven/runner/time-exit variants are not used.
+- RTH close flat.
+
+## R5-S3 — TradingView RSI14 40/60 TP/SL
+- Source: TradingView open-source RSI Strategy With TP/SL - Lower TF.
 - RSI period=14.
 - Buy when RSI crosses below 40.
-- Sell/short when RSI crosses above 60.
-- Freeze Trade Direction=Both before outcomes.
-- TP=5% of entry.
-- SL=2% of entry.
-- Entry next 1m open; RTH close flat.
+- Short when RSI crosses above 60.
+- Direction frozen as Both.
+- TP=5%; SL=2%.
+- Entry next 1m open.
+- RTH close flat.
 
-## R4-S5 — External Opening-gap fade
-- Source: published NQ/ES gap-fill rule set.
+## R5-S4 — External opening-gap fade
 - Gap=current 09:30 open-prior RTH close.
 - Skip abs gap<0.10%.
 - Enter against gap at 09:30.
@@ -208,46 +241,9 @@ Locked before running this 25-strategy block on MES 2020-2024.
 - Stop=one full gap length beyond entry.
 - RTH close exit.
 
-# Round 5
-
-## R5-S1 — NinjaTrader prior-day close cross PT25
-- Source: NinjaTrader Support Forum Strategy Builder script.
-- Long when Low crosses above prior RTH Close.
-- Short when High crosses below prior RTH Close.
-- Entry next 1m open.
-- PT=25 ticks.
-- No source stop; RTH flat.
-
-## R5-S2 — NinjaTrader prior-day high/low breakout
-- Source: NinjaTrader Support Forum.
-- Long if Close crosses above prior RTH High and Close>current RTH Open.
-- Short if Close crosses below prior RTH Low and Close<current RTH Open.
-- Entry next 1m open.
-- Long stop=signal-bar Low-1 tick; short stop=signal-bar High+1 tick.
-- No target; RTH flat.
-
-## R5-S3 — NinjaTrader prior-day close cross 100/200
-- Source: NinjaTrader Support Forum "Prior Day Close Script Problem".
-- Short when Close crosses below prior RTH Close using support-corrected condition.
-- Entry next 1m open.
-- SL=100 ticks; PT=200 ticks.
-- RTH flat.
-
-## R5-S4 — TradingView 15-Min ORB 2R
-- Source: TradingView open-source strategy by Hardest_Easy_Money.
-- OR=first 15 minutes of RTH.
-- Source uses 1 pip breakout buffer and 2 pip stop buffer; for MES the frozen unit translation is 1 pip = 1 minimum tick.
-- Buy stop=OR high+1 tick; sell stop=OR low-1 tick.
-- Long SL=OR low-2 ticks; short SL=OR high+2 ticks.
-- TP=2R, the source's preferred target.
-- Cancel pending orders if no breakout occurs within 1 hour after OR completion.
-- Opposite order canceled after one side triggers.
-- No optional breakeven/runner/time exit; RTH close flat.
-
 ## R5-S5 — External Turtle System 1
-- Source: original Turtle rules.
-- Daily structural levels, executed with underlying 1m.
 - Long break above prior 20-session High; short below prior 20-session Low.
+- Execute with underlying 1m.
 - Exit long at prior 10-session Low; short at prior 10-session High.
 - Protective stop=2N; N=20-day Wilder ATR.
 - No pyramiding.
