@@ -178,3 +178,5 @@ def main():
 if __name__=="__main__":
     import pandas as pd
     main()
+
+# PR trigger only; calendar rules unchanged
