@@ -1008,6 +1008,168 @@ def simulate_daily_connors(daily,deadlines,lookup,news_by_date,kind):
     return rows,skips,forced
 
 
+
+def r4_oops_fpo(sessions,full,news_by_date,deadlines):
+    name="R4-S3 Larry Williams Oops FPO"
+    rows=[]; skips=0; forced=0
+    dates=sorted(sessions)
+    fullx=full.sort_values("bar_start_et").reset_index(drop=True)
+    deadline_set=set(deadlines)
+    j=1
+    while j < len(dates):
+        d,prev=dates[j],dates[j-1]
+        g=add_bar_start(sessions[d]); pg=sessions[prev]
+        prior_low=float(pg["low"].min()); prior_high=float(pg["high"].max())
+        op=float(g.iloc[0]["open"])
+        direction=0; level=None
+        if op<prior_low:
+            direction=1; level=prior_low
+        elif op>prior_high:
+            direction=-1; level=prior_high
+        if direction==0:
+            j+=1; continue
+        nd=news_by_date.get(d)
+        entry_idx=None; entry=None; entry_ts=None
+        for i in range(len(g)):
+            b=g.iloc[i]; ts=b["bar_start_et"]
+            hm=ts.hour*60+ts.minute
+            if hm>ENTRY_END: break
+            hit=float(b["high"])>=level if direction==1 else float(b["low"])<=level
+            if not hit: continue
+            if blocked_entry(ts,nd):
+                skips+=1; continue
+            entry_idx=i; entry_ts=ts
+            entry=max(level,float(b["open"])) if direction==1 else min(level,float(b["open"]))
+            break
+        if entry_idx is None:
+            j+=1; continue
+        stop=(float(g.iloc[:entry_idx+1]["low"].min()) if direction==1
+              else float(g.iloc[:entry_idx+1]["high"].max()))
+
+        # First subsequent RTH open that is profitable.
+        fpo_idx=None; normal_ts=None; normal_px=None
+        for k in range(j+1,len(dates)):
+            q=add_bar_start(sessions[dates[k]])
+            qop=float(q.iloc[0]["open"])
+            if (direction==1 and qop>entry) or (direction==-1 and qop<entry):
+                fpo_idx=k; normal_ts=q.iloc[0]["bar_start_et"]; normal_px=qop; break
+        if normal_ts is None:
+            q=add_bar_start(sessions[dates[-1]])
+            normal_ts=q.iloc[-1]["timestamp_et"]; normal_px=float(q.iloc[-1]["close"]); fpo_idx=len(dates)-1
+
+        scan=fullx[(fullx["bar_start_et"]>=entry_ts)&(fullx["bar_start_et"]<=normal_ts)]
+        exit_px=None; exit_ts=None; reason=None
+        for _,bar in scan.iterrows():
+            ts=bar["bar_start_et"]
+            if ts in deadline_set and ts>entry_ts:
+                exit_px=float(bar["open"]); exit_ts=ts; reason="NEWS"; forced+=1; break
+            if direction==1 and float(bar["low"])<=stop:
+                exit_px=float(bar["open"]) if float(bar["open"])<stop else stop
+                exit_ts=ts; reason="SL"; break
+            if direction==-1 and float(bar["high"])>=stop:
+                exit_px=float(bar["open"]) if float(bar["open"])>stop else stop
+                exit_ts=ts; reason="SL"; break
+        if exit_px is None:
+            exit_px=normal_px; exit_ts=normal_ts; reason="FPO"
+        rows.append(record("R4",name,d,direction,entry,exit_px,reason,entry_ts,exit_ts))
+        # continue discovery from day of exit or next setup day
+        exit_date=pd.Timestamp(exit_ts).tz_convert("America/New_York").date().isoformat() if pd.Timestamp(exit_ts).tzinfo else pd.Timestamp(exit_ts).date().isoformat()
+        nxt=[idx for idx,dd in enumerate(dates) if dd>=exit_date and idx>j]
+        j=(nxt[0] if nxt else len(dates))
+    return rows,skips,forced
+
+
+def r4_connors_30m(sessions,bars30,news):
+    name="R4-S4 Connors RSI2 symmetric 30m 0.15% stop"
+    rows=[]; skips=0; forced=0
+    for d,g0 in sessions.items():
+        g=add_bar_start(g0)
+        b30=bars30[bars30.date==d].reset_index(drop=True)
+        if b30.empty: continue
+        nd=news.get(d); dls=deadlines_for_day(nd)
+        available_ts=g.iloc[0]["bar_start_et"]
+        for i in range(len(b30)-1):
+            s=b30.iloc[i]
+            if s["close_et"]<available_ts: continue
+            direction=0
+            if pd.notna(s["rsi2"]) and pd.notna(s["sma200"]):
+                if float(s["rsi2"])<5 and float(s["close"])>float(s["sma200"]): direction=1
+                elif float(s["rsi2"])>95 and float(s["close"])<float(s["sma200"]): direction=-1
+            if direction==0: continue
+            entry_ts=b30.iloc[i+1]["start_et"]
+            hm=entry_ts.hour*60+entry_ts.minute
+            if hm<ENTRY_START or hm>ENTRY_END: continue
+            if blocked_entry(entry_ts,nd):
+                skips+=1; continue
+            entry=float(b30.iloc[i+1]["open"])
+            stop=entry*(1-0.0015) if direction==1 else entry*(1+0.0015)
+
+            normal_exit_ts=g.iloc[-1]["timestamp_et"]; reason="EOD"
+            for j in range(i+1,len(b30)-1):
+                q=b30.iloc[j]
+                if pd.isna(q["sma5"]) or pd.isna(q["sma200"]): continue
+                if direction==1:
+                    cond=float(q["close"])>float(q["sma5"]) or float(q["close"])<float(q["sma200"])
+                else:
+                    cond=float(q["close"])<float(q["sma5"]) or float(q["close"])>float(q["sma200"])
+                if cond:
+                    normal_exit_ts=b30.iloc[j+1]["start_et"]; reason="SIGNAL"; break
+
+            scan=g[(g["bar_start_et"]>=entry_ts)&(g["bar_start_et"]<=normal_exit_ts)]
+            exit_px=None; exit_ts=None; exit_reason=None
+            for _,bar in scan.iterrows():
+                ts=bar["bar_start_et"]
+                if ts in dls:
+                    exit_px=float(bar["open"]); exit_ts=ts; exit_reason="NEWS"; forced+=1; break
+                if direction==1 and float(bar["low"])<=stop:
+                    exit_px=float(bar["open"]) if float(bar["open"])<stop else stop
+                    exit_ts=ts; exit_reason="SL"; break
+                if direction==-1 and float(bar["high"])>=stop:
+                    exit_px=float(bar["open"]) if float(bar["open"])>stop else stop
+                    exit_ts=ts; exit_reason="SL"; break
+                if reason=="SIGNAL" and ts>=normal_exit_ts:
+                    exit_px=float(bar["open"]); exit_ts=ts; exit_reason="SIGNAL"; break
+            if exit_px is None:
+                exit_px=float(g.iloc[-1]["close"]); exit_ts=g.iloc[-1]["timestamp_et"]; exit_reason="EOD"
+            rows.append(record("R4",name,d,direction,entry,exit_px,exit_reason,entry_ts,exit_ts))
+            available_ts=pd.Timestamp(exit_ts)
+    return rows,skips,forced
+
+
+def r4_donchian20_10(daily,deadlines,lookup,news_by_date):
+    name="R4-S5 Donchian20/10 long-only"
+    rows=[]; skips=0; forced=0
+    i=0
+    while i < len(daily)-1:
+        s=daily.iloc[i]
+        sig=(pd.notna(s["high20_prev"]) and float(s["close"])>float(s["high20_prev"]))
+        if not sig:
+            i+=1; continue
+        eidx=i+1; e=daily.iloc[eidx]; entry_ts=e["open_ts"]
+        if blocked_entry(entry_ts,news_by_date.get(e["date"])):
+            skips+=1; i+=1; continue
+        entry=float(e["open"])
+        xidx=None
+        for j in range(eidx,len(daily)-1):
+            q=daily.iloc[j]
+            if pd.notna(q["low10_prev"]) and float(q["close"])<float(q["low10_prev"]):
+                xidx=j+1; break
+        if xidx is None: xidx=len(daily)-1
+        normal_ts=daily.iloc[xidx]["open_ts"] if xidx<len(daily)-1 else daily.iloc[xidx]["close_ts"]
+        normal_px=float(daily.iloc[xidx]["open"] if xidx<len(daily)-1 else daily.iloc[xidx]["close"])
+        dl=first_global_deadline_after(deadlines,entry_ts,normal_ts)
+        if dl is not None:
+            px,actual=price_at_or_after(dl,lookup)
+            if px is not None:
+                rows.append(record("R4",name,e["date"],1,entry,px,"NEWS",entry_ts,actual)); forced+=1
+                exit_date=pd.Timestamp(actual).tz_convert("America/New_York").date().isoformat() if pd.Timestamp(actual).tzinfo else pd.Timestamp(actual).date().isoformat()
+                m=daily.index[daily["date"]>=exit_date].tolist()
+                i=(m[0] if m else xidx); continue
+        rows.append(record("R4",name,e["date"],1,entry,normal_px,"DONCH_EXIT",entry_ts,normal_ts))
+        i=xidx+1
+    return rows,skips,forced
+
+
 # -----------------------------
 # Round 5 gaps
 # -----------------------------
