@@ -140,7 +140,7 @@ def extract_event_ticks(path: Path, events: pd.DataFrame):
         ns=ts.astype('int64').to_numpy()
         if len(ns)==0: continue
         cmin,cmax=int(ns.min()),int(ns.max())
-        chunk['_ts']=ts.to_numpy()
+        chunk['_ts']=ts
         # File is expected sorted; numpy search on sorted timestamp vector.
         order=np.argsort(ns,kind='stable')
         if not np.all(order==np.arange(len(order))):
