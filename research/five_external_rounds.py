@@ -1252,6 +1252,111 @@ def r5_gap_5m(sessions,news):
     return rows,skips,forced
 
 
+
+def _r5_channel_system(daily,sessions,deadlines,lookup,news_by_date,entry_n,exit_n,name,use_2n):
+    rows=[]; skips=0; forced=0
+    dates=sorted(set(daily["date"]).intersection(sessions.keys()))
+    dmap={r["date"]:r for _,r in daily.iterrows()}
+    pos=0; entry=None; entry_ts=None; stop=None
+    last_checked=None
+    for di,d in enumerate(dates):
+        row=dmap[d]
+        g=add_bar_start(sessions[d])
+        nd=news_by_date.get(d); dls=deadlines_for_day(nd)
+
+        # If holding overnight, a scheduled news deadline can flatten before RTH open.
+        if pos!=0 and last_checked is not None:
+            open_ts=g.iloc[0]["bar_start_et"]
+            dl=first_global_deadline_after(deadlines,last_checked,open_ts)
+            if dl is not None:
+                px,actual=price_at_or_after(dl,lookup)
+                if px is not None and pd.Timestamp(actual)<=open_ts:
+                    rows.append(record("R5",name,d,pos,entry,px,"NEWS",entry_ts,actual))
+                    pos=0; entry=None; stop=None; forced+=1
+
+        upper=row.get(f"high{entry_n}_prev",np.nan)
+        lower=row.get(f"low{entry_n}_prev",np.nan)
+        exit_low=row.get(f"low{exit_n}_prev",np.nan)
+        exit_high=row.get(f"high{exit_n}_prev",np.nan)
+        nval=row.get("atr20_prev",np.nan)
+
+        for i in range(len(g)):
+            b=g.iloc[i]; ts=b["bar_start_et"]
+            exited_this_bar=False
+
+            if pos!=0 and ts in dls:
+                rows.append(record("R5",name,d,pos,entry,float(b["open"]),"NEWS",entry_ts,ts))
+                pos=0; entry=None; stop=None; forced+=1; exited_this_bar=True
+
+            if pos!=0:
+                if pos==1:
+                    candidates=[]
+                    if use_2n and stop is not None: candidates.append(float(stop))
+                    if pd.notna(exit_low): candidates.append(float(exit_low))
+                    if candidates:
+                        eff=max(candidates)
+                        if float(b["low"])<=eff:
+                            fill=float(b["open"]) if float(b["open"])<eff else eff
+                            rows.append(record("R5",name,d,1,entry,fill,"CHANNEL/SL",entry_ts,ts))
+                            pos=0; entry=None; stop=None; exited_this_bar=True
+                else:
+                    candidates=[]
+                    if use_2n and stop is not None: candidates.append(float(stop))
+                    if pd.notna(exit_high): candidates.append(float(exit_high))
+                    if candidates:
+                        eff=min(candidates)
+                        if float(b["high"])>=eff:
+                            fill=float(b["open"]) if float(b["open"])>eff else eff
+                            rows.append(record("R5",name,d,-1,entry,fill,"CHANNEL/SL",entry_ts,ts))
+                            pos=0; entry=None; stop=None; exited_this_bar=True
+
+            if pos==0 and not exited_this_bar and pd.notna(upper) and pd.notna(lower):
+                hm=ts.hour*60+ts.minute
+                if ENTRY_START<=hm<=ENTRY_END:
+                    hit_l=float(b["high"])>=float(upper)
+                    hit_s=float(b["low"])<=float(lower)
+                    if hit_l and hit_s:
+                        continue
+                    if hit_l or hit_s:
+                        if blocked_entry(ts,nd):
+                            skips+=1; continue
+                        direction=1 if hit_l else -1
+                        level=float(upper) if direction==1 else float(lower)
+                        fill=max(level,float(b["open"])) if direction==1 else min(level,float(b["open"]))
+                        pos=direction; entry=fill; entry_ts=ts
+                        if use_2n:
+                            if pd.isna(nval) or float(nval)<=0:
+                                pos=0; entry=None; entry_ts=None; continue
+                            stop=entry-direction*2.0*float(nval)
+                        else:
+                            stop=None
+
+        last_checked=g.iloc[-1]["timestamp_et"]
+
+    if pos!=0:
+        d=dates[-1]; g=add_bar_start(sessions[d]); last=g.iloc[-1]
+        rows.append(record("R5",name,d,pos,entry,float(last["close"]),"DATA_END",entry_ts,last["timestamp_et"]))
+    return rows,skips,forced
+
+
+def r5_turtle_s1(daily,sessions,deadlines,lookup,news):
+    return _r5_channel_system(
+        daily,sessions,deadlines,lookup,news,
+        20,10,"R5-S3 Turtle S1 20/10 + 2N",True)
+
+
+def r5_turtle_s2(daily,sessions,deadlines,lookup,news):
+    return _r5_channel_system(
+        daily,sessions,deadlines,lookup,news,
+        55,20,"R5-S4 Turtle S2 55/20 + 2N",True)
+
+
+def r5_donchian20_20(daily,sessions,deadlines,lookup,news):
+    return _r5_channel_system(
+        daily,sessions,deadlines,lookup,news,
+        20,20,"R5-S5 Donchian four-week 20/20",False)
+
+
 # -----------------------------
 # Main
 # -----------------------------
