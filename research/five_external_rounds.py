@@ -1357,6 +1357,305 @@ def r5_donchian20_20(daily,sessions,deadlines,lookup,news):
         20,20,"R5-S5 Donchian four-week 20/20",False)
 
 
+
+# -----------------------------
+# TradingView open-source strategies
+# -----------------------------
+
+def _continuous_rth(sessions):
+    parts=[]
+    for d,g0 in sessions.items():
+        g=add_bar_start(g0)
+        g["_datekey"]=d
+        g["_row"]=range(len(g))
+        parts.append(g)
+    return pd.concat(parts,ignore_index=True).sort_values("timestamp_et").reset_index(drop=True)
+
+
+def tv_bb_ema9(sessions,news):
+    """TradingView D499 Bollinger Bands + EMA9, exposed long-only source."""
+    name="R4-S4 TV-Bollinger20x2 + EMA9 long"
+    x=_continuous_rth(sessions)
+    x["ema9"]=x["close"].ewm(span=9,adjust=False).mean()
+    mid=x["close"].rolling(20,min_periods=20).mean()
+    sd=x["close"].rolling(20,min_periods=20).std(ddof=0)
+    x["lower20"]=mid-2.0*sd
+    # Exact exposed Pine condition: Long = close[1] < lower (current lower).
+    x["long_signal"]=x["close"].shift(1) < x["lower20"]
+    x["exit_signal"]=x["close"] >= x["ema9"]
+
+    rows=[]; skips=0; forced=0
+    for d,g0 in x.groupby("_datekey",sort=True):
+        g=g0.reset_index(drop=True)
+        nd=news.get(d); dls=deadlines_for_day(nd)
+        pos=False; entry=None; entry_ts=None
+        pending_entry=False; pending_exit=False
+        for i in range(len(g)):
+            b=g.iloc[i]; ts=b["bar_start_et"]
+            if pos and ts in dls:
+                rows.append(record("R4",name,d,1,entry,float(b["open"]),"NEWS",entry_ts,ts))
+                pos=False; forced+=1
+            if pending_exit:
+                pending_exit=False
+                if pos:
+                    rows.append(record("R4",name,d,1,entry,float(b["open"]),"EMA9",entry_ts,ts))
+                    pos=False
+            if pending_entry:
+                pending_entry=False
+                hm=ts.hour*60+ts.minute
+                if not pos and ENTRY_START<=hm<=ENTRY_END:
+                    if blocked_entry(ts,nd):
+                        skips+=1
+                    else:
+                        pos=True; entry=float(b["open"]); entry_ts=ts
+            if i<len(g)-1:
+                if pos and bool(b["exit_signal"]):
+                    pending_exit=True
+                elif (not pos) and bool(b["long_signal"]):
+                    pending_entry=True
+        if pos:
+            last=g.iloc[-1]
+            rows.append(record("R4",name,d,1,entry,float(last["close"]),"EOD",entry_ts,last["timestamp_et"]))
+    return rows,skips,forced
+
+
+def _supertrend_series(g,period=10,factor=3.0):
+    high=g["high"].to_numpy(float)
+    low=g["low"].to_numpy(float)
+    close=g["close"].to_numpy(float)
+    n=len(g)
+    tr=np.full(n,np.nan)
+    for i in range(n):
+        if i==0:
+            tr[i]=high[i]-low[i]
+        else:
+            tr[i]=max(high[i]-low[i],abs(high[i]-close[i-1]),abs(low[i]-close[i-1]))
+    atr=pd.Series(tr).ewm(alpha=1/period,adjust=False,min_periods=period).mean().to_numpy()
+    hl2=(high+low)/2.0
+    bu=hl2+factor*atr
+    bl=hl2-factor*atr
+    fu=np.full(n,np.nan); fl=np.full(n,np.nan); st=np.full(n,np.nan); bull=np.full(n,False)
+    for i in range(n):
+        if not np.isfinite(atr[i]):
+            continue
+        if i==0 or not np.isfinite(fu[i-1]):
+            fu[i]=bu[i]; fl[i]=bl[i]
+            st[i]=fu[i]
+            bull[i]=close[i]>st[i]
+            continue
+        fu[i]=bu[i] if (bu[i]<fu[i-1] or close[i-1]>fu[i-1]) else fu[i-1]
+        fl[i]=bl[i] if (bl[i]>fl[i-1] or close[i-1]<fl[i-1]) else fl[i-1]
+        if np.isclose(st[i-1],fu[i-1],equal_nan=False):
+            st[i]=fu[i] if close[i]<=fu[i] else fl[i]
+        else:
+            st[i]=fl[i] if close[i]>=fl[i] else fu[i]
+        bull[i]=close[i]>st[i]
+    return st,bull
+
+
+def tv_supertrend(sessions,news):
+    """TradingView open-source SuperTrend L/S, defaults ATR10 factor3."""
+    name="R4-S5 TV-SuperTrend10x3 L/S"
+    rows=[]; skips=0; forced=0
+    for d,g0 in sessions.items():
+        g=add_bar_start(g0)
+        st,bull=_supertrend_series(g,10,3.0)
+        g=g.copy()
+        g["st"]=st; g["bull"]=bull
+        nd=news.get(d); dls=deadlines_for_day(nd)
+        pos=0; entry=None; entry_ts=None; pending=0
+        for i in range(len(g)):
+            b=g.iloc[i]; ts=b["bar_start_et"]
+            # Dynamic stop known from previous completed bar.
+            if pos!=0 and ts in dls:
+                rows.append(record("R4",name,d,pos,entry,float(b["open"]),"NEWS",entry_ts,ts))
+                pos=0; forced+=1
+            if pos!=0 and i>0 and np.isfinite(g.iloc[i-1]["st"]):
+                stop=float(g.iloc[i-1]["st"])
+                if pos==1 and stop< float(b["open"]) and float(b["low"])<=stop:
+                    fill=float(b["open"]) if float(b["open"])<stop else stop
+                    rows.append(record("R4",name,d,1,entry,fill,"SUPERSTOP",entry_ts,ts))
+                    pos=0
+                elif pos==-1 and stop>float(b["open"]) and float(b["high"])>=stop:
+                    fill=float(b["open"]) if float(b["open"])>stop else stop
+                    rows.append(record("R4",name,d,-1,entry,fill,"SUPERSTOP",entry_ts,ts))
+                    pos=0
+            if pending!=0:
+                desired=pending; pending=0
+                if pos!=0 and pos!=desired:
+                    rows.append(record("R4",name,d,pos,entry,float(b["open"]),"FLIP",entry_ts,ts))
+                    pos=0
+                hm=ts.hour*60+ts.minute
+                if pos==0 and ENTRY_START<=hm<=ENTRY_END:
+                    if blocked_entry(ts,nd):
+                        skips+=1
+                    else:
+                        pos=desired; entry=float(b["open"]); entry_ts=ts
+            if i<len(g)-1 and i>0 and np.isfinite(g.iloc[i]["st"]) and np.isfinite(g.iloc[i-1]["st"]):
+                now=bool(g.iloc[i]["bull"]); prev=bool(g.iloc[i-1]["bull"])
+                if now and not prev: pending=1
+                elif prev and not now: pending=-1
+        if pos!=0:
+            last=g.iloc[-1]
+            rows.append(record("R4",name,d,pos,entry,float(last["close"]),"EOD",entry_ts,last["timestamp_et"]))
+    return rows,skips,forced
+
+
+def tv_rsi14_4060(sessions,news):
+    """TradingView Free990 RSI14 40/60, TP5%, SL2%, frozen Both directions."""
+    name="R5-S3 TV-RSI14 40/60 TP5 SL2"
+    x=_continuous_rth(sessions)
+    x["rsi14_tv"]=wilder_rsi(x["close"],14)
+    x["cross_below40"]=(x["rsi14_tv"]<40)&(x["rsi14_tv"].shift(1)>=40)
+    x["cross_above60"]=(x["rsi14_tv"]>60)&(x["rsi14_tv"].shift(1)<=60)
+    rows=[]; skips=0; forced=0
+    for d,g0 in x.groupby("_datekey",sort=True):
+        g=g0.reset_index(drop=True)
+        nd=news.get(d); dls=deadlines_for_day(nd)
+        pos=0; entry=None; entry_ts=None; stop=None; target=None; pending=0
+        for i in range(len(g)):
+            b=g.iloc[i]; ts=b["bar_start_et"]
+            if pos!=0 and ts in dls:
+                rows.append(record("R5",name,d,pos,entry,float(b["open"]),"NEWS",entry_ts,ts))
+                pos=0; forced+=1
+            if pending!=0:
+                desired=pending; pending=0
+                if pos!=0 and pos!=desired:
+                    rows.append(record("R5",name,d,pos,entry,float(b["open"]),"RSI_REVERSE",entry_ts,ts))
+                    pos=0
+                hm=ts.hour*60+ts.minute
+                if pos==0 and ENTRY_START<=hm<=ENTRY_END:
+                    if blocked_entry(ts,nd): skips+=1
+                    else:
+                        pos=desired; entry=float(b["open"]); entry_ts=ts
+                        stop=entry*(1-0.02*pos)
+                        target=entry*(1+0.05*pos)
+            if pos!=0:
+                if pos==1:
+                    if float(b["low"])<=stop:
+                        fill=float(b["open"]) if float(b["open"])<stop else stop
+                        rows.append(record("R5",name,d,pos,entry,fill,"SL",entry_ts,ts)); pos=0
+                    elif float(b["high"])>=target:
+                        fill=float(b["open"]) if float(b["open"])>target else target
+                        rows.append(record("R5",name,d,pos,entry,fill,"TP",entry_ts,ts)); pos=0
+                else:
+                    if float(b["high"])>=stop:
+                        fill=float(b["open"]) if float(b["open"])>stop else stop
+                        rows.append(record("R5",name,d,pos,entry,fill,"SL",entry_ts,ts)); pos=0
+                    elif float(b["low"])<=target:
+                        fill=float(b["open"]) if float(b["open"])<target else target
+                        rows.append(record("R5",name,d,pos,entry,fill,"TP",entry_ts,ts)); pos=0
+            if i<len(g)-1:
+                if bool(b["cross_below40"]): pending=1
+                elif bool(b["cross_above60"]): pending=-1
+        if pos!=0:
+            last=g.iloc[-1]
+            rows.append(record("R5",name,d,pos,entry,float(last["close"]),"EOD",entry_ts,last["timestamp_et"]))
+    return rows,skips,forced
+
+
+def tv_ny_orb15_rr(sessions,news):
+    """TradingView shui2967 NY ORB: close-confirmed breakout, stop other OR edge, TP 1.5x OR range."""
+    name="R5-S1 TV-NY ORB15 fixed1.5xRange"
+    rows=[]; skips=0; forced=0
+    for d,g0 in sessions.items():
+        g=add_bar_start(g0)
+        if len(g)<20: continue
+        orh=float(g.iloc[:15]["high"].max()); orl=float(g.iloc[:15]["low"].min())
+        rr_range=orh-orl
+        if rr_range<=0: continue
+        nd=news.get(d); dls=deadlines_for_day(nd)
+        long_used=False; short_used=False
+        pos=0; entry=None; entry_ts=None; stop=None; target=None; pending=0
+        for i in range(15,len(g)):
+            b=g.iloc[i]; ts=b["bar_start_et"]
+            if pos!=0 and ts in dls:
+                rows.append(record("R5",name,d,pos,entry,float(b["open"]),"NEWS",entry_ts,ts))
+                pos=0; forced+=1
+            if pending!=0:
+                desired=pending; pending=0
+                hm=ts.hour*60+ts.minute
+                used=(long_used if desired==1 else short_used)
+                if pos==0 and not used and ENTRY_START<=hm<=ENTRY_END:
+                    if blocked_entry(ts,nd): skips+=1
+                    else:
+                        pos=desired; entry=float(b["open"]); entry_ts=ts
+                        stop=orl if pos==1 else orh
+                        target=entry+pos*1.5*rr_range
+                        if pos==1: long_used=True
+                        else: short_used=True
+            if pos!=0:
+                if pos==1:
+                    if float(b["low"])<=stop:
+                        fill=float(b["open"]) if float(b["open"])<stop else stop
+                        rows.append(record("R5",name,d,pos,entry,fill,"SL",entry_ts,ts)); pos=0
+                    elif float(b["high"])>=target:
+                        fill=float(b["open"]) if float(b["open"])>target else target
+                        rows.append(record("R5",name,d,pos,entry,fill,"TP",entry_ts,ts)); pos=0
+                else:
+                    if float(b["high"])>=stop:
+                        fill=float(b["open"]) if float(b["open"])>stop else stop
+                        rows.append(record("R5",name,d,pos,entry,fill,"SL",entry_ts,ts)); pos=0
+                    elif float(b["low"])<=target:
+                        fill=float(b["open"]) if float(b["open"])<target else target
+                        rows.append(record("R5",name,d,pos,entry,fill,"TP",entry_ts,ts)); pos=0
+            if i<len(g)-1 and pos==0:
+                if (not long_used) and float(b["close"])>orh:
+                    pending=1
+                elif (not short_used) and float(b["close"])<orl:
+                    pending=-1
+        if pos!=0:
+            last=g.iloc[-1]
+            rows.append(record("R5",name,d,pos,entry,float(last["close"]),"EOD",entry_ts,last["timestamp_et"]))
+    return rows,skips,forced
+
+
+def tv_orb15_2r(sessions,news):
+    """TradingView Hardest_Easy_Money ORB15; source pip translated to one MES tick."""
+    name="R5-S2 TV-ORB15 stop-order 2R"
+    rows=[]; skips=0; forced=0
+    for d,g0 in sessions.items():
+        g=add_bar_start(g0)
+        if len(g)<20: continue
+        orh=float(g.iloc[:15]["high"].max()); orl=float(g.iloc[:15]["low"].min())
+        long_level=orh+1*TICK
+        short_level=orl-1*TICK
+        long_stop=orl-2*TICK
+        short_stop=orh+2*TICK
+        nd=news.get(d)
+        # Orders active for one hour after 09:45 => through 10:45 bar start.
+        entry=None
+        for i in range(15,len(g)):
+            b=g.iloc[i]; ts=b["bar_start_et"]
+            if ts.hour*60+ts.minute>10*60+45: break
+            hit_l=float(b["high"])>=long_level
+            hit_s=float(b["low"])<=short_level
+            if hit_l and hit_s:
+                entry=None
+                break
+            if not hit_l and not hit_s:
+                continue
+            direction=1 if hit_l else -1
+            if blocked_entry(ts,nd):
+                skips+=1
+                continue
+            level=long_level if direction==1 else short_level
+            fill=max(level,float(b["open"])) if direction==1 else min(level,float(b["open"]))
+            entry=(i,direction,fill,ts)
+            break
+        if entry is None: continue
+        idx,direction,fill,ts=entry
+        stop=long_stop if direction==1 else short_stop
+        risk=abs(fill-stop)
+        if risk<=0: continue
+        target=fill+direction*2.0*risk
+        exit_px,_,reason,exit_ts=static_path(g,idx,direction,fill,stop,target,nd,389)
+        if reason=="NEWS": forced+=1
+        rows.append(record("R5",name,d,direction,fill,exit_px,reason,ts,exit_ts))
+    return rows,skips,forced
+
+
+
 # -----------------------------
 # Main
 # -----------------------------
@@ -1376,6 +1675,7 @@ def main():
     print("RTH sessions:",len(sessions),"daily rows:",len(daily),"30m bars:",len(bars30))
 
     specs=[
+        # 15 NinjaTrader / NinjaTrader Forum strategies
         ("R1","R1-S1 SampleMACrossOver 10/25",r1_sample_ma,(sessions,news_by_date)),
         ("R1","R1-S2 SamplePriceModification 20/100 BE50",r1_sample_price_mod,(sessions,news_by_date)),
         ("R1","R1-S3 SMA5/30 lookback2 PT1",r1_sma530_pt1,(sessions,news_by_date)),
@@ -1394,17 +1694,18 @@ def main():
         ("R3","R3-S4 PriorHighLow breakout signalbar stop",r3_prior_hilo_breakout,(base_sessions,news_by_date)),
         ("R3","R3-S5 PriorClose cross short SL100 PT200",r3_prior_close_short_100_200,(base_sessions,news_by_date)),
 
+        # 5 TradingView open-source strategies + 5 other published systems
         ("R4","R4-S1 Connors RSI2<5 / SMA200",simulate_daily_connors,(daily,deadlines,lookup,news_by_date,"rsi2")),
         ("R4","R4-S2 Connors Double7",simulate_daily_connors,(daily,deadlines,lookup,news_by_date,"double7")),
         ("R4","R4-S3 Larry Williams Oops FPO",r4_oops_fpo,(base_sessions,full,news_by_date,deadlines)),
-        ("R4","R4-S4 Connors RSI2 symmetric 30m 0.15% stop",r4_connors_30m,(base_sessions,bars30,news_by_date)),
-        ("R4","R4-S5 Donchian20/10 long-only",r4_donchian20_10,(daily,deadlines,lookup,news_by_date)),
+        ("R4","R4-S4 TV-Bollinger20x2 + EMA9 long",tv_bb_ema9,(base_sessions,news_by_date)),
+        ("R4","R4-S5 TV-SuperTrend10x3 L/S",tv_supertrend,(base_sessions,news_by_date)),
 
-        ("R5","R5-S1 Gap fade open -> prior close",r5_gap_open,(base_sessions,news_by_date)),
-        ("R5","R5-S2 5m gap fill 0.05-0.20% SL12",r5_gap_5m,(base_sessions,news_by_date)),
-        ("R5","R5-S3 Turtle S1 20/10 + 2N",r5_turtle_s1,(daily,base_sessions,deadlines,lookup,news_by_date)),
-        ("R5","R5-S4 Turtle S2 55/20 + 2N",r5_turtle_s2,(daily,base_sessions,deadlines,lookup,news_by_date)),
-        ("R5","R5-S5 Donchian four-week 20/20",r5_donchian20_20,(daily,base_sessions,deadlines,lookup,news_by_date)),
+        ("R5","R5-S1 TV-NY ORB15 fixed1.5xRange",tv_ny_orb15_rr,(base_sessions,news_by_date)),
+        ("R5","R5-S2 TV-ORB15 stop-order 2R",tv_orb15_2r,(base_sessions,news_by_date)),
+        ("R5","R5-S3 TV-RSI14 40/60 TP5 SL2",tv_rsi14_4060,(base_sessions,news_by_date)),
+        ("R5","R5-S4 Gap fade open -> prior close",r5_gap_open,(base_sessions,news_by_date)),
+        ("R5","R5-S5 Turtle S1 20/10 + 2N",r5_turtle_s1,(daily,base_sessions,deadlines,lookup,news_by_date)),
     ]
 
     assert len(specs)==25
@@ -1413,17 +1714,18 @@ def main():
         print("RUN",rid,name)
         rows,skips,forced=fn(*args)
         allrows.extend(rows)
-        meta.append((rid,name,skips,forced))
+        family=("NinjaTrader" if rid in {"R1","R2","R3"} else ("TradingView" if "TV-" in name else "External"))
+        meta.append((rid,name,family,skips,forced))
 
     trades=pd.DataFrame(allrows)
     summaries=[]
-    for rid,name,skips,forced in meta:
+    for rid,name,family,skips,forced in meta:
         if len(trades):
             g=trades[(trades["round"]==rid)&(trades["strategy"]==name)].copy()
         else:
             g=pd.DataFrame()
         m=metrics(g)
-        summaries.append(dict(round=rid,strategy=name,news_entry_skips=skips,
+        summaries.append(dict(round=rid,source_family=family,strategy=name,news_entry_skips=skips,
                               forced_news_exits=forced,**m,
                               passes_primary_gate=gate(m)))
     summary=pd.DataFrame(summaries)
@@ -1434,7 +1736,7 @@ def main():
     summary.to_csv(out/"summary.csv",index=False)
 
     print("\n=== FIVE ROUNDS x FIVE EXTERNAL STRATEGIES ===")
-    cols=["round","strategy","trades","trades_per_month","net_pts_trade","pf_net","win_rate",
+    cols=["round","source_family","strategy","trades","trades_per_month","net_pts_trade","pf_net","win_rate",
           "total_net","max_dd_points","positive_years","max_positive_year_share",
           "news_entry_skips","forced_news_exits","passes_primary_gate"]
     for col in cols:
