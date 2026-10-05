@@ -364,3 +364,5 @@ def main():
 
 if __name__=="__main__":
     main()
+
+# PR trigger only; corrected T-5 news exit logic unchanged
