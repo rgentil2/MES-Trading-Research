@@ -1,0 +1,36 @@
+name: MES RTH coverage audit A2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/audit_mes_rth_coverage.py'
+      - 'research/market_state/MES_MS1_RTH_COVERAGE_AUDIT_PROTOCOL.md'
+      - '.github/workflows/mes-rth-coverage-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rth-coverage-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas pyyaml
+      - name: Run descriptive RTH coverage audit
+        run: python tools/audit_mes_rth_coverage.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mes-rth-coverage-audit-a2
+          path: |
+            results/market_state/MES_MS1_RTH_COVERAGE_AUDIT.*
+            results/market_state/MES_MS1_RTH_COVERAGE_BLOCKED.csv
+            results/market_state/MES_MS1_RTH_COVERAGE_DAILY.csv
+          if-no-files-found: error
