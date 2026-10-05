@@ -1,0 +1,58 @@
+name: MES V2 Tick 2024 Feasibility
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "research/mes_v2_tick_2024.py"
+      - "research/MES_V2_LAYER2_TICK_2024_PREREG.md"
+      - ".github/workflows/mes-v2-tick-2024.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+          fetch-depth: 1
+
+      - name: Pull MAR24 Tick only
+        run: |
+          git lfs install
+          git lfs pull --include="data_es_staging/raw_lfs/ES_MAR24/ES_MAR24_Tick_Last.txt" --exclude=""
+
+      - name: Verify no holdout Tick data materialized
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          bad=[]
+          for y in ("25","26"):
+              for p in Path("data_es_staging/raw_lfs").glob(f"ES_*{y}/*_Tick_Last.txt"):
+                  if p.exists() and p.stat().st_size > 1000:
+                      bad.append(str(p))
+          if bad:
+              raise SystemExit("Holdout Tick objects materialized: "+", ".join(bad))
+          print("PASS: 2025/2026 Tick remain unavailable/pointers.")
+          PY
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install pandas numpy scikit-learn
+
+      - name: Run preregistered Tick feasibility gate
+        run: python research/mes_v2_tick_2024.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mes-v2-tick-2024-results
+          path: results/mes_v2_tick_2024/
+          retention-days: 30
