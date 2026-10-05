@@ -264,7 +264,7 @@ def main() -> None:
         },
         "freeze": lock,
         "config": configuration(),
-        "pandas_market_calendars_version": importlib.metadata.version("pandas_market_calendars"),
+        "pandas_market_calendars_version": configuration()["calendar_package_version"],
         "strategy_authorized": False,
         "forward_returns_computed": False,
         "pnl_computed": False,
