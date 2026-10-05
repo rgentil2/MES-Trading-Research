@@ -1,0 +1,35 @@
+name: Build Forex Factory News Calendar
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "tools/build_forexfactory_calendar.py"
+      - ".github/workflows/build-ff-calendar.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "tools/build_forexfactory_calendar.py"
+      - ".github/workflows/build-ff-calendar.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install requests beautifulsoup4 pandas
+      - name: Build FF calendar
+        run: python tools/build_forexfactory_calendar.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: forexfactory-usd-high-medium-2020-2024
+          path: data_external/forexfactory/
+          retention-days: 30
