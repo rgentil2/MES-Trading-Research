@@ -7,6 +7,12 @@ on:
       - "research/mes_v2_quantifying_discretion.py"
       - "research/MES_V2_QUANTIFYING_DISCRETION_PREREG.md"
       - ".github/workflows/mes-v2-quantifying-discretion.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "research/mes_v2_quantifying_discretion.py"
+      - "research/MES_V2_QUANTIFYING_DISCRETION_PREREG.md"
+      - ".github/workflows/mes-v2-quantifying-discretion.yml"
   workflow_dispatch:
 
 permissions:
