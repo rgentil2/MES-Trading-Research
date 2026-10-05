@@ -1371,33 +1371,57 @@ def main():
     base_sessions=ext.rth_sessions(full.drop(columns=["bar_start_et"]))
     sessions=enrich_1m(base_sessions)
     bars5=aggregate_5m(base_sessions)
+    bars30=aggregate_30m(base_sessions)
     daily=daily_table(base_sessions)
-    print("RTH sessions:",len(sessions),"daily rows:",len(daily))
+    print("RTH sessions:",len(sessions),"daily rows:",len(daily),"30m bars:",len(bars30))
 
     specs=[
-        ("R1",r1_sample_ma,(sessions,news_by_date)),
-        ("R1",r1_sample_price_mod,(sessions,news_by_date)),
-        ("R2",r2_macd_contrarian,(sessions,news_by_date)),
-        ("R2",r2_mfi_macd,(base_sessions,bars5,news_by_date)),
-        ("R3",r3_vwap2,(base_sessions,news_by_date)),
-        ("R3",r3_bollinger,(sessions,news_by_date)),
-        ("R4",simulate_daily_connors,(daily,deadlines,lookup,news_by_date,"rsi2")),
-        ("R4",simulate_daily_connors,(daily,deadlines,lookup,news_by_date,"double7")),
-        ("R5",r5_gap_open,(base_sessions,news_by_date)),
-        ("R5",r5_gap_5m,(base_sessions,news_by_date)),
+        ("R1","R1-S1 SampleMACrossOver 10/25",r1_sample_ma,(sessions,news_by_date)),
+        ("R1","R1-S2 SamplePriceModification 20/100 BE50",r1_sample_price_mod,(sessions,news_by_date)),
+        ("R1","R1-S3 SMA5/30 lookback2 PT1",r1_sma530_pt1,(sessions,news_by_date)),
+        ("R1","R1-S4 EMA20/40 + RSI14s3 PT200 dynEMA40",r1_ema_rsi_dynamic,(sessions,news_by_date)),
+        ("R1","R1-S5 Basic Donchian20 long",r1_donchian20,(sessions,news_by_date)),
+
+        ("R2","R2-S1 Contrarian MACD 10/10",r2_macd_contrarian,(sessions,news_by_date)),
+        ("R2","R2-S2 MFI14+MACD 5m long",r2_mfi_macd,(base_sessions,bars5,news_by_date)),
+        ("R2","R2-S3 InsideBar directional close SL10 PT25",r2_inside_directional,(sessions,news_by_date)),
+        ("R2","R2-S4 InsideBar structural bracket",r2_inside_structural,(sessions,news_by_date)),
+        ("R2","R2-S5 Bollinger100 1.5dev short $2500/$5000",r2_boll100_fade,(sessions,news_by_date)),
+
+        ("R3","R3-S1 VWAP lower2 10-12pt mean reversion",r3_vwap2,(base_sessions,news_by_date)),
+        ("R3","R3-S2 Bollinger(2,14) lower-to-upper long",r3_bollinger,(sessions,news_by_date)),
+        ("R3","R3-S3 PriorClose cross PT25",r3_prior_close_pt25,(base_sessions,news_by_date)),
+        ("R3","R3-S4 PriorHighLow breakout signalbar stop",r3_prior_hilo_breakout,(base_sessions,news_by_date)),
+        ("R3","R3-S5 PriorClose cross short SL100 PT200",r3_prior_close_short_100_200,(base_sessions,news_by_date)),
+
+        ("R4","R4-S1 Connors RSI2<5 / SMA200",simulate_daily_connors,(daily,deadlines,lookup,news_by_date,"rsi2")),
+        ("R4","R4-S2 Connors Double7",simulate_daily_connors,(daily,deadlines,lookup,news_by_date,"double7")),
+        ("R4","R4-S3 Larry Williams Oops FPO",r4_oops_fpo,(base_sessions,full,news_by_date,deadlines)),
+        ("R4","R4-S4 Connors RSI2 symmetric 30m 0.15% stop",r4_connors_30m,(base_sessions,bars30,news_by_date)),
+        ("R4","R4-S5 Donchian20/10 long-only",r4_donchian20_10,(daily,deadlines,lookup,news_by_date)),
+
+        ("R5","R5-S1 Gap fade open -> prior close",r5_gap_open,(base_sessions,news_by_date)),
+        ("R5","R5-S2 5m gap fill 0.05-0.20% SL12",r5_gap_5m,(base_sessions,news_by_date)),
+        ("R5","R5-S3 Turtle S1 20/10 + 2N",r5_turtle_s1,(daily,base_sessions,deadlines,lookup,news_by_date)),
+        ("R5","R5-S4 Turtle S2 55/20 + 2N",r5_turtle_s2,(daily,base_sessions,deadlines,lookup,news_by_date)),
+        ("R5","R5-S5 Donchian four-week 20/20",r5_donchian20_20,(daily,base_sessions,deadlines,lookup,news_by_date)),
     ]
 
+    assert len(specs)==25
     allrows=[]; meta=[]
-    for rid,fn,args in specs:
+    for rid,name,fn,args in specs:
+        print("RUN",rid,name)
         rows,skips,forced=fn(*args)
         allrows.extend(rows)
-        name=rows[0]["strategy"] if rows else fn.__name__ + ("_"+str(args[-1]) if fn is simulate_daily_connors else "")
         meta.append((rid,name,skips,forced))
 
     trades=pd.DataFrame(allrows)
     summaries=[]
     for rid,name,skips,forced in meta:
-        g=trades[(trades["round"]==rid)&(trades["strategy"]==name)].copy() if len(trades) else pd.DataFrame()
+        if len(trades):
+            g=trades[(trades["round"]==rid)&(trades["strategy"]==name)].copy()
+        else:
+            g=pd.DataFrame()
         m=metrics(g)
         summaries.append(dict(round=rid,strategy=name,news_entry_skips=skips,
                               forced_news_exits=forced,**m,
@@ -1409,17 +1433,19 @@ def main():
     trades.to_csv(out/"trades.csv",index=False)
     summary.to_csv(out/"summary.csv",index=False)
 
-    print("\n=== FIVE EXTERNAL STRATEGY ROUNDS ===")
+    print("\n=== FIVE ROUNDS x FIVE EXTERNAL STRATEGIES ===")
     cols=["round","strategy","trades","trades_per_month","net_pts_trade","pf_net","win_rate",
           "total_net","max_dd_points","positive_years","max_positive_year_share",
           "news_entry_skips","forced_news_exits","passes_primary_gate"]
+    for col in cols:
+        if col not in summary.columns: summary[col]=np.nan
     print(summary[cols].round(4).to_string(index=False))
     print("\n=== YEARLY ===")
     for _,r in summary.iterrows():
         print(r["round"],r["strategy"],"::",r.get("yearly",""))
-    for rid in sorted(summary["round"].unique()):
+    for rid in ["R1","R2","R3","R4","R5"]:
         z=summary[summary["round"]==rid]
-        print("\n",rid,"PASSED:",z.loc[z.passes_primary_gate,"strategy"].tolist())
+        print("\n",rid,"PASSED:",z.loc[z.passes_primary_gate==True,"strategy"].tolist())
 
 if __name__=="__main__":
     main()
