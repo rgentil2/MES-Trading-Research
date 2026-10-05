@@ -1,0 +1,30 @@
+{
+  "version": "MES-MS2-20261005",
+  "authority": "DESCRIPTIVE_FEATURE_MAP_ONLY",
+  "frozen_before_first_v2_data_run": true,
+  "outcomes_permitted": false,
+  "base_commit": "5446b9931ae820f14a98eeef2733f362aef2e8e0",
+  "config": {
+    "window": 252,
+    "minimum_valid": 126,
+    "atr_sessions": 14,
+    "trend_sessions": 10,
+    "overnight_min_bars": 800,
+    "q_low": 0.3333333333333333,
+    "q_high": 0.6666666666666666,
+    "trend_neutral_atr": 1,
+    "overnight_flat_atr": 0.1,
+    "cusum_k": 0.5,
+    "cusum_h": 5,
+    "transition_sessions": 5,
+    "rth_min_coverage": 0.95,
+    "calendar": "pandas_market_calendars.CME_Equity",
+    "calendar_package_version": "5.4.0"
+  },
+  "fingerprints": {
+    "src/mes_market_state_v2.py": "07020d669ac808958f86a4ab98fb5091626c00cb",
+    "tests/test_mes_market_state_v2.py": "4a139a669c6574b88987fcd9137c7e4069beb68b",
+    "tools/audit_mes_market_state_v2.py": "29d74eec9ca6244e1c23ff13778348be2f131c09",
+    "research/market_state/MES_MS2_PROTOCOL.md": "7c68779a6fcc5689225dae5f252ec0e79a8bba64"
+  }
+}
