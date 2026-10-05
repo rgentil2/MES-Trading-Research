@@ -223,6 +223,29 @@ def aggregate_5m(sessions):
     return x
 
 
+
+def aggregate_30m(sessions):
+    rows=[]
+    for d,g0 in sessions.items():
+        g=add_bar_start(g0)
+        for j in range(13):
+            b=g.iloc[j*30:(j+1)*30]
+            if len(b)<30: break
+            rows.append(dict(
+                date=d,block=j,start_idx=j*30,end_idx=(j+1)*30-1,
+                start_et=b.iloc[0]["bar_start_et"],
+                close_et=b.iloc[-1]["timestamp_et"],
+                open=float(b.iloc[0]["open"]),high=float(b["high"].max()),
+                low=float(b["low"].min()),close=float(b.iloc[-1]["close"]),
+                volume=float(b["volume"].sum())
+            ))
+    x=pd.DataFrame(rows).sort_values(["date","block"]).reset_index(drop=True)
+    x["sma200"]=x["close"].rolling(200,min_periods=200).mean()
+    x["sma5"]=x["close"].rolling(5,min_periods=5).mean()
+    x["rsi2"]=wilder_rsi(x["close"],2)
+    return x
+
+
 def add_session_vwap_bands(sessions):
     out={}
     for d,g0 in sessions.items():
@@ -914,6 +937,16 @@ def daily_table(sessions):
     x["rsi2"]=wilder_rsi(x["close"],2)
     x["low7close"]=x["close"].rolling(7,min_periods=7).min()
     x["high7close"]=x["close"].rolling(7,min_periods=7).max()
+    pc=x["close"].shift(1)
+    tr=pd.concat([
+        x["high"]-x["low"],
+        (x["high"]-pc).abs(),
+        (x["low"]-pc).abs()
+    ],axis=1).max(axis=1)
+    x["atr20"]=tr.ewm(alpha=1/20,adjust=False,min_periods=20).mean()
+    for n in (10,20,55):
+        x[f"high{n}_prev"]=x["high"].rolling(n,min_periods=n).max().shift(1)
+        x[f"low{n}_prev"]=x["low"].rolling(n,min_periods=n).min().shift(1)
     return x
 
 
