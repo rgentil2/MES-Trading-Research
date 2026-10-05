@@ -944,6 +944,7 @@ def daily_table(sessions):
         (x["low"]-pc).abs()
     ],axis=1).max(axis=1)
     x["atr20"]=tr.ewm(alpha=1/20,adjust=False,min_periods=20).mean()
+    x["atr20_prev"]=x["atr20"].shift(1)
     for n in (10,20,55):
         x[f"high{n}_prev"]=x["high"].rolling(n,min_periods=n).max().shift(1)
         x[f"low{n}_prev"]=x["low"].rolling(n,min_periods=n).min().shift(1)
