@@ -1196,7 +1196,7 @@ def static_path(g,start_idx,direction,entry,stop,target,nd,eod_idx=389):
 
 
 def r5_gap_open(sessions,news):
-    name="R5-S1 Gap fade open -> prior close"
+    name="R5-S4 Gap fade open -> prior close"
     rows=[]; skips=0; forced=0
     dates=sorted(sessions)
     for j in range(1,len(dates)):
@@ -1342,7 +1342,7 @@ def _r5_channel_system(daily,sessions,deadlines,lookup,news_by_date,entry_n,exit
 def r5_turtle_s1(daily,sessions,deadlines,lookup,news):
     return _r5_channel_system(
         daily,sessions,deadlines,lookup,news,
-        20,10,"R5-S3 Turtle S1 20/10 + 2N",True)
+        20,10,"R5-S5 Turtle S1 20/10 + 2N",True)
 
 
 def r5_turtle_s2(daily,sessions,deadlines,lookup,news):
