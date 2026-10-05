@@ -1,0 +1,43 @@
+name: MES Forex Factory News Filter Retest
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/news_filter_retest.py"
+      - "research/MES_NEWS_FILTER_PREREG.md"
+      - "tools/build_forexfactory_calendar.py"
+      - ".github/workflows/mes-news-filter-retest.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "research/news_filter_retest.py"
+      - "research/MES_NEWS_FILTER_PREREG.md"
+      - "tools/build_forexfactory_calendar.py"
+      - ".github/workflows/mes-news-filter-retest.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas numpy requests beautifulsoup4
+      - name: Build canonical FF calendar
+        run: python tools/build_forexfactory_calendar.py
+      - name: Run frozen news-filter re-test
+        run: python research/news_filter_retest.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mes-news-filter-retest-results
+          path: |
+            results/news_filter_retest/
+            data_external/forexfactory/AUDIT.json
+          retention-days: 30
