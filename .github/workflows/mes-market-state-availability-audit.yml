@@ -1,0 +1,36 @@
+name: MES Market State availability audit A1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/audit_mes_market_state_availability.py'
+      - 'research/market_state/MES_MS1_AVAILABILITY_AUDIT_PROTOCOL.md'
+      - '.github/workflows/mes-market-state-availability-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  availability-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas pyyaml
+      - name: Run descriptive availability audit
+        run: python tools/audit_mes_market_state_availability.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mes-market-state-availability-audit-a1
+          path: |
+            results/market_state/MES_MS1_AVAILABILITY_AUDIT.*
+            results/market_state/MES_MS1_WARMUP_AUDIT.csv
+            results/market_state/MES_MS1_PREVIOUS_RTH_AUDIT.csv
+          if-no-files-found: error
