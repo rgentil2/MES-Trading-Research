@@ -1,0 +1,37 @@
+name: QC ES MAR24 Tick
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/qc-es-mar24-tick.yml"
+      - "research/MES_V2_LAYER2_TICK_2024_PREREG.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+          fetch-depth: 1
+      - name: Pull MAR24 tick only
+        run: |
+          git lfs install
+          git lfs pull --include="data_es_staging/raw_lfs/ES_MAR24/ES_MAR24_Tick_Last.txt" --exclude=""
+      - name: Inspect
+        shell: bash
+        run: |
+          f="data_es_staging/raw_lfs/ES_MAR24/ES_MAR24_Tick_Last.txt"
+          ls -lh "$f"
+          echo "FIRST"
+          head -n 3 "$f"
+          echo "LAST"
+          tail -n 3 "$f"
+          echo "LINES"
+          wc -l "$f"
