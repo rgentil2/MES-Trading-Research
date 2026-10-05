@@ -39,7 +39,9 @@ FROZEN_FILES = [
 
 
 def digest(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    data = path.read_bytes()
+    header = f"blob {len(data)}\\0".encode("ascii")
+    return hashlib.sha1(header + data).hexdigest()
 
 
 def preflight() -> dict:
