@@ -39,12 +39,15 @@ def first_forced_flat(entry_ts, normal_exit_ts, events):
     return min(candidates) if candidates else None
 
 
-def bar_close_at(g, ts):
-    m = g.index[g["timestamp_et"] == ts].tolist()
+def price_at_flat_deadline(g, ts):
+    # NinjaTrader bars are end-of-bar labeled. To exit exactly at T-5,
+    # use the OPEN of the bar that starts at ts, i.e. label ts+1 minute.
+    label = ts + pd.Timedelta(minutes=1)
+    m = g.index[g["timestamp_et"] == label].tolist()
     if not m:
         return None, None
     idx = int(m[0])
-    return float(g.iloc[idx]["close"]), idx
+    return float(g.iloc[idx]["open"]), idx
 
 
 def record(strategy, variant, date, direction, entry, exit_px, reason):
@@ -66,9 +69,13 @@ def record(strategy, variant, date, direction, entry, exit_px, reason):
 
 def path_exit_news(g, start_idx, direction, entry, stop, target, entry_ts, events, eod_idx=389):
     flats = {ev - pd.Timedelta(minutes=5) for ev in events if ev - pd.Timedelta(minutes=5) > entry_ts}
+    flat_labels = {f + pd.Timedelta(minutes=1): f for f in flats}
     for i in range(start_idx, min(eod_idx, len(g)-1)+1):
         b = g.iloc[i]
-        # Existing SL/TP can occur intrabar before the bar closes at a flat deadline.
+        # At T-5 the position is flattened at the minute OPEN, before any
+        # intraminute SL/TP path for that minute.
+        if b["timestamp_et"] in flat_labels:
+            return float(b["open"]), i, "NEWS"
         if direction == 1:
             if b["low"] <= stop:
                 return float(stop), i, "SL"
@@ -79,8 +86,6 @@ def path_exit_news(g, start_idx, direction, entry, stop, target, entry_ts, event
                 return float(stop), i, "SL"
             if b["low"] <= target:
                 return float(target), i, "TP"
-        if b["timestamp_et"] in flats:
-            return float(b["close"]), i, "NEWS"
     i = min(eod_idx, len(g)-1)
     return float(g.iloc[i]["close"]), i, "EOD"
 
@@ -119,7 +124,7 @@ def or15_time_exit(sessions, news_by_date, use_news):
         if use_news:
             flat=first_forced_flat(entry_ts,normal_exit_ts,events)
             if flat is not None:
-                px,_=bar_close_at(g,flat)
+                px,_=price_at_flat_deadline(g,flat)
                 if px is not None:
                     exit_px=px; reason="NEWS"; forced += 1
         rows.append(record("OR15 first breakout 30m", "NEWS" if use_news else "BASE", d,
@@ -147,7 +152,7 @@ def overnight_reversal(sessions, news_by_date, use_news):
         if use_news:
             flat=first_forced_flat(entry_ts,normal_exit_ts,events)
             if flat is not None:
-                px,_=bar_close_at(g,flat)
+                px,_=price_at_flat_deadline(g,flat)
                 if px is not None:
                     exit_px=px; reason="NEWS"; forced += 1
         rows.append(record("Academic overnight reversal 09:30-10:00",
@@ -175,7 +180,7 @@ def intraday_momentum(sessions, news_by_date, use_news):
         if use_news:
             flat=first_forced_flat(entry_ts,normal_exit_ts,events)
             if flat is not None:
-                px,_=bar_close_at(g,flat)
+                px,_=price_at_flat_deadline(g,flat)
                 if px is not None:
                     exit_px=px; reason="NEWS"; forced += 1
         rows.append(record("Academic intraday momentum 15:30-16:00",
