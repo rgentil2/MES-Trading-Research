@@ -15,7 +15,7 @@ Locked before running any of the strategies below on MES 2020-2024.
 - One open position at a time per strategy.
 - 1-minute ambiguity: if stop and target are touched in the same minute, stop first.
 - No parameter optimization after results.
-- A serious candidate must have net expectancy >0, PF >=1.25, >=5 trades/month where the strategy is intrinsically intraday/frequent, >=4/5 positive years, and no single year >40% of positive P&L. Swing/daily strategies are exempt only from the >=5/month frequency gate but must still show enough observations to be credible.
+- A serious candidate must have net expectancy >0, PF >=1.25, >=5 trades/month average (>=300 trades / 60 months), >=4/5 positive years, and no single year >40% of positive P&L. This same economic gate is applied to all ten strategies; daily/swing systems are not exempt.
 
 # Round 1 — Official NinjaTrader sample logic
 
