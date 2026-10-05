@@ -536,6 +536,139 @@ def r2_mfi_macd(sessions, bars5, news):
     return rows,skips,forced
 
 
+
+def r2_inside_directional(sessions,news):
+    name="R2-S3 InsideBar directional close SL10 PT25"
+    rows=[]; skips=0; forced=0; ambiguous=0
+    for d,g0 in sessions.items():
+        g=add_bar_start(g0); nd=news.get(d); dls=deadlines_for_day(nd)
+        available=1
+        i=1
+        while i < len(g)-1:
+            if i<available:
+                i+=1; continue
+            b=g.iloc[i]; p=g.iloc[i-1]
+            inside=float(b["high"])<float(p["high"]) and float(b["low"])>float(p["low"])
+            if not inside:
+                i+=1; continue
+            direction=0; level=None
+            if float(b["close"])==float(b["high"]):
+                direction=1; level=float(b["high"])+TICK
+            elif float(b["close"])==float(b["low"]):
+                direction=-1; level=float(b["low"])-TICK
+            else:
+                i+=1; continue
+            nb=g.iloc[i+1]; ts=nb["bar_start_et"]
+            hm=ts.hour*60+ts.minute
+            if not (ENTRY_START<=hm<=ENTRY_END):
+                i+=1; continue
+            hit=(float(nb["high"])>=level) if direction==1 else (float(nb["low"])<=level)
+            if not hit:
+                i+=1; continue
+            if blocked_entry(ts,nd):
+                skips+=1; i+=1; continue
+            entry=max(level,float(nb["open"])) if direction==1 else min(level,float(nb["open"]))
+            stop=entry-direction*10*TICK
+            target=entry+direction*25*TICK
+            exit_px=None; exit_idx=None; reason=None; exit_ts=None
+            for k in range(i+1,len(g)):
+                q=g.iloc[k]; qts=q["bar_start_et"]
+                if qts in dls:
+                    exit_px=float(q["open"]); exit_idx=k; reason="NEWS"; exit_ts=qts; forced+=1; break
+                if direction==1:
+                    if float(q["low"])<=stop:
+                        exit_px=float(q["open"]) if float(q["open"])<stop else stop; exit_idx=k; reason="SL"; exit_ts=qts; break
+                    if float(q["high"])>=target:
+                        exit_px=float(q["open"]) if float(q["open"])>target else target; exit_idx=k; reason="TP"; exit_ts=qts; break
+                else:
+                    if float(q["high"])>=stop:
+                        exit_px=float(q["open"]) if float(q["open"])>stop else stop; exit_idx=k; reason="SL"; exit_ts=qts; break
+                    if float(q["low"])<=target:
+                        exit_px=float(q["open"]) if float(q["open"])<target else target; exit_idx=k; reason="TP"; exit_ts=qts; break
+            if exit_px is None:
+                last=g.iloc[-1]; exit_px=float(last["close"]); exit_idx=len(g)-1; reason="EOD"; exit_ts=last["timestamp_et"]
+            rows.append(record("R2",name,d,direction,entry,exit_px,reason,ts,exit_ts))
+            available=exit_idx+1
+            i=available
+        # next session
+    return rows,skips,forced
+
+
+def r2_inside_structural(sessions,news):
+    name="R2-S4 InsideBar structural bracket"
+    rows=[]; skips=0; forced=0
+    for d,g0 in sessions.items():
+        g=add_bar_start(g0); nd=news.get(d); dls=deadlines_for_day(nd)
+        available=1; i=1
+        while i < len(g)-1:
+            if i<available:
+                i+=1; continue
+            b=g.iloc[i]; p=g.iloc[i-1]
+            if not (float(b["high"])<float(p["high"]) and float(b["low"])>float(p["low"])):
+                i+=1; continue
+            buy=float(b["high"])+TICK; sell=float(b["low"])-TICK
+            nb=g.iloc[i+1]; ts=nb["bar_start_et"]
+            hm=ts.hour*60+ts.minute
+            if not (ENTRY_START<=hm<=ENTRY_END):
+                i+=1; continue
+            hit_l=float(nb["high"])>=buy; hit_s=float(nb["low"])<=sell
+            if hit_l and hit_s:
+                i+=1; continue
+            if not hit_l and not hit_s:
+                i+=1; continue
+            if blocked_entry(ts,nd):
+                skips+=1; i+=1; continue
+            direction=1 if hit_l else -1
+            entry=max(buy,float(nb["open"])) if direction==1 else min(sell,float(nb["open"]))
+            stop=(float(b["low"])-TICK) if direction==1 else (float(b["high"])+TICK)
+            exit_px=None; exit_idx=None; reason=None; exit_ts=None
+            for k in range(i+1,len(g)):
+                q=g.iloc[k]; qts=q["bar_start_et"]
+                if qts in dls:
+                    exit_px=float(q["open"]); exit_idx=k; reason="NEWS"; exit_ts=qts; forced+=1; break
+                if direction==1 and float(q["low"])<=stop:
+                    exit_px=float(q["open"]) if float(q["open"])<stop else stop; exit_idx=k; reason="SL"; exit_ts=qts; break
+                if direction==-1 and float(q["high"])>=stop:
+                    exit_px=float(q["open"]) if float(q["open"])>stop else stop; exit_idx=k; reason="SL"; exit_ts=qts; break
+            if exit_px is None:
+                last=g.iloc[-1]; exit_px=float(last["close"]); exit_idx=len(g)-1; reason="EOD"; exit_ts=last["timestamp_et"]
+            rows.append(record("R2",name,d,direction,entry,exit_px,reason,ts,exit_ts))
+            available=exit_idx+1; i=available
+    return rows,skips,forced
+
+
+def r2_boll100_fade(sessions,news):
+    name="R2-S5 Bollinger100 1.5dev short $2500/$5000"
+    rows=[]; skips=0; forced=0
+    for d,g0 in sessions.items():
+        g=add_bar_start(g0); nd=news.get(d); dls=deadlines_for_day(nd)
+        pos=False; entry=None; entry_ts=None; stop=None; target=None; pending=False
+        for i in range(len(g)):
+            b=g.iloc[i]; ts=b["bar_start_et"]
+            if pos and ts in dls:
+                rows.append(record("R2",name,d,-1,entry,float(b["open"]),"NEWS",entry_ts,ts)); pos=False; forced+=1
+            if pending:
+                pending=False
+                hm=ts.hour*60+ts.minute
+                if not pos and ENTRY_START<=hm<=ENTRY_END:
+                    if blocked_entry(ts,nd): skips+=1
+                    else:
+                        pos=True; entry=float(b["open"]); entry_ts=ts
+                        target=entry-500.0; stop=entry+1000.0
+            if pos:
+                if float(b["high"])>=stop:
+                    fill=float(b["open"]) if float(b["open"])>stop else stop
+                    rows.append(record("R2",name,d,-1,entry,fill,"SL",entry_ts,ts)); pos=False
+                elif float(b["low"])<=target:
+                    fill=float(b["open"]) if float(b["open"])<target else target
+                    rows.append(record("R2",name,d,-1,entry,fill,"TP",entry_ts,ts)); pos=False
+            if (not pos) and i<len(g)-1 and pd.notna(b.get("bb100_upper15")) and float(b["close"])>float(b["bb100_upper15"]):
+                pending=True
+        if pos:
+            last=g.iloc[-1]; rows.append(record("R2",name,d,-1,entry,float(last["close"]),"EOD",entry_ts,last["timestamp_et"]))
+    return rows,skips,forced
+
+
 # -----------------------------
 # Round 3
 # -----------------------------
