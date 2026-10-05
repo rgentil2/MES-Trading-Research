@@ -47,10 +47,10 @@ def deadlines_for_day(news_day):
 
 
 def first_global_deadline_after(deadlines, start, through):
-    i=bisect_right(deadlines,start)
-    if i < len(deadlines) and deadlines[i] <= through:
-        return deadlines[i]
-    return None
+    # Robust direct scan: the list has only ~1.9k unique timestamps, so the
+    # explicit comparison is trivial and avoids any timezone/order ambiguity.
+    candidates=[d for d in deadlines if start < d <= through]
+    return min(candidates) if candidates else None
 
 
 def add_bar_start(df):
@@ -70,9 +70,8 @@ def price_at_or_after(ts, lookup):
     z,ns,opens=lookup
     key=pd.Timestamp(ts).value
     i=int(np.searchsorted(ns,key,side="left"))
-    if i>=len(z):
+    if i>=len(z) or int(ns[i]) != int(key):
         return None,None
-    # normally exact; fallback first executable price after deadline
     return float(opens[i]), z.iloc[i]["bar_start_et"]
 
 
@@ -582,6 +581,9 @@ def simulate_daily_connors(daily,deadlines,lookup,news_by_date,kind):
                 matches=daily.index[daily["date"]>=forced_date].tolist()
                 i=(matches[0] if matches else xidx)
                 continue
+            # If T-5 falls while the futures market is closed, there is no
+            # causal executable price at the deadline; that event cannot force
+            # a fill and the position remains unchanged.
         rows.append(record("R4",name,e["date"],1,entry,normal_px,"DAILY_EXIT",entry_ts,normal_ts))
         i=xidx+1
     return rows,skips,forced
