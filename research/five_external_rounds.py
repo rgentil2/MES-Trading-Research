@@ -140,6 +140,27 @@ def enrich_1m(sessions):
     x["ma_cross_up"]=(x["sma10"]>x["sma25"])&(x["sma10"].shift(1)<=x["sma25"].shift(1))
     x["ma_cross_dn"]=(x["sma10"]<x["sma25"])&(x["sma10"].shift(1)>=x["sma25"].shift(1))
 
+    x["sma5"]=x["close"].rolling(5,min_periods=5).mean()
+    x["sma30"]=x["close"].rolling(30,min_periods=30).mean()
+    sma530_up=(x["sma5"]>x["sma30"])&(x["sma5"].shift(1)<=x["sma30"].shift(1))
+    x["sma530_cross_up_2"]=sma530_up.astype(int).rolling(2,min_periods=1).max().astype(bool)
+
+    x["ema20"]=x["close"].ewm(span=20,adjust=False).mean()
+    x["ema40"]=x["close"].ewm(span=40,adjust=False).mean()
+    rsi14_raw=wilder_rsi(x["close"],14)
+    x["rsi14s3"]=rsi14_raw.rolling(3,min_periods=3).mean()
+    rsi60_cross=(x["rsi14s3"]>60)&(x["rsi14s3"].shift(1)<=60)
+    x["rsi60_cross_10"]=rsi60_cross.astype(int).rolling(10,min_periods=1).max().astype(bool)
+
+    x["donch20_upper_prev"]=x["high"].rolling(20,min_periods=20).max().shift(1)
+    x["donch20_lower_prev"]=x["low"].rolling(20,min_periods=20).min().shift(1)
+    x["donch20_cross_up"]=(x["close"]>x["donch20_upper_prev"])&(x["close"].shift(1)<=x["donch20_upper_prev"].shift(1))
+    x["donch20_cross_dn"]=(x["close"]<x["donch20_lower_prev"])&(x["close"].shift(1)>=x["donch20_lower_prev"].shift(1))
+
+    bb100_mid=x["close"].rolling(100,min_periods=100).mean()
+    bb100_sd=x["close"].rolling(100,min_periods=100).std(ddof=0)
+    x["bb100_upper15"]=bb100_mid+1.5*bb100_sd
+
     ema12=x["close"].ewm(span=12,adjust=False).mean()
     ema26=x["close"].ewm(span=26,adjust=False).mean()
     x["macd"]=ema12-ema26
@@ -354,6 +375,103 @@ def r1_sample_price_mod(sessions,news):
         if pos!=0:
             last=g.iloc[-1]
             rows.append(record("R1",name,d,pos,entry,float(last["close"]),"EOD",entry_ts,last["timestamp_et"]))
+    return rows,skips,forced
+
+
+
+def r1_sma530_pt1(sessions,news):
+    name="R1-S3 SMA5/30 lookback2 PT1"
+    rows=[]; skips=0; forced=0
+    for d,g0 in sessions.items():
+        g=add_bar_start(g0); nd=news.get(d); dls=deadlines_for_day(nd)
+        pos=False; entry=None; entry_ts=None; target=None; pending=False
+        for i in range(len(g)):
+            b=g.iloc[i]; ts=b["bar_start_et"]
+            if pos and ts in dls:
+                rows.append(record("R1",name,d,1,entry,float(b["open"]),"NEWS",entry_ts,ts))
+                pos=False; forced+=1
+            if pending:
+                pending=False
+                hm=ts.hour*60+ts.minute
+                if not pos and ENTRY_START<=hm<=ENTRY_END:
+                    if blocked_entry(ts,nd): skips+=1
+                    else:
+                        pos=True; entry=float(b["open"]); entry_ts=ts; target=entry+TICK
+            if pos and float(b["high"])>=target:
+                fill=float(b["open"]) if float(b["open"])>target else target
+                rows.append(record("R1",name,d,1,entry,fill,"TP",entry_ts,ts)); pos=False
+            if (not pos) and i<len(g)-1 and bool(b.get("sma530_cross_up_2",False)):
+                pending=True
+        if pos:
+            last=g.iloc[-1]
+            rows.append(record("R1",name,d,1,entry,float(last["close"]),"EOD",entry_ts,last["timestamp_et"]))
+    return rows,skips,forced
+
+
+def r1_ema_rsi_dynamic(sessions,news):
+    name="R1-S4 EMA20/40 + RSI14s3 PT200 dynEMA40"
+    rows=[]; skips=0; forced=0
+    for d,g0 in sessions.items():
+        g=add_bar_start(g0); nd=news.get(d); dls=deadlines_for_day(nd)
+        pos=False; entry=None; entry_ts=None; target=None; pending=False
+        for i in range(len(g)):
+            b=g.iloc[i]; ts=b["bar_start_et"]
+            if pos and ts in dls:
+                rows.append(record("R1",name,d,1,entry,float(b["open"]),"NEWS",entry_ts,ts))
+                pos=False; forced+=1
+            if pending:
+                pending=False
+                hm=ts.hour*60+ts.minute
+                if not pos and ENTRY_START<=hm<=ENTRY_END:
+                    if blocked_entry(ts,nd): skips+=1
+                    else:
+                        pos=True; entry=float(b["open"]); entry_ts=ts; target=entry+200*TICK
+            if pos:
+                dyn=float(g.iloc[i-1]["ema40"]) if i>0 and pd.notna(g.iloc[i-1]["ema40"]) else np.nan
+                if np.isfinite(dyn):
+                    if float(b["open"])<=dyn:
+                        rows.append(record("R1",name,d,1,entry,float(b["open"]),"EMA40_STOP",entry_ts,ts)); pos=False
+                    elif float(b["low"])<=dyn:
+                        rows.append(record("R1",name,d,1,entry,dyn,"EMA40_STOP",entry_ts,ts)); pos=False
+                if pos and float(b["high"])>=target:
+                    fill=float(b["open"]) if float(b["open"])>target else target
+                    rows.append(record("R1",name,d,1,entry,fill,"TP",entry_ts,ts)); pos=False
+            if (not pos) and i<len(g)-1:
+                if bool(b.get("rsi60_cross_10",False)) and pd.notna(b.get("ema20")) and pd.notna(b.get("ema40")) and float(b["ema20"])>float(b["ema40"]):
+                    pending=True
+        if pos:
+            last=g.iloc[-1]
+            rows.append(record("R1",name,d,1,entry,float(last["close"]),"EOD",entry_ts,last["timestamp_et"]))
+    return rows,skips,forced
+
+
+def r1_donchian20(sessions,news):
+    name="R1-S5 Basic Donchian20 long"
+    rows=[]; skips=0; forced=0
+    for d,g0 in sessions.items():
+        g=add_bar_start(g0); nd=news.get(d); dls=deadlines_for_day(nd)
+        pos=False; entry=None; entry_ts=None; pending_entry=False; pending_exit=False
+        for i in range(len(g)):
+            b=g.iloc[i]; ts=b["bar_start_et"]
+            if pos and ts in dls:
+                rows.append(record("R1",name,d,1,entry,float(b["open"]),"NEWS",entry_ts,ts))
+                pos=False; forced+=1
+            if pending_exit:
+                pending_exit=False
+                if pos:
+                    rows.append(record("R1",name,d,1,entry,float(b["open"]),"DONCH_EXIT",entry_ts,ts)); pos=False
+            if pending_entry:
+                pending_entry=False
+                hm=ts.hour*60+ts.minute
+                if not pos and ENTRY_START<=hm<=ENTRY_END:
+                    if blocked_entry(ts,nd): skips+=1
+                    else: pos=True; entry=float(b["open"]); entry_ts=ts
+            if i<len(g)-1:
+                if pos and bool(b.get("donch20_cross_dn",False)): pending_exit=True
+                elif (not pos) and bool(b.get("donch20_cross_up",False)): pending_entry=True
+        if pos:
+            last=g.iloc[-1]
+            rows.append(record("R1",name,d,1,entry,float(last["close"]),"EOD",entry_ts,last["timestamp_et"]))
     return rows,skips,forced
 
 
