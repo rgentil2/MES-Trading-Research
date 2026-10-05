@@ -123,8 +123,9 @@ def file_edge_lines(path: Path):
 
 
 def extract_event_ticks(path: Path, events: pd.DataFrame):
-    starts=(events.event_ts_utc-pd.to_timedelta(120,unit='s')).astype('int64').to_numpy()
-    ends=events.event_ts_utc.astype('int64').to_numpy()
+    event_ts=events.event_ts_utc.astype('datetime64[ns, UTC]')
+    starts=(event_ts-pd.to_timedelta(120,unit='s')).astype('int64').to_numpy()
+    ends=event_ts.astype('int64').to_numpy()
     buckets=[[] for _ in range(len(events))]
     names=['timestamp','last','bid','ask','volume']
     total_rows=0
@@ -135,8 +136,8 @@ def extract_event_ticks(path: Path, events: pd.DataFrame):
         ts=parse_tick_timestamp(chunk['timestamp'])
         valid=ts.notna()
         if not valid.any(): continue
-        chunk=chunk.loc[valid].copy()
-        ts=ts.loc[valid]
+        chunk=chunk.loc[valid].copy().reset_index(drop=True)
+        ts=ts.loc[valid].reset_index(drop=True).astype('datetime64[ns, UTC]')
         ns=ts.astype('int64').to_numpy()
         if len(ns)==0: continue
         cmin,cmax=int(ns.min()),int(ns.max())
@@ -287,7 +288,10 @@ def main():
         feature_rows.append(f)
     feat=pd.DataFrame(feature_rows)
     data=pd.concat([eligible,feat],axis=1)
+    print('EVENTS_WITH_ANY_TICKS', int((data['tick_count_120']>0).sum()), 'OF', len(data))
+    print('TICK_COUNT_120_MIN_MED_MAX', int(data['tick_count_120'].min()), float(data['tick_count_120'].median()), int(data['tick_count_120'].max()))
     data=data[data['tick_count_120']>0].reset_index(drop=True)
+    print('OUTCOME_COUNTS', data['profitable30'].value_counts().to_dict())
     feature_cols=[c for c in feat.columns if c!='tick_count_120']
 
     rows=[]
@@ -306,6 +310,8 @@ def main():
             'winner_minus_loser_median':obs,'boot95_lo':lo,'boot95_hi':hi,
             'ci_excludes_zero':bool(np.isfinite(lo) and np.isfinite(hi) and (lo>0 or hi<0))
         })
+    if not rows:
+        raise RuntimeError(f'No analyzable features. events_with_ticks={len(data)}, outcome_counts={data.profitable30.value_counts().to_dict() if len(data) else {}}')
     uni=pd.DataFrame(rows).sort_values('auc_abs',ascending=False)
     auc_loo=loo_logistic_auc(data,feature_cols) if len(data)>=20 else np.nan
     strong=uni[uni.auc_abs>=0.60]
