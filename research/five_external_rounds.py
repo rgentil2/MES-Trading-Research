@@ -746,6 +746,141 @@ def r3_bollinger(sessions,news):
     return rows,skips,forced
 
 
+
+def _prior_rth_levels(sessions):
+    dates=sorted(sessions)
+    out={}
+    for j in range(1,len(dates)):
+        prev=dates[j-1]; d=dates[j]
+        g=sessions[prev]
+        out[d]={
+            "high":float(g["high"].max()),
+            "low":float(g["low"].min()),
+            "close":float(g.iloc[-1]["close"]),
+        }
+    return out
+
+
+def r3_prior_close_pt25(sessions,news):
+    name="R3-S3 PriorClose cross PT25"
+    rows=[]; skips=0; forced=0
+    levels=_prior_rth_levels(sessions)
+    for d,g0 in sessions.items():
+        if d not in levels: continue
+        g=add_bar_start(g0); nd=news.get(d); dls=deadlines_for_day(nd)
+        lvl=levels[d]["close"]
+        pos=0; entry=None; entry_ts=None; target=None; pending=0
+        for i in range(len(g)):
+            b=g.iloc[i]; ts=b["bar_start_et"]
+            if pos!=0 and ts in dls:
+                rows.append(record("R3",name,d,pos,entry,float(b["open"]),"NEWS",entry_ts,ts))
+                pos=0; forced+=1
+            if pending!=0:
+                direction=pending; pending=0
+                hm=ts.hour*60+ts.minute
+                if pos==0 and ENTRY_START<=hm<=ENTRY_END:
+                    if blocked_entry(ts,nd): skips+=1
+                    else:
+                        pos=direction; entry=float(b["open"]); entry_ts=ts
+                        target=entry+direction*25*TICK
+            if pos!=0:
+                if pos==1 and float(b["high"])>=target:
+                    fill=float(b["open"]) if float(b["open"])>target else target
+                    rows.append(record("R3",name,d,pos,entry,fill,"TP",entry_ts,ts)); pos=0
+                elif pos==-1 and float(b["low"])<=target:
+                    fill=float(b["open"]) if float(b["open"])<target else target
+                    rows.append(record("R3",name,d,pos,entry,fill,"TP",entry_ts,ts)); pos=0
+            if pos==0 and i>0 and i<len(g)-1:
+                prev=g.iloc[i-1]
+                long_sig=float(b["low"])>lvl and float(prev["low"])<=lvl
+                short_sig=float(b["high"])<lvl and float(prev["high"])>=lvl
+                if long_sig and not short_sig: pending=1
+                elif short_sig and not long_sig: pending=-1
+        if pos!=0:
+            last=g.iloc[-1]
+            rows.append(record("R3",name,d,pos,entry,float(last["close"]),"EOD",entry_ts,last["timestamp_et"]))
+    return rows,skips,forced
+
+
+def r3_prior_hilo_breakout(sessions,news):
+    name="R3-S4 PriorHighLow breakout signalbar stop"
+    rows=[]; skips=0; forced=0
+    levels=_prior_rth_levels(sessions)
+    for d,g0 in sessions.items():
+        if d not in levels: continue
+        g=add_bar_start(g0); nd=news.get(d); dls=deadlines_for_day(nd)
+        ph=levels[d]["high"]; pl=levels[d]["low"]; session_open=float(g.iloc[0]["open"])
+        pos=0; entry=None; entry_ts=None; stop=None; pending=None
+        for i in range(len(g)):
+            b=g.iloc[i]; ts=b["bar_start_et"]
+            if pos!=0 and ts in dls:
+                rows.append(record("R3",name,d,pos,entry,float(b["open"]),"NEWS",entry_ts,ts)); pos=0; forced+=1
+            if pending is not None:
+                direction,st=pending; pending=None
+                hm=ts.hour*60+ts.minute
+                if pos==0 and ENTRY_START<=hm<=ENTRY_END:
+                    if blocked_entry(ts,nd): skips+=1
+                    else:
+                        pos=direction; entry=float(b["open"]); entry_ts=ts; stop=st
+            if pos!=0:
+                if pos==1 and float(b["low"])<=stop:
+                    fill=float(b["open"]) if float(b["open"])<stop else stop
+                    rows.append(record("R3",name,d,pos,entry,fill,"SL",entry_ts,ts)); pos=0
+                elif pos==-1 and float(b["high"])>=stop:
+                    fill=float(b["open"]) if float(b["open"])>stop else stop
+                    rows.append(record("R3",name,d,pos,entry,fill,"SL",entry_ts,ts)); pos=0
+            if pos==0 and i>0 and i<len(g)-1:
+                p=g.iloc[i-1]
+                long_sig=float(b["close"])>ph and float(p["close"])<=ph and float(b["close"])>session_open
+                short_sig=float(b["close"])<pl and float(p["close"])>=pl and float(b["close"])<session_open
+                if long_sig and not short_sig:
+                    pending=(1,float(b["low"])-TICK)
+                elif short_sig and not long_sig:
+                    pending=(-1,float(b["high"])+TICK)
+        if pos!=0:
+            last=g.iloc[-1]
+            rows.append(record("R3",name,d,pos,entry,float(last["close"]),"EOD",entry_ts,last["timestamp_et"]))
+    return rows,skips,forced
+
+
+def r3_prior_close_short_100_200(sessions,news):
+    name="R3-S5 PriorClose cross short SL100 PT200"
+    rows=[]; skips=0; forced=0
+    levels=_prior_rth_levels(sessions)
+    for d,g0 in sessions.items():
+        if d not in levels: continue
+        g=add_bar_start(g0); nd=news.get(d); dls=deadlines_for_day(nd)
+        lvl=levels[d]["close"]
+        pos=False; entry=None; entry_ts=None; stop=None; target=None; pending=False
+        for i in range(len(g)):
+            b=g.iloc[i]; ts=b["bar_start_et"]
+            if pos and ts in dls:
+                rows.append(record("R3",name,d,-1,entry,float(b["open"]),"NEWS",entry_ts,ts)); pos=False; forced+=1
+            if pending:
+                pending=False
+                hm=ts.hour*60+ts.minute
+                if not pos and ENTRY_START<=hm<=ENTRY_END:
+                    if blocked_entry(ts,nd): skips+=1
+                    else:
+                        pos=True; entry=float(b["open"]); entry_ts=ts
+                        stop=entry+100*TICK; target=entry-200*TICK
+            if pos:
+                if float(b["high"])>=stop:
+                    fill=float(b["open"]) if float(b["open"])>stop else stop
+                    rows.append(record("R3",name,d,-1,entry,fill,"SL",entry_ts,ts)); pos=False
+                elif float(b["low"])<=target:
+                    fill=float(b["open"]) if float(b["open"])<target else target
+                    rows.append(record("R3",name,d,-1,entry,fill,"TP",entry_ts,ts)); pos=False
+            if (not pos) and i>0 and i<len(g)-1:
+                p=g.iloc[i-1]
+                if float(b["close"])<lvl and float(p["close"])>=lvl:
+                    pending=True
+        if pos:
+            last=g.iloc[-1]
+            rows.append(record("R3",name,d,-1,entry,float(last["close"]),"EOD",entry_ts,last["timestamp_et"]))
+    return rows,skips,forced
+
+
 # -----------------------------
 # Daily helpers / Round 4
 # -----------------------------
