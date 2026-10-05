@@ -1,0 +1,40 @@
+name: NinjaTrader Community Strategy Challenge
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/ninjatrader_community_challenge.py"
+      - "research/NINJATRADER_COMMUNITY_CHALLENGE_PREREG.md"
+      - "tools/build_forexfactory_calendar.py"
+      - ".github/workflows/ninjatrader-community-challenge.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "research/ninjatrader_community_challenge.py"
+      - "research/NINJATRADER_COMMUNITY_CHALLENGE_PREREG.md"
+      - ".github/workflows/ninjatrader-community-challenge.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas numpy requests beautifulsoup4
+      - name: Build frozen Forex Factory calendar
+        run: python tools/build_forexfactory_calendar.py
+      - name: Run community strategy challenge
+        run: python research/ninjatrader_community_challenge.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ninjatrader-community-challenge-results
+          path: results/ninjatrader_community_challenge/
+          retention-days: 30
