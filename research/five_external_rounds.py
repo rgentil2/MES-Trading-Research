@@ -734,3 +734,5 @@ def main():
 
 if __name__=="__main__":
     main()
+
+# PR trigger only; preregistered five-round logic unchanged
