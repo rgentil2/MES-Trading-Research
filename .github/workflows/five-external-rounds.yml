@@ -1,0 +1,41 @@
+name: Five External MES Strategy Rounds
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/five_external_rounds.py"
+      - "research/FIVE_EXTERNAL_ROUNDS_PREREG.md"
+      - "tools/build_forexfactory_calendar.py"
+      - ".github/workflows/five-external-rounds.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "research/five_external_rounds.py"
+      - "research/FIVE_EXTERNAL_ROUNDS_PREREG.md"
+      - "tools/build_forexfactory_calendar.py"
+      - ".github/workflows/five-external-rounds.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas numpy requests beautifulsoup4
+      - name: Build canonical Forex Factory calendar
+        run: python tools/build_forexfactory_calendar.py
+      - name: Run five preregistered external rounds
+        run: python research/five_external_rounds.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: five-external-rounds-results
+          path: results/five_external_rounds/
+          retention-days: 30
