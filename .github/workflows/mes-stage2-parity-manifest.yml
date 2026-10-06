@@ -1,0 +1,39 @@
+name: MES Stage 2 Python golden manifest
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/mes_stage2_parity_manifest.py'
+      - 'research/mes_stage1_local_robustness.py'
+      - 'ninjatrader/STAGE2_PARITY_SPEC.md'
+      - 'tools/build_forexfactory_calendar.py'
+      - '.github/workflows/mes-stage2-parity-manifest.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  manifest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas pyarrow pyyaml scipy statsmodels requests beautifulsoup4
+      - name: Build frozen news calendar through 2025
+        run: python tools/build_forexfactory_calendar.py --start-year 2020 --end-year 2025
+      - name: Rebuild Stage 1 centers
+        run: python research/mes_stage1_local_robustness.py
+      - name: Generate NinjaTrader parity golden files
+        run: python research/mes_stage2_parity_manifest.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mes-stage2-python-golden
+          path: results/mes_stage2_parity/*
+          if-no-files-found: error
