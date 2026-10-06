@@ -68,6 +68,34 @@ def main():
         period_table(t,"selected_net_pnl",period).to_csv(OUT/f"P1C_{name}.csv",index=False)
     regime_breakdown(t,sessions,"selected_net_pnl").to_csv(OUT/"P1C_REGIME_EXPLANATION.csv",index=False)
 
+    # Descriptive year/semester x causal-regime cross-tabs. These outputs do
+    # not select or rescue a subgroup; they only explain temporal deterioration.
+    context_cols=["group_key","preopen_prediction","update_prediction","prev_state","overnight_state",
+                  "five_day_state_label","preopen_support","open15_support"]
+    sx=sessions[[c for c in context_cols if c in sessions.columns]].drop_duplicates("group_key")
+    tx=t.merge(sx,on="group_key",how="left",validate="many_to_one")
+    for cc in ("prev_state","overnight_state"):
+        if cc in tx:
+            tx[cc]=tx[cc].map({-1.0:"LOW",0.0:"NORMAL",1.0:"HIGH"}).fillna("UNKNOWN")
+    rows_y=[]; rows_s=[]
+    for dim in [c for c in context_cols if c!="group_key" and c in tx.columns]:
+        for (yr,val),g in tx.groupby(["year_eval",dim],dropna=False,observed=True):
+            p=g["selected_net_pnl"]
+            rows_y.append({"year_eval":int(yr),"dimension":dim,
+                           "category":"MISSING" if pd.isna(val) else str(val),
+                           "trades":len(g),"net_pnl_usd":float(p.sum()),
+                           "expectancy_usd":float(p.mean()),"profit_factor":float(profit_factor(p)),
+                           "win_rate":float((p>0).mean())})
+        for (sem,val),g in tx.groupby(["semester",dim],dropna=False,observed=True):
+            p=g["selected_net_pnl"]
+            rows_s.append({"semester":str(sem),"dimension":dim,
+                           "category":"MISSING" if pd.isna(val) else str(val),
+                           "trades":len(g),"net_pnl_usd":float(p.sum()),
+                           "expectancy_usd":float(p.mean()),"profit_factor":float(profit_factor(p)),
+                           "win_rate":float((p>0).mean())})
+    pd.DataFrame(rows_y).to_csv(OUT/"P1C_REGIME_BY_YEAR.csv",index=False)
+    pd.DataFrame(rows_s).to_csv(OUT/"P1C_REGIME_BY_SEMESTER.csv",index=False)
+
     qrows=[]
     qrows += quantiles(t,"ALL")
     qrows += quantiles(t[t.selected_net_pnl>0],"WINNERS")
