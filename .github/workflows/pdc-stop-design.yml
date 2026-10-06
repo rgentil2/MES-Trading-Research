@@ -1,0 +1,33 @@
+name: PDC stop design
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/pdc_stop_design.py'
+      - 'research/PDC_STOP_DESIGN_PREREG.md'
+      - '.github/workflows/pdc-stop-design.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  stop_design:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas pyarrow pyyaml scipy statsmodels
+      - name: Execute preregistered PDC stop design
+        run: python research/pdc_stop_design.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pdc-stop-design
+          path: results/pdc_stop_design/*
+          if-no-files-found: error
