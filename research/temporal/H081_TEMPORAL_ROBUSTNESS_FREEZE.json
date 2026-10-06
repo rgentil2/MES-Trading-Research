@@ -1,0 +1,27 @@
+{
+  "authority": "POST_HOC_TEMPORAL_DIAGNOSTIC_ONLY",
+  "frozen_before_opening_trade_artifact": true,
+  "strategy_modification_permitted": false,
+  "source": {
+    "run_id": 36427711138,
+    "artifact_id": 10973030113,
+    "artifact_name": "b14-opposite-sign-candidates",
+    "artifact_digest": "sha256:0017a78ebc25630b9a5b3f71417f1bc8f3a4ee186a2a96b72090744944e51047",
+    "expected_h081_trades": 184,
+    "scope": "2020-2025"
+  },
+  "fingerprints": {
+    "research/temporal/H081_TEMPORAL_ROBUSTNESS_PROTOCOL.md": "47e2566f43ab324c2a8b531c90fe008e03d4acd3",
+    "tools/audit_h081_temporal_robustness.py": "435a520a8d13c5abbe706d8cf0e5cd2628c7de2b"
+  },
+  "thresholds": {
+    "best_quarter_share_flag": 0.5,
+    "top5_winners_share_flag": 0.5,
+    "minimum_positive_half_year_share": 0.5,
+    "minimum_positive_rolling20_share": 0.5,
+    "leave_one_year_out_expectancy_must_be_positive": true,
+    "drop_best_quarter_expectancy_must_be_positive": true,
+    "drop_top5_expectancy_must_be_positive": true
+  },
+  "calendar_2026_opened": false
+}
