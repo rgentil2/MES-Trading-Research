@@ -1,0 +1,33 @@
+name: MES risk design P2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/mes_risk_design_p2.py'
+      - 'research/MES_RISK_DESIGN_P2_PREREG.md'
+      - '.github/workflows/mes-risk-design-p2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  risk-design:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas pyarrow pyyaml scipy statsmodels
+      - name: Execute frozen P2 risk walk-forward
+        run: python research/mes_risk_design_p2.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mes-risk-design-p2
+          path: results/risk_design_p2/*
+          if-no-files-found: error
