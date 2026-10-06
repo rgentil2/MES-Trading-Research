@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from datetime import datetime
 from zoneinfo import ZoneInfo
-import csv, re, time, json
+import csv, re, time, json, argparse
 import requests
 from bs4 import BeautifulSoup
 
@@ -108,8 +108,14 @@ def parse_dt(date_raw,time_raw):
     return None
 
 def main():
+    parser=argparse.ArgumentParser()
+    parser.add_argument("--start-year",type=int,default=START_YEAR)
+    parser.add_argument("--end-year",type=int,default=END_YEAR)
+    args=parser.parse_args()
+    start_year=int(args.start_year)
+    end_year=int(args.end_year)
     raw=[]
-    for y in range(START_YEAR,END_YEAR+1):
+    for y in range(start_year,end_year+1):
         for mon in MONTHS:
             url,html=fetch_month(y,mon)
             rows=parse_month(html,y,MONTHS.index(mon)+1)
@@ -129,7 +135,7 @@ def main():
             skipped.append(r)
             continue
         dt_et=dt_utc.astimezone(ZoneInfo("America/New_York"))
-        if not (START_YEAR <= dt_et.year <= END_YEAR): continue
+        if not (start_year <= dt_et.year <= end_year): continue
         keep.append({
             "event_utc":dt_utc.isoformat(),
             "event_et":dt_et.isoformat(),
@@ -152,9 +158,10 @@ def main():
     out=Path("data_external/forexfactory")
     out.mkdir(parents=True,exist_ok=True)
     fields=list(keep[0]) if keep else ["event_utc"]
-    with (out/"usd_high_medium_2020_2024.csv").open("w",newline="",encoding="utf-8") as f:
+    stem=f"usd_high_medium_{start_year}_{end_year}"
+    with (out/f"{stem}.csv").open("w",newline="",encoding="utf-8") as f:
         w=csv.DictWriter(f,fieldnames=fields); w.writeheader(); w.writerows(keep)
-    with (out/"unscheduled_usd_high_medium_2020_2024.json").open("w",encoding="utf-8") as f:
+    with (out/f"unscheduled_{stem}.json").open("w",encoding="utf-8") as f:
         json.dump(skipped,f,ensure_ascii=False,indent=2)
 
     from collections import Counter
@@ -170,7 +177,11 @@ def main():
         "by_year":dict(sorted(by_year.items())),
         "by_impact":dict(by_impact),
     }
-    (out/"AUDIT.json").write_text(json.dumps(audit,indent=2),encoding="utf-8")
+    audit["start_year"]=start_year
+    audit["end_year"]=end_year
+    (out/f"AUDIT_{start_year}_{end_year}.json").write_text(json.dumps(audit,indent=2),encoding="utf-8")
+    if start_year==START_YEAR and end_year==END_YEAR:
+        (out/"AUDIT.json").write_text(json.dumps(audit,indent=2),encoding="utf-8")
     print(json.dumps(audit,indent=2))
     print("FIRST 10")
     for r in keep[:10]: print(r["event_et"],r["impact"],r["event"])
