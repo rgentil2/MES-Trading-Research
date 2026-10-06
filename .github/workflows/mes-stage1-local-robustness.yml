@@ -1,0 +1,36 @@
+name: MES Stage 1 local robustness
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/mes_stage1_local_robustness.py'
+      - 'research/MES_STAGE1_LOCAL_ROBUSTNESS_PREREG.md'
+      - 'tools/build_forexfactory_calendar.py'
+      - '.github/workflows/mes-stage1-local-robustness.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  robustness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas pyarrow pyyaml scipy statsmodels requests beautifulsoup4
+      - name: Build frozen news calendar through 2025
+        run: python tools/build_forexfactory_calendar.py --start-year 2020 --end-year 2025
+      - name: Run Stage 1 local robustness
+        run: python research/mes_stage1_local_robustness.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mes-stage1-local-robustness
+          path: results/mes_stage1_local_robustness/*
+          if-no-files-found: error
