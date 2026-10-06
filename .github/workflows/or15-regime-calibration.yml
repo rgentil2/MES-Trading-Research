@@ -1,0 +1,26 @@
+name: OR15 regime reconstruction calibration
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/or15_regime_reconstruction_calibration.py'
+      - '.github/workflows/or15-regime-calibration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas pyarrow pyyaml scipy statsmodels
+      - run: python research/or15_regime_reconstruction_calibration.py
