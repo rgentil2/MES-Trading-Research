@@ -1,0 +1,32 @@
+name: MES R071 temporal diagnostic
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/mes_r071_temporal_diagnostic.py'
+      - '.github/workflows/mes-r071-temporal.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  temporal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas pyarrow pyyaml scipy statsmodels
+      - name: Execute R071 temporal diagnostic
+        run: python research/mes_r071_temporal_diagnostic.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mes-r071-temporal
+          path: results/r071_temporal_diagnostic/*
+          if-no-files-found: error
