@@ -1,0 +1,32 @@
+name: MES R072 structural change diagnostic
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/mes_r072_structural_change.py'
+      - '.github/workflows/mes-r072-structural.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  structural:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas pyarrow pyyaml scipy statsmodels
+      - name: Execute R072 structural diagnostic
+        run: python research/mes_r072_structural_change.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mes-r072-structural
+          path: results/r072_structural_change/*
+          if-no-files-found: error
