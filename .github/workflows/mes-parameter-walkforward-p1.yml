@@ -1,0 +1,33 @@
+name: MES parameter walk-forward P1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/mes_parameter_walkforward_p1.py'
+      - 'research/MES_PARAMETER_WALKFORWARD_P1_PREREG.md'
+      - '.github/workflows/mes-parameter-walkforward-p1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  parameter-walk-forward:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas pyarrow pyyaml scipy
+      - name: Execute frozen P1 walk-forward
+        run: python research/mes_parameter_walkforward_p1.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mes-parameter-walkforward-p1
+          path: results/parameter_walkforward_p1/*
+          if-no-files-found: error
