@@ -1,0 +1,36 @@
+name: PDC complete candidate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/pdc_complete_candidate.py'
+      - 'research/PDC_COMPLETE_CANDIDATE_PREREG.md'
+      - 'tools/build_forexfactory_calendar.py'
+      - '.github/workflows/pdc-complete-candidate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas pyarrow pyyaml scipy statsmodels requests beautifulsoup4
+      - name: Build Forex Factory calendar through 2025
+        run: python tools/build_forexfactory_calendar.py --start-year 2020 --end-year 2025
+      - name: Execute complete PDC candidate characterization
+        run: python research/pdc_complete_candidate.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pdc-complete-candidate
+          path: results/pdc_complete_candidate/*
+          if-no-files-found: error
