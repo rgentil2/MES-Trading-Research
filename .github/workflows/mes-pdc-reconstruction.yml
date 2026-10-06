@@ -1,0 +1,32 @@
+name: MES PDC small-gap reconstruction
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/mes_pdc_small_gap_reconstruction.py'
+      - '.github/workflows/mes-pdc-reconstruction.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pdc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas pyarrow pyyaml scipy statsmodels
+      - name: Execute PDC reconstruction
+        run: python research/mes_pdc_small_gap_reconstruction.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mes-pdc-reconstruction
+          path: results/pdc_small_gap_reconstruction/*
+          if-no-files-found: error
