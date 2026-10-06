@@ -1,0 +1,31 @@
+name: Value Area R4 temporal diagnostic
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/value_area_r4_temporal.py'
+      - '.github/workflows/value-area-r4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas pyarrow pyyaml scipy statsmodels
+      - run: python research/value_area_r4_temporal.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: value-area-r4
+          path: results/value_area_reentry_r4/*
+          if-no-files-found: error
