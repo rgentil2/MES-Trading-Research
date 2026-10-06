@@ -1,0 +1,36 @@
+name: R072 news policy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/r072_news_policy.py'
+      - 'research/R072_NEWS_POLICY_PREREG.md'
+      - 'tools/build_forexfactory_calendar.py'
+      - '.github/workflows/r072-news-policy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  news:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas pyarrow pyyaml scipy statsmodels requests beautifulsoup4
+      - name: Build Forex Factory calendar through 2025
+        run: python tools/build_forexfactory_calendar.py --start-year 2020 --end-year 2025
+      - name: Execute R072 news characterization
+        run: python research/r072_news_policy.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r072-news-policy
+          path: results/r072_news_policy/*
+          if-no-files-found: error
