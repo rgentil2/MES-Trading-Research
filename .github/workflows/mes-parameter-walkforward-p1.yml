@@ -23,7 +23,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install numpy pandas pyarrow pyyaml scipy
+      - run: pip install numpy pandas pyarrow pyyaml scipy statsmodels
       - name: Execute frozen P1 walk-forward
         run: python research/mes_parameter_walkforward_p1.py
       - uses: actions/upload-artifact@v4
