@@ -131,7 +131,7 @@ def main():
             "variant":vid,"immediate_neighbors":len(ns),"robust_neighbors":eligible,
             "robust_neighbor_fraction":eligible/len(ns) if ns else np.nan
         })
-    v=v.merge(pd.DataFrame(plateau),on="variant",how="left")
+    v=v.reset_index(drop=True).merge(pd.DataFrame(plateau),on="variant",how="left")
     v.to_csv(OUT/"P1B_PARAMETER_STABILITY.csv",index=False)
 
     oos,selections=reconstruct_oos(variants)
