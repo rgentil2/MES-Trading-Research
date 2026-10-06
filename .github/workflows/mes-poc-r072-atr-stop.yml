@@ -1,0 +1,36 @@
+name: MES POC R072 ATR stop risk design
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/mes_poc_r072_atr_stop.py'
+      - 'research/MES_POC_R072_ATR_STOP_PREREG.md'
+      - 'tools/build_forexfactory_calendar.py'
+      - '.github/workflows/mes-poc-r072-atr-stop.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  risk_design:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas pyarrow pyyaml scipy statsmodels requests beautifulsoup4
+      - name: Build frozen news calendar through 2025
+        run: python tools/build_forexfactory_calendar.py --start-year 2020 --end-year 2025
+      - name: Execute preregistered POC/R072 ATR stop design
+        run: python research/mes_poc_r072_atr_stop.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mes-poc-r072-atr-stop
+          path: results/mes_poc_r072_atr_stop/*
+          if-no-files-found: error
