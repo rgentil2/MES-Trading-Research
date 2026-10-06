@@ -1,0 +1,41 @@
+{
+  "authority": "POST_HOC_HETEROGENEITY_DIAGNOSTIC_ONLY",
+  "frozen_before_join": true,
+  "strategy_modification_permitted": false,
+  "sources": {
+    "h081": {
+      "run_id": 36427711138,
+      "artifact_id": 10973030113,
+      "artifact_name": "b14-opposite-sign-candidates",
+      "artifact_digest": "sha256:0017a78ebc25630b9a5b3f71417f1bc8f3a4ee186a2a96b72090744944e51047"
+    },
+    "ms2": {
+      "run_id": 37391057933,
+      "artifact_id": 11380584413,
+      "artifact_name": "mes-market-state-v2-2020-2024",
+      "artifact_digest": "sha256:cb6199c883652f4e2053b84651cc4a3629b36df6933a210e66b71248d083b3e5"
+    }
+  },
+  "scope": "intersection 2020-2024",
+  "tests": {
+    "families": [
+      "volatility_state",
+      "efficiency_state",
+      "direction",
+      "overnight_state",
+      "volume_state",
+      "gap_state",
+      "value_location"
+    ],
+    "minimum_group_n": 15,
+    "permutations_per_family": 5000,
+    "base_seed": 20261005,
+    "fdr": "Benjamini-Hochberg",
+    "significance_q": 0.05
+  },
+  "fingerprints": {
+    "research/temporal/H081_MS2_HETEROGENEITY_PROTOCOL.md": "cf87cc3c3b9ee6df24f35448e3953110809b92c4",
+    "tools/audit_h081_ms2_heterogeneity.py": "b8aade4ee344113c51bd7c1148a427c479e34cc7"
+  },
+  "calendar_2026_opened": false
+}
