@@ -35,17 +35,19 @@ def daily(groups):
 
 def first_or15_event(g):
     g=g.sort_values("timestamp_et").reset_index(drop=True)
-    if len(g)<16:return "NONE"
+    if len(g)<16:return (False,False)
     op=g.iloc[:15]
-    if len(op)!=15:return "NONE"
+    if len(op)!=15:return (False,False)
     orh=float(op.high.max()); orl=float(op.low.min())
+    upper=False; lower=False
     for i in range(15,len(g)):
         m=int(g.iloc[i].minute)
         if m>690: break
         cc=float(g.iloc[i].close)
-        if cc>orh:return "UPPER"
-        if cc<orl:return "LOWER"
-    return "NONE"
+        if (not upper) and cc>orh: upper=True
+        if (not lower) and cc<orl: lower=True
+        if upper and lower: break
+    return (upper,lower)
 
 def main():
     raw=load_development()
@@ -67,8 +69,8 @@ def main():
         x["r1"]=(prev_vr>p67)&(prev_er>erp33)
         z=x[(x.year>=2020)&(x.year<=2024)&x.r1]
         r1_sessions=len(z)
-        r1_upper=sum(ev.get(k)=="UPPER" for k in z.group_key)
-        r1_lower=sum(ev.get(k)=="LOWER" for k in z.group_key)
+        r1_upper=sum(bool(ev.get(k,(False,False))[0]) for k in z.group_key)
+        r1_lower=sum(bool(ev.get(k,(False,False))[1]) for k in z.group_key)
         rows.append(dict(atr=atrcol,warmup=warm,r1_sessions=r1_sessions,r1_upper_events=r1_upper,r1_lower_events=r1_lower))
     out=pd.DataFrame(rows)
     print(out.to_string(index=False))
