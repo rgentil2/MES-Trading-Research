@@ -1,0 +1,32 @@
+name: OR15 R1 temporal diagnostic
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/or15_r1_temporal.py'
+      - 'research/OR15_R1_TEMPORAL_PREREG.md'
+      - '.github/workflows/or15-r1-temporal.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas pyarrow pyyaml scipy statsmodels
+      - run: python research/or15_r1_temporal.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: or15-r1-temporal
+          path: results/or15_r1_temporal/*
+          if-no-files-found: error
