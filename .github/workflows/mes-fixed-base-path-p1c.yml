@@ -1,0 +1,33 @@
+name: MES fixed-base path diagnostic P1C
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/mes_fixed_base_path_p1c.py'
+      - 'research/MES_FIXED_BASE_PATH_P1C_PROTOCOL.md'
+      - '.github/workflows/mes-fixed-base-path-p1c.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fixed-base-path:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas pyarrow pyyaml scipy statsmodels
+      - name: Execute P1C diagnostics
+        run: python research/mes_fixed_base_path_p1c.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mes-fixed-base-path-p1c
+          path: results/fixed_base_path_p1c/*
+          if-no-files-found: error
