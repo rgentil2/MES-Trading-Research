@@ -1,0 +1,61 @@
+name: H081 Temporal Robustness Audit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/temporal/H081_TEMPORAL_ROBUSTNESS_PROTOCOL.md'
+      - 'research/temporal/H081_TEMPORAL_ROBUSTNESS_FREEZE.json'
+      - 'tools/audit_h081_temporal_robustness.py'
+      - '.github/workflows/h081-temporal-robustness.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  temporal-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verify frozen files before artifact access
+        run: |
+          python - <<'PY'
+          import json, subprocess
+          lock=json.load(open('research/temporal/H081_TEMPORAL_ROBUSTNESS_FREEZE.json'))
+          assert lock['frozen_before_opening_trade_artifact'] is True
+          assert lock['strategy_modification_permitted'] is False
+          assert lock['calendar_2026_opened'] is False
+          for path, expected in lock['fingerprints'].items():
+              actual=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert actual == expected, (path, actual, expected)
+          print('PASS: H081 temporal audit freeze verified before artifact access')
+          PY
+
+      - name: Download exact archived B14 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: b14-opposite-sign-candidates
+          path: inputs/B14
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 36427711138
+
+      - name: Install analysis dependencies
+        run: pip install numpy pandas pyarrow
+
+      - name: Run frozen H081 temporal audit
+        run: python tools/audit_h081_temporal_robustness.py --input-dir inputs/B14
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: h081-temporal-robustness-audit
+          path: results/temporal/H081/**
+          if-no-files-found: error
