@@ -1,0 +1,36 @@
+name: MES risk follow-up
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/mes_risk_followup.py'
+      - 'research/MES_RISK_FOLLOWUP_PREREG.md'
+      - 'tools/build_forexfactory_calendar.py'
+      - '.github/workflows/mes-risk-followup.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  followup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas pyarrow pyyaml scipy statsmodels requests beautifulsoup4
+      - name: Build frozen news calendar through 2025
+        run: python tools/build_forexfactory_calendar.py --start-year 2020 --end-year 2025
+      - name: Execute risk follow-up
+        run: python research/mes_risk_followup.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mes-risk-followup
+          path: results/mes_risk_followup/*
+          if-no-files-found: error
