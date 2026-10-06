@@ -61,10 +61,10 @@ def main():
         erp33=x.er10.shift(1).rolling(252,min_periods=warm).quantile(.33)
         # today's regime must use yesterday's completed values and thresholds known then.
         prev_vr=vr.shift(1)
-        prev_p67=p67.shift(1)
         prev_er=x.er10.shift(1)
-        prev_erp33=erp33.shift(1)
-        x["r1"]=(prev_vr>prev_p67)&(prev_er>prev_erp33)
+        # At today's pre-open we know yesterday's value and the rolling
+        # thresholds computed from history through yesterday.
+        x["r1"]=(prev_vr>p67)&(prev_er>erp33)
         z=x[(x.year>=2020)&(x.year<=2024)&x.r1]
         r1_sessions=len(z)
         r1_upper=sum(ev.get(k)=="UPPER" for k in z.group_key)
