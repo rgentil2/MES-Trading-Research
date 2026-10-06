@@ -1,0 +1,35 @@
+name: PDC failure predictor diagnostic
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/pdc_failure_predictor.py'
+      - 'research/PDC_FAILURE_PREDICTOR_PREREG.md'
+      - '.github/workflows/pdc-failure-predictor.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pdc_failure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas pyarrow pyyaml scipy statsmodels scikit-learn requests beautifulsoup4
+      - name: Rebuild frozen Forex Factory calendar
+        run: python tools/build_forexfactory_calendar.py
+      - name: Execute preregistered PDC failure diagnostic
+        run: python research/pdc_failure_predictor.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pdc-failure-predictor
+          path: results/pdc_failure_predictor/*
+          if-no-files-found: error
