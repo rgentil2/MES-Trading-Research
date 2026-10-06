@@ -1,0 +1,36 @@
+name: MES POC R072 risk architecture comparison
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/mes_poc_r072_risk_arch_compare.py'
+      - 'research/MES_POC_R072_RISK_ARCH_COMPARE_PREREG.md'
+      - 'tools/build_forexfactory_calendar.py'
+      - '.github/workflows/mes-poc-r072-risk-arch-compare.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas pyarrow pyyaml scipy statsmodels requests beautifulsoup4
+      - name: Build frozen news calendar through 2025
+        run: python tools/build_forexfactory_calendar.py --start-year 2020 --end-year 2025
+      - name: Compare risk architectures
+        run: python research/mes_poc_r072_risk_arch_compare.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mes-poc-r072-risk-arch-compare
+          path: results/mes_poc_r072_risk_arch_compare/*
+          if-no-files-found: error
