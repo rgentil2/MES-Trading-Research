@@ -6,6 +6,7 @@ on:
     paths:
       - 'research/build_ninjatrader_r072_support.py'
       - 'ninjatrader/R072SignalReplayParity.cs'
+      - 'ninjatrader/R072LiveEngineParity.cs'
       - 'tools/build_forexfactory_calendar.py'
       - '.github/workflows/build-ninjatrader-r072-support.yml'
   workflow_dispatch:
@@ -29,8 +30,10 @@ jobs:
         run: python tools/build_forexfactory_calendar.py --start-year 2020 --end-year 2025
       - name: Build R072 support files
         run: python research/build_ninjatrader_r072_support.py
-      - name: Copy NinjaScript into bundle
-        run: cp ninjatrader/R072SignalReplayParity.cs results/ninjatrader_r072_support/
+      - name: Copy NinjaScripts into bundle
+        run: |
+          cp ninjatrader/R072SignalReplayParity.cs results/ninjatrader_r072_support/
+          cp ninjatrader/R072LiveEngineParity.cs results/ninjatrader_r072_support/
       - uses: actions/upload-artifact@v4
         with:
           name: ninjatrader-r072-replay-parity-bundle
