@@ -58,14 +58,21 @@ Important:
 - R072SignalReplayParity.cs validates execution only.
 - it is not a deployable live signal generator.
 
-Live engine port specification:
+Live engine port:
 - dynamic HIGH state is based on 15-minute range bps versus prior-60 same-block q80
 - H017 low-volatility override uses prior-60 same-minute q10 of RV30
 - wick failure threshold 0.50
 - first valid signal/session
 - cutoff 11:00 ET
 - inverse direction
-- block-level Python engine reference is being used as the parity authority.
+- block-level Python engine reference is the parity authority
+- Python streaming emulation now proves exact 166/166 pre-news signal parity:
+  - block 100%
+  - time 100%
+  - direction 100%
+  - entry price 100%
+- R072LiveEngineParity.cs has been created with optional Python-H017 parity mode and fully computed H017 mode.
+- block-level NinjaTrader audit CSV + automatic comparator are available.
 
 ## Automatic comparison
 
