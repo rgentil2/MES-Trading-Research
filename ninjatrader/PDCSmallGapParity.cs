@@ -178,6 +178,14 @@ namespace NinjaTrader.NinjaScript.Strategies
             if (!haveCurrentSession)
                 return;
 
+            // NinjaTrader's built-in CME US Index Futures RTH template may extend
+            // beyond the 09:30-16:00 ET research window (e.g. to 17:00 ET).
+            // Python parity uses exactly the 390 one-minute EOB bars 09:31..16:00 ET,
+            // so ignore any template bars outside that research window.
+            int etClock = EtClock(et);
+            if (etClock < 93100 || etClock > 160000)
+                return;
+
             UpdateCurrentSession(et);
 
             // Only complete RTH-style sessions beginning with the 09:30-09:31 ET bar are eligible.
