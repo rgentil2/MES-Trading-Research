@@ -35,6 +35,14 @@ def build_rollover_dates() -> pd.DataFrame:
     return x[["rollover_session_date_et", "prev_contract", "contract"]]
 
 
+def build_session_universe() -> pd.DataFrame:
+    raw = load_development()
+    _, groups = prepare_rth(raw)
+
+    dates = sorted({str(g.session_date.iloc[0]) for g in groups.values()})
+    return pd.DataFrame({"session_date_et": dates})
+
+
 def build_news() -> pd.DataFrame:
     if not NEWS_IN.exists():
         raise FileNotFoundError(NEWS_IN)
@@ -54,14 +62,17 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
 
     r = build_rollover_dates()
+    s = build_session_universe()
     n = build_news()
 
     r.to_csv(OUT / "pdc_rollover_sessions_et.csv", index=False)
+    s.to_csv(OUT / "pdc_python_eligible_sessions_et.csv", index=False)
     n.to_csv(OUT / "pdc_news_blackouts_et.csv", index=False)
 
     print("ROLLOVERS")
     print(r.to_string(index=False))
-    print(f"\nnews windows: {len(n)}")
+    print(f"\neligible Python sessions: {len(s)}")
+    print(f"news windows: {len(n)}")
 
 
 if __name__ == "__main__":
