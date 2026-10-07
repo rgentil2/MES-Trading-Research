@@ -14,6 +14,7 @@ from research.archive.B12.b12_strategy_architecture import prepare_rth
 from research.archive.B13.b13_high_directional_triggers import block_features
 from research.mes_pdc_small_gap_reconstruction import daily_context as daily_atr_context
 from research.r072_news_policy import load_news, blocked
+from research.active.R063_FINAL_REGIME_ENGINE.regime_engine_v1 import build_dynamic_outputs
 
 NEWS_IN=ROOT/"data_external/forexfactory/usd_high_medium_2020_2025.csv"
 OUT=ROOT/"results/ninjatrader_r072_support"
@@ -39,6 +40,15 @@ def build_rollover_dates(groups):
     x=d[d.prev_contract.notna() & d.contract.ne(d.prev_contract)].copy()
     x=x.rename(columns={"session_date":"rollover_session_date_et"})
     return x[["rollover_session_date_et","prev_contract","contract"]]
+
+def build_h017_reference(raw):
+    d=build_dynamic_outputs(raw)
+    x=d[["group_key","session_date","h017_time"]].drop_duplicates("group_key")
+    x=x[x.h017_time.notna()].copy()
+    x["session_date_et"]=x["session_date"].astype(str)
+    x["h017_time_et"]=pd.to_datetime(x["h017_time"]).dt.strftime("%Y-%m-%d %H:%M:%S")
+    return x[["session_date_et","h017_time_et"]].sort_values("session_date_et").reset_index(drop=True)
+
 
 def build_news_csv():
     n=pd.read_csv(NEWS_IN)
@@ -87,10 +97,13 @@ def main():
     build_news_csv().to_csv(OUT/"r072_news_blackouts_et.csv",index=False)
     build_session_universe(groups).to_csv(OUT/"r072_python_eligible_sessions_et.csv",index=False)
     build_rollover_dates(groups).to_csv(OUT/"r072_rollover_sessions_et.csv",index=False)
+    href=build_h017_reference(raw)
+    href.to_csv(OUT/"r072_h017_reference_et.csv",index=False)
 
     print(f"base signals: {len(base)}")
     print(f"blocked by news: {blocked_n}")
     print(f"replay signals: {len(sig)}")
+    print(f"H017 reference sessions: {len(href)}")
     print(f"first: {sig.signal_et.iloc[0]}")
     print(f"last: {sig.signal_et.iloc[-1]}")
 
