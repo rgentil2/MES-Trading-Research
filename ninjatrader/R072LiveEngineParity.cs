@@ -140,6 +140,8 @@ namespace NinjaTrader.NinjaScript.Strategies
                 CatastropheStopAtr=0.70;
 
                 StrictParity2020To2025=true;
+                WriteEngineAuditCsv=false;
+                EngineAuditCsvPath=string.Empty;
                 DebugPrints=false;
             }
             else if(State==State.DataLoaded)
@@ -170,6 +172,9 @@ namespace NinjaTrader.NinjaScript.Strategies
                 if(UsePythonSessionUniverse) LoadSessionUniverseCsv();
                 if(UseRolloverReset) LoadRolloverCsv();
                 if(UsePythonH017Reference) LoadH017ReferenceCsv();
+
+                if(WriteEngineAuditCsv)
+                    InitializeAuditCsv();
 
                 Print(string.Format(CultureInfo.InvariantCulture,
                     "R072 live engine loaded. App TZ={0}; TradingHours={1}; News={2}; eligible sessions={3}; rollovers={4}; H017 refs={5}",
@@ -291,6 +296,10 @@ namespace NinjaTrader.NinjaScript.Strategies
                 else if(lower>=WickThreshold && blockClose>blockOpen)
                     direction=-1;
             }
+
+            AppendEngineAudit(
+                et,blockId,rangeBps,q20,q80,rawState,engineState,
+                upper,lower,direction,h017);
 
             if(DebugPrints)
             {
@@ -514,6 +523,60 @@ namespace NinjaTrader.NinjaScript.Strategies
             if(lo==hi) return a[lo];
             double w=idx-lo;
             return a[lo]*(1.0-w)+a[hi]*w;
+        }
+
+        private void InitializeAuditCsv()
+        {
+            if(string.IsNullOrWhiteSpace(EngineAuditCsvPath))
+            {
+                configurationValid=false;
+                Print("R072 LIVE AUDIT ERROR: EngineAuditCsvPath is blank.");
+                return;
+            }
+
+            try
+            {
+                File.WriteAllText(
+                    EngineAuditCsvPath,
+                    "session_date,block_id,block_end_et,range15_bps,q20,q80,raw_state,engine_state,h017_time,upper_wick_ratio,lower_wick_ratio,candidate_direction\r\n");
+            }
+            catch(Exception ex)
+            {
+                configurationValid=false;
+                Print("R072 LIVE AUDIT ERROR: "+ex.Message);
+            }
+        }
+
+        private void AppendEngineAudit(
+            DateTime et,int blockId,double rangeBps,double q20,double q80,
+            string rawState,string engineState,double upper,double lower,
+            int direction,DateTime h017)
+        {
+            if(!WriteEngineAuditCsv || string.IsNullOrWhiteSpace(EngineAuditCsvPath))
+                return;
+
+            try
+            {
+                string line=string.Join(",",new string[]{
+                    currentSessionDateEt.ToString("yyyy-MM-dd"),
+                    blockId.ToString(CultureInfo.InvariantCulture),
+                    et.ToString("yyyy-MM-dd HH:mm:ss"),
+                    rangeBps.ToString("R",CultureInfo.InvariantCulture),
+                    double.IsNaN(q20)?"":q20.ToString("R",CultureInfo.InvariantCulture),
+                    double.IsNaN(q80)?"":q80.ToString("R",CultureInfo.InvariantCulture),
+                    rawState,
+                    engineState,
+                    h017==DateTime.MinValue?"":h017.ToString("yyyy-MM-dd HH:mm:ss"),
+                    upper.ToString("R",CultureInfo.InvariantCulture),
+                    lower.ToString("R",CultureInfo.InvariantCulture),
+                    direction.ToString(CultureInfo.InvariantCulture)
+                });
+                File.AppendAllText(EngineAuditCsvPath,line+"\r\n");
+            }
+            catch(Exception ex)
+            {
+                Print("R072 LIVE AUDIT WRITE ERROR: "+ex.Message);
+            }
         }
 
         private DateTime ToEastern(DateTime applicationTime)
@@ -768,7 +831,15 @@ namespace NinjaTrader.NinjaScript.Strategies
         public bool StrictParity2020To2025{get;set;}
 
         [NinjaScriptProperty]
-        [Display(Name="Debug prints",Order=2,GroupName="Safety")]
+        [Display(Name="Write engine audit CSV",Order=2,GroupName="Safety")]
+        public bool WriteEngineAuditCsv{get;set;}
+
+        [NinjaScriptProperty]
+        [Display(Name="Engine audit CSV path",Order=3,GroupName="Safety")]
+        public string EngineAuditCsvPath{get;set;}
+
+        [NinjaScriptProperty]
+        [Display(Name="Debug prints",Order=4,GroupName="Safety")]
         public bool DebugPrints{get;set;}
         #endregion
     }
