@@ -1,0 +1,38 @@
+name: Build NinjaTrader R072 replay parity bundle
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/build_ninjatrader_r072_support.py'
+      - 'ninjatrader/R072SignalReplayParity.cs'
+      - 'tools/build_forexfactory_calendar.py'
+      - '.github/workflows/build-ninjatrader-r072-support.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas pyarrow pyyaml scipy statsmodels requests beautifulsoup4
+      - name: Build frozen Forex Factory calendar
+        run: python tools/build_forexfactory_calendar.py --start-year 2020 --end-year 2025
+      - name: Build R072 support files
+        run: python research/build_ninjatrader_r072_support.py
+      - name: Copy NinjaScript into bundle
+        run: cp ninjatrader/R072SignalReplayParity.cs results/ninjatrader_r072_support/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ninjatrader-r072-replay-parity-bundle
+          path: results/ninjatrader_r072_support/*
+          if-no-files-found: error
