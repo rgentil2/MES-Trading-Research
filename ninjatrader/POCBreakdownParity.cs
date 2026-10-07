@@ -206,20 +206,24 @@ namespace NinjaTrader.NinjaScript.Strategies
             // Manage existing SHORT.
             if (Position.MarketPosition == MarketPosition.Short)
             {
-                if (UseNewsFilter && IsNewsFlatBoundary(et))
-                {
-                    ExitShort("POC_NEWS_EXIT", ShortSignal);
-                    if (DebugPrints)
-                        Print("POC NEWS FLAT submitted at EOB " + et.ToString("yyyy-MM-dd HH:mm:ss"));
-                    return;
-                }
-
+                // Match Python collision semantics: if the scheduled H15 exit
+                // lands exactly on the T-5 boundary, the timed exit is already
+                // due at that boundary. A news-forced exit applies only when the
+                // position would otherwise remain open beyond it.
                 if (contactSignalEt != DateTime.MinValue
                     && et >= contactSignalEt.AddMinutes(TimeExitMinutes))
                 {
                     ExitShort("POC_TIME_EXIT", ShortSignal);
                     if (DebugPrints)
                         Print("POC TIME EXIT submitted at EOB " + et.ToString("yyyy-MM-dd HH:mm:ss"));
+                    return;
+                }
+
+                if (UseNewsFilter && IsNewsFlatBoundary(et))
+                {
+                    ExitShort("POC_NEWS_EXIT", ShortSignal);
+                    if (DebugPrints)
+                        Print("POC NEWS FLAT submitted at EOB " + et.ToString("yyyy-MM-dd HH:mm:ss"));
                     return;
                 }
             }
