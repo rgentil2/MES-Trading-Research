@@ -469,6 +469,9 @@ namespace NinjaTrader.NinjaScript.Strategies
                 && lastResearchClose>0
                 && Close[0]>0;
 
+            if(!consecutive && lastResearchBarEt!=DateTime.MinValue)
+                last30Returns.Clear();
+
             if(consecutive)
             {
                 double r=Math.Log(Close[0]/lastResearchClose);
