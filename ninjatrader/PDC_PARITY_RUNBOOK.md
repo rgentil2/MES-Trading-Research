@@ -19,6 +19,7 @@ Expected Python reference:
 - PDCSmallGapParity.cs
 - pdc_news_blackouts_et.csv
 - pdc_rollover_sessions_et.csv
+- pdc_python_eligible_sessions_et.csv
 
 ## NinjaTrader setup
 
@@ -42,6 +43,9 @@ Expected Python reference:
 8. In strategy parameters:
    - News CSV path = full local path to `pdc_news_blackouts_et.csv`
    - Rollover CSV path = full local path to `pdc_rollover_sessions_et.csv`
+   - Session universe CSV path = full local path to `pdc_python_eligible_sessions_et.csv`
+   - Use Python session universe = true
+   - Require session universe file = true
    - leave all frozen parameters at defaults.
 
 ## Frozen defaults
@@ -52,9 +56,14 @@ Expected Python reference:
 - Time exit ET = 113000
 - Use news filter = true
 - Use rollover reset = true
+- Use Python session universe = true
 - Strict parity 2020-2025 = true
 
 Do not optimize these during Stage 2.
+
+The Python-session-universe filter is **parity infrastructure only**. It reproduces the exact set of complete 390-bar sessions used by the Python research data. It must not be treated as a live trading filter; after parity, data-quality gaps and scheduled early-close days are handled separately in the deployable specification.
+
+For strict target-fill parity with Python, enable **Fill limit orders on touch** in Strategy Analyzer because the Python engine counts a PDC target as filled when the bar touches the target price.
 
 ## Expected mechanics
 
