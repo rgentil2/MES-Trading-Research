@@ -51,6 +51,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 
         private readonly Dictionary<double, double> currentProfile =
             new Dictionary<double, double>();
+        private readonly List<double> atrSeed = new List<double>();
 
         private TimeZoneInfo easternTimeZone;
         private TimeZoneInfo applicationTimeZone;
@@ -66,8 +67,20 @@ namespace NinjaTrader.NinjaScript.Strategies
 
         private bool havePreviousCompletePoc;
         private double previousCompletePoc;
+        private bool havePreviousCompleteClose;
+        private double previousCompleteClose;
+
+        // Causal Wilder ATR14 from completed eligible RTH sessions.
+        private bool atrReady;
+        private double atr14;
+        private double atrPrevForSession;
+
         private double pocForSession;
         private double currentSessionOpen;
+        private double currentSessionHigh;
+        private double currentSessionLow;
+        private double currentSessionClose;
+        private double currentSessionPrevClose;
 
         private bool firstTouchConsumed;
         private bool tradedThisSession;
@@ -92,6 +105,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 
                 ContactCutoffEt = 113000;
                 TimeExitMinutes = 15;
+                UseCatastropheStop = false;
+                CatastropheStopAtr = 0.45;
 
                 UseNewsFilter = true;
                 RequireNewsFile = true;
@@ -183,6 +198,9 @@ namespace NinjaTrader.NinjaScript.Strategies
 
             sessionBarCount++;
             currentSessionLastBarEt = et;
+            currentSessionHigh = Math.Max(currentSessionHigh, High[0]);
+            currentSessionLow = Math.Min(currentSessionLow, Low[0]);
+            currentSessionClose = Close[0];
             AddProfileBar();
 
             // Manage existing SHORT.
@@ -245,6 +263,19 @@ namespace NinjaTrader.NinjaScript.Strategies
                 }
 
                 contactSignalEt = et;
+
+                if (UseCatastropheStop)
+                {
+                    if (double.IsNaN(atrPrevForSession) || atrPrevForSession <= 0)
+                        return;
+
+                    int stopTicks = Math.Max(
+                        1,
+                        (int)Math.Ceiling(
+                            (CatastropheStopAtr * atrPrevForSession) / TickSize - 1e-12));
+                    SetStopLoss(ShortSignal, CalculationMode.Ticks, stopTicks, false);
+                }
+
                 EnterShort(1, ShortSignal);
                 tradedThisSession = true;
 
@@ -277,7 +308,14 @@ namespace NinjaTrader.NinjaScript.Strategies
                     ? previousCompletePoc
                     : double.NaN;
 
+            atrPrevForSession = atrReady ? atr14 : double.NaN;
+            currentSessionPrevClose =
+                havePreviousCompleteClose ? previousCompleteClose : double.NaN;
+
             currentSessionOpen = Open[0];
+            currentSessionHigh = High[0];
+            currentSessionLow = Low[0];
+            currentSessionClose = Close[0];
             currentSessionLastBarEt = firstBarEt;
             sessionBarCount = 0;
             firstTouchConsumed = false;
@@ -399,8 +437,48 @@ namespace NinjaTrader.NinjaScript.Strategies
                 havePreviousCompletePoc = true;
             }
 
+            double tr = currentSessionHigh - currentSessionLow;
+            if (!currentSessionIsRollover && !double.IsNaN(currentSessionPrevClose))
+            {
+                tr = Math.Max(
+                    tr,
+                    Math.Max(
+                        Math.Abs(currentSessionHigh - currentSessionPrevClose),
+                        Math.Abs(currentSessionLow - currentSessionPrevClose)));
+            }
+            UpdateWilderAtr(tr);
+
+            previousCompleteClose = currentSessionClose;
+            havePreviousCompleteClose = true;
+
             if (DebugPrints)
-                Print("POC FINAL " + currentSessionDateEt.ToString("yyyy-MM-dd") + " POC=" + p.ToString("F2", CultureInfo.InvariantCulture));
+            {
+                Print(string.Format(
+                    CultureInfo.InvariantCulture,
+                    "POC FINAL {0} POC={1:F2} ATRclose={2}",
+                    currentSessionDateEt.ToString("yyyy-MM-dd"),
+                    p,
+                    atrReady ? atr14.ToString("F4", CultureInfo.InvariantCulture) : "NaN"));
+            }
+        }
+
+        private void UpdateWilderAtr(double tr)
+        {
+            if (!atrReady)
+            {
+                atrSeed.Add(tr);
+                if (atrSeed.Count == 14)
+                {
+                    double sum = 0.0;
+                    for (int i = 0; i < atrSeed.Count; i++)
+                        sum += atrSeed[i];
+                    atr14 = sum / 14.0;
+                    atrReady = true;
+                }
+                return;
+            }
+
+            atr14 = ((atr14 * 13.0) + tr) / 14.0;
         }
 
         private DateTime ToEastern(DateTime applicationTime)
@@ -602,6 +680,15 @@ namespace NinjaTrader.NinjaScript.Strategies
         [Range(1, 120)]
         [Display(Name = "Time exit minutes", Order = 2, GroupName = "Frozen POC parameters")]
         public int TimeExitMinutes { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Use catastrophe stop", Order = 3, GroupName = "Frozen POC parameters")]
+        public bool UseCatastropheStop { get; set; }
+
+        [NinjaScriptProperty]
+        [Range(0.05, 3.00)]
+        [Display(Name = "Catastrophe stop ATR", Order = 4, GroupName = "Frozen POC parameters")]
+        public double CatastropheStopAtr { get; set; }
 
         [NinjaScriptProperty]
         [Display(Name = "Use news filter", Order = 1, GroupName = "Parity files")]
