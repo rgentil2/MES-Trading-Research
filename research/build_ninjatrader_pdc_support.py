@@ -2,9 +2,11 @@
 from __future__ import annotations
 
 from pathlib import Path
+import sys
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 
 from research.mes_parameter_walkforward_p1 import load_development
 from research.archive.B12.b12_strategy_architecture import prepare_rth
