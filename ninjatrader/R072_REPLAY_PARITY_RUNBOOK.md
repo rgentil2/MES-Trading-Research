@@ -54,3 +54,30 @@ A deployable R072 requires either:
 - an explicitly designed external signal-generation architecture.
 
 Do not call the replay file a live strategy generator.
+
+
+# Full live-engine parity candidate
+
+The bundle also includes `R072LiveEngineParity.cs`.
+
+This second strategy generates R072 signals itself rather than replaying the Python signal CSV.
+
+Recommended validation order:
+
+1. Run `R072SignalReplayParity` first and confirm 145 trades.
+2. Then run `R072LiveEngineParity` with:
+   - Wick threshold = 0.50
+   - Signal cutoff ET = 110000
+   - Time exit = 30
+   - Use catastrophe stop = FALSE
+   - Use Python session universe = TRUE
+   - Use Python H017 reference = TRUE
+   - H017 reference path = `r072_h017_reference_et.csv`
+   - same news / rollover files
+   - commission OFF
+   - slippage 0
+3. Compare generated trades against the same 145-trade golden set.
+4. If signal parity is accepted, repeat with `Use Python H017 reference = FALSE` to validate the fully computed H017 layer.
+5. Only after the live engine itself is accepted should the 0.70 ATR catastrophe stop and cost stresses be considered deployable.
+
+The Python H017 reference is a parity aid, not a live dependency.
