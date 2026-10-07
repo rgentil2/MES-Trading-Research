@@ -49,6 +49,11 @@ namespace NinjaTrader.NinjaScript.Strategies
         private readonly HashSet<DateTime> rolloverSessionDates =
             new HashSet<DateTime>();
 
+        // Stage-2 parity only: dates that were complete 390-bar RTH sessions
+        // in the Python research dataset.
+        private readonly HashSet<DateTime> pythonEligibleSessionDates =
+            new HashSet<DateTime>();
+
         private readonly List<double> atrSeed = new List<double>();
 
         private TimeZoneInfo easternTimeZone;
@@ -64,6 +69,7 @@ namespace NinjaTrader.NinjaScript.Strategies
         private bool haveCurrentSession;
         private bool currentSessionIsRollover;
         private bool currentSessionStartedAtExpectedTime;
+        private bool currentSessionEligibleForParity;
         private DateTime currentSessionDateEt;
         private double currentSessionPrevClose;
         private double currentSessionOpen;
@@ -117,6 +123,10 @@ namespace NinjaTrader.NinjaScript.Strategies
                 RequireRolloverFile = true;
                 RolloverCsvPath = string.Empty;
 
+                UsePythonSessionUniverse = true;
+                RequireSessionUniverseFile = true;
+                SessionUniverseCsvPath = string.Empty;
+
                 StrictParity2020To2025 = true;
                 AbortIfEntryFillPastPdc = true;
                 DebugPrints = false;
@@ -149,16 +159,20 @@ namespace NinjaTrader.NinjaScript.Strategies
                 if (UseRolloverReset)
                     LoadRolloverCsv();
 
+                if (UsePythonSessionUniverse)
+                    LoadSessionUniverseCsv();
+
                 Print(string.Format(
                     CultureInfo.InvariantCulture,
-                    "PDC parity loaded. App TZ={0}; TradingHours={1}; TradingHours TZ={2}; News windows={3}; rollover sessions={4}",
+                    "PDC parity loaded. App TZ={0}; TradingHours={1}; TradingHours TZ={2}; News windows={3}; rollover sessions={4}; eligible Python sessions={5}",
                     applicationTimeZone == null ? "null" : applicationTimeZone.Id,
                     Bars.TradingHours == null ? "null" : Bars.TradingHours.Name,
                     Bars.TradingHours == null || Bars.TradingHours.TimeZoneInfo == null
                         ? "null"
                         : Bars.TradingHours.TimeZoneInfo.Id,
                     CountNewsWindows(),
-                    rolloverSessionDates.Count));
+                    rolloverSessionDates.Count,
+                    pythonEligibleSessionDates.Count));
             }
         }
 
@@ -190,6 +204,12 @@ namespace NinjaTrader.NinjaScript.Strategies
 
             // Only complete RTH-style sessions beginning with the 09:30-09:31 ET bar are eligible.
             if (!currentSessionStartedAtExpectedTime)
+                return;
+
+            // Strict Stage-2 parity uses the same complete-session universe that Python used.
+            // This prevents data-vendor differences or known early-close/incomplete days from
+            // creating extra trades during the parity check. Do not use this as a live filter.
+            if (UsePythonSessionUniverse && !currentSessionEligibleForParity)
                 return;
 
             sessionBarCount++;
@@ -375,6 +395,8 @@ namespace NinjaTrader.NinjaScript.Strategies
             currentSessionStartedAtExpectedTime = EtClock(firstBarEt) == 93100;
             currentSessionIsRollover =
                 UseRolloverReset && rolloverSessionDates.Contains(currentSessionDateEt);
+            currentSessionEligibleForParity =
+                !UsePythonSessionUniverse || pythonEligibleSessionDates.Contains(currentSessionDateEt);
 
             atrPrevForSession = atrReady ? atr14 : double.NaN;
             pdcForSession =
@@ -406,9 +428,10 @@ namespace NinjaTrader.NinjaScript.Strategies
             {
                 Print(string.Format(
                     CultureInfo.InvariantCulture,
-                    "PDC SESSION {0} rollover={1} PDC={2} ATRprev={3}",
+                    "PDC SESSION {0} rollover={1} eligible={2} PDC={3} ATRprev={4}",
                     currentSessionDateEt.ToString("yyyy-MM-dd"),
                     currentSessionIsRollover,
+                    currentSessionEligibleForParity,
                     double.IsNaN(pdcForSession) ? "NaN" : pdcForSession.ToString("F2", CultureInfo.InvariantCulture),
                     double.IsNaN(atrPrevForSession) ? "NaN" : atrPrevForSession.ToString("F4", CultureInfo.InvariantCulture)));
             }
@@ -430,6 +453,7 @@ namespace NinjaTrader.NinjaScript.Strategies
             // Python prepare_rth() only keeps exactly 390 bars, 09:31..16:00 EOB.
             bool complete =
                 currentSessionStartedAtExpectedTime
+                && currentSessionEligibleForParity
                 && sessionBarCount == 390
                 && EtClock(currentSessionLastBarEt) == 160000;
 
@@ -608,6 +632,54 @@ namespace NinjaTrader.NinjaScript.Strategies
             }
         }
 
+        private void LoadSessionUniverseCsv()
+        {
+            pythonEligibleSessionDates.Clear();
+
+            if (string.IsNullOrWhiteSpace(SessionUniverseCsvPath) || !File.Exists(SessionUniverseCsvPath))
+            {
+                string msg = "PDC SESSION UNIVERSE FILE missing: " + (SessionUniverseCsvPath ?? string.Empty);
+                Print(msg);
+                if (RequireSessionUniverseFile)
+                    configurationValid = false;
+                return;
+            }
+
+            try
+            {
+                using (StreamReader reader = new StreamReader(SessionUniverseCsvPath))
+                {
+                    string header = reader.ReadLine();
+                    string line;
+
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        if (string.IsNullOrWhiteSpace(line))
+                            continue;
+
+                        string[] parts = line.Split(',');
+                        DateTime d;
+
+                        if (DateTime.TryParseExact(
+                                parts[0].Trim(),
+                                "yyyy-MM-dd",
+                                CultureInfo.InvariantCulture,
+                                DateTimeStyles.None,
+                                out d))
+                        {
+                            pythonEligibleSessionDates.Add(d.Date);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Print("PDC SESSION UNIVERSE FILE error: " + ex.Message);
+                if (RequireSessionUniverseFile)
+                    configurationValid = false;
+            }
+        }
+
         private void LoadRolloverCsv()
         {
             rolloverSessionDates.Clear();
@@ -701,6 +773,18 @@ namespace NinjaTrader.NinjaScript.Strategies
         [NinjaScriptProperty]
         [Display(Name = "Rollover CSV path", Order = 6, GroupName = "Parity files")]
         public string RolloverCsvPath { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Use Python session universe", Order = 7, GroupName = "Parity files")]
+        public bool UsePythonSessionUniverse { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Require session universe file", Order = 8, GroupName = "Parity files")]
+        public bool RequireSessionUniverseFile { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name = "Session universe CSV path", Order = 9, GroupName = "Parity files")]
+        public string SessionUniverseCsvPath { get; set; }
 
         [NinjaScriptProperty]
         [Display(Name = "Strict parity 2020-2025", Order = 1, GroupName = "Safety")]
