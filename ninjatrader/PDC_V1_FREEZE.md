@@ -28,29 +28,30 @@ Status: FROZEN after Python ↔ NinjaTrader parity and Stage-3 execution robustn
 - exit type match: 106/106
 - residual exit-price differences explained by executable tick rounding / 1-minute feed convention
 
-## Stage-3 realistic execution
-Base:
-- commission: $1.88 RT
-- slippage: 1 tick in Strategy Analyzer
-- center SL 0.30 ATR
-- commission-adjusted P&L: +$532.69
-- commission-adjusted expectancy: +$5.03/trade
-- reported DD before commission accounting: ~$205
-- worst trade: about -$117
+## Stage-3 realistic execution — commission accounting corrected 2026-10-07
 
-Stress:
-- commission: $1.88 RT
-- slippage: 2 ticks
-- commission-adjusted P&L: +$392.69
-- commission-adjusted expectancy: +$3.70/trade
-- effective total friction ~ $6.54/trade vs Python stress assumption $6.57
-- PF remains >1
-- DD ~$218
+IMPORTANT: NinjaTrader's exported `Profit` and `Total net profit` in these tested runs already include the configured commissions. The prior figures in this document mistakenly subtracted the commission twice. The corrected figures below use the reported `Total net profit` as net; commissions remain a separate informational field, NOT an additional deduction.
 
-Local stop robustness at 1 tick + commission:
-- 0.25 ATR: commission-adjusted P&L +$348.94, expectancy +$3.29
-- 0.30 ATR: commission-adjusted P&L +$532.69, expectancy +$5.03
-- 0.35 ATR: commission-adjusted P&L +$512.69, expectancy +$4.84
+Base (1 tick of slippage, $1.88 RT commission):
+- 106 trades
+- **NET** P&L: **+$731.97**; expectancy **+$6.91/trade**
+- Reported PF 1.63; reported max DD ~$205.04
+- Commissions separately reported: $199.28 (already accounted for)
+
+Stress (2 ticks of slippage, $1.88 RT commission):
+- 106 trades
+- **NET** P&L: **+$591.97**; expectancy **+$5.58/trade**
+- Reported PF 1.49; reported max DD ~$217.54
+- Commissions separately reported: $199.28 (already accounted for)
+
+Local stop robustness (1 tick + commission, 106 trades):
+- 0.25 ATR: **+$548.22 NET**, expectancy **+$5.17**
+- 0.30 ATR: **+$731.97 NET**, expectancy **+$6.91**
+- 0.35 ATR: **+$711.97 NET**, expectancy **+$6.72**
+
+The earlier inferred effective-friction comparison to Python ($6.54/trade at 2 ticks) was based on incorrectly double-deducting commissions and must not be used.
+
+Provenance: user-supplied NinjaTrader Summary screenshots. The full individual PDC 2-tick export is not currently available in the shared evidence set, so portfolio-level trade-by-trade realized drawdown is not yet calculated for all three strategies.
 
 Decision:
 - retain 0.30 ATR as the frozen center;
