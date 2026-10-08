@@ -1,27 +1,74 @@
-# NQ/MNQ NinjaTrader 8 bulk minute exporter (research-only)
+# NinjaTrader 8 — exportación NQ/MNQ Minute Last 2020–2026
 
-**Designed, not compiled/run inside NT8 yet.** No local NinjaTrader desktop is available in the GitHub runner or assistant environment. This does NOT automatically obtain data from your personal brokerage connection until you install/run it in NinjaTrader on a connected Windows machine.
+**Estado:** código actualizado en GitHub; pendiente de compilar y ejecutar en NinjaTrader Desktop 8 conectado a un proveedor histórico. **No se han obtenido los datos de mercado reales desde esta conversación.**
 
-## Installation and use
+## Qué descarga el exportador
 
-1. In NinjaTrader Desktop 8, connect to your futures market-data provider. Confirm it actually has historical **NQ/MNQ 1-minute Last for 2020–2024**; retention depends on connection and vendor, NOT on the export script.
-2. In Control Center select **New > NinjaScript Editor**, right-click AddOns, choose New AddOn, replace generated scaffold with the content of **`NQMNQBulkMinuteExporter.cs`**, save/compile (F5). You may need to create an AddOn named NQMNQBulkMinuteExporter; don't paste the code inside a Strategy or Indicator.
-3. In Control Center choose **New > NQ/MNQ 2020-24 Research Export**. The exporter schedules **40 sequential jobs**, 20 NQ and 20 MNQ quarterly contracts (Mar/Jun/Sep/Dec 2020–24). `MergePolicy.DoNotMerge`, `BarsPeriodType.Minute` and ETH are fixed in code. Monitor **New > NinjaScript Output (Output 1)** and the provider status. Stop/retry if the provider rate-limits requests.
-4. Export destination is `%USERPROFILE%\Documents\NinjaTrader 8\NQMNQ_Research_2020_2024\` with one file per individual quarterly contract plus `download_manifest.csv`. Exported timestamps use UTC; the raw semicolon format matches the project's existing files.
-5. Any job with fewer than 20,000 bars is recorded `INCOMPLETE` and written as `.partial` rather than accepted. Failed jobs are logged; the program resumes files >1MB and a **separate QC must verify hashes, missing RTH sessions, and rollover**. A provider can return too short a range despite completing without error; don't assume EXPORTED means QC_PASS.
-6. Send or sync the resulting NQ/MNQ folder into the private research environment. Never upload to a public repository; the repository stages only hashes, status, and small results. NQ **2025 and 2026 remain sealed**.
+- **Instrumentos:** NQ y MNQ; cada uno con contratos individuales trimestrales marzo/junio/septiembre/diciembre.
+- **Cobertura histórica solicitada:** 2020–2026, sin solicitar barras futuras. A fecha 2026-10-08, 2026 solo se descarga hasta la fecha disponible y deberá completarse posteriormente.
+- **Solicitudes:** 28 contratos por instrumento de 2020–2026 (**56 en total**). Cuando empiece diciembre de 2026, se añade automáticamente MAR27 de NQ y MNQ (**58 en total**) para completar los últimos días de diciembre de 2026 después del rollover. No se guardan barras de 2027.
+- **Datos:** `Minute Last` OHLCV, barras de **un minuto**, ETH, `MergePolicy.DoNotMerge`. **No exporta ticks**.
+- **Rangos:** el contrato de marzo puede iniciarse el 1 de diciembre del año anterior; los otros comienzan el primer día del trimestre anterior. Diciembre se solicita hasta el 31, sin asumir que el contrato DEC sigue cotizando todo el mes. Los contratos vecinos se solapan y deberán resolverse mediante un rollover explícito.
+- **Proveedor:** puede carecer de minutos antiguos. Un resultado `EXPORTED` **no demuestra cobertura completa**. Contratos con menos de 20.000 barras quedan como `.partial` y `INCOMPLETE`; la cifra solo detecta exportaciones claramente insuficientes. La historia debe superar QC.
 
-## Important limitation
+## Aislamiento físico de la muestra (NO abrir resultados reservados)
 
-`BarsRequest` from/to range uses **local midnight and full trading days**, so a contract request can have overlap with adjacent quarterly contracts. This is intentional for explicit rollover handling, NOT a reason to sum candles across both. Some providers cannot retrieve six years of minute data despite successful recent download. If the provider fails for early years, switch to a paid historical API only after comparing cost and retention; a C# script cannot create data a provider does not have.
+Las barras se guardan según **su año calendario UTC**, no el año de expiración del contrato. Por ejemplo, el contrato NQ MAR25 puede generar un archivo de diciembre 2024 en desarrollo **y otro archivo de enero–marzo 2025 en validación**.
 
-## Research versus NinjaTrader Strategy Analyzer
+La carpeta de salida es:
 
-Use Python for hypothesis generation, multiple-testing correction, clustered confidence intervals, walk-forward, multi-contract portfolio risk and Monte Carlo. Use NinjaTrader **Strategy Analyzer** for faithful implementation/backtests of a small fixed set of candidate rules, including stops, fills and commission settings, and finally 2026 reserved chronological pseudo-forward and live simulation after freeze. This is faster and more reproducible than programming every preliminary hypothesis as a NinjaScript strategy. Do not optimize thousands of Strategy Analyzer parameters on already-explored 2020–2024 and treat the best performance as proof of alpha.
+```text
+%USERPROFILE%\Documents\NinjaTrader 8\NQMNQ_Research_2020_2026\
+  development_2020_2024\          <- hipótesis, entrenamiento, investigación
+    NQ_03-25_2024_Minute_Last.txt  <- SOLO barras 2024 del contrato MAR25
+    NQ_03-24_2024_Minute_Last.txt
+    ... NQ/MNQ y sus contratos
+  validation_holdout_2025\         <- NO examinar precios, efectos ni P&L
+    NQ_03-25_2025_Minute_Last.txt
+    ...
+  pseudo_forward_holdout_2026\    <- NO examinar precios, efectos ni P&L
+    NQ_12-26_2026_Minute_Last.txt
+    ...
+  completed_jobs\                  <- marcadores para reanudar las descargas antiguas
+  download_manifest.csv
+```
 
-## Official documentation
+El exportador puede escribir datos de 2025/2026 para almacenarlos. **El investigador no debe leer esas barras para evaluar direcciones, parámetros, ganancias, regímenes o selección de estrategias** antes de las puertas de validación. El validador incluido solo abre `development_2020_2024`, y permite inventariar **nombres y tamaños** de los holdouts sin abrir su contenido.
 
-- BarsRequest: https://ninjatrader.com/support/helpguides/nt8/barsrequest.htm
-- MergePolicy.DoNotMerge: https://docs.ninjatrader.com/ninjascript/barsrequest_mergepolicy
-- Historical-data export/UTC: https://ninjatrader.com/support/helpguides/nt8/exporting.htm
-- Per-provider historical availability: https://ninjatrader.com/support/helpguides/nt8/data_by_provider.htm
+## Instalación en NinjaTrader Desktop 8
+
+1. Tener una conexión histórica habilitada para NQ y MNQ.
+2. Control Center → **New → NinjaScript Editor**, clic derecho en AddOns → New AddOn.
+3. Sustituir la plantilla por el contenido de `ninjatrader/NQMNQBulkMinuteExporter.cs`. Compilar (F5). Puede requerir ajustes menores de API según la versión instalada; **todavía no está compilado en un escritorio real**.
+4. Control Center → **New → NQ/MNQ 2020-26 Research Export**.
+5. Monitorizar **NinjaScript Output 1** y `download_manifest.csv`. No volver a iniciar mientras esté en curso. Esperar a que todas las solicitudes terminen.
+6. Volver a ejecutar más adelante para completar 2026. Contratos anteriores exitosos se omiten mediante marcadores; los contratos activos de 2026 se actualizan.
+
+## Control de calidad **solo de desarrollo**
+
+Desde la carpeta del repositorio:
+
+```bash
+python research/nq/validate_ninja_bulk_exports.py --folder "C:\Users\TU_USUARIO\Documents\NinjaTrader 8\NQMNQ_Research_2020_2026" --holdout-metadata
+```
+
+El informe compara los archivos 2020–2024 esperados, comprueba formato OHLCV, timestamps, duplicados, volumen y grilla de ticks, y produce `nq_mnq_structural_qc.json`. Por el rollover de diciembre hay **50 particiones de contrato-año de desarrollo** previstas entre ambos instrumentos, si el proveedor ofrece historia completa. Que pasen las pruebas estructurales no demuestra calidad de sesiones, Bid/Ask, estrategia ni ejecución.
+
+La bandera `--holdout-metadata` solo enumera rutas y bytes de 2025/2026: **no lee su contenido**. Los períodos se validan cronológicamente solo cuando las estrategias y el controlador de cartera estén congelados según el protocolo.
+
+## ¿Para qué conservamos 2025 y 2026?
+
+- **2020–2024:** hipótesis NQ-H01...H04, desarrollo de estrategias y controles de robustez.
+- **2025:** validación fuera de muestra por candidata **después de congelar hipótesis/reglas**.
+- **2026:** pseudo-forward cronológico de la **cartera final completamente congelada**, sin retocar parámetros según los resultados.
+- Después: simulación NinjaTrader en tiempo real y eventual compra de MFFU, únicamente si las pruebas son satisfactorias.
+
+## Datos de ticks
+
+Este AddOn todavía **no descarga Tick Last, Tick Bid ni Tick Ask**. Se desarrollará un bloque de exportación de ticks por períodos cortos después de comprobar rendimiento y disponibilidad del proveedor. No mezclar en un único archivo los datos Minute y Tick.
+
+## Documentación oficial
+
+- [NinjaTrader BarsRequest](https://ninjatrader.com/support/helpguides/nt8/barsrequest.htm)
+- [MergePolicy / DoNotMerge](https://docs.ninjatrader.com/ninjascript/barsrequest_mergepolicy)
+- [Disponibilidad según proveedor](https://ninjatrader.com/support/helpguides/nt8/data_by_provider.htm)
