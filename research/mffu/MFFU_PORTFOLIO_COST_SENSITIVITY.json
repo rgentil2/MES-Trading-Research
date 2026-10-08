@@ -1,0 +1,100 @@
+{
+  "source": "MFFU 363 exact historical NinjaTrader 2-tick fills; baseline fee adjusted to $1.90 RT MES",
+  "baseline": "NinjaTrader Standard Historical fills, 2 ticks slippage and Fill limit orders on touch; not tick/matching engine certified",
+  "assumptions": {
+    "extra_tick_per_side_usd_for_one_mes": 1.25,
+    "round_trip_drag_per_added_tick_per_side": 2.5,
+    "extra_RT_at_total_friction_1_5x": 3.45,
+    "model_note": "Pure accounting sensitivity; DOES NOT re-run stops/targets/limit order fill event ordering."
+  },
+  "per_strategy": {
+    "PDC": {
+      "count": 106,
+      "base": {
+        "net": 589.85,
+        "net_per_trade": 5.56,
+        "pf": 1.491
+      },
+      "plus_1_tick_per_side": {
+        "net": 324.85,
+        "net_per_trade": 3.06,
+        "pf": 1.256
+      },
+      "plus_2_ticks_per_side": {
+        "net": 59.85,
+        "net_per_trade": 0.56,
+        "pf": 1.044
+      },
+      "total_friction_1_5x": {
+        "net": 224.15,
+        "net_per_trade": 2.11,
+        "pf": 1.173
+      }
+    },
+    "POC": {
+      "count": 108,
+      "base": {
+        "net": 312.3,
+        "net_per_trade": 2.89,
+        "pf": 1.196
+      },
+      "plus_1_tick_per_side": {
+        "net": 42.3,
+        "net_per_trade": 0.39,
+        "pf": 1.024
+      },
+      "plus_2_ticks_per_side": {
+        "net": -227.7,
+        "net_per_trade": -2.11,
+        "pf": 0.878
+      },
+      "total_friction_1_5x": {
+        "net": -60.3,
+        "net_per_trade": -0.56,
+        "pf": 0.966
+      }
+    },
+    "R072": {
+      "count": 149,
+      "base": {
+        "net": 995.65,
+        "net_per_trade": 6.68,
+        "pf": 1.252
+      },
+      "plus_1_tick_per_side": {
+        "net": 623.15,
+        "net_per_trade": 4.18,
+        "pf": 1.15
+      },
+      "plus_2_ticks_per_side": {
+        "net": 250.65,
+        "net_per_trade": 1.68,
+        "pf": 1.058
+      },
+      "total_friction_1_5x": {
+        "net": 481.6,
+        "net_per_trade": 3.23,
+        "pf": 1.114
+      }
+    }
+  },
+  "aggregate": {
+    "base": {
+      "net": 1897.8,
+      "net_per_trade": 5.23
+    },
+    "plus_1_tick_per_side": {
+      "net": 990.3,
+      "net_per_trade": 2.73
+    },
+    "plus_2_ticks_per_side": {
+      "net": 82.8,
+      "net_per_trade": 0.23
+    },
+    "total_friction_1_5x": {
+      "net": 645.45,
+      "net_per_trade": 1.78
+    }
+  },
+  "interpretation": "Historical aggregate net remains positive at cost stress, but relative to 2020-25 time span profitability is modest; frequency and +3000 MFFU approval remain unmet."
+}
