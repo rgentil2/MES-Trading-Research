@@ -24,3 +24,7 @@ For 145 sessions with frozen Python signal/ATR reference, compare stop ticks aga
 ## Decision
 
 **Order-installation audit passed with one 1-tick ATR discrepancy and four additional sessions still lacking external ATR reference.** It is *not* a live-market stop-fill certification. Next: data/session completeness audit for the 4 additions, then portfolio-level timestamp/risk overlap for PDC+POC+R072 (ensuring matched execution assumptions), followed by go/no-go. Do not change R072 signal parameters based on historical outcomes. Do not use 2026 to optimize.
+
+## Initial per-contract nominal stop risk
+
+Given 1 MES = $5 per index point (before commission or stop slippage), the 149 stops imply: minimum **$110.00**, median **$208.75**, average **$233.79**, 75th percentile **$268.75**, 90th percentile **$332.75**, 95th percentile **$372.50**, maximum **$682.50**. 133/149 exceed $150, 48/149 exceed $250, and 5/149 exceed $500. The five >$500 are concentrated in April 2025. Historical no-stop-fill results do not remove these *potential* losses. Confirm compatibility with the specific $50k prop firm's trailing drawdown/daily risk, and simultaneous risk across strategies, before funding or scaling. This is a risk gate; never optimize the stop retrospectively to reduce sample losses.
