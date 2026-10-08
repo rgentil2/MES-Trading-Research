@@ -1,0 +1,55 @@
+name: ES PDC 2020-24 transport and MFFU risk screening
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/es/es_pdc_transport_gate.py'
+      - 'research/es/test_es_pdc_transport_gate.py'
+      - '.github/workflows/es-pdc-transport-mffu.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  es-pdc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Check out repository without LFS data
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+      - name: Download only development ES minute bars (2020–2024)
+        shell: bash
+        run: |
+          git lfs install
+          git lfs pull --include='data_es_staging/raw_lfs/ES_*20/*_Minute_Last.txt,data_es_staging/raw_lfs/ES_*21/*_Minute_Last.txt,data_es_staging/raw_lfs/ES_*22/*_Minute_Last.txt,data_es_staging/raw_lfs/ES_*23/*_Minute_Last.txt,data_es_staging/raw_lfs/ES_*24/*_Minute_Last.txt' --exclude=''
+      - name: Confirm no holdout LFS materialized
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          folder=Path('data_es_staging/raw_lfs')
+          bad=[str(f) for year in ('25','26') for f in folder.glob(f'ES_*{year}/*_Minute_Last.txt') if f.stat().st_size>1000]
+          if bad:raise SystemExit('ES holdout LFS unexpectedly materialized: '+str(bad))
+          good=[f for year in ('20','21','22','23','24') for f in folder.glob(f'ES_*{year}/*_Minute_Last.txt') if f.stat().st_size>1000]
+          if len(good)!=20:raise SystemExit(f'Expected exactly 20 development ES minute files, got {len(good)}')
+          print('ES DEV LFS PRESENT: 20; ES 2025/26 SEALED')
+          PY
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas
+      - name: Unit tests
+        run: python -m unittest discover -s research/es -p 'test_es_pdc_transport_gate.py' -v
+      - name: Run frozen PDC transport screening on ES DEV only
+        run: python research/es/es_pdc_transport_gate.py
+      - name: Upload raw trades and descriptive diagnostic
+        uses: actions/upload-artifact@v4
+        with:
+          name: es-pdc-transport-mffu-dev2020-24
+          path: results/es_pdc_transport/*
+          retention-days: 30
+          if-no-files-found: error
