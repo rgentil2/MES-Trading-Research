@@ -6,6 +6,7 @@ on:
     paths:
       - 'research/es/es_pdc_transport_gate.py'
       - 'research/es/test_es_pdc_transport_gate.py'
+      - 'research/es/es_pdc_mffu_gate.py'
       - '.github/workflows/es-pdc-transport-mffu.yml'
   workflow_dispatch:
 
