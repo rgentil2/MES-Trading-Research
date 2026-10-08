@@ -1,0 +1,213 @@
+{
+  "provenance": "NinjaTrader 2-tick trades: PDC 106, POC 108, R072 149; commission adjusted 1.88 to 1.90 USD RT",
+  "individual": {
+    "PDC": {
+      "n": 106,
+      "grossHistoricalNet": 591.97,
+      "mffuCostAdjustedNet": 589.85
+    },
+    "POC": {
+      "n": 108,
+      "grossHistoricalNet": 314.46,
+      "mffuCostAdjustedNet": 312.3
+    },
+    "R072": {
+      "n": 149,
+      "grossHistoricalNet": 998.63,
+      "mffuCostAdjustedNet": 995.65
+    }
+  },
+  "portfolio_raw": {
+    "trades": 363,
+    "dates": 325,
+    "net": 1897.8,
+    "yearly": {
+      "2020": 282.55,
+      "2021": 41.85,
+      "2022": 767.15,
+      "2023": -15.7,
+      "2024": 1146.65,
+      "2025": -324.7
+    },
+    "activeMonths": 71,
+    "monthsGte5": 40,
+    "avgMonthly": 5.04,
+    "gapOver7": 91,
+    "maxGapDays": 51,
+    "firstGaps": [
+      {
+        "previous": "2020-01-29",
+        "next": "2020-03-20",
+        "gapDays": 51
+      },
+      {
+        "previous": "2020-03-20",
+        "next": "2020-04-16",
+        "gapDays": 27
+      },
+      {
+        "previous": "2020-04-16",
+        "next": "2020-04-24",
+        "gapDays": 8
+      },
+      {
+        "previous": "2020-04-28",
+        "next": "2020-05-12",
+        "gapDays": 14
+      },
+      {
+        "previous": "2020-05-12",
+        "next": "2020-05-28",
+        "gapDays": 16
+      }
+    ],
+    "bestEodEquity": 2504.45,
+    "realizedMaxDrawdown": 677.45,
+    "drawdownDay": "2022-01-26",
+    "overlap": {
+      "pairCounts": {
+        "PDC+POC": 7,
+        "POC+R072": 2,
+        "PDC+R072": 1
+      },
+      "oppositeN": 1,
+      "sameN": 9,
+      "max": 2,
+      "dates": 10,
+      "oppositeExamples": [
+        {
+          "at": "2021-02-09",
+          "t1": "PDC",
+          "t2": "POC",
+          "side1": "LONG",
+          "side2": "SHORT",
+          "entry1": "2021-02-09",
+          "entry2": "2021-02-09"
+        }
+      ]
+    },
+    "evaluation": {
+      "rapid": {
+        "status": "inactivity",
+        "date": "2020-02-06",
+        "balance": 6.85,
+        "days": 1
+      },
+      "builder": {
+        "status": "inactivity",
+        "date": "2020-02-06",
+        "balance": 6.85,
+        "days": 1
+      },
+      "rapidWithoutInactivity": {
+        "status": "not_passed",
+        "balance": 1897.8,
+        "days": 325,
+        "peak": 2504.45,
+        "minEquity": -73.3,
+        "finalFloor": 0,
+        "maxDay": 311.85
+      }
+    }
+  },
+  "router_priority_PDC_POC_R072": {
+    "trades": 362,
+    "dates": 325,
+    "net": 1947.2,
+    "yearly": {
+      "2020": 282.55,
+      "2021": 91.25,
+      "2022": 767.15,
+      "2023": -15.7,
+      "2024": 1146.65,
+      "2025": -324.7
+    },
+    "activeMonths": 71,
+    "monthsGte5": 40,
+    "avgMonthly": 5.03,
+    "gapOver7": 91,
+    "maxGapDays": 51,
+    "firstGaps": [
+      {
+        "previous": "2020-01-29",
+        "next": "2020-03-20",
+        "gapDays": 51
+      },
+      {
+        "previous": "2020-03-20",
+        "next": "2020-04-16",
+        "gapDays": 27
+      },
+      {
+        "previous": "2020-04-16",
+        "next": "2020-04-24",
+        "gapDays": 8
+      },
+      {
+        "previous": "2020-04-28",
+        "next": "2020-05-12",
+        "gapDays": 14
+      },
+      {
+        "previous": "2020-05-12",
+        "next": "2020-05-28",
+        "gapDays": 16
+      }
+    ],
+    "bestEodEquity": 2553.85,
+    "realizedMaxDrawdown": 677.45,
+    "drawdownDay": "2022-01-26",
+    "skips": [
+      {
+        "date": "2021-02-09",
+        "source": "POC",
+        "side": "SHORT",
+        "reason": "opposite MES exposure",
+        "active": [
+          "PDC"
+        ]
+      }
+    ],
+    "overlap": {
+      "pairCounts": {
+        "PDC+POC": 6,
+        "POC+R072": 2,
+        "PDC+R072": 1
+      },
+      "oppositeN": 0,
+      "sameN": 9,
+      "max": 2
+    },
+    "evaluation": {
+      "rapid": {
+        "status": "inactivity",
+        "date": "2020-02-06",
+        "balance": 6.85,
+        "days": 1
+      },
+      "builder": {
+        "status": "inactivity",
+        "date": "2020-02-06",
+        "balance": 6.85,
+        "days": 1
+      },
+      "rapidWithoutInactivity": {
+        "status": "not_passed",
+        "balance": 1947.2,
+        "days": 325,
+        "peak": 2553.85,
+        "minEquity": -23.9,
+        "finalFloor": 0,
+        "maxDay": 311.85
+      }
+    }
+  },
+  "limitations": [
+    "No synchronized intraday floating-equity path yet",
+    "2020-2025 heavily investigated, not unbiased holdout",
+    "Stop-trigger fill quality R072 unproven",
+    "Four R072 extra sessions need raw-data QC",
+    "Scenario replay holds trading log outcomes fixed if conflicting trades skipped; real time decisions differ",
+    "Monte Carlo not yet run for full portfolio"
+  ]
+}
