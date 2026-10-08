@@ -1,0 +1,33 @@
+name: MFFU MES intraday floating risk audit
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/mffu/mes_intraday_floating_audit.py'
+      - 'research/mffu/test_mes_intraday_floating_audit.py'
+      - 'research/mffu/inputs/**'
+      - '.github/workflows/mffu-mes-floating-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mes-floating-2020-2025:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check import, timestamps and risk-engine unit tests
+        run: python -m unittest discover -s research/mffu -p 'test_mes_intraday_floating_audit.py' -v
+      - name: Reconstruct open PnL, MFFU EOD floor and R072 session completeness (no 2026 read)
+        run: python research/mffu/mes_intraday_floating_audit.py --raw-dir data/raw --input-dir research/mffu/inputs --output results/mffu/mes_floating_1m_audit.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mffu-mes-floating-2020-2025
+          path: results/mffu/mes_floating_1m_audit.json
+          if-no-files-found: warn
