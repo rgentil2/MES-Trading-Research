@@ -1,0 +1,49 @@
+name: ES POC and R072 2020-24 transport MFFU
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/es/es_poc_r072_transport_gate.py'
+      - 'research/es/test_es_poc_r072_transport_gate.py'
+      - 'research/es/ES_POC_R072_TRANSPORT_PREREG_MFFU.md'
+      - '.github/workflows/es-poc-r072-transport-mffu.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - name: Fetch ONLY 2020-2024 ES development quarterly Last 1m
+        shell: bash
+        run: |
+          git lfs install
+          git lfs pull --include='data_es_staging/raw_lfs/ES_*20/*_Minute_Last.txt,data_es_staging/raw_lfs/ES_*21/*_Minute_Last.txt,data_es_staging/raw_lfs/ES_*22/*_Minute_Last.txt,data_es_staging/raw_lfs/ES_*23/*_Minute_Last.txt,data_es_staging/raw_lfs/ES_*24/*_Minute_Last.txt' --exclude=''
+      - name: Verify LFS holdouts remain pointers
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          for year in ('25','26'):
+              for p in Path('data_es_staging/raw_lfs').glob(f'ES_*{year}/*_Minute_Last.txt'):
+                  if p.stat().st_size>1000: raise SystemExit('HOLDOUT EXPOSED: '+str(p))
+          print('ES 2025/2026 holdouts SEALED')
+          PY
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas scipy pyyaml statsmodels
+      - name: Frozen rule stop/fill tests
+        run: python -m unittest discover -s research/es -p 'test_es_poc_r072_transport_gate.py' -v
+      - name: Run independent POC and R072 on ES DEVELOPMENT only
+        run: python research/es/es_poc_r072_transport_gate.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: es-poc-r072-transport-2020-24
+          path: results/es_poc_r072_transport/*
+          if-no-files-found: error
+          retention-days: 60
