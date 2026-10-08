@@ -105,7 +105,7 @@
         "days": 325,
         "peak": 2504.45,
         "minEquity": -73.3,
-        "finalFloor": 0,
+        "finalFloor": 100,
         "maxDay": 311.85
       }
     }
@@ -197,7 +197,7 @@
         "days": 325,
         "peak": 2553.85,
         "minEquity": -23.9,
-        "finalFloor": 0,
+        "finalFloor": 100,
         "maxDay": 311.85
       }
     }
@@ -208,6 +208,7 @@
     "Stop-trigger fill quality R072 unproven",
     "Four R072 extra sessions need raw-data QC",
     "Scenario replay holds trading log outcomes fixed if conflicting trades skipped; real time decisions differ",
-    "Monte Carlo not yet run for full portfolio"
+    "Monte Carlo not yet run for full portfolio",
+    "Correction: MFFU EOD trailing floor locks at +$100 above starting capital when sufficiently profitable; no-inactivity historical runs peak past $2,100 and end with floor +$100. No outcome classification changed."
   ]
 }
