@@ -1,0 +1,281 @@
+{
+  "meta": {
+    "trades": 363,
+    "acceptedRouter": 362,
+    "skipped": [
+      {
+        "date": "2021-02-09",
+        "strategy": "POC",
+        "net": -49.4
+      }
+    ],
+    "sample": "2020-2025 only; 2026 SEALED",
+    "cost": "$1.90 MFFU round trip, +$0.02 above original NinjaTrader commission, already-adjusted P&L",
+    "pnlUnit": "1 MES per selected strategy per signal",
+    "model": "10k stationary 2-calendar-week block bootstrap from 2020-2025 realized daily PnL, preserving same-day multi-strategy correlation",
+    "limitations": [
+      "closed-trade EOD only; no intraday floating drawdown certification",
+      "synthetic resampling of heavily explored development sample, not unbiased pass probability",
+      "assessment months counted in 52- or 313-week approximations",
+      "historical no-trade gaps resampled",
+      "evaluation starts with first simulated trade; account opened earlier would be at least as exposed to inactivity",
+      "Builder intraday soft-pause cannot be certified using day-close P&L alone",
+      "historical skip-priority conflicts not an out-of-sample improvement",
+      "positive result never licenses opening 2026 without final freeze"
+    ]
+  },
+  "runs": {
+    "raw": {
+      "m12_rapid_rule_on": {
+        "months": 12,
+        "blockWeeks": 2,
+        "strictInactivity": true,
+        "plan": "rapid",
+        "replications": 10000,
+        "status_counts": {
+          "passed": 0,
+          "fail_inactivity": 10000,
+          "fail_eod_close": 0,
+          "no_pass": 0
+        },
+        "percent": {
+          "passed": 0,
+          "inactivity": 100,
+          "eod_close": 0,
+          "not_passed": 0
+        },
+        "balanceAtTerminal_or_stop_p10_p50_p90": [
+          -103.25,
+          14.95,
+          126.2
+        ],
+        "bestClosedEquity_p10_p50_p90": [
+          0,
+          26.85,
+          152.4
+        ],
+        "daysToStop_p50": 20,
+        "dailySoftPausePotentialEvents": 0
+      },
+      "m12_rapid_no_inactivity": {
+        "months": 12,
+        "blockWeeks": 2,
+        "strictInactivity": false,
+        "plan": "rapid",
+        "replications": 10000,
+        "status_counts": {
+          "passed": 0,
+          "fail_inactivity": 0,
+          "fail_eod_close": 0,
+          "no_pass": 10000
+        },
+        "percent": {
+          "passed": 0,
+          "inactivity": 0,
+          "eod_close": 0,
+          "not_passed": 100
+        },
+        "balanceAtTerminal_or_stop_p10_p50_p90": [
+          -317.55,
+          316.85,
+          979.9
+        ],
+        "bestClosedEquity_p10_p50_p90": [
+          76.15,
+          472.85,
+          1082.45
+        ],
+        "daysToStop_p50": 371,
+        "dailySoftPausePotentialEvents": 0
+      },
+      "m72_rapid_rule_on": {
+        "months": 72,
+        "blockWeeks": 2,
+        "strictInactivity": true,
+        "plan": "rapid",
+        "replications": 10000,
+        "status_counts": {
+          "passed": 0,
+          "fail_inactivity": 10000,
+          "fail_eod_close": 0,
+          "no_pass": 0
+        },
+        "percent": {
+          "passed": 0,
+          "inactivity": 100,
+          "eod_close": 0,
+          "not_passed": 0
+        },
+        "balanceAtTerminal_or_stop_p10_p50_p90": [
+          -103.85,
+          14.95,
+          128
+        ],
+        "bestClosedEquity_p10_p50_p90": [
+          0,
+          26.85,
+          152.4
+        ],
+        "daysToStop_p50": 20,
+        "dailySoftPausePotentialEvents": 0
+      },
+      "m72_rapid_no_inactivity": {
+        "months": 72,
+        "blockWeeks": 2,
+        "strictInactivity": false,
+        "plan": "rapid",
+        "replications": 10000,
+        "status_counts": {
+          "passed": 2405,
+          "fail_inactivity": 0,
+          "fail_eod_close": 165,
+          "no_pass": 7430
+        },
+        "percent": {
+          "passed": 24.05,
+          "inactivity": 0,
+          "eod_close": 1.65,
+          "not_passed": 74.3
+        },
+        "balanceAtTerminal_or_stop_p10_p50_p90": [
+          271.45,
+          1881.05,
+          3047.6
+        ],
+        "bestClosedEquity_p10_p50_p90": [
+          837.7,
+          2173.75,
+          3047.6
+        ],
+        "daysToStop_p50": 2198,
+        "dailySoftPausePotentialEvents": 0
+      }
+    },
+    "router": {
+      "m12_rapid_rule_on": {
+        "months": 12,
+        "blockWeeks": 2,
+        "strictInactivity": true,
+        "plan": "rapid",
+        "replications": 10000,
+        "status_counts": {
+          "passed": 0,
+          "fail_inactivity": 10000,
+          "fail_eod_close": 0,
+          "no_pass": 0
+        },
+        "percent": {
+          "passed": 0,
+          "inactivity": 100,
+          "eod_close": 0,
+          "not_passed": 0
+        },
+        "balanceAtTerminal_or_stop_p10_p50_p90": [
+          -103.2,
+          14.95,
+          127.4
+        ],
+        "bestClosedEquity_p10_p50_p90": [
+          0,
+          26.85,
+          152.4
+        ],
+        "daysToStop_p50": 20,
+        "dailySoftPausePotentialEvents": 0
+      },
+      "m12_rapid_no_inactivity": {
+        "months": 12,
+        "blockWeeks": 2,
+        "strictInactivity": false,
+        "plan": "rapid",
+        "replications": 10000,
+        "status_counts": {
+          "passed": 0,
+          "fail_inactivity": 0,
+          "fail_eod_close": 0,
+          "no_pass": 10000
+        },
+        "percent": {
+          "passed": 0,
+          "inactivity": 0,
+          "eod_close": 0,
+          "not_passed": 100
+        },
+        "balanceAtTerminal_or_stop_p10_p50_p90": [
+          -307.7,
+          325.8,
+          990.15
+        ],
+        "bestClosedEquity_p10_p50_p90": [
+          79.75,
+          479.25,
+          1087.4
+        ],
+        "daysToStop_p50": 371,
+        "dailySoftPausePotentialEvents": 0
+      },
+      "m72_rapid_rule_on": {
+        "months": 72,
+        "blockWeeks": 2,
+        "strictInactivity": true,
+        "plan": "rapid",
+        "replications": 10000,
+        "status_counts": {
+          "passed": 0,
+          "fail_inactivity": 10000,
+          "fail_eod_close": 0,
+          "no_pass": 0
+        },
+        "percent": {
+          "passed": 0,
+          "inactivity": 100,
+          "eod_close": 0,
+          "not_passed": 0
+        },
+        "balanceAtTerminal_or_stop_p10_p50_p90": [
+          -103.85,
+          14.95,
+          128
+        ],
+        "bestClosedEquity_p10_p50_p90": [
+          0,
+          26.85,
+          152.4
+        ],
+        "daysToStop_p50": 20,
+        "dailySoftPausePotentialEvents": 0
+      },
+      "m72_rapid_no_inactivity": {
+        "months": 72,
+        "blockWeeks": 2,
+        "strictInactivity": false,
+        "plan": "rapid",
+        "replications": 10000,
+        "status_counts": {
+          "passed": 2527,
+          "fail_inactivity": 0,
+          "fail_eod_close": 144,
+          "no_pass": 7329
+        },
+        "percent": {
+          "passed": 25.27,
+          "inactivity": 0,
+          "eod_close": 1.44,
+          "not_passed": 73.29
+        },
+        "balanceAtTerminal_or_stop_p10_p50_p90": [
+          325.25,
+          1937.4,
+          3050.85
+        ],
+        "bestClosedEquity_p10_p50_p90": [
+          859.65,
+          2218.4,
+          3050.85
+        ],
+        "daysToStop_p50": 2198,
+        "dailySoftPausePotentialEvents": 0
+      }
+    }
+  }
+}
