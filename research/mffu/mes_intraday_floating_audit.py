@@ -193,8 +193,22 @@ def audit_sessions(bars:dict[datetime,Bar]):
 
 
 def assess_price_alignment(trades:list[Trade],bars:dict[datetime,Bar]):
-    # End-of-bar candle with label entry+1m normally opens at the filled trade's entry clock.
-    diffs=[];no_entry=[];not_enough=[]
+    # End-of-bar candle at entry+1m should OPEN near the filled trade's clock time.
+    # Scan nearby open/close prices without optimizing *trading rules* to determine
+    # whether timestamps are shifted or data/merge feeds disagree.
+    shifts=[]
+    for delta in (-2,-1,0,1,2,3):
+        for field in ('o','c'):
+            errs=[]
+            for t in trades:
+                b=bars.get(t.entry+timedelta(minutes=delta))
+                if b is not None: errs.append(abs(getattr(b,field)-t.entry_px))
+            errs.sort()
+            shifts.append({'label_delta_m':delta,'field':field,'matched':len(errs),
+                           'median':errs[len(errs)//2] if errs else None,
+                           'p95':errs[int(.95*(len(errs)-1))] if errs else None,
+                           'gt3':sum(x>3 for x in errs)})
+    diffs=[];no_entry=[]
     for t in trades:
         b=bars.get(t.entry+timedelta(minutes=1))
         if b is None:
@@ -206,6 +220,7 @@ def assess_price_alignment(trades:list[Trade],bars:dict[datetime,Bar]):
          'median_abs_diff_points':ordered[len(ordered)//2] if ordered else None,
          'p95_abs_diff_points':ordered[int(.95*(len(ordered)-1))] if ordered else None,
          'large_diff_gt_3_points':sum(x>3 for x in ordered),
+         'time_alignment_sensitivity':shifts,
          'largest_abs_price_diff':sorted(diffs,key=lambda x:-x['abs_points'])[:10],
          'required':'Market data/open execution source must be reconciled before floating PnL is certified; expected 2-tick plus bar conventions.'}
     return out
