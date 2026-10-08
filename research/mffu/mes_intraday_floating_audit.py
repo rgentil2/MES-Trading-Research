@@ -193,7 +193,8 @@ def audit_sessions(bars:dict[datetime,Bar]):
 
 
 def assess_price_alignment(trades:list[Trade],bars:dict[datetime,Bar]):
-    # End-of-bar candle at entry+1m should OPEN near the filled trade's clock time.
+    # NT Strategy Analyzer CSV records the EOB-label of the *bar whose OPEN is filled*.
+    # Direct measurement across all 363 fills confirms bar[entry].open, NOT bar[entry+1m].open.
     # Scan nearby open/close prices without optimizing *trading rules* to determine
     # whether timestamps are shifted or data/merge feeds disagree.
     shifts=[]
@@ -210,7 +211,7 @@ def assess_price_alignment(trades:list[Trade],bars:dict[datetime,Bar]):
                            'gt3':sum(x>3 for x in errs)})
     diffs=[];no_entry=[]
     for t in trades:
-        b=bars.get(t.entry+timedelta(minutes=1))
+        b=bars.get(t.entry)
         if b is None:
             no_entry.append(t.id); continue
         diffs.append({'id':t.id,'diff_points':round(b.o-t.entry_px,4), 'abs_points':round(abs(b.o-t.entry_px),4),
@@ -249,8 +250,8 @@ def replay(trades:list[Trade], bars:dict[datetime,Bar], require_complete=True):
         dt=bydate[date]
         needed=set()
         for t in dt:
-            m=t.entry+timedelta(minutes=1)
-            while m<=t.exit:
+            m=t.entry
+            while m<t.exit:
                 needed.add(m)
                 m+=timedelta(minutes=1)
         missing_minutes=sorted(needed-set(bars))
@@ -263,8 +264,8 @@ def replay(trades:list[Trade], bars:dict[datetime,Bar], require_complete=True):
         day_min_margin=math.inf
         day_min_eq=math.inf
         for ts in times:
-            open_at=[t for t in dt if t.entry<ts<=t.exit]
-            settled_before=sum(t.pnl_net for t in dt if t.exit<ts)
+            open_at=[t for t in dt if t.entry<=ts<t.exit]
+            settled_before=sum(t.pnl_net for t in dt if t.exit<=ts)
             baseline=acct_balance+settled_before-len(open_at)*MFFU_FEE
             net_direction=sum(t.side for t in open_at)
             base_price=sum(-t.side*t.entry_px*POINT_USD for t in open_at)
@@ -306,7 +307,7 @@ def replay(trades:list[Trade], bars:dict[datetime,Bar], require_complete=True):
             'adverse_one_minute_equity_breach_count':total_adverse_events,
             'breach_examples':intraday_breach[:12],
             'final_balance_net':round(acct_balance,2),
-            'accounting':'Open-trade MTM at 1-minute OHLC extrema, full round-trip fee reserved; EOD trailing floor reset after each day; NOT tick-level fill simulation.'}
+            'accounting':'Open-trade MTM using verified NinjaTrader entry-bar EOB labels, full round-trip fee reserved; EOD trailing floor reset after each day; NOT tick-level fill simulation.'}
 
 
 def run(raw_dir:Path, input_dir:Path, output:Path):
