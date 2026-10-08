@@ -22,8 +22,8 @@ class MFFUAuditTests(unittest.TestCase):
  def test_minute_floating_risk_replay(self):
   d=D(2020,1,29,10,0)
   t=Trade('PDC:1','PDC',1,d,d+timedelta(minutes=2),100.0,101.0,3.10,1.0)
-  bars={d+timedelta(minutes=1):Bar(d+timedelta(minutes=1),100,101,98,100,'MAR20'),
-   d+timedelta(minutes=2):Bar(d+timedelta(minutes=2),100,101,99,101,'MAR20')}
+  bars={d:Bar(d,100,101,98,100,'MAR20'),
+   d+timedelta(minutes=1):Bar(d+timedelta(minutes=1),100,101,99,101,'MAR20')}
   result=replay([t],bars)
   self.assertEqual(result['float_min_margin_above_MFFU_floor_usd'],1988.1)
   self.assertEqual(result['final_balance_net'],3.1)
@@ -32,14 +32,14 @@ class MFFUAuditTests(unittest.TestCase):
   d=D(2020,1,29,10,0)
   a=Trade('PDC:1','PDC',1,d,d+timedelta(minutes=1),100.0,101,3.1,1)
   b=Trade('POC:1','POC',-1,d,d+timedelta(minutes=1),101.0,100,3.1,1)
-  ts=d+timedelta(minutes=1)
+  ts=d
   bars={ts:Bar(ts,100,105,95,100,'MAR20')}
   result=replay([a,b],bars)
   self.assertEqual(result['float_min_margin_above_MFFU_floor_usd'],2001.2)
  def test_missing_bar_blocks(self):
   d=D(2020,1,29,10,0)
   t=Trade('PDC:1','PDC',1,d,d+timedelta(minutes=2),100,101,3.1,1)
-  bars={d+timedelta(minutes=1):Bar(d+timedelta(minutes=1),100,101,99,100,'MAR20')}
+  bars={d:Bar(d,100,101,99,100,'MAR20')}
   res=replay([t],bars)
   self.assertEqual(res['trading_days_processed'],0)
   self.assertEqual(len(res['missing_path_days']),1)
