@@ -1,0 +1,50 @@
+name: NQ MNQ bulk exporter & sealed holdout QC tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ninjatrader/NQMNQBulkMinuteExporter.cs'
+      - 'research/nq/validate_ninja_bulk_exports.py'
+      - 'research/nq/test_validate_ninja_bulk_exports.py'
+      - '.github/workflows/nq-bulk-exporter-qc-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-qc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run source-only development/holdout tests
+        run: python -m unittest discover -s research/nq -p test_validate_ninja_bulk_exports.py -v
+      - name: Verify NinjaTrader source seals 2025 and 2026 by bar year
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          source=Path('ninjatrader/NQMNQBulkMinuteExporter.cs').read_text()
+          required=[
+            'validation_holdout_2025',
+            'pseudo_forward_holdout_2026',
+            'development_2020_2024',
+            'utc.Year>2026',
+            'year == 2027 && month != 3',
+            'DateTime.Today.AddDays(1)',
+            'MergePolicy.DoNotMerge',
+            'BarsPeriodType.Minute',
+            'private static string StageForYear(int year)',
+            'DateTime.UtcNow.AddMinutes(1)',
+          ]
+          absent=[value for value in required if value not in source]
+          if absent:
+              raise SystemExit('Missing required export guard: '+str(absent))
+          print('Source safeguards present; Windows NinjaTrader compilation still required.')
+          PY
