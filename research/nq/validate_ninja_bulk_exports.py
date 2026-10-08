@@ -1,150 +1,158 @@
 #!/usr/bin/env python3
-"""Validate DEVELOPMENT-only NQ/MNQ Minute Last; never open 2025/2026 holdouts."""
+"""Development-only NinjaTrader NQ/MNQ minute-bar QC.
+
+Only files inside development_2020_2024 are opened. The 2025 and 2026
+directories are never opened, even when --holdout-metadata is provided.
+"""
 from __future__ import annotations
-import argparse,csv,hashlib,json,re
-from pathlib import Path
+
+import argparse
+import hashlib
+import json
+import math
+import re
 from datetime import datetime
-from zoneinfo import ZoneInfo
+from pathlib import Path
 
-PATTERN=re.compile(r'^(NQ|MNQ)_(03|06|09|12)-(20|21|22|23|24|25)_20(20|21|22|23|24)_Minute_Last[.]txt
-OHLC_TICK=.25
+# Example: NQ_03-25_2024_Minute_Last.txt (MAR25's December 2024 bars).
+PATTERN = re.compile(
+    r"^(NQ|MNQ)_(03|06|09|12)-(20|21|22|23|24|25)_20(20|21|22|23|24)_Minute_Last[.]txt$"
+)
+TICK_SIZE = 0.25
 
-def file_qc(path:Path):
-    m=PATTERN.fullmatch(path.name)
-    if not m: raise ValueError('Not a development-year bar partition: '+path.name)
-    symbol,mm,yy,bar_yy=m.groups()
-    length=0;last_ts=None;first_ts=None;outoforder=0;duplicate=0;bad=0;min_v=None;max_v=None;hash=hashlib.sha256()
-    # Stream through 3+ million rows without loading them all into RAM.
-    with path.open('rb') as f:
-        for data in f:
-            hash.update(data)
-            line=data.decode('utf-8-sig').strip()
-            if not line: continue
-            length+=1
+
+def file_qc(path: Path) -> dict:
+    match = PATTERN.fullmatch(path.name)
+    if match is None:
+        raise ValueError("Not a development-year bar partition: " + path.name)
+    symbol, month, expiry_yy, bar_yy = match.groups()
+    expected_year = 2000 + int(bar_yy)
+    rows = bad_rows = outoforder = duplicates = 0
+    first_ts = last_ts = None
+    sha = hashlib.sha256()
+    with path.open("rb") as stream:
+        for raw in stream:
+            sha.update(raw)
+            line = raw.decode("utf-8-sig").strip()
+            if not line:
+                continue
+            rows += 1
             try:
-                ts,op,hi,lo,cl,vol=line.split(';')
-                dt=datetime.strptime(ts,'%Y%m%d %H%M%S')
-                p=[float(v) for v in (op,hi,lo,cl)];v=int(float(vol))
-                if not (min(p)<=max(p) and p[2]<=min(p[0],p[3]) and p[1]>=max(p[0],p[3]) and v>0):bad+=1
-                if any(abs(q/OHLC_TICK-round(q/OHLC_TICK))>1e-7 for q in p):bad+=1
+                cells = line.split(";")
+                if len(cells) != 6:
+                    raise ValueError("Expected timestamp + 5 OHLCV fields")
+                timestamp = datetime.strptime(cells[0], "%Y%m%d %H%M%S")
+                # Reject any accidental post-2024 content before price evaluation.
+                if timestamp.year != expected_year:
+                    raise ValueError("Timestamp outside permitted development partition")
+                op, hi, lo, cl, volume = [float(v) for v in cells[1:]]
+                prices = (op, hi, lo, cl)
+                if not all(math.isfinite(value) for value in (*prices, volume)):
+                    raise ValueError("Nonfinite value")
+                if volume <= 0 or lo > min(op, cl) or hi < max(op, cl) or lo > hi:
+                    raise ValueError("Invalid OHLC or volume")
+                if any(abs(value / TICK_SIZE - round(value / TICK_SIZE)) > 1e-7
+                       for value in prices):
+                    raise ValueError("Price not on 0.25-point grid")
                 if last_ts is not None:
-                    if dt<last_ts:outoforder+=1
-                    if dt==last_ts:duplicate+=1
-                if first_ts is None:first_ts=dt
-                last_ts=dt
-                min_v=v if min_v is None else min(min_v,v)
-                max_v=v if max_v is None else max(max_v,v)
-            except Exception:
-                bad+=1
-                if bad>100:break
-    status='QC_PASS_CANDIDATE' if length>=20000 and bad==0 and outoforder==0 and duplicate==0 else 'QC_REVIEW_REQUIRED'
-    return {'symbol':symbol,'quarter':mm+'-'+yy,'bar_year':int('20'+bar_yy),'file':path.name,'bytes':path.stat().st_size,'sha256':hash.hexdigest(),
-            'rows':length,'first_utc':first_ts.isoformat() if first_ts else None,'last_utc':last_ts.isoformat() if last_ts else None,
-            'bad_rows':bad,'outoforder':outoforder,'duplicates':duplicate,'status':status,
-            'reason':'Initial structural QC only; check session completeness/rollover/available provider history before first hypotheses'}
+                    if timestamp < last_ts:
+                        outoforder += 1
+                    elif timestamp == last_ts:
+                        duplicates += 1
+                if first_ts is None:
+                    first_ts = timestamp
+                last_ts = timestamp
+            except (ValueError, OverflowError):
+                bad_rows += 1
+                if bad_rows > 100:
+                    break
+    status = ("QC_PASS_CANDIDATE"
+              if rows >= 20000 and bad_rows == 0 and outoforder == 0 and duplicates == 0
+              else "QC_REVIEW_REQUIRED")
+    return {
+        "symbol": symbol,
+        "quarter": month + "-" + expiry_yy,
+        "bar_year": expected_year,
+        "file": path.name,
+        "bytes": path.stat().st_size,
+        "sha256": sha.hexdigest(),
+        "rows": rows,
+        "first_utc": first_ts.isoformat() if first_ts else None,
+        "last_utc": last_ts.isoformat() if last_ts else None,
+        "bad_rows": bad_rows,
+        "outoforder": outoforder,
+        "duplicates": duplicates,
+        "status": status,
+        "reason": "Structural QC only; full session/rollover validation still required",
+    }
 
-def audit(root:Path):
-    # Pure research QC: restrict reads exclusively to the DEVELOPMENT directory.
-    # Validation and pseudo-forward partitions may be present but MUST NOT be opened.
-    development=root/'development_2020_2024'
+
+def audit(root: Path) -> dict:
+    # No access to held-out folders, even if they exist under root.
+    development = root / "development_2020_2024"
     if not development.is_dir():
-        development=root  # backwards compatible if caller points directly at it
-    found=[]
-    for p in sorted(development.glob('*.txt')):
-        if not PATTERN.fullmatch(p.name):
-            raise ValueError('Unexpected/non-development file in development folder: '+p.name)
-        found.append(file_qc(p))
-    expected=set()
-    for sym in ('NQ','MNQ'):
-        for yy in range(20,25):
-            for month in ('03','06','09','12'):
-                expected.add(f'{sym}_{month}-{yy:02d}_20{yy:02d}_Minute_Last.txt')
-            # Next MAR contract completes late December of this calendar year.
-            expected.add(f'{sym}_03-{yy+1:02d}_20{yy:02d}_Minute_Last.txt')
-    missing=sorted(expected-set(x['file'] for x in found))
-    return {'scope':'DEVELOPMENT 2020-2024 ONLY: 2025/2026 outcome files never opened',
-            'expected_contract_partitions':len(expected),'received':len(found),
-            'missing':missing,'files':found,
-            'status':'ALL_FILES_QC_PASS_CANDIDATE' if not missing and all(x['status']=='QC_PASS_CANDIDATE' for x in found) else 'SOURCE_INCOMPLETE'}
+        development = root  # folder supplied directly by caller
+    found = []
+    for file in sorted(development.glob("*.txt")):
+        if PATTERN.fullmatch(file.name) is None:
+            raise ValueError("Nondevelopment filename in development: " + file.name)
+        found.append(file_qc(file))
+    expected = set()
+    for sym in ("NQ", "MNQ"):
+        for yy in range(20, 25):
+            for month in ("03", "06", "09", "12"):
+                expected.add(f"{sym}_{month}-{yy:02d}_20{yy:02d}_Minute_Last.txt")
+            # The following year's MAR contract contains late December bars.
+            expected.add(f"{sym}_03-{yy + 1:02d}_20{yy:02d}_Minute_Last.txt")
+    observed = {item["file"] for item in found}
+    missing = sorted(expected - observed)
+    return {
+        "scope": "2020-2024 development ONLY; 2025/2026 outcome files never opened",
+        "expected_contract_partitions": len(expected),
+        "received": len(found),
+        "missing": missing,
+        "files": found,
+        "status": (
+            "ALL_FILES_QC_PASS_CANDIDATE"
+            if not missing and all(item["status"] == "QC_PASS_CANDIDATE" for item in found)
+            else "SOURCE_INCOMPLETE"
+        ),
+    }
 
 
-def holdout_inventory_metadata_only(root:Path):
-    # Filenames and file sizes are operational QC, NOT price or return analysis.
-    inventory={}
-    for directory in ('validation_holdout_2025','pseudo_forward_holdout_2026'):
-        folder=root/directory
-        inventory[directory]=[{'file':p.name,'bytes':p.stat().st_size}
-                              for p in sorted(folder.glob('*.txt'))] if folder.is_dir() else []
-    return inventory
+def holdout_inventory_metadata_only(root: Path) -> dict:
+    # Path existence, filename, byte size only. No opening files or reading bars.
+    result = {}
+    for stage in ("validation_holdout_2025", "pseudo_forward_holdout_2026"):
+        folder = root / stage
+        result[stage] = [
+            {"file": file.name, "bytes": file.stat().st_size}
+            for file in sorted(folder.glob("*.txt"))
+        ] if folder.is_dir() else []
+    return result
 
-def main():
-    a=argparse.ArgumentParser();a.add_argument('--folder',required=True,type=Path);a.add_argument('--output',type=Path,default=None)
-    a.add_argument('--holdout-metadata',action='store_true',help='Only list names and sizes for sealed holdouts; never parse bar content')
-    args=a.parse_args()
-    report=audit(args.folder)
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--folder", required=True, type=Path)
+    parser.add_argument("--output", type=Path, default=None)
+    parser.add_argument("--holdout-metadata", action="store_true",
+                        help="Names and byte sizes only; never open holdout files")
+    args = parser.parse_args()
+    report = audit(args.folder)
     if args.holdout_metadata:
-        report['sealed_holdout_metadata_only']=holdout_inventory_metadata_only(args.folder)
-    output=args.output or args.folder/'nq_mnq_structural_qc.json'
-    output.write_text(json.dumps(report,indent=2),encoding='utf-8')
-    print(json.dumps({'scope':report['scope'],'status':report['status'],'expected':report['expected_contract_partitions'],'received':report['received'],
-                      'missing_count':len(report['missing']),'bad':[(f['file'],f['status']) for f in report['files'] if f['status']!='QC_PASS_CANDIDATE']},indent=2))
+        report["sealed_holdout_metadata_only"] = holdout_inventory_metadata_only(args.folder)
+    output = args.output or args.folder / "nq_mnq_structural_qc.json"
+    output.write_text(json.dumps(report, indent=2), encoding="utf-8")
+    print(json.dumps({
+        "status": report["status"],
+        "expected": report["expected_contract_partitions"],
+        "received": report["received"],
+        "missing_count": len(report["missing"]),
+        "bad": [(item["file"], item["status"]) for item in report["files"]
+                if item["status"] != "QC_PASS_CANDIDATE"],
+    }, indent=2))
 
-if __name__=='__main__':main())
-OHLC_TICK=.25
 
-def file_qc(path:Path):
-    m=PATTERN.fullmatch(path.name)
-    if not m: raise ValueError('Not a 2020-24 named contract: '+path.name)
-    symbol,mm,yy=m.groups()
-    length=0;last_ts=None;first_ts=None;outoforder=0;duplicate=0;bad=0;min_v=None;max_v=None;hash=hashlib.sha256()
-    # Stream through 3+ million rows without loading them all into RAM.
-    with path.open('rb') as f:
-        for data in f:
-            hash.update(data)
-            line=data.decode('utf-8-sig').strip()
-            if not line: continue
-            length+=1
-            try:
-                ts,op,hi,lo,cl,vol=line.split(';')
-                dt=datetime.strptime(ts,'%Y%m%d %H%M%S')
-                p=[float(v) for v in (op,hi,lo,cl)];v=int(float(vol))
-                if not (min(p)<=max(p) and p[2]<=min(p[0],p[3]) and p[1]>=max(p[0],p[3]) and v>0):bad+=1
-                if any(abs(q/OHLC_TICK-round(q/OHLC_TICK))>1e-7 for q in p):bad+=1
-                if last_ts is not None:
-                    if dt<last_ts:outoforder+=1
-                    if dt==last_ts:duplicate+=1
-                if first_ts is None:first_ts=dt
-                last_ts=dt
-                min_v=v if min_v is None else min(min_v,v)
-                max_v=v if max_v is None else max(max_v,v)
-            except Exception:
-                bad+=1
-                if bad>100:break
-    status='QC_PASS_CANDIDATE' if length>=20000 and bad==0 and outoforder==0 and duplicate==0 else 'QC_REVIEW_REQUIRED'
-    return {'symbol':symbol,'quarter':mm+'-'+yy,'file':path.name,'bytes':path.stat().st_size,'sha256':hash.hexdigest(),
-            'rows':length,'first_utc':first_ts.isoformat() if first_ts else None,'last_utc':last_ts.isoformat() if last_ts else None,
-            'bad_rows':bad,'outoforder':outoforder,'duplicates':duplicate,'status':status,
-            'reason':'Initial structural QC only; check session completeness/rollover/available provider history before first hypotheses'}
-
-def audit(root:Path):
-    found=[]
-    for p in sorted(root.glob('*.txt')):
-        # Fail closed: never inspect heldout files if added by mistake.
-        if not PATTERN.fullmatch(p.name):raise ValueError('Reject unexpected file; heldout 2025/26 must stay sealed: '+p.name)
-        found.append(file_qc(p))
-    expected={f'{s}_{m}-{y}_Minute_Last.txt' for s in ('NQ','MNQ') for m in ('03','06','09','12') for y in ('20','21','22','23','24')}
-    missing=sorted(expected-set(x['file'] for x in found))
-    return {'scope':'NO 2025/26 outcomes: filenames restricted to 2020-2024',
-            'expected_contracts':40,'received':len(found),'missing':missing,'files':found,
-            'status':'ALL_FILES_QC_PASS_CANDIDATE' if not missing and all(x['status']=='QC_PASS_CANDIDATE' for x in found) else 'SOURCE_INCOMPLETE'}
-
-def main():
-    a=argparse.ArgumentParser();a.add_argument('--folder',required=True,type=Path);a.add_argument('--output',type=Path,default=None)
-    args=a.parse_args()
-    report=audit(args.folder)
-    output=args.output or args.folder/'nq_mnq_structural_qc.json'
-    output.write_text(json.dumps(report,indent=2),encoding='utf-8')
-    print(json.dumps({'scope':report['scope'],'status':report['status'],'expected':40,'received':report['received'],
-                      'missing_count':len(report['missing']),'bad':[(f['file'],f['status']) for f in report['files'] if f['status']!='QC_PASS_CANDIDATE']},indent=2))
-
-if __name__=='__main__':main()
+if __name__ == "__main__":
+    main()
