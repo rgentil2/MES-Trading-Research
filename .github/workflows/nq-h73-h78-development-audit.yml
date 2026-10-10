@@ -1,0 +1,30 @@
+name: NQ H73-H78 official six-member Holm and source integrity audit
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'results/development/nq_h73_h78_family.json'
+      - '.github/workflows/nq-h73-h78-development-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas
+      - name: Preflight official immutable family 7 and source hashes
+        run: python tools/research_governance.py --preflight-family NQ-DEDUCTIVE-ENSEMBLE-H73-H78-V1
+      - name: Evaluate complete six-member family Holm allocation
+        run: python tools/research_governance.py --evaluate-family NQ-DEDUCTIVE-ENSEMBLE-H73-H78-V1
+      - name: 17 synthetic tests of ex-ante routing, cost, first-hit and sealed-data guards
+        env:
+          PYTHONPATH: .
+        run: python -m unittest discover -s research/nq -p test_nq_h73_h78_joint_state_routers.py -v
