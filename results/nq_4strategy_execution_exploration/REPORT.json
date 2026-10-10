@@ -1,0 +1,84 @@
+{
+  "research_state": "POST_SELECTION_EXPLORATORY_ONLY_NOT_VALIDATED",
+  "source": {
+    "total_full_rth_sessions": 1221,
+    "original_development_nq_partitions": 25,
+    "holdouts_opened": false,
+    "excluded_partial_rth_sessions": 69
+  },
+  "data_years_read": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "holdout_2025_opened": false,
+  "holdout_2026_opened": false,
+  "dataset": {
+    "source_signal_counts": {
+      "NQ-H01": 1117,
+      "NQ-H02": 636,
+      "NQ-H05": 545,
+      "NQ-H09": 173
+    },
+    "eligible_signal_counts": {
+      "NQ-H01": 1117,
+      "NQ-H02": 636,
+      "NQ-H05": 537,
+      "NQ-H09": 173
+    },
+    "excluded_signal_reasons": {
+      "H05_cross_contract_prior_day": 8
+    },
+    "eligible_signal_total": 2463,
+    "days_with_at_least_2_distinct_hypotheses": 913,
+    "days_with_at_least_3_distinct_hypotheses": 352,
+    "portfolio_one_signal_per_day": 1175,
+    "portfolio_first_signal_counts": {
+      "NQ-H01": 651,
+      "NQ-H02": 179,
+      "NQ-H09": 173,
+      "NQ-H05": 172
+    }
+  },
+  "execution": {
+    "grids_per_hypothesis": 18,
+    "stop_fractions": [
+      0.1,
+      0.15,
+      0.2
+    ],
+    "target_r": [
+      1,
+      1.5,
+      2
+    ],
+    "timeout_minutes": [
+      30,
+      60
+    ],
+    "NQ_free_RT": 5.74,
+    "MNQ_free_RT": 1.88,
+    "slippage_ticks_each_side": 2,
+    "fees_not_MFFU": true,
+    "min_history_rth_sessions": 14,
+    "stop_target_same_bar": "STOP_FIRST"
+  },
+  "metrics": {
+    "individual_strategy_scenarios": 144,
+    "portfolio_strategy_scenarios": 36,
+    "executed_grid_trades": 88668,
+    "signals_unchanged": true,
+    "2025_confirmation_authorized": false
+  },
+  "notes": [
+    "NQ price path for both NQ and synthetic MNQ; separately observed MNQ execution is not simulated",
+    "Closed-trade max DD is not floating-equity EOD trailing drawdown",
+    "This replay of hypotheses chosen after inspecting 2020-24 outcomes cannot validate discovery",
+    "Results are a fixed engineering comparison, not statistically independent tests",
+    "Bars are 1m OHLC; when SL and TP both hit, STOP is assumed first",
+    "Unselected same-day strategy signals can strongly overlap and cannot be summed as a portfolio",
+    "No 2025/2026 raw ZIP member was opened"
+  ]
+}
