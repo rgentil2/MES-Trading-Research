@@ -1,0 +1,26 @@
+name: NQ four-signal execution exploratory source tests
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/nq/nq_4signal_execution_exploration.py"
+      - "research/nq/test_nq_4signal_execution_exploration.py"
+      - ".github/workflows/nq-4signal-execution-exploration-tests.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-only-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install numpy pandas
+      - name: Verify seven execution, slippage, gap and stop-first cases (no market data)
+        run: python -m unittest discover -s research/nq -p test_nq_4signal_execution_exploration.py -v
