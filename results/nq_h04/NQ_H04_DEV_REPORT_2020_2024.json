@@ -1,0 +1,88 @@
+{
+  "scope": "2020-2024 DEVELOPMENT NQ ONLY; H04 NON-DIRECTIONAL exploratory magnitude prediction",
+  "preregistration": "research/nq/NQ_H04_OVERNIGHT_COMPRESSION_PREREG_2026_10_09.md",
+  "source": {
+    "nq_rth_full": 1221,
+    "nq_overnight_and_rth_eligible": 1214,
+    "ineligible_overnight_or_nonpositive_range": 7,
+    "zip_development_partitions": 25,
+    "holdout_2025_or_2026_bar_content_opened": false
+  },
+  "trading_days_scored_after_20_day_warmup": 1194,
+  "compressed_signal_days": 399,
+  "noncompressed_control_days": 795,
+  "paired_calendar_weeks": 163,
+  "unpaired_weeks": 95,
+  "mean_z_compressed": -0.211175,
+  "mean_z_controls": 0.128448,
+  "primary_equal_weight_paired_week_effect_log_ratio": -0.169128,
+  "primary_90pct_week_bootstrap_CI_log_ratio": [
+    -0.215348,
+    -0.122514
+  ],
+  "primary_95pct_week_bootstrap_CI_log_ratio": [
+    -0.224288,
+    -0.114279
+  ],
+  "one_sided_p_week_sign_flips": 1.0,
+  "exploratory_BH_four_family_p_values": {
+    "NQ-H01": 0.44831,
+    "NQ-H02": 0.20016,
+    "NQ-H03": 0.9764,
+    "NQ-H04": 1.0
+  },
+  "exploratory_BH_four_family_q_values": {
+    "NQ-H04": 1.0,
+    "NQ-H03": 1.0,
+    "NQ-H01": 0.89662,
+    "NQ-H02": 0.80064
+  },
+  "positive_years_by_matched_week": 0,
+  "yearly": {
+    "2020": {
+      "compressed": 86,
+      "control": 133,
+      "matched_weeks": 29,
+      "mean_matched_week_difference_log_ratio": -0.183234
+    },
+    "2021": {
+      "compressed": 86,
+      "control": 161,
+      "matched_weeks": 29,
+      "mean_matched_week_difference_log_ratio": -0.204714
+    },
+    "2022": {
+      "compressed": 77,
+      "control": 167,
+      "matched_weeks": 36,
+      "mean_matched_week_difference_log_ratio": -0.14996
+    },
+    "2023": {
+      "compressed": 83,
+      "control": 160,
+      "matched_weeks": 38,
+      "mean_matched_week_difference_log_ratio": -0.099671
+    },
+    "2024": {
+      "compressed": 67,
+      "control": 174,
+      "matched_weeks": 31,
+      "mean_matched_week_difference_log_ratio": -0.23004
+    }
+  },
+  "new_exploratory_gate1_checks": {
+    "more_than_150_events": true,
+    "predicted_positive_effect": false,
+    "90pct_ci_above_zero": false,
+    "BH_q_four_hypotheses_at_most_010": false,
+    "yearly_consistency_at_least_3_of_5": false,
+    "unmodified_pre_registered_rules": true
+  },
+  "decision": "NOT_SUPPORTED_EXPLORATORY",
+  "limitations": [
+    "No trade direction: cannot infer monetary edge or slippage/commission PnL from H04",
+    "H01-H03 were examined earlier; combined BH is an exploratory bookkeeping step, NOT confirmatory Holm",
+    "Overlap of session signal events and exposure creates dependent observations; paired-week inference approximate",
+    "Zero heldout 2025/2026 price content read; no post-hoc subgroup selection"
+  ]
+}
