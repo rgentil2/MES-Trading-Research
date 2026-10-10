@@ -2269,6 +2269,130 @@
       "result_artifacts": [
         "results/development/nq_h59_h66_family.json"
       ]
+    },
+    {
+      "id": "NQ-DEDUCTIVE-ENSEMBLE-H67-H72-V1",
+      "index": 6,
+      "question": "Does mechanically choosing and routing gap, premarket/VWAP consensus and fallback signals improve one-MNQ bracket profitability, frequency and risk over each parent and H67 baseline?",
+      "origin_units": [
+        "NQ-H67",
+        "NQ-H68",
+        "NQ-H69",
+        "NQ-H70",
+        "NQ-H71",
+        "NQ-H72"
+      ],
+      "data_role": "REUSED_DEVELOPMENT",
+      "independent_inference_justification": "All parents, some collisions and outcomes already examined on 2020-24 data; strategy post-selection only. 2025/26 never opened.",
+      "members": [
+        {
+          "id": "NQ-H67",
+          "preregistration_path": "research/nq/NQ_H67_H72_PREREG_2026_10_10.md",
+          "research_instrument": "NQ",
+          "execution_instrument": "MNQ",
+          "analysis_kind": "STRATEGY",
+          "definition": "H09 OR H55/H56 matching side consensus; single 09:45 trade, H09 priority",
+          "alternative": "Ex ante joint router has positive expected realized MNQ 30m fixed 0.15 prior14 range stop and 1.5R target net of 3.88 USD commission and slippage",
+          "endpoint": "One proxy MNQ bracket trade max per day. Next 1m open after frozen causal parent, 30m time limit, weekly block bootstrap 90% CI and BH six-test family",
+          "costs": {
+            "point_value_usd": 2,
+            "commission_round_trip_usd": 1.88,
+            "slippage_round_trip_usd": 2.0
+          },
+          "transfer_validation_plan": "NQ minute bar is price proxy for MNQ; validate MNQ contract-timestamp-price parity, own fills, slippage and MFFU fee schedule with independent 2020-24 MNQ source before any implementation; cannot claim validated fill now"
+        },
+        {
+          "id": "NQ-H68",
+          "preregistration_path": "research/nq/NQ_H67_H72_PREREG_2026_10_10.md",
+          "research_instrument": "NQ",
+          "execution_instrument": "MNQ",
+          "analysis_kind": "STRATEGY",
+          "definition": "H09 OR H55 at 09:45, H09 priority, H56 context only",
+          "alternative": "Ex ante joint router has positive expected realized MNQ 30m fixed 0.15 prior14 range stop and 1.5R target net of 3.88 USD commission and slippage",
+          "endpoint": "One proxy MNQ bracket trade max per day. Next 1m open after frozen causal parent, 30m time limit, weekly block bootstrap 90% CI and BH six-test family",
+          "costs": {
+            "point_value_usd": 2,
+            "commission_round_trip_usd": 1.88,
+            "slippage_round_trip_usd": 2.0
+          },
+          "transfer_validation_plan": "NQ minute bar is price proxy for MNQ; validate MNQ contract-timestamp-price parity, own fills, slippage and MFFU fee schedule with independent 2020-24 MNQ source before any implementation; cannot claim validated fill now"
+        },
+        {
+          "id": "NQ-H69",
+          "preregistration_path": "research/nq/NQ_H67_H72_PREREG_2026_10_10.md",
+          "research_instrument": "NQ",
+          "execution_instrument": "MNQ",
+          "analysis_kind": "STRATEGY",
+          "definition": "H09 OR H56 at 09:45, H09 priority, H55 context only",
+          "alternative": "Ex ante joint router has positive expected realized MNQ 30m fixed 0.15 prior14 range stop and 1.5R target net of 3.88 USD commission and slippage",
+          "endpoint": "One proxy MNQ bracket trade max per day. Next 1m open after frozen causal parent, 30m time limit, weekly block bootstrap 90% CI and BH six-test family",
+          "costs": {
+            "point_value_usd": 2,
+            "commission_round_trip_usd": 1.88,
+            "slippage_round_trip_usd": 2.0
+          },
+          "transfer_validation_plan": "NQ minute bar is price proxy for MNQ; validate MNQ contract-timestamp-price parity, own fills, slippage and MFFU fee schedule with independent 2020-24 MNQ source before any implementation; cannot claim validated fill now"
+        },
+        {
+          "id": "NQ-H70",
+          "preregistration_path": "research/nq/NQ_H67_H72_PREREG_2026_10_10.md",
+          "research_instrument": "NQ",
+          "execution_instrument": "MNQ",
+          "analysis_kind": "STRATEGY",
+          "definition": "H09 OR H55/H56 matching consensus at 09:45 ELSE H29 at 10:00",
+          "alternative": "Ex ante joint router has positive expected realized MNQ 30m fixed 0.15 prior14 range stop and 1.5R target net of 3.88 USD commission and slippage",
+          "endpoint": "One proxy MNQ bracket trade max per day. Next 1m open after frozen causal parent, 30m time limit, weekly block bootstrap 90% CI and BH six-test family",
+          "costs": {
+            "point_value_usd": 2,
+            "commission_round_trip_usd": 1.88,
+            "slippage_round_trip_usd": 2.0
+          },
+          "transfer_validation_plan": "NQ minute bar is price proxy for MNQ; validate MNQ contract-timestamp-price parity, own fills, slippage and MFFU fee schedule with independent 2020-24 MNQ source before any implementation; cannot claim validated fill now"
+        },
+        {
+          "id": "NQ-H71",
+          "preregistration_path": "research/nq/NQ_H67_H72_PREREG_2026_10_10.md",
+          "research_instrument": "NQ",
+          "execution_instrument": "MNQ",
+          "analysis_kind": "STRATEGY",
+          "definition": "H09 OR H55/H56 matching consensus at 09:45 ELSE first H54 accepted level breakout 09:47-10:45",
+          "alternative": "Ex ante joint router has positive expected realized MNQ 30m fixed 0.15 prior14 range stop and 1.5R target net of 3.88 USD commission and slippage",
+          "endpoint": "One proxy MNQ bracket trade max per day. Next 1m open after frozen causal parent, 30m time limit, weekly block bootstrap 90% CI and BH six-test family",
+          "costs": {
+            "point_value_usd": 2,
+            "commission_round_trip_usd": 1.88,
+            "slippage_round_trip_usd": 2.0
+          },
+          "transfer_validation_plan": "NQ minute bar is price proxy for MNQ; validate MNQ contract-timestamp-price parity, own fills, slippage and MFFU fee schedule with independent 2020-24 MNQ source before any implementation; cannot claim validated fill now"
+        },
+        {
+          "id": "NQ-H72",
+          "preregistration_path": "research/nq/NQ_H67_H72_PREREG_2026_10_10.md",
+          "research_instrument": "NQ",
+          "execution_instrument": "MNQ",
+          "analysis_kind": "STRATEGY",
+          "definition": "Previously closed RTH range > prior20 median: H09 at 09:45 ELSE H54 later; otherwise H55/H56 matching consensus at 09:45 ELSE H29 at 10:00; no regime no trade",
+          "alternative": "Ex ante joint router has positive expected realized MNQ 30m fixed 0.15 prior14 range stop and 1.5R target net of 3.88 USD commission and slippage",
+          "endpoint": "One proxy MNQ bracket trade max per day. Next 1m open after frozen causal parent, 30m time limit, weekly block bootstrap 90% CI and BH six-test family",
+          "costs": {
+            "point_value_usd": 2,
+            "commission_round_trip_usd": 1.88,
+            "slippage_round_trip_usd": 2.0
+          },
+          "transfer_validation_plan": "NQ minute bar is price proxy for MNQ; validate MNQ contract-timestamp-price parity, own fills, slippage and MFFU fee schedule with independent 2020-24 MNQ source before any implementation; cannot claim validated fill now"
+        }
+      ],
+      "definition_files": [
+        "research/nq/NQ_H67_H72_PREREG_2026_10_10.md",
+        "research/nq/nq_h67_h72_combined_strategies.py",
+        "research/nq/test_nq_h67_h72_combined_strategies.py",
+        "research/nq/nq_h05_h07_level_volume_screen.py",
+        "research/nq/nq_h08_h32_minute_2020_2024.py",
+        "research/nq/nq_h53_h58.py"
+      ],
+      "result_artifacts": [
+        "results/development/nq_h67_h72_family.json"
+      ]
     }
   ],
   "version_changes": [
