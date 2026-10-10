@@ -1,0 +1,261 @@
+{
+  "data_scope": "2020-2024 original historical development only; 2025/2026 remained unopened",
+  "calculation": "Accounting reprice of unchanged executions. No reexecution of stop/limit/news/tick orders",
+  "prior_fees_RT_USD": {
+    "ES": 4.68,
+    "MES": 1.9
+  },
+  "new_ninjatrader_free_fees_RT_USD": {
+    "ES": 5.74,
+    "MES": 1.88
+  },
+  "cost_shifts_per_one_contract_round_trip_USD": {
+    "ES_NQ": 1.06,
+    "MES_MNQ": -0.02
+  },
+  "old_MFFU_base_preserved_as_separate_reference": true,
+  "es_pdc_transport": {
+    "ES": {
+      "n": 94,
+      "net_usd": 4610.44,
+      "expectancy_usd": 49.05,
+      "profit_factor": 1.358,
+      "realized_max_drawdown_usd": 2803.32,
+      "positive_years": 4,
+      "yearly_usd": {
+        "2020": 4131.5,
+        "2021": 134.18,
+        "2022": 1403.44,
+        "2023": -1372.58,
+        "2024": 313.9
+      },
+      "stop_median_usd": 886.99,
+      "stop_p95_usd": 1443.24,
+      "stop_max_usd": 1780.74,
+      "stop_gt_2000": 0,
+      "stop_gt_500": 93
+    },
+    "MES": {
+      "n": 94,
+      "net_usd": 338.28,
+      "expectancy_usd": 3.6,
+      "profit_factor": 1.257,
+      "realized_max_drawdown_usd": 317.67,
+      "positive_years": 3,
+      "yearly_usd": {
+        "2020": 380.5,
+        "2021": -10.09,
+        "2022": 115.53,
+        "2023": -159.46,
+        "2024": 11.8
+      },
+      "stop_median_usd": 90.0,
+      "stop_p95_usd": 145.63,
+      "stop_max_usd": 179.38,
+      "stop_gt_2000": 0,
+      "stop_gt_500": 0
+    }
+  },
+  "es_poc_r072_transport": {
+    "POC": {
+      "ES": {
+        "n": 116,
+        "net_usd": -2053.34,
+        "expectancy_usd": -17.7,
+        "profit_factor": 0.901,
+        "realized_max_drawdown_usd": 6224.5,
+        "positive_years": 2,
+        "yearly_usd": {
+          "2020": -2721.56,
+          "2021": 2784.56,
+          "2022": 1417.98,
+          "2023": -1490.82,
+          "2024": -2043.5
+        },
+        "stop_median_usd": 1261.99,
+        "stop_p95_usd": 2168.24,
+        "stop_max_usd": 3205.74,
+        "stop_gt_2000": 11,
+        "stop_gt_500": 116
+      },
+      "MES": {
+        "n": 116,
+        "net_usd": -356.83,
+        "expectancy_usd": -3.08,
+        "profit_factor": 0.834,
+        "realized_max_drawdown_usd": 687.75,
+        "positive_years": 2,
+        "yearly_usd": {
+          "2020": -296.97,
+          "2021": 237.97,
+          "2022": 111.76,
+          "2023": -172.59,
+          "2024": -237.0
+        },
+        "stop_median_usd": 127.5,
+        "stop_p95_usd": 218.13,
+        "stop_max_usd": 321.88,
+        "stop_gt_2000": 0,
+        "stop_gt_500": 0
+      }
+    },
+    "R072": {
+      "ES": {
+        "n": 132,
+        "net_usd": 6792.32,
+        "expectancy_usd": 51.46,
+        "profit_factor": 1.193,
+        "realized_max_drawdown_usd": 6222.84,
+        "positive_years": 4,
+        "yearly_usd": {
+          "2020": 46.3,
+          "2021": -3145.16,
+          "2022": 2748.08,
+          "2023": 3065.3,
+          "2024": 4077.8
+        },
+        "stop_median_usd": 2030.74,
+        "stop_p95_usd": 3391.99,
+        "stop_max_usd": 3805.74,
+        "stop_gt_2000": 74,
+        "stop_gt_500": 132
+      },
+      "MES": {
+        "n": 132,
+        "net_usd": 506.84,
+        "expectancy_usd": 3.84,
+        "profit_factor": 1.14,
+        "realized_max_drawdown_usd": 675.83,
+        "positive_years": 3,
+        "yearly_usd": {
+          "2020": -1.9,
+          "2021": -358.92,
+          "2022": 231.71,
+          "2023": 267.35,
+          "2024": 368.6
+        },
+        "stop_median_usd": 204.38,
+        "stop_p95_usd": 340.5,
+        "stop_max_usd": 381.88,
+        "stop_gt_2000": 0,
+        "stop_gt_500": 0
+      }
+    },
+    "POC_R072_combined_unrouted": {
+      "ES": {
+        "n": 248,
+        "net_usd": 4738.98,
+        "expectancy_usd": 19.11,
+        "profit_factor": 1.085,
+        "realized_max_drawdown_usd": 6656.38,
+        "positive_years": 3,
+        "yearly_usd": {
+          "2020": -2675.26,
+          "2021": -360.6,
+          "2022": 4166.06,
+          "2023": 1574.48,
+          "2024": 2034.3
+        },
+        "stop_median_usd": 1680.74,
+        "stop_p95_usd": 3266.99,
+        "stop_max_usd": 3805.74,
+        "stop_gt_2000": 85,
+        "stop_gt_500": 248
+      },
+      "MES": {
+        "n": 248,
+        "net_usd": 150.01,
+        "expectancy_usd": 0.6,
+        "profit_factor": 1.026,
+        "realized_max_drawdown_usd": 731.72,
+        "positive_years": 3,
+        "yearly_usd": {
+          "2020": -298.87,
+          "2021": -120.95,
+          "2022": 343.47,
+          "2023": 94.76,
+          "2024": 131.6
+        },
+        "stop_median_usd": 169.38,
+        "stop_p95_usd": 328.0,
+        "stop_max_usd": 381.88,
+        "stop_gt_2000": 0,
+        "stop_gt_500": 0
+      }
+    }
+  },
+  "nq_event_studies": {
+    "NQ-H01": {
+      "n": 1117,
+      "net_30m_usd": 2813.42,
+      "mean_30m_usd": 2.52,
+      "profit_factor_30m": 1.006,
+      "net_15m_usd": -6646.58,
+      "stress_add_1_tick_each_side_net_30m_usd": -8356.58,
+      "weekly_bootstrap_mean_95CI": [
+        -54.27,
+        59.49
+      ],
+      "signflip_one_sided_p": 0.44831,
+      "positive_years": 3,
+      "yearly_usd": {
+        "2020": 4119.96,
+        "2021": 3125.36,
+        "2022": -9908.16,
+        "2023": -8609.46,
+        "2024": 14085.72
+      },
+      "BH_q_three_families": 0.67247
+    },
+    "NQ-H02": {
+      "n": 636,
+      "net_30m_usd": 23954.36,
+      "mean_30m_usd": 37.66,
+      "profit_factor_30m": 1.096,
+      "net_15m_usd": -8950.64,
+      "stress_add_1_tick_each_side_net_30m_usd": 17594.36,
+      "weekly_bootstrap_mean_95CI": [
+        -47.44,
+        123.63
+      ],
+      "signflip_one_sided_p": 0.20016,
+      "positive_years": 3,
+      "yearly_usd": {
+        "2020": 2376.2,
+        "2021": -5272.5,
+        "2022": 22438.24,
+        "2023": 5608.8,
+        "2024": -1196.38
+      },
+      "BH_q_three_families": 0.60048
+    },
+    "NQ-H03": {
+      "n": 675,
+      "net_30m_usd": -53364.5,
+      "mean_30m_usd": -79.06,
+      "profit_factor_30m": 0.819,
+      "net_15m_usd": -41854.5,
+      "stress_add_1_tick_each_side_net_30m_usd": -60114.5,
+      "weekly_bootstrap_mean_95CI": [
+        -156.89,
+        -2.3
+      ],
+      "signflip_one_sided_p": 0.9764,
+      "positive_years": 1,
+      "yearly_usd": {
+        "2020": 1066.76,
+        "2021": -20309.16,
+        "2022": -629.52,
+        "2023": -58.98,
+        "2024": -33433.6
+      },
+      "BH_q_three_families": 0.9764
+    }
+  },
+  "limitations": [
+    "Historical ES transport studies lack original news filters and tick execution verification",
+    "NQ event studies no stop, take-profit or portfolio synchronization",
+    "NinjaTrader Free costs are not automatically the fees of a MyFundedFutures evaluation",
+    "Rerun live-execution assumptions separately before any funding decision"
+  ]
+}
