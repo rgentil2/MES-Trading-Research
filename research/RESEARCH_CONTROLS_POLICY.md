@@ -140,3 +140,50 @@ The old implementation version remains identifiable in the ledger/Git history.
 - CME contract multipliers: https://www.cmegroup.com/articles/faqs/frequently-asked-questions-micro-e-mini-equity-index-futures.html
 - Robust covariance methods: https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.OLSResults.get_robustcov_results.html
 - Holm correction: https://www.statsmodels.org/stable/generated/statsmodels.stats.multitest.multipletests.html
+
+## 2026-10-10 — Economic return and ETF benchmark gate (strategy/portfolio only)
+
+**User-approved prospective economic objective:** for a fully specified strategy or
+portfolio, require **net nominal-equivalent annualized CAGR strictly above the
+maximum of (a) 15%, (b) VOO USD dividend-reinvested total-return CAGR and (c)
+QQQM USD dividend-reinvested total-return CAGR**, with identical start/end
+dates and a documented cost model. A 12% annualized return is a diagnostic
+milestone, **not** a pass. ETF returns are measured, not presumed to be 12–15%.
+
+This is an ADDITIVE portfolio evaluation criterion, not a replacement for
+hypothesis Gate 1, any pre-existing frozen confirmatory gates, the allocated
+whole-family Holm alpha, causality checks or 2025/2026 holdout controls.
+Never rewrite a prior family's preregistration or a previously locked gate to
+add the economic hurdle retroactively. Existing signals that fail individual
+gates remain visible in the exploration library for explicit, non-validated
+portfolio research.
+
+**Temporal benchmark compatibility:** use common dates beginning **no earlier
+than 2020-10-13**, the QQQM inception date, for a direct historical VOO/QQQM
+comparison within 2020–2024 development. For a 2020-complete extension, QQQ
+may be used only as a separately labeled `QQQM/QQQ_PROXY`; never imply QQQM
+existed before its listing. Use total returns with reinvested dividends, USD,
+transparent data provenance and an aligned strategy equity series.
+
+**Funding vs investing:** USD 50k funded account size is *not* personally
+invested USD 50k. Report (1) synthetic nominal USD 50k net CAGR (an explicit
+normalization, not actual investor ROI), and (2) real out-of-pocket fees,
+resets and withdrawals/payouts with their dates and net cash flow, using XIRR
+where defined. Account fees and transaction costs cannot be double counted.
+
+**Risk is required:** realistic instrument/funded fees, 1.5x cost stress,
+closed-equity and intratrade/floating max drawdown, product-specific trailing
+loss rules, contract limits, concentration/correlation, signal overlap and
+risk-adjusted comparison with buy-and-hold ETFs. A higher CAGR with a funded
+account breach does **not** pass. Label missing benchmark/risk evidence as
+`ECONOMIC_DATA_PENDING` or `ECONOMIC_HURDLE_MET_RISK_PENDING`; never invent a
+pass or treat exploratory historical results as independent.
+
+**No auto-unsealing:** 2025 and 2026 remain sealed under their established
+stage authorization rules. Achievement of this economic target alone grants
+no permission to open them, make a trade or purchase a funded account.
+
+**Authoritative addendum:**
+`research/nq/NQ_PORTFOLIO_ECONOMIC_GATE_2026_10_10.md`;
+machine-readable specification:
+`research/nq/NQ_PORTFOLIO_ECONOMIC_GATE_2026_10_10.json`.
