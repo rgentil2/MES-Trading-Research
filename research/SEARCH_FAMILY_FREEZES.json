@@ -14,6 +14,44 @@
         "NQ-H06",
         "NQ-H07"
       ]
+    },
+    "NQ-MINUTE-25-H08-H32-V1": {
+      "family_sha256": "4601e60fd418febc3199cb977ccf9b78d7a944d3a35c34af94e22ecfb1c443d0",
+      "definition_sha256": {
+        "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md": "1073473c6599d9aaf1921ffb948a96064d3aaba857ac4a0e9697ad5280506bac",
+        "research/nq/nq_h08_h32_minute_2020_2024.py": "93669de8b6b17a5368959ad9a7fb0bdbf69c61788372d584cf8b9d2d9b427d3d",
+        "research/nq/nq_h05_h07_level_volume_screen.py": "61352658a4f99e17d63ee7ebdafd39218dc59c45b8735422edfeeb04fe8988f8",
+        "research/nq/test_nq_h08_h32_minute_2020_2024.py": "572286ad2fed0d2bdd6300e2d33e576eb1b78701b4267f5de8852a7153e219b9"
+      },
+      "index": 2,
+      "alpha": 0.008333333333333333,
+      "member_ids": [
+        "NQ-H08",
+        "NQ-H09",
+        "NQ-H10",
+        "NQ-H11",
+        "NQ-H12",
+        "NQ-H13",
+        "NQ-H14",
+        "NQ-H15",
+        "NQ-H16",
+        "NQ-H17",
+        "NQ-H18",
+        "NQ-H19",
+        "NQ-H20",
+        "NQ-H21",
+        "NQ-H22",
+        "NQ-H23",
+        "NQ-H24",
+        "NQ-H25",
+        "NQ-H26",
+        "NQ-H27",
+        "NQ-H28",
+        "NQ-H29",
+        "NQ-H30",
+        "NQ-H31",
+        "NQ-H32"
+      ]
     }
   }
 }
