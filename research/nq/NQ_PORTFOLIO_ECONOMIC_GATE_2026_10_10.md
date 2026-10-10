@@ -33,6 +33,18 @@ Formalmente `portfolio_cagr > max(0.15, voo_cagr, qqqm_cagr)`. Un 12 % anual sig
 - Reportar drawdown máximo, volatilidad/Sharpe, Sortino, Calmar, retorno/risgo, correlación con VOO y QQQM y concentración de P&L por año. Comparar también métricas **ajustadas por riesgo**, porque un CAGR de futuros con apalancamiento no equivale directamente a inversión no apalancada en ETF.
 - Un portafolio debe eliminar señales duplicadas, consolidar exposición correlacionada ES/MES y NQ/MNQ, resolver prioridad causal de señales y probar router/slippage realista. No sumar P&L de señales coincidentes como ganancias independientes.
 
+## Evidencia deductiva incremental en carteras conjuntas (aprobado 2026-10-10)
+
+El **objeto principal del Gate Económico** para las nuevas H67–H150 es la **estrategia/cartera conjunta completa**, no la suma hipotética de CAGR o P&L de señales individuales. Las nuevas hipótesis deben integrar dos o más funciones de decisión distintas (disparador, contexto ex ante, filtro, veto, selector de régimen o router), predefinir la simultaneidad, la prioridad y los límites de riesgo, y probar la ejecución verdadera sobre un único capital común.
+
+El test económico de una combinación incluye **comparadores incrementales obligatorios**: cada estrategia progenitora, un router de referencia, la combinación y sus ablations (retirar cada componente), con **idénticas fechas, riesgo, capital, costes, reglas de sizing y comparables VOO/QQQM**. Mostrar no solo CAGR y P&L, sino también frecuencia, trades perdidos por filtros, exposición, fuentes de correlación, drawdown flotante/cerrado y efecto de costes multiplicados por 1,5. Una combinación que gana más debido únicamente a más riesgo, o que reduce operaciones hasta muestras no informativas, **no demuestra mejora económica robusta**.
+
+La deducción debe partir de hechos concretos de los padres, incluyendo **resultados negativos**, y declarar antes de mirar retornos la predicción incremental y condiciones de falsación. La familia completa de combinaciones y comparadores seleccionables está sujeta a prerregistro, múltiples pruebas y candados temporales del proyecto. Los años 2020–2024, previamente revisados, siguen siendo exploratorios.
+
+Referencias vinculantes:
+`research/nq/NQ_DEDUCTIVE_ENSEMBLE_POLICY_2026_10_10.md` y
+`research/nq/NQ_DEDUCTIVE_ENSEMBLE_POLICY_2026_10_10.json`.
+
 ## Estados y reglas de avance
 
 | Estado | Cuándo aplica | Permite operar / abrir holdout |
