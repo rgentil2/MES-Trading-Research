@@ -1,0 +1,531 @@
+{
+  "stage": "DEVELOPMENT_EXPLORATORY",
+  "experiment": "NQ-H59-H66",
+  "loaded_years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "holdout_2025_loaded": false,
+  "holdout_2026_loaded": false,
+  "basis": "previously viewed parent events; retrospective derived mechanisms, no independent inference",
+  "n_parent_events": 1509,
+  "n_children_events": 572,
+  "hypotheses": {
+    "NQ-H59": {
+      "n": 67,
+      "status": "ESTIMATED",
+      "avg_net_nq": 111.5,
+      "total_net_nq": 7470.42,
+      "avg_net_mnq": 9.84,
+      "pf_nq": 1.212,
+      "ci90": [
+        -178.74,
+        416.78
+      ],
+      "ci95": [
+        -233.18,
+        477.97
+      ],
+      "p_one_sided": 0.270972902709729,
+      "positive_years": 3,
+      "by_year": {
+        "2020": {
+          "n": 11,
+          "total_net_usd": 2981.86,
+          "avg_net_usd": 271.08
+        },
+        "2021": {
+          "n": 15,
+          "total_net_usd": -781.1,
+          "avg_net_usd": -52.07
+        },
+        "2022": {
+          "n": 17,
+          "total_net_usd": -147.58,
+          "avg_net_usd": -8.68
+        },
+        "2023": {
+          "n": 6,
+          "total_net_usd": 4425.56,
+          "avg_net_usd": 737.59
+        },
+        "2024": {
+          "n": 18,
+          "total_net_usd": 991.68,
+          "avg_net_usd": 55.09
+        }
+      },
+      "max_gap_days": 185,
+      "gap_gt7_days": 42,
+      "stress_plus_tick_each_side_avg_net_nq": 101.5,
+      "bh_q_8": 0.50085,
+      "holm_p_8_approx": 1.0,
+      "gate1": {
+        "N_gt150": false,
+        "net_mean_positive": true,
+        "CI90_positive": false,
+        "q_le_010": false,
+        "years_3_of_5": true
+      },
+      "decision": "INSUFFICIENT_EVIDENCE"
+    },
+    "NQ-H60": {
+      "n": 111,
+      "status": "ESTIMATED",
+      "avg_net_nq": 8.76,
+      "total_net_nq": 972.86,
+      "avg_net_mnq": -0.43,
+      "pf_nq": 1.021,
+      "ci90": [
+        -176.07,
+        181.5
+      ],
+      "ci95": [
+        -212.09,
+        214.57
+      ],
+      "p_one_sided": 0.4664533546645335,
+      "positive_years": 3,
+      "by_year": {
+        "2020": {
+          "n": 22,
+          "total_net_usd": -4281.28,
+          "avg_net_usd": -194.6
+        },
+        "2021": {
+          "n": 27,
+          "total_net_usd": 1475.02,
+          "avg_net_usd": 54.63
+        },
+        "2022": {
+          "n": 20,
+          "total_net_usd": 1405.2,
+          "avg_net_usd": 70.26
+        },
+        "2023": {
+          "n": 19,
+          "total_net_usd": -1869.06,
+          "avg_net_usd": -98.37
+        },
+        "2024": {
+          "n": 23,
+          "total_net_usd": 4242.98,
+          "avg_net_usd": 184.48
+        }
+      },
+      "max_gap_days": 70,
+      "gap_gt7_days": 61,
+      "stress_plus_tick_each_side_avg_net_nq": -1.24,
+      "bh_q_8": 0.50085,
+      "holm_p_8_approx": 1.0,
+      "gate1": {
+        "N_gt150": false,
+        "net_mean_positive": true,
+        "CI90_positive": false,
+        "q_le_010": false,
+        "years_3_of_5": true
+      },
+      "decision": "INSUFFICIENT_EVIDENCE"
+    },
+    "NQ-H61": {
+      "n": 33,
+      "status": "ESTIMATED",
+      "avg_net_nq": 2.59,
+      "total_net_nq": 85.58,
+      "avg_net_mnq": -1.05,
+      "pf_nq": 1.005,
+      "ci90": [
+        -396.66,
+        380.06
+      ],
+      "ci95": [
+        -484.83,
+        447.3
+      ],
+      "p_one_sided": 0.5008499150084992,
+      "positive_years": 1,
+      "by_year": {
+        "2020": {
+          "n": 6,
+          "total_net_usd": -1664.44,
+          "avg_net_usd": -277.41
+        },
+        "2021": {
+          "n": 9,
+          "total_net_usd": -966.66,
+          "avg_net_usd": -107.41
+        },
+        "2022": {
+          "n": 6,
+          "total_net_usd": -2634.44,
+          "avg_net_usd": -439.07
+        },
+        "2023": {
+          "n": 3,
+          "total_net_usd": -477.22,
+          "avg_net_usd": -159.07
+        },
+        "2024": {
+          "n": 9,
+          "total_net_usd": 5828.34,
+          "avg_net_usd": 647.59
+        }
+      },
+      "max_gap_days": 173,
+      "gap_gt7_days": 29,
+      "stress_plus_tick_each_side_avg_net_nq": -7.41,
+      "bh_q_8": 0.50085,
+      "holm_p_8_approx": 1.0,
+      "gate1": {
+        "N_gt150": false,
+        "net_mean_positive": true,
+        "CI90_positive": false,
+        "q_le_010": false,
+        "years_3_of_5": false
+      },
+      "decision": "INSUFFICIENT_EVIDENCE"
+    },
+    "NQ-H62": {
+      "n": 160,
+      "status": "ESTIMATED",
+      "avg_net_nq": 126.14,
+      "total_net_nq": 20181.6,
+      "avg_net_mnq": 11.31,
+      "pf_nq": 1.277,
+      "ci90": [
+        -55.77,
+        303.11
+      ],
+      "ci95": [
+        -92.4,
+        334.92
+      ],
+      "p_one_sided": 0.1255874412558744,
+      "positive_years": 3,
+      "by_year": {
+        "2020": {
+          "n": 25,
+          "total_net_usd": -9113.5,
+          "avg_net_usd": -364.54
+        },
+        "2021": {
+          "n": 32,
+          "total_net_usd": 2086.32,
+          "avg_net_usd": 65.2
+        },
+        "2022": {
+          "n": 34,
+          "total_net_usd": 22939.84,
+          "avg_net_usd": 674.7
+        },
+        "2023": {
+          "n": 32,
+          "total_net_usd": -5583.68,
+          "avg_net_usd": -174.49
+        },
+        "2024": {
+          "n": 37,
+          "total_net_usd": 9852.62,
+          "avg_net_usd": 266.29
+        }
+      },
+      "max_gap_days": 59,
+      "gap_gt7_days": 77,
+      "stress_plus_tick_each_side_avg_net_nq": 116.14,
+      "bh_q_8": 0.50085,
+      "holm_p_8_approx": 1.0,
+      "gate1": {
+        "N_gt150": true,
+        "net_mean_positive": true,
+        "CI90_positive": false,
+        "q_le_010": false,
+        "years_3_of_5": true
+      },
+      "decision": "NOT_SUPPORTED_EXPLORATORY"
+    },
+    "NQ-H63": {
+      "n": 11,
+      "status": "ESTIMATED",
+      "avg_net_nq": 110.17,
+      "total_net_nq": 1211.86,
+      "avg_net_mnq": 9.71,
+      "pf_nq": 1.242,
+      "ci90": [
+        -442.58,
+        636.58
+      ],
+      "ci95": [
+        -543.49,
+        731.53
+      ],
+      "p_one_sided": 0.36826317368263173,
+      "positive_years": 2,
+      "by_year": {
+        "2020": {
+          "n": 2,
+          "total_net_usd": 2173.52,
+          "avg_net_usd": 1086.76
+        },
+        "2021": {
+          "n": 4,
+          "total_net_usd": 1447.04,
+          "avg_net_usd": 361.76
+        },
+        "2022": {
+          "n": 1,
+          "total_net_usd": -1180.74,
+          "avg_net_usd": -1180.74
+        },
+        "2023": {
+          "n": 0,
+          "total_net_usd": 0.0,
+          "avg_net_usd": null
+        },
+        "2024": {
+          "n": 4,
+          "total_net_usd": -1227.96,
+          "avg_net_usd": -306.99
+        }
+      },
+      "max_gap_days": 729,
+      "gap_gt7_days": 9,
+      "stress_plus_tick_each_side_avg_net_nq": 100.17,
+      "bh_q_8": 0.50085,
+      "holm_p_8_approx": 1.0,
+      "gate1": {
+        "N_gt150": false,
+        "net_mean_positive": true,
+        "CI90_positive": false,
+        "q_le_010": false,
+        "years_3_of_5": false
+      },
+      "decision": "INSUFFICIENT_EVIDENCE"
+    },
+    "NQ-H64": {
+      "n": 40,
+      "status": "ESTIMATED",
+      "avg_net_nq": 147.14,
+      "total_net_nq": 5885.4,
+      "avg_net_mnq": 13.41,
+      "pf_nq": 1.59,
+      "ci90": [
+        -62.86,
+        364.26
+      ],
+      "ci95": [
+        -98.99,
+        405.39
+      ],
+      "p_one_sided": 0.13058694130586943,
+      "positive_years": 4,
+      "by_year": {
+        "2020": {
+          "n": 9,
+          "total_net_usd": 168.34,
+          "avg_net_usd": 18.7
+        },
+        "2021": {
+          "n": 8,
+          "total_net_usd": -40.92,
+          "avg_net_usd": -5.12
+        },
+        "2022": {
+          "n": 8,
+          "total_net_usd": 239.08,
+          "avg_net_usd": 29.89
+        },
+        "2023": {
+          "n": 8,
+          "total_net_usd": 3754.08,
+          "avg_net_usd": 469.26
+        },
+        "2024": {
+          "n": 7,
+          "total_net_usd": 1764.82,
+          "avg_net_usd": 252.12
+        }
+      },
+      "max_gap_days": 154,
+      "gap_gt7_days": 35,
+      "stress_plus_tick_each_side_avg_net_nq": 137.14,
+      "bh_q_8": 0.50085,
+      "holm_p_8_approx": 1.0,
+      "gate1": {
+        "N_gt150": false,
+        "net_mean_positive": true,
+        "CI90_positive": false,
+        "q_le_010": false,
+        "years_3_of_5": true
+      },
+      "decision": "INSUFFICIENT_EVIDENCE"
+    },
+    "NQ-H65": {
+      "n": 114,
+      "status": "ESTIMATED",
+      "avg_net_nq": 22.94,
+      "total_net_nq": 2615.64,
+      "avg_net_mnq": 0.99,
+      "pf_nq": 1.048,
+      "ci90": [
+        -154.07,
+        202.67
+      ],
+      "ci95": [
+        -187.22,
+        237.4
+      ],
+      "p_one_sided": 0.41685831416858316,
+      "positive_years": 4,
+      "by_year": {
+        "2020": {
+          "n": 24,
+          "total_net_usd": 382.24,
+          "avg_net_usd": 15.93
+        },
+        "2021": {
+          "n": 28,
+          "total_net_usd": -2555.72,
+          "avg_net_usd": -91.28
+        },
+        "2022": {
+          "n": 19,
+          "total_net_usd": 2145.94,
+          "avg_net_usd": 112.94
+        },
+        "2023": {
+          "n": 17,
+          "total_net_usd": 1497.42,
+          "avg_net_usd": 88.08
+        },
+        "2024": {
+          "n": 26,
+          "total_net_usd": 1145.76,
+          "avg_net_usd": 44.07
+        }
+      },
+      "max_gap_days": 78,
+      "gap_gt7_days": 62,
+      "stress_plus_tick_each_side_avg_net_nq": 12.94,
+      "bh_q_8": 0.50085,
+      "holm_p_8_approx": 1.0,
+      "gate1": {
+        "N_gt150": false,
+        "net_mean_positive": true,
+        "CI90_positive": false,
+        "q_le_010": false,
+        "years_3_of_5": true
+      },
+      "decision": "INSUFFICIENT_EVIDENCE"
+    },
+    "NQ-H66": {
+      "n": 36,
+      "status": "ESTIMATED",
+      "avg_net_nq": 111.62,
+      "total_net_nq": 4018.36,
+      "avg_net_mnq": 9.86,
+      "pf_nq": 1.348,
+      "ci90": [
+        -145.88,
+        353.72
+      ],
+      "ci95": [
+        -199.27,
+        399.13
+      ],
+      "p_one_sided": 0.24087591240875914,
+      "positive_years": 3,
+      "by_year": {
+        "2020": {
+          "n": 5,
+          "total_net_usd": 1316.3,
+          "avg_net_usd": 263.26
+        },
+        "2021": {
+          "n": 8,
+          "total_net_usd": -360.92,
+          "avg_net_usd": -45.12
+        },
+        "2022": {
+          "n": 8,
+          "total_net_usd": -1390.92,
+          "avg_net_usd": -173.86
+        },
+        "2023": {
+          "n": 4,
+          "total_net_usd": 2242.04,
+          "avg_net_usd": 560.51
+        },
+        "2024": {
+          "n": 11,
+          "total_net_usd": 2211.86,
+          "avg_net_usd": 201.08
+        }
+      },
+      "max_gap_days": 224,
+      "gap_gt7_days": 29,
+      "stress_plus_tick_each_side_avg_net_nq": 101.62,
+      "bh_q_8": 0.50085,
+      "holm_p_8_approx": 1.0,
+      "gate1": {
+        "N_gt150": false,
+        "net_mean_positive": true,
+        "CI90_positive": false,
+        "q_le_010": false,
+        "years_3_of_5": true
+      },
+      "decision": "INSUFFICIENT_EVIDENCE"
+    }
+  },
+  "portfolio_one_mnq_time_exit": {
+    "pnl30": {
+      "n": 407,
+      "mean": 80.38,
+      "sum": 32713.82,
+      "max_closed_drawdown": 25561.76,
+      "positive_years": 3
+    },
+    "pnl_mnq": {
+      "n": 407,
+      "mean": 6.73,
+      "sum": 2739.84,
+      "max_closed_drawdown": 2718.12,
+      "positive_years": 3
+    },
+    "sessions_with_collision": 87,
+    "max_gap_days": 26,
+    "gaps_gt7_days": 58,
+    "by_year": {
+      "2020": {
+        "n": 72,
+        "pnl_mnq": -1295.36
+      },
+      "2021": {
+        "n": 91,
+        "pnl_mnq": 58.42
+      },
+      "2022": {
+        "n": 84,
+        "pnl_mnq": 2138.08
+      },
+      "2023": {
+        "n": 67,
+        "pnl_mnq": -143.46
+      },
+      "2024": {
+        "n": 93,
+        "pnl_mnq": 1982.16
+      }
+    },
+    "signal_source_counts": {
+      "NQ-H09": 173,
+      "NQ-H55": 109,
+      "NQ-H56": 89,
+      "NQ-H29": 36
+    },
+    "status": "DIAGNOSTIC_NO_STOP_LOSS_NOT_FUNDED_VALIDATION"
+  },
+  "disclosure": "No stops or intra-bar adverse excursion model; 2025 and 2026 unopened; all estimates biased by reuse of DEV and parent selection."
+}
