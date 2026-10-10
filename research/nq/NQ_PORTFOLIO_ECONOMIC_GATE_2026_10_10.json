@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "effective_date": "2026-10-10",
+  "policy_id": "NQ-PORTFOLIO-ECONOMIC-GATE-V1",
+  "scope": [
+    "MES",
+    "ES",
+    "MNQ",
+    "NQ"
+  ],
+  "policy_type": "PROSPECTIVE_ADDITIVE_STRATEGY_PORTFOLIO_ONLY",
+  "original_hypothesis_gate_changed": false,
+  "original_frozen_families_changed": false,
+  "development_market_years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "holdout_2025_sealed": true,
+  "holdout_2026_sealed": true,
+  "objective": {
+    "nominal_cagr_min_exclusive": 0.15,
+    "diagnostic_milestone_not_a_pass": 0.12,
+    "formula": "strategy_nominal_net_cagr > max(0.15, voo_total_return_cagr, qqqm_total_return_cagr)",
+    "strictly_greater_than_all": true,
+    "benchmarks": [
+      "VOO",
+      "QQQM"
+    ],
+    "benchmark_metric": "DIVIDEND_REINVESTED_USD_TOTAL_RETURN_CAGR",
+    "require_exact_matching_start_and_end": true,
+    "primary_comparison_earliest_allowed_date": "2020-10-13",
+    "latest_development_date": "2024-12-31",
+    "qqqm_pre_inception_history_prohibited": true,
+    "optional_full_2020_proxy": {
+      "ticker": "QQQ",
+      "status_label": "QQQM/QQQ_PROXY",
+      "not_a_real_qqqm_history": true
+    },
+    "no_benchmark_values_fabricated": true
+  },
+  "capital": {
+    "nominal_account_reference_usd": 50000,
+    "nominal_cagr_not_investor_return": true,
+    "investor_return_from_actual_dated_fees_resets_and_net_payouts": true,
+    "investor_money_weighted_xirr_if_defined": true,
+    "portfolio_time_weighted_return_for_external_flows": true
+  },
+  "costs": {
+    "actual_instrument_and_account_specific": true,
+    "do_not_double_count": true,
+    "stress_costs_multiplier": 1.5,
+    "nt_free_fee_not_assumed_funded": true
+  },
+  "risk": {
+    "floating_intraday_drawdown_required": true,
+    "closed_drawdown_required": true,
+    "funded_rule_audit_required": true,
+    "funded_product_terms_recheck_required": true,
+    "equity_index_correlation_and_leverage_must_be_considered": true,
+    "risk_adjusted_metrics_required": [
+      "Sharpe",
+      "Sortino",
+      "Calmar",
+      "max_drawdown",
+      "equity_beta_or_correlation"
+    ],
+    "overlap_de_duplication_required": true,
+    "sizing_router_frozen_before_evaluation": true
+  },
+  "statuses": [
+    "EXPLORATORY_LIBRARY",
+    "ECONOMIC_DATA_PENDING",
+    "BELOW_ECONOMIC_HURDLE",
+    "ECONOMIC_HURDLE_MET_RISK_PENDING",
+    "PROMISING_PORTFOLIO_EXPLORATORY",
+    "VALIDATED_FOR_REVIEW"
+  ],
+  "no_status_authorizes_live_trading": true,
+  "evidence_boundaries": {
+    "statistical_gate1_unchanged": true,
+    "confirmatory_holm_unchanged": true,
+    "already_reviewed_2020_2024_not_independent": true,
+    "no_2025_or_2026_price_reads_without_separate_approval": true
+  },
+  "required_report_fields": [
+    "evaluation_window_start",
+    "evaluation_window_end",
+    "benchmark_data_provenance",
+    "capital_basis",
+    "daily_net_equity",
+    "nominal_cagr",
+    "voo_total_return_cagr",
+    "qqqm_total_return_cagr",
+    "economic_hurdle",
+    "hurdle_pass",
+    "transaction_cost_model",
+    "cost_stress_1_5x",
+    "closed_drawdown",
+    "floating_drawdown",
+    "funded_rule_audit",
+    "cash_flows",
+    "investor_xirr_if_defined",
+    "risk_adjusted_metrics",
+    "overlap_audit",
+    "decision_status",
+    "holdout_access_flags"
+  ],
+  "source_document": "research/nq/NQ_PORTFOLIO_ECONOMIC_GATE_2026_10_10.md"
+}
