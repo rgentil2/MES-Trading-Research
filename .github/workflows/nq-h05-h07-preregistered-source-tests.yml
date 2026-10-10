@@ -1,0 +1,33 @@
+name: NQ H05-H07 frozen source and governance tests
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/nq/nq_h05_h07_level_volume_screen.py"
+      - "research/nq/test_nq_h05_h07_level_volume_screen.py"
+      - "research/nq/NQ_PRICE_LEVEL_VOLUME_FAMILY_H05_H07_PREREG_2026_10_09.md"
+      - "research/SEARCH_LEDGER.json"
+      - "research/SEARCH_FAMILY_FREEZES.json"
+      - "tools/research_governance.py"
+      - ".github/workflows/nq-h05-h07-preregistered-source-tests.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install numpy pandas
+      - name: Verify NQ family definitions frozen before outcome load
+        run: python tools/research_governance.py --preflight-family NQ-LEVEL-VOLUME-H05-H07-V1
+      - name: Verify accumulated research governance
+        run: python tools/research_governance.py --check
+      - name: Test NQ causality, time controls, fee model and holdout firewall
+        run: python -m unittest discover -s research/nq -p test_nq_h05_h07_level_volume_screen.py -v
