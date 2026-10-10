@@ -70,7 +70,7 @@ cross-instrument execution requires transfer_validation_plan.
 
 ## 2026-10-09 — Prospective exploratory screen, separate from confirmation
 
-At user direction, `research/es/ES_STAGE_GATES.md` now has a **new preliminary Gate 1 screening tier** for future preregistered ES/NQ/MES hypotheses intended to contribute to a multi-strategy portfolio:
+At user direction, `research/es/ES_STAGE_GATES_EXPLORATORY_AMENDMENT_2026_10_09.md` adds a **new preliminary Gate 1 screening tier** while leaving the hash-protected original `research/es/ES_STAGE_GATES.md` unchanged for future preregistered ES/NQ/MES hypotheses intended to contribute to a multi-strategy portfolio:
 
 - **N > 150** independent eligible events (151 minimum);
 - effect sign matches the preregistered prediction and the net effect after explicitly frozen costs is positive;
