@@ -1,0 +1,41 @@
+name: NQ H67-H72 first combined strategy family — registration & freeze
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/nq/register_and_freeze_h67_h72.py"
+      - ".github/workflows/nq-h67-h72-register-freeze.yml"
+permissions:
+  contents: write
+jobs:
+  register-and-freeze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Python numerical dependencies
+        run: pip install numpy pandas
+      - name: Official prospective family 6 registry and content-hash freeze (NO market reads)
+        env:
+          PYTHONPATH: .
+        run: python research/nq/register_and_freeze_h67_h72.py
+      - name: Check immutable frozen family
+        run: python tools/research_governance.py --preflight-family NQ-DEDUCTIVE-ENSEMBLE-H67-H72-V1
+      - name: Fifteen synthetic tests of router causality, stop first and cost
+        env:
+          PYTHONPATH: .
+        run: python -m unittest discover -s research/nq -p test_nq_h67_h72_combined_strategies.py -v
+      - name: Publish append-only registration and SHA lock
+        shell: bash
+        run: |
+          git add research/SEARCH_LEDGER.json research/SEARCH_FAMILY_FREEZES.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "Freeze NQ H67-H72 combined strategy family 6 before DEV price outcomes"
+          git push origin HEAD:main
