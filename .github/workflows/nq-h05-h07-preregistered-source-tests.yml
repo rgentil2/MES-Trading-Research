@@ -6,6 +6,8 @@ on:
       - "research/nq/nq_h05_h07_level_volume_screen.py"
       - "research/nq/test_nq_h05_h07_level_volume_screen.py"
       - "research/nq/NQ_PRICE_LEVEL_VOLUME_FAMILY_H05_H07_PREREG_2026_10_09.md"
+      - "research/es/ES_STAGE_GATES.md"
+      - "research/es/ES_STAGE_GATES_EXPLORATORY_AMENDMENT_2026_10_09.md"
       - "research/SEARCH_LEDGER.json"
       - "research/SEARCH_FAMILY_FREEZES.json"
       - "tools/research_governance.py"
