@@ -1,0 +1,30 @@
+name: NQ H53-H58 six-member family Holm evaluation
+on:
+  push:
+    branches: [main]
+    paths:
+      - "results/development/nq_h53_h58_family.json"
+      - ".github/workflows/nq-h53-h58-development-audit.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-prospective-family:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install numpy pandas
+      - name: Verify immutable preregistered source and allocated 0.0025 alpha
+        run: python tools/research_governance.py --preflight-family NQ-PREMARKET-WEEKLY-H53-H58-V1
+      - name: Evaluate full six-hypothesis two-sided Holm adjustment
+        run: python tools/research_governance.py --evaluate-family NQ-PREMARKET-WEEKLY-H53-H58-V1
+      - name: Seven synthetic tests including strict holdout allowlist and stop-first
+        env:
+          PYTHONPATH: .
+        run: python -m unittest discover -s research/nq -p test_nq_h53_h58.py -v
