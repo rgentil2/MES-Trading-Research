@@ -187,3 +187,56 @@ no permission to open them, make a trade or purchase a funded account.
 `research/nq/NQ_PORTFOLIO_ECONOMIC_GATE_2026_10_10.md`;
 machine-readable specification:
 `research/nq/NQ_PORTFOLIO_ECONOMIC_GATE_2026_10_10.json`.
+
+## 2026-10-10 — Deductive combined strategies H67–H150
+
+The user has directed the NQ program to produce **combined hypotheses and
+executable multi-signal strategies**, not a new queue of unrelated isolated
+entry patterns, and to use each accumulated historical finding to infer a
+specific, falsifiable next-stage joint mechanism.
+
+For each newly proposed H67+ require before any outcome read:
+- references to actual prior source IDs/results, including **negative years,
+  low sample sizes, uncertainty, adjusted p values, fees and other limitations**;
+- a causal and timestamp-safe reason why two or more different signal/context/
+  veto/router components would improve one **joint trading decision**;
+- a **frozen primary incremental prediction** against every constituent parent
+  and a fixed baseline router, with pre-specified leave-one-component-out
+  comparisons, equal periods, positions, transaction costs and risk exposure;
+- an unambiguous entry/no-trade/conflict/priority rule, no duplication of
+  simultaneous NQ/MNQ/ES/MES beta, stop, TP, time exit, sizing and allowable
+  holding-risk caps; AND, OR, state-dependent switching or consensus may be
+  used but must be causally defined rather than retroselected;
+- a complete family of all tested combinations/variants with full BH and Holm
+  accounting. A follow-on variant created after outcomes is another exploratory
+  test, never independent confirmation.
+
+An isolated feature may still be assessed **as a diagnostic**. It does not
+qualify as a new strategic H67+ unless there is a falsifiable **joint** decision
+and measurement of its incremental contribution. A combined strategy cannot
+be approved merely because two weak correlated predictors individually
+appear profitable; portfolio execution, overlap, no-trade periods, costs and
+funded trailing-equity survival must be assessed.
+
+Historical facts motivating the next study include **H09 concentration in
+2022**, and 67 aligned sessions shared by **H55/H56**. These have already
+been viewed in **reused 2020–2024 development**; conditioning upon them cannot
+create an independent p-value or authorize opening 2025/2026. Preserve all
+parent signals and failed variants in the exploratory library with their
+failures and lineage. The H150 target is a **ceiling**, not grounds to
+manufacture 84 tests.
+
+All combined strategies are also subject to the **economic hurdle**
+defined above: net nominal equivalent CAGR strictly greater than max(15%,
+VOO total-return CAGR, QQQM total-return CAGR), matching window and risk,
+plus separate funded account actual fees and payout ROI. Existing Gate 1,
+immutable preregistrations, alpha allocations, confirmation and holdout
+policies remain unchanged.
+
+**Rule documents:**
+`research/nq/NQ_DEDUCTIVE_ENSEMBLE_POLICY_2026_10_10.md`,
+`research/nq/NQ_DEDUCTIVE_ENSEMBLE_POLICY_2026_10_10.json`.
+The roadmap `research/nq/NQ_H59_H150_DEDUCTIVE_RESEARCH_PROGRAM.md`
+is amended accordingly. **H67–H150 ideas remain unregistered and untested
+until each family has its own explicit preregistration and successful
+source-only preflight.**
