@@ -56,6 +56,20 @@ Hallazgos acumulativos:
 
 Reportes: `research/nq/NQ_H67_H72_RESULTS_2020_2024.md` y `results/nq_h67_h72/NQ_H67_H72_REPORT_2020_2024.json`. Condiciones económicas `research/nq/NQ_PORTFOLIO_ECONOMIC_GATE_2026_10_10.md`.
 
+## Nuevo paso prioritario — estudiar microestructura NQ Tick antes de H79 (2026-10-10)
+
+A partir de los hallazgos **H09, H56, H69, H74 y H77**, decidimos evaluar **datos tick reales** de NQ para estudiar si la **entrada antes del cierre de 09:45 ET**, la confirmación de flujo y un **stop técnico más estrecho** mejoran el resultado por unidad de riesgo. La mayor resolución **no garantiza** ejecuciones mejores: puede aumentar falsos positivos, stopouts, spread, slippage y sensibilidad al coste.
+
+**Etapa previa no numerada:** auditoría de disponibilidad, timestamps y derechos de una muestra **NQ 03-24 Tick Last** (idealmente Bid y Ask auténticos), pilotaje de **2024-02-05 a 2024-02-16 ET, 08:30–11:30**, sin elegir días por rentabilidad. Verificar resolución subsegundo, contrato, UTC/ET, cobertura y reconstrucción de velas versus Minute Last original. Herramienta `research/nq/nq_tick_pilot_qc.py`, pruebas `research/nq/test_nq_tick_pilot_qc.py`. **Sin archivos NQ Tick Last/Bid/Ask aún disponibles, no se ejecutan ganancias nuevas.**
+
+**Dos investigaciones separadas:**
+1. **Ejecución de estrategias congeladas a igual señal 09:45:** ticks solo para resolver orden de stop/TP, MFE/MAE, spread y flotación; no es un hallazgo de señal nueva.
+2. **Entrada anticipada H79+ preregistrada:** H09/H56 + condición causal formada con ticks **conocidos al instante de entrar** + reglas de confirmación/veto y stops estructurales; comparar contra H69/H74/H77 con misma base de riesgo y ablation. A las 09:35 **no se conoce el cierre de 09:45**. Si solo hay Last, no inferir Bid/Ask ni delta agresor.
+
+La siguiente familia H79–H90 continúa **NO preregistrada** hasta verificar calidad/acceso y especificar completa la variante conjunta. Ninguna conclusión sobre 2025/2026; ambos holdouts siguen sellados. Publicar únicamente código y estadísticas agregadas porque el GitHub es público; los ticks originales quedan privados.
+
+**Documento rector:** `research/nq/NQ_TICK_EXECUTION_FEASIBILITY_PROTOCOL_2026_10_10.md`.
+
 ## Cambio de enfoque — NQ primero, mantener MNQ como instrumento de ajuste de riesgo (2026-10-10)
 
 A petición del usuario, el objetivo principal para **las familias nuevas desde H79** es diseñar sistemas conjuntos ejecutables con **1 NQ como escenario principal** (US$20 por punto) y costes/órdenes específicos del NQ. MNQ (US$2 por punto) **permanece** como alternativa de tamaño cuando el NQ incumpla el riesgo por operación, y como comparador a iguales supuestos. El cambio no modifica el código, señales, reglas, resultados ni hashes de H01–H78.
@@ -90,7 +104,7 @@ El bloque H59–H66 quedó evaluado como interacciones. **H79–H150 son cupos m
 |---|---|---:|---|
 | 1 | H59–H66 | 8 | ¿Las coincidencias y la exclusividad de H09/H29/H54/H55/H56 alteran la expectativa, duplican riesgo o agregan información? |
 | 2 | H67–H78 (12/12 probadas, sin confirmación) | 12 | **Sistemas combinados:** H09 + régimen ex ante + veto/consenso H55/H56, con router causal y ablation frente a padres para explicar la concentración de H09 sin seleccionar años retrospectivamente. |
-| 3 | H79–H90 (NQ primero; por preregistrar) | 12 | **Carteras condicionadas y riesgo del NQ:** consenso H55/H56 y alternativa H09/H36 según régimen de volatilidad observable antes de la orden; medir valor añadido de cada bloque y frecuencia. |
+| 3 | H79–H90 (NQ Tick Last/Bid/Ask factibilidad pendiente) | 12 | **Carteras conjuntas con entrada intraminuto y riesgo del NQ:** consenso H55/H56 y alternativa H09/H36 según régimen de volatilidad observable antes de la orden; medir valor añadido de cada bloque y frecuencia. |
 | 4 | H91–H102 | 12 | **Confirmación o veto ES–NQ:** incorporar relaciones causales entre índices a las señales NQ previas, solo con fuente ES sincronizada y validada; comparar sistemas con/sin señal intermercado. |
 | 5 | H103–H114 | 12 | **Router aceptación/rechazo:** combinar H53/H54/H05/H07 con filtros ex ante y elección mutuamente excluyente de ruptura o reversión; contrastar alternativa conjunta vs cada señal. |
 | 6 | H115–H126 | 12 | **Sistemas multianclaje VWAP:** combinar H55 con apertura, niveles y participación para gobernar entrada/veto/salida; ablation por cada anclaje y control sin VWAP. |
