@@ -1834,6 +1834,246 @@
       "result_artifacts": [
         "results/development/nq_h08_h32_minute_family.json"
       ]
+    },
+    {
+      "id": "NQ-MINUTE-H33-H52-V1",
+      "index": 3,
+      "question": "Do 20 fully predeclared 1-minute NQ opening anatomy, path, participation, and prior-day regime mechanisms forecast positive net +30 minute direction?",
+      "origin_units": [
+        "NQ-H33",
+        "NQ-H34",
+        "NQ-H35",
+        "NQ-H36",
+        "NQ-H37",
+        "NQ-H38",
+        "NQ-H39",
+        "NQ-H40",
+        "NQ-H41",
+        "NQ-H42",
+        "NQ-H43",
+        "NQ-H44",
+        "NQ-H45",
+        "NQ-H46",
+        "NQ-H47",
+        "NQ-H48",
+        "NQ-H49",
+        "NQ-H50",
+        "NQ-H51",
+        "NQ-H52"
+      ],
+      "data_role": "REUSED_DEVELOPMENT",
+      "independent_inference_justification": "No independent inference: research 2020–24 reused after earlier NQ mechanism screens. Strictly no 2025/26 inspection.",
+      "members": [
+        {
+          "id": "NQ-H33",
+          "preregistration_path": "research/nq/NQ_H33_H52_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Initial 15m >=1.20× past20 same 15m range, close in extreme 15% of its high-low; follow close",
+          "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
+          "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
+        },
+        {
+          "id": "NQ-H34",
+          "preregistration_path": "research/nq/NQ_H33_H52_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Initial 15m <=0.70× previous20 comparable range and 10:00 close beyond initial extreme by 1 tick; follow",
+          "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
+          "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
+        },
+        {
+          "id": "NQ-H35",
+          "preregistration_path": "research/nq/NQ_H33_H52_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Initial15 body >=0.20× prior14 RTH range then 10:00 body retracement between 30-65%; follow original",
+          "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
+          "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
+        },
+        {
+          "id": "NQ-H36",
+          "preregistration_path": "research/nq/NQ_H33_H52_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "First15 body >=0.15× ATR then 09:46–10:00 body opposite >=0.15× ATR; follow reversal",
+          "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
+          "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
+        },
+        {
+          "id": "NQ-H37",
+          "preregistration_path": "research/nq/NQ_H33_H52_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "First15 dominant >50% upper/lower rejection wick and extreme opposing close location; fade wick",
+          "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
+          "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
+        },
+        {
+          "id": "NQ-H38",
+          "preregistration_path": "research/nq/NQ_H33_H52_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "09:31–10:15 path efficiency >=0.60 and net body >=0.25× ATR; continuation",
+          "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
+          "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
+        },
+        {
+          "id": "NQ-H39",
+          "preregistration_path": "research/nq/NQ_H33_H52_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "09:31–10:15 path efficiency <=0.15 and net body >=0.10× ATR; fade",
+          "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
+          "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
+        },
+        {
+          "id": "NQ-H40",
+          "preregistration_path": "research/nq/NQ_H33_H52_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "At least four of five last close changes 10:10–10:15 one direction and opposite initial15 body; follow",
+          "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
+          "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
+        },
+        {
+          "id": "NQ-H41",
+          "preregistration_path": "research/nq/NQ_H33_H52_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "10:15 close 1 tick past 09:31–10:00 high or low; continuation",
+          "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
+          "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
+        },
+        {
+          "id": "NQ-H42",
+          "preregistration_path": "research/nq/NQ_H33_H52_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "10:15 outside 09:31–10:00 range and 10:30 back inside; reversal",
+          "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
+          "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
+        },
+        {
+          "id": "NQ-H43",
+          "preregistration_path": "research/nq/NQ_H33_H52_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "First15 volume >=1.40× past20 same window and body >=0.15× ATR; continuation",
+          "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
+          "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
+        },
+        {
+          "id": "NQ-H44",
+          "preregistration_path": "research/nq/NQ_H33_H52_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "First15 volume <=0.65× past20 comparable and body >=0.15× ATR; fade",
+          "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
+          "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
+        },
+        {
+          "id": "NQ-H45",
+          "preregistration_path": "research/nq/NQ_H33_H52_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Second15 volume >=1.30× past20 second15, 10:00 close inside first15 range, body >=0.10× ATR; continuation",
+          "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
+          "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
+        },
+        {
+          "id": "NQ-H46",
+          "preregistration_path": "research/nq/NQ_H33_H52_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Second15 volume >=1.40× comparable and second15 wick crosses first15 high/low then close rejects; fade",
+          "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
+          "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
+        },
+        {
+          "id": "NQ-H47",
+          "preregistration_path": "research/nq/NQ_H33_H52_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Second15 volume relative to its baseline <=0.70× first15 relative ratio, body >=0.12× ATR; fade",
+          "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
+          "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
+        },
+        {
+          "id": "NQ-H48",
+          "preregistration_path": "research/nq/NQ_H33_H52_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Prior day close top/bottom 20%, opening gap opposite >=0.15× ATR and first15 drive aligned >=0.10× ATR; follow",
+          "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
+          "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
+        },
+        {
+          "id": "NQ-H49",
+          "preregistration_path": "research/nq/NQ_H33_H52_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Previous RTH inside second-previous RTH and first15 body >=0.12× ATR; continuation",
+          "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
+          "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
+        },
+        {
+          "id": "NQ-H50",
+          "preregistration_path": "research/nq/NQ_H33_H52_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Previous RTH outside second-previous RTH, close in middle 35-65%, first15 body >=0.12× ATR; fade",
+          "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
+          "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
+        },
+        {
+          "id": "NQ-H51",
+          "preregistration_path": "research/nq/NQ_H33_H52_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Previous 3 RTH ranges strictly decreasing, current first15 >= past20 range median, body >=0.10× ATR; continuation",
+          "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
+          "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
+        },
+        {
+          "id": "NQ-H52",
+          "preregistration_path": "research/nq/NQ_H33_H52_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Previous 3 close-to-close changes same sign and first15 body opposite >=0.10× ATR; follow reversal",
+          "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
+          "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
+        }
+      ],
+      "definition_files": [
+        "research/nq/NQ_H33_H52_PREREG_2026_10_09.md",
+        "research/nq/nq_h33_h52_minute_2020_2024.py",
+        "research/nq/test_nq_h33_h52.py",
+        "research/nq/nq_h05_h07_level_volume_screen.py"
+      ],
+      "result_artifacts": [
+        "results/development/nq_h33_h52_minute_family.json"
+      ]
     }
   ],
   "version_changes": [
