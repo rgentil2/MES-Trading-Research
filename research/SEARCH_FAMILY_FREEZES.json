@@ -21,6 +21,27 @@
         "NQ-H72"
       ]
     },
+    "NQ-DEDUCTIVE-ENSEMBLE-H73-H78-V1": {
+      "alpha": 0.0008928571428571429,
+      "definition_sha256": {
+        "research/nq/NQ_H73_H78_PREREG_2026_10_10.md": "137db474f7058cdf9f424017c413b54380d7c021668910ac3368600018da4dc5",
+        "research/nq/nq_h05_h07_level_volume_screen.py": "61352658a4f99e17d63ee7ebdafd39218dc59c45b8735422edfeeb04fe8988f8",
+        "research/nq/nq_h53_h58.py": "302dfc6e8746468b2b2f47335de9c071d1a0535bf0a58d77a3ba6c6e65be9ed0",
+        "research/nq/nq_h67_h72_combined_strategies.py": "5fbb8cfd5e5739f643dca5d4ec7a1fab71304e9b4c2e2f15498e88c8efe12af3",
+        "research/nq/nq_h73_h78_joint_state_routers.py": "89be7d1d37cbfc0fbf1843faf1ec2f55a6507630e6d1f459a1ddf3a6694cf105",
+        "research/nq/test_nq_h73_h78_joint_state_routers.py": "679426866eed5a907fed9a1913b22e8e7e09bb01f3683c0c7c8ce5371c134482"
+      },
+      "family_sha256": "a480d627360d37385418778168afe01e7b87ef76e9d160de4d42c1622146eab9",
+      "index": 7,
+      "member_ids": [
+        "NQ-H73",
+        "NQ-H74",
+        "NQ-H75",
+        "NQ-H76",
+        "NQ-H77",
+        "NQ-H78"
+      ]
+    },
     "NQ-LEVEL-VOLUME-H05-H07-V1": {
       "alpha": 0.025,
       "definition_sha256": {
