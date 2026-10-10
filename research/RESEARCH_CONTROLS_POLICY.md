@@ -68,6 +68,21 @@ research_instrument/analysis_kind/execution_instrument. STRATEGY additionally
 requires costs.point_value_usd, commission_round_trip_usd and slippage_round_trip_usd;
 cross-instrument execution requires transfer_validation_plan.
 
+## 2026-10-09 — Prospective exploratory screen, separate from confirmation
+
+At user direction, `research/es/ES_STAGE_GATES.md` now has a **new preliminary Gate 1 screening tier** for future preregistered ES/NQ/MES hypotheses intended to contribute to a multi-strategy portfolio:
+
+- **N > 150** independent eligible events (151 minimum);
+- effect sign matches the preregistered prediction and the net effect after explicitly frozen costs is positive;
+- a two-sided **90% confidence interval entirely above zero** for an expected positive net directional effect, appropriately adjusted for clustered calendar events;
+- preregistered-family **Benjamini–Hochberg q <= 0.10**, **screening only**;
+- expected effect sign in **at least 3/5 years (2020–2024)**;
+- no retrospective regime/year/threshold/horizon rescue, complete family/search logging.
+
+Passing permits only `PROMISING_EXPLORATORY`: **not** `PASS_OOS`, `CONFIRMED` or a tradable strategy. Original frozen experiment thresholds (including pre-existing N>=300, 95% CI, q<=.05 and 4/5 requirements where preregistered), the **whole-family Holm alpha budget**, preflight and immutable 2025/2026 holdout restrictions are **NOT weakened**. This is an additive *prospective* screen, not a retroactive relabeling of the historical H01-H03 NQ findings or of any prior ES-B01/MES family.
+
+Independent confirmation and strategy approval still require the stricter original statistical governance, sealed 2025 evaluation when authorized, then costed execution/risk, walk-forward and portfolio gates before the final frozen 2026 pseudo-forward. In particular, a 90% CI and q<=.10 **cannot replace** a family's confirmatory Holm criterion. The original NQ preregistration text is retained for provenance.
+
 ## Whole-family correction
 
 Apply Holm across every declared member. Missing outcomes block evaluation.
