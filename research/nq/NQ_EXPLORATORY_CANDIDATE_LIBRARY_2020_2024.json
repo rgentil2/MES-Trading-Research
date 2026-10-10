@@ -126,6 +126,114 @@
       "exploratory_q_as_reported": "0.632",
       "bank_tag": "KEEP_LOW_N",
       "limitations": "Sparse signals, no independent inference"
+    },
+    {
+      "hypothesis": "NQ-H67",
+      "mechanism": "Combined gap H09 OR aligned H55/H56 consensus",
+      "n": 239,
+      "mean_net_usd_per_mnq": 9.23,
+      "net_usd_per_1mnq_2020_2024": 2205.18,
+      "profit_factor": 1.295,
+      "positive_years_2020_2024": 4,
+      "exploratory_q_as_reported": "0.115188",
+      "closed_drawdown_usd_1mnq": 961.26,
+      "nominal_50k_cagr": 0.00867,
+      "bank_tag": "KEEP_JOINT_BASELINE",
+      "limitations": "Only $130.92 incremental P&L versus H09 alone; 81 gaps over seven days; fails BH q and 15% hurdle; NQ 1m MNQ price proxy, no floating drawdown validation or independent OOS",
+      "preregistration": "research/nq/NQ_H67_H72_PREREG_2026_10_10.md",
+      "result_source": "results/nq_h67_h72/NQ_H67_H72_REPORT_2020_2024.json",
+      "holdouts_opened": false,
+      "validated": false
+    },
+    {
+      "hypothesis": "NQ-H68",
+      "mechanism": "H09 OR isolated H55 (H56 not required)",
+      "n": 348,
+      "mean_net_usd_per_mnq": 5.36,
+      "net_usd_per_1mnq_2020_2024": 1863.76,
+      "profit_factor": 1.164,
+      "positive_years_2020_2024": 4,
+      "exploratory_q_as_reported": "0.158534",
+      "closed_drawdown_usd_1mnq": 1122.5,
+      "nominal_50k_cagr": 0.007347,
+      "bank_tag": "NEGATIVE_INCREMENTAL_LEARNING",
+      "limitations": "H55 extension decreased P&L $210.50 versus H09 alone; 90% CI crosses zero; NQ 1m MNQ price proxy, no floating drawdown validation or independent OOS",
+      "preregistration": "research/nq/NQ_H67_H72_PREREG_2026_10_10.md",
+      "result_source": "results/nq_h67_h72/NQ_H67_H72_REPORT_2020_2024.json",
+      "holdouts_opened": false,
+      "validated": false
+    },
+    {
+      "hypothesis": "NQ-H69",
+      "mechanism": "H09 OR H56 as separate one-position/day choice",
+      "n": 262,
+      "mean_net_usd_per_mnq": 10.32,
+      "net_usd_per_1mnq_2020_2024": 2704.44,
+      "profit_factor": 1.335,
+      "positive_years_2020_2024": 4,
+      "exploratory_q_as_reported": "0.115188",
+      "closed_drawdown_usd_1mnq": 890.64,
+      "nominal_50k_cagr": 0.010592,
+      "bank_tag": "KEEP_JOINT_ENGINEERING",
+      "limitations": "H56 adds $630.18 versus H09-only; IC90 positive but BH q 0.115 >0.10; 78 gaps over 7 days, 2022 concentration; CAGR 1.06%; NQ 1m MNQ price proxy, no floating drawdown validation or independent OOS",
+      "preregistration": "research/nq/NQ_H67_H72_PREREG_2026_10_10.md",
+      "result_source": "results/nq_h67_h72/NQ_H67_H72_REPORT_2020_2024.json",
+      "holdouts_opened": false,
+      "validated": false
+    },
+    {
+      "hypothesis": "NQ-H70",
+      "mechanism": "H09 OR H55/H56 consensus ELSE 10:00 H29 reversal",
+      "n": 279,
+      "mean_net_usd_per_mnq": 5.84,
+      "net_usd_per_1mnq_2020_2024": 1628.48,
+      "profit_factor": 1.179,
+      "positive_years_2020_2024": 4,
+      "exploratory_q_as_reported": "0.158534",
+      "closed_drawdown_usd_1mnq": 1202.42,
+      "nominal_50k_cagr": 0.006431,
+      "bank_tag": "NEGATIVE_INCREMENTAL_LEARNING",
+      "limitations": "Late H29 fallback adds 40 trades and loses $576.70 vs base; NQ 1m MNQ price proxy, no floating drawdown validation or independent OOS",
+      "preregistration": "research/nq/NQ_H67_H72_PREREG_2026_10_10.md",
+      "result_source": "results/nq_h67_h72/NQ_H67_H72_REPORT_2020_2024.json",
+      "holdouts_opened": false,
+      "validated": false
+    },
+    {
+      "hypothesis": "NQ-H71",
+      "mechanism": "H09 OR H55/H56 consensus ELSE H54 accepted-break late",
+      "n": 1051,
+      "mean_net_usd_per_mnq": -1.83,
+      "net_usd_per_1mnq_2020_2024": -1923.88,
+      "profit_factor": 0.947,
+      "positive_years_2020_2024": 3,
+      "exploratory_q_as_reported": "0.868713",
+      "closed_drawdown_usd_1mnq": 3332.56,
+      "nominal_50k_cagr": -0.007818,
+      "bank_tag": "REJECT_FALLBACK_KEEP_COMPONENT",
+      "limitations": "H54 adds 812 trades and loses $4129.06 incremental; exceeds nominal $2k DD; NQ 1m MNQ price proxy, no floating drawdown validation or independent OOS",
+      "preregistration": "research/nq/NQ_H67_H72_PREREG_2026_10_10.md",
+      "result_source": "results/nq_h67_h72/NQ_H67_H72_REPORT_2020_2024.json",
+      "holdouts_opened": false,
+      "validated": false
+    },
+    {
+      "hypothesis": "NQ-H72",
+      "mechanism": "Prior-day range-volatility router: H09/H54 high versus H55/H56/H29 low",
+      "n": 582,
+      "mean_net_usd_per_mnq": -3.27,
+      "net_usd_per_1mnq_2020_2024": -1904.66,
+      "profit_factor": 0.911,
+      "positive_years_2020_2024": 3,
+      "exploratory_q_as_reported": "0.868713",
+      "closed_drawdown_usd_1mnq": 2625.84,
+      "nominal_50k_cagr": -0.007738,
+      "bank_tag": "REJECT_ROUTER_KEEP_EVIDENCE",
+      "limitations": "Crude prior-day range state did not rescue fallback; H54 incremental negative $2609.82; NQ 1m MNQ price proxy, no floating drawdown validation or independent OOS",
+      "preregistration": "research/nq/NQ_H67_H72_PREREG_2026_10_10.md",
+      "result_source": "results/nq_h67_h72/NQ_H67_H72_REPORT_2020_2024.json",
+      "holdouts_opened": false,
+      "validated": false
     }
   ],
   "policy": "Keep all signals even if individual gate fails; do not relabel as validated. Controlled portfolio testing must be one trade per session or risk-limited, no duplicate NQ equity exposure; separately model funded commissions and trailing floating equity.",
@@ -193,6 +301,38 @@
       "observation": "One-MNQ no-duplicate illustrative portfolio yielded 407 trades, net +$2739.84 and closed DD about $2718.12 across 2020-2024, with long inactivity gaps.",
       "deduction": "Improve unified router and risk only when preregistered; require floating drawdown and exact funded rules, cost stress and VOO/QQQM economic hurdle.",
       "evidence_status": "EXPLORATORY_PORTFOLIO_NOT_FUNDED_SAFE"
+    },
+    {
+      "parent_ids": [
+        "NQ-H09",
+        "NQ-H55",
+        "NQ-H56",
+        "NQ-H67",
+        "NQ-H68",
+        "NQ-H69"
+      ],
+      "observation": "H67 consensus AND H55/H56 yields +$130.92 incremental MNQ P&L over H09; using H55 without H56 reduced $210.50; using H56 without H55 added $630.18 over H09, with N=262, BH q0.115, CAGR equivalent ~1.06%.",
+      "deduction": "Future combined router study should investigate why H56 is more compatible than H55 under a causal independent market-state mechanism; retain H09/H56 as component while keeping failed H55 variants and matching risk comparisons.",
+      "evidence_status": "REUSED_DEVELOPMENT_NOT_CONFIRMED"
+    },
+    {
+      "parent_ids": [
+        "NQ-H29",
+        "NQ-H54",
+        "NQ-H70",
+        "NQ-H71",
+        "NQ-H72"
+      ],
+      "observation": "H29 fallback after H09/consensus lost $576.70 incremental MNQ; H54 as late fallback lost $4129.06 and raises frequency to 1051 trades; crude pre-existing range regime did not rescue H54.",
+      "deduction": "Do not use high-frequency H54 to force trade coverage without independent mechanism. Distinguish market-state information from merely increasing activity; future fallback strategies need a genuinely new informational filter or different execution data.",
+      "evidence_status": "REUSED_DEVELOPMENT_NOT_CONFIRMED"
     }
-  ]
+  ],
+  "current_progress": {
+    "highest_executed_hypothesis_id": "H72",
+    "next_unpreregistered_range": "H73-H78",
+    "completed_sixth_family": "NQ-DEDUCTIVE-ENSEMBLE-H67-H72-V1",
+    "family_formal_support": "NONE",
+    "economic_hurdle_pass_count": 0
+  }
 }
