@@ -1,0 +1,31 @@
+name: NQ H67-H72 deductive joint strategies official family Holm audit
+on:
+  push:
+    branches: [main]
+    paths:
+      - "results/development/nq_h67_h72_family.json"
+      - ".github/workflows/nq-h67-h72-development-audit.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit-six-joint-strategies:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install numerical dependencies
+        run: pip install numpy pandas
+      - name: Verify official immutable preregistration and MNQ execution transfer plan
+        run: python tools/research_governance.py --preflight-family NQ-DEDUCTIVE-ENSEMBLE-H67-H72-V1
+      - name: Full six-strategy Holm adjustment, including no-support variants
+        run: python tools/research_governance.py --evaluate-family NQ-DEDUCTIVE-ENSEMBLE-H67-H72-V1
+      - name: Run 15 causal router, bracket, source and holdout tests
+        env:
+          PYTHONPATH: .
+        run: python -m unittest discover -s research/nq -p test_nq_h67_h72_combined_strategies.py -v
