@@ -1,0 +1,40 @@
+name: NQ H59-H66 deductive parent-family freeze
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/nq/register_and_freeze_h59_h66.py"
+      - ".github/workflows/nq-h59-h66-register-freeze.yml"
+permissions:
+  contents: write
+jobs:
+  freeze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install numpy pandas
+      - name: Register all eight children and consume family-5 budget before outcomes
+        env:
+          PYTHONPATH: .
+        run: python research/nq/register_and_freeze_h59_h66.py
+      - name: Verify immutable family registration with original governance
+        run: python tools/research_governance.py --preflight-family NQ-PARENT-INTERACTIONS-H59-H66-V1
+      - name: Run ten causal synthetic tests
+        env:
+          PYTHONPATH: .
+        run: python -m unittest discover -s research/nq -p test_nq_h59_h66_parent_interactions.py -v
+      - name: Commit frozen family and definitions
+        shell: bash
+        run: |
+          git add research/SEARCH_LEDGER.json research/SEARCH_FAMILY_FREEZES.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "Preregister frozen NQ H59-H66 eight-way parent interaction before DEV outcomes"
+          git push origin HEAD:main
