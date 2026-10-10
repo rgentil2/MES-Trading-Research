@@ -1,6 +1,6 @@
 # Programa NQ H59–H150 — investigación deductiva de estrategias conjuntas
 
-Estado: plan de investigación. **H59–H66 ya se estudiaron como interacciones exploratorias; H67–H72 se registraron y evaluaron como estrategias conjuntas; H73–H150 todavía NO están preregistradas.** A partir de H67, la unidad principal será **una estrategia/hipótesis conjunta** con dos o más componentes funcionales distintos y una predicción incremental falsable contra sus padres y la cartera de referencia, no una señal individual. Las definiciones futuras surgirán de diagnósticos anteriores y quedarán congeladas antes de leer nuevos outcomes.
+Estado: plan de investigación. **H59–H66, H67–H72 y H73–H78 ya se registraron y evaluaron; H79–H150 no están preregistradas.** A partir de H67, la unidad principal será **una estrategia/hipótesis conjunta** con dos o más componentes funcionales distintos y una predicción incremental falsable contra sus padres y la cartera de referencia, no una señal individual. Las definiciones futuras surgirán de diagnósticos anteriores y quedarán congeladas antes de leer nuevos outcomes.
 
 ## Punto de partida: 58 hipótesis numeradas, no 58 ensayos independientes
 
@@ -56,17 +56,41 @@ Hallazgos acumulativos:
 
 Reportes: `research/nq/NQ_H67_H72_RESULTS_2020_2024.md` y `results/nq_h67_h72/NQ_H67_H72_REPORT_2020_2024.json`. Condiciones económicas `research/nq/NQ_PORTFOLIO_ECONOMIC_GATE_2026_10_10.md`.
 
+## Cambio de enfoque — NQ primero, mantener MNQ como instrumento de ajuste de riesgo (2026-10-10)
+
+A petición del usuario, el objetivo principal para **las familias nuevas desde H79** es diseñar sistemas conjuntos ejecutables con **1 NQ como escenario principal** (US$20 por punto) y costes/órdenes específicos del NQ. MNQ (US$2 por punto) **permanece** como alternativa de tamaño cuando el NQ incumpla el riesgo por operación, y como comparador a iguales supuestos. El cambio no modifica el código, señales, reglas, resultados ni hashes de H01–H78.
+
+**Contraste realizado con los mismos trades ya congelados** (NQ Minute Last como proxy; datos de desarrollo 2020–2024, sin nueva inferencia):
+- H69 1 NQ: beneficio US$30,466.12 en cinco años, CAGR nominal equivalente sobre USD50k **9.98%**, DD cerrado **US$8,214.22**.
+- H74 1 NQ: US$18,302.32, CAGR **6.44%**, DD cerrado **US$4,179.80**.
+- H77 1 NQ: US$25,681.40, CAGR **8.64%**, DD cerrado **US$5,414.42**.
+- Los siete sistemas reescalados a un contrato NQ **fallan tanto la meta 15% como el colchón ilustrativo USD2k de pérdida cerrada**. El trailing sobre equity flotante no ha sido validado; futuros mini amplifican también pérdidas. No confundir el capital nominal 50k con capital propio invertido.
+
+Para cada nuevo sistema conjunto, antes de outcomes especificar **riesgo máximo permitido por operación en USD**, stop NQ en puntos, costes NQ reales, router causal, SL/TP, política de conflicto, sizing y drawdown flotante; detener una variante si **1 NQ supera su límite de riesgo**. Comparar valor incremental y ablation frente a padres en igual riesgo. No aprobar por escalamiento de tamaño ni retocar stops retroactivamente.
+
+**Documentos:** `research/nq/NQ_FIRST_EXECUTION_POLICY_2026_10_10.md` y `research/nq/NQ_VS_MNQ_EXECUTION_TRANSFER_DIAGNOSTIC_2020_2024.md`.
+
+## H73–H78 completada (familia 7) — nuevas evidencias para H79–H90
+
+Prerregistro y código de seis routers conjuntos congelados, 17 tests sintéticos correctos, corrección de familia. Compararon **H09+H56** eligiendo por: rango RTH anterior (H73/H74), compresión premercado (H75/H76) o alineación gap/impulso premercado (H77/H78). Ninguna mejoró el P&L total del comparador H69 (+US$2,704.44 en 1 MNQ); **ninguna supera Gate 1**.
+
+H74 logró cinco años positivos pero solo N132 y q0.1149. H77 presentó PF1.632 con N140 y q0.0468 e IC90>0, pero **falla N>150**, no mejora H69 y concentra ~75% de sus ganancias en 2022. En transferencia teórica a NQ su DD cerrado excede el colchón de fondeo.
+
+**Deducción para H79–H90:** no seguir segmentando retrospectivamente los mismos años para forzar frecuencia o PF. Investigar mecanismos de **riesgo por operación, gestión causal de posiciones e información complementaria real** al sistema H09+H56 (p. ej. validación cruzada ES/NQ si se sincronizan datos). Las nuevas hipótesis deben ser **conjuntas y definidas desde el principio para NQ**, comparar su contribución al sistema base bajo riesgo equivalente y congelarse formalmente antes de ver nuevos resultados.
+
+Reporte: `research/nq/NQ_H73_H78_RESULTS_2020_2024.md`. H79–H150 son todavía **ideas, no tests preregistrados**.
+
 ## Hasta H150: combinaciones hipotéticas, no señales individuales independientes
 
-El bloque H59–H66 quedó evaluado como interacciones. **H73–H150 son cupos máximos para hipótesis conjuntas nuevas; H67–H72 ya ejecutadas:** cada ID debe expresar una decisión coordinada distinta y estar motivado por evidencia acumulada. Si no hay mecanismo o datos, se dejará sin ejecutar en vez de fabricar una prueba. Los rangos siguientes son líneas de trabajo, no familias ya congeladas.
+El bloque H59–H66 quedó evaluado como interacciones. **H79–H150 son cupos máximos para hipótesis conjuntas nuevas; H67–H78 ya ejecutadas:** cada ID debe expresar una decisión coordinada distinta y estar motivado por evidencia acumulada. Si no hay mecanismo o datos, se dejará sin ejecutar en vez de fabricar una prueba. Los rangos siguientes son líneas de trabajo, no familias ya congeladas.
 
 ## Presupuesto máximo de 92 hipótesis adicionales (objetivo H150)
 
 | Fase | IDs previstos | Conteo | Pregunta deductiva, a ajustar según pruebas anteriores |
 |---|---|---:|---|
 | 1 | H59–H66 | 8 | ¿Las coincidencias y la exclusividad de H09/H29/H54/H55/H56 alteran la expectativa, duplican riesgo o agregan información? |
-| 2 | H67–H78 (H67–H72 probadas; H73–H78 pendientes) | 12 | **Sistemas combinados:** H09 + régimen ex ante + veto/consenso H55/H56, con router causal y ablation frente a padres para explicar la concentración de H09 sin seleccionar años retrospectivamente. |
-| 3 | H79–H90 | 12 | **Carteras condicionadas:** consenso H55/H56 y alternativa H09/H36 según régimen de volatilidad observable antes de la orden; medir valor añadido de cada bloque y frecuencia. |
+| 2 | H67–H78 (12/12 probadas, sin confirmación) | 12 | **Sistemas combinados:** H09 + régimen ex ante + veto/consenso H55/H56, con router causal y ablation frente a padres para explicar la concentración de H09 sin seleccionar años retrospectivamente. |
+| 3 | H79–H90 (NQ primero; por preregistrar) | 12 | **Carteras condicionadas y riesgo del NQ:** consenso H55/H56 y alternativa H09/H36 según régimen de volatilidad observable antes de la orden; medir valor añadido de cada bloque y frecuencia. |
 | 4 | H91–H102 | 12 | **Confirmación o veto ES–NQ:** incorporar relaciones causales entre índices a las señales NQ previas, solo con fuente ES sincronizada y validada; comparar sistemas con/sin señal intermercado. |
 | 5 | H103–H114 | 12 | **Router aceptación/rechazo:** combinar H53/H54/H05/H07 con filtros ex ante y elección mutuamente excluyente de ruptura o reversión; contrastar alternativa conjunta vs cada señal. |
 | 6 | H115–H126 | 12 | **Sistemas multianclaje VWAP:** combinar H55 con apertura, niveles y participación para gobernar entrada/veto/salida; ablation por cada anclaje y control sin VWAP. |
