@@ -9,6 +9,10 @@ import argparse
 cli=argparse.ArgumentParser(description='NQ H01/H02/H03 fixed-rule 2020-24 diagnostic; 2025/26 sealed')
 cli.add_argument('--zip',required=True,type=Path);cli.add_argument('--out',type=Path,default=Path('results/nq_first_diagnostic'))
 args=cli.parse_args();P=args.zip;O=args.out;O.mkdir(parents=True,exist_ok=True)
+ROOT=Path(__file__).resolve().parents[2]
+FREE_FEES=json.loads((ROOT/'research/costs/NINJATRADER_FREE_ALL_IN_124_SYMBOLS_2026_10_09.json').read_text(encoding='utf-8'))['rates']
+FREE_FEE_NQ_RT=float(FREE_FEES['NQ']['all_in_free_round_trip_usd'])
+assert FREE_FEE_NQ_RT==5.74
 PAT=re.compile(r'^NQ_(03|06|09|12)-(\d\d)_20(20|21|22|23|24)_Minute_Last[.]txt$')
 
 def roll_contract(d):
@@ -94,8 +98,8 @@ for t in range(20,T):
   if i+31>=390:continue
   entry=float(op[i+1]);exit15=float(op[i+16]);exit30=float(op[i+31]);
   # Two extra ticks of adverse price per market order (NQ tick = 0.25, multiplier = 20).
-  # Combined price slippage = 1.0pt per round trip; fee = $4.68.
-  cost=1.0*20+4.68
+  # Combined price slippage = 1.0pt per round trip ($20); separate Free fee = $5.74.
+  cost=1.0*20+FREE_FEE_NQ_RT
   p15=(exit15-entry)*side*20-cost;p30=(exit30-entry)*side*20-cost
   rows.append({'session':session,'hypothesis':hypothesis,'signal_time_et':f'{(571+i)//60:02d}:{(571+i)%60:02d}',
               'side':'LONG' if side>0 else 'SHORT','entry_open':entry,'exit_open_30m':exit30,
@@ -135,4 +139,4 @@ keys=sorted(pvals,key=pvals.get);m=len(keys);q=1.0
 for rank,key in reversed(list(enumerate(keys,1))):
  q=min(q,pvals[key]*m/rank);results[key]['BH_q_3_test_families']=round(float(q),5)
 print(json.dumps(results,indent=2),flush=True)
-(O/'NQ_H01_H03_FIRST_DIAGNOSTIC_REPORT.json').write_text(json.dumps({'authority':'EXPLORATORY 2020–24 DEVELOPMENT ONLY; NOT EXECUTABLE; NO STOP/TP; NO NEWS; 2025/26 SEALED','preregistered':'research/nq/NQ_H01_H03_FIXED_DIAGNOSTIC_PREREG_2026_10_09.md','sessions':len(valid),'costs':'NQ $20/point; 2 adverse ticks each side + $4.68 fee = $24.68 round-trip at horizon open fills','statistical_method':'weekly sign-flip 5000, week-bootstrap 5000, BH across 3 hypotheses','results':results},indent=2))
+(O/'NQ_H01_H03_FIRST_DIAGNOSTIC_REPORT.json').write_text(json.dumps({'authority':'EXPLORATORY 2020–24 DEVELOPMENT ONLY; NOT EXECUTABLE; NO STOP/TP; NO NEWS; 2025/26 SEALED','preregistered':'research/nq/NQ_H01_H03_FIXED_DIAGNOSTIC_PREREG_2026_10_09.md','sessions':len(valid),'costs':'NQ $20/point; 2 adverse ticks each side + Free all-in $5.74 fee = $25.74 round-trip at horizon open fills; Free NOT MFFU','statistical_method':'weekly sign-flip 5000, week-bootstrap 5000, BH across 3 hypotheses','results':results},indent=2))
