@@ -1,0 +1,38 @@
+name: NQ H33-H52 frozen 20 minute hypotheses — prereg preflight
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/nq/NQ_H33_H52_PREREG_2026_10_09.md"
+      - "research/nq/nq_h33_h52_minute_2020_2024.py"
+      - "research/nq/test_nq_h33_h52.py"
+      - "research/SEARCH_LEDGER.json"
+      - "research/SEARCH_FAMILY_FREEZES.json"
+      - "results/development/nq_h33_h52_minute_family.json"
+      - ".github/workflows/nq-h33-h52-frozen-20-source.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  locked-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install numpy pandas
+      - name: Verify third prospective family freeze (BEFORE market outcomes)
+        run: python tools/research_governance.py --preflight-family NQ-MINUTE-H33-H52-V1
+      - name: Verify seven source-only tests and 2025/2026 firewall
+        run: python -m unittest discover -s research/nq -p test_nq_h33_h52.py -v
+      - name: Evaluate full-family Holm only if 2020-24 report present
+        run: |
+          if [ -f results/development/nq_h33_h52_minute_family.json ]; then
+            python tools/research_governance.py --evaluate-family NQ-MINUTE-H33-H52-V1
+          else
+            echo "All source frozen; outcome not yet computed."
+          fi
