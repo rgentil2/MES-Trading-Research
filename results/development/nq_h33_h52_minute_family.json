@@ -1,0 +1,114 @@
+{
+  "stage": "DEVELOPMENT_EXPLORATORY",
+  "loaded_years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "holdout_2025_loaded": false,
+  "holdout_2026_loaded": false,
+  "family_metrics": {
+    "NQ-H33": {
+      "status": "ESTIMATED",
+      "effect": -206.29,
+      "p_value_two_sided": 0.047595240475952316
+    },
+    "NQ-H34": {
+      "status": "ESTIMATED",
+      "effect": 23.33,
+      "p_value_two_sided": 0.7447255274472553
+    },
+    "NQ-H35": {
+      "status": "ESTIMATED",
+      "effect": -38.92,
+      "p_value_two_sided": 0.7941205879412059
+    },
+    "NQ-H36": {
+      "status": "ESTIMATED",
+      "effect": 173.56,
+      "p_value_two_sided": 0.1501849815018498
+    },
+    "NQ-H37": {
+      "status": "ESTIMATED",
+      "effect": -43.75,
+      "p_value_two_sided": 0.6047395260473953
+    },
+    "NQ-H38": {
+      "status": "ESTIMATED",
+      "effect": -1370.74,
+      "p_value_two_sided": 0.0
+    },
+    "NQ-H39": {
+      "status": "ESTIMATED",
+      "effect": 6.23,
+      "p_value_two_sided": 0.9301069893010699
+    },
+    "NQ-H40": {
+      "status": "ESTIMATED",
+      "effect": 90.88,
+      "p_value_two_sided": 0.5407459254074592
+    },
+    "NQ-H41": {
+      "status": "ESTIMATED",
+      "effect": -25.91,
+      "p_value_two_sided": 0.5697430256974303
+    },
+    "NQ-H42": {
+      "status": "ESTIMATED",
+      "effect": -97.1,
+      "p_value_two_sided": 0.3679632036796321
+    },
+    "NQ-H43": {
+      "status": "ESTIMATED",
+      "effect": -163.68,
+      "p_value_two_sided": 0.49055094490550943
+    },
+    "NQ-H44": {
+      "status": "ESTIMATED",
+      "effect": 712.21,
+      "p_value_two_sided": 0.08359164083591641
+    },
+    "NQ-H45": {
+      "status": "ESTIMATED",
+      "effect": 298.59,
+      "p_value_two_sided": 0.16058394160583941
+    },
+    "NQ-H46": {
+      "status": "ESTIMATED",
+      "effect": -96.39,
+      "p_value_two_sided": 0.7361263873612638
+    },
+    "NQ-H47": {
+      "status": "ESTIMATED",
+      "effect": 215.93,
+      "p_value_two_sided": 0.8295170482951705
+    },
+    "NQ-H48": {
+      "status": "ESTIMATED",
+      "effect": -102.01,
+      "p_value_two_sided": 0.5867413258674132
+    },
+    "NQ-H49": {
+      "status": "ESTIMATED",
+      "effect": -127.91,
+      "p_value_two_sided": 0.2759724027597241
+    },
+    "NQ-H50": {
+      "status": "ESTIMATED",
+      "effect": 364.26,
+      "p_value_two_sided": 0.31516848315168483
+    },
+    "NQ-H51": {
+      "status": "ESTIMATED",
+      "effect": -115.36,
+      "p_value_two_sided": 0.47915208479152094
+    },
+    "NQ-H52": {
+      "status": "ESTIMATED",
+      "effect": -64.79,
+      "p_value_two_sided": 0.6329367063293672
+    }
+  }
+}
