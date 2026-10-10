@@ -270,3 +270,26 @@ payout ROI intact.
 See `research/nq/NQ_FIRST_EXECUTION_POLICY_2026_10_10.md` and
 `research/nq/NQ_VS_MNQ_EXECUTION_TRANSFER_DIAGNOSTIC_2020_2024.md`.
 No changes to locked family thresholds, Holm budget or 2025/2026 holdouts.
+
+## 2026-10-10 — Scoped authorization: independent NQ tick-scalping 2026 offline OOS
+
+Following explicit user approval, **a NEW, ISOLATED 2026 NQ tick/scalping
+research line** may study 2026-01-01 through 2026-04-30 for development and
+2026-05-01 through 2026-06-30 for internal validation. Its **2026-07-01
+through 2026-09-30 full calendar month block remains SEALED** for exactly
+one historical, **offline pseudo-forward** evaluation **after strategy
+source, router, execution and risk assumptions have been locked and audited**.
+October–December 2026 is excluded. A shorter August–September or September
+holdout must be defined prospectively from objective data coverage only,
+never after inspecting trading P&L.
+
+This is a **narrow exception** to 2026's sealed status; do NOT grant the
+historic 2020–2024 minute strategy families H01–H78 access to their 2026
+holdout, do NOT unseal 2025, and do NOT treat a pseudo-forward as prospective
+live/paper trading. Only preflight/data coverage metadata may be examined
+for the sealed slice, not trade prices or derived returns; opening must
+be a one-time, complete, audit-logged run. Earlier locked family definitions
+and global multiple-testing rules remain unchanged.
+
+Full scoped policy:
+`research/nq/NQ_TICK_SCALPING_2026_OFFLINE_PSEUDO_FORWARD_POLICY_2026_10_10.md`.
