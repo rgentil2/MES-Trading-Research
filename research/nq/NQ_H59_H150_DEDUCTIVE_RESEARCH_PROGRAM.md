@@ -1,23 +1,35 @@
-# Programa NQ H59–H150 — investigación deductiva, no búsqueda de ganadores retrospectiva
+# Programa NQ H59–H150 — investigación deductiva de estrategias conjuntas
 
-Estado: plan de investigación. **No se han registrado todavía H67–H150 ni comprometido sus reglas**, que deberán surgir de diagnósticos causales de cada ronda y quedar congeladas antes de leer sus resultados.
+Estado: plan de investigación. **H59–H66 ya se estudiaron como interacciones exploratorias; H67–H150 aún no se han registrado ni comprometido sus reglas.** A partir de H67, la unidad principal será **una estrategia/hipótesis conjunta** con dos o más componentes funcionales distintos y una predicción incremental falsable contra sus padres y la cartera de referencia, no una señal individual. Las definiciones futuras surgirán de diagnósticos anteriores y quedarán congeladas antes de leer nuevos outcomes.
 
 ## Punto de partida: 58 hipótesis numeradas, no 58 ensayos independientes
 
 Se observaron 2020–2024 repetidas veces. El conjunto de pruebas no produce evidencia out-of-sample. Las ventanas 2025 y 2026 siguen selladas. H09, H29, H36, H54, H55 y H56 permanecen en la biblioteca, además de H02 y otras señales exploratorias. Cada candidato incluye origen, regla de señal, regla de salida, estado de la prueba, costes, frecuencia, correlaciones y solapamientos. No se borra un candidato por fallar un gate; se restringe su **autoridad**.
 
+## Decisión metodológica 2026-10-10 — COMBINACIONES + APRENDIZAJE ACUMULATIVO
+
+**Dos cambios obligatorios para H67–H150:**
+1. **Evaluar sistemas conjuntos desde la formulación:** una H67+ será una regla causal de coordinación de componentes (señal + contexto ex ante, confirmación, veto, regla de cambio de régimen o router multiseñal). Debe especificar sin ambigüedad condiciones AND/OR, prioridad, resolución de conflictos, entrada, exposición no duplicada, sizing, salida/SL/TP y costes. No se exige simultaneidad de todas las señales: también se admiten sistemas que cambian de componente según el estado del mercado. Las señales anteriores quedan como **componentes**, no se descartan. Un nuevo patrón individual puede examinarse como diagnóstico pero no cuenta como nueva H67+ de estrategia sin una decisión compuesta.
+2. **Deductivo, no aleatorio:** antes de registrar cada combinación, citar la observación y resultados de su(s) padre(s) (N, años, incertidumbre, defectos y concentración), proponer una explicación causal y **predecir una mejora incremental** contra cada componente y un comparador de cartera con las mismas fechas, tamaño, costes y riesgo. Registrar ablation `leave-one-component-out`, hipótesis nula, controles complementarios y condiciones explícitas de falsación.
+
+**Ejemplo informativo — no ejecutado ni preregistrado:** combinar la señal H09 de continuación del gap con una condición de volatilidad preapertura conocida antes de entrar, y compararla contra H09 sin filtro (mismo riesgo), otras señales por separado y el mismo router sin esa condición. Otro ejemplo: tratar H55+H56 como **consenso único**, no como dos contratos independientes, y examinar su contribución a un sistema que también considere H09. Los 67 días compartidos por H55/H56 y la concentración de H09 en 2022 son hallazgos **de desarrollo ya observados**, no pruebas de ventaja futura.
+
+**Pruebas comparativas obligatorias:** cada combinación debe informar el incremento real en P&L y CAGR, PF, frecuencia, exposición, drawdown flotante/cerrado, estrés a 1.5× costes, ingresos por período y beneficio frente a eliminar cada componente; no atribuir mejoras a seleccionar menos operaciones o mayor leverage. Corregir todas las variantes dentro de la familia; 2020–2024 sigue siendo **exploratorio**, aun con una aparente mejora.
+
+**Documento rector:** `research/nq/NQ_DEDUCTIVE_ENSEMBLE_POLICY_2026_10_10.md` y `research/nq/NQ_DEDUCTIVE_ENSEMBLE_POLICY_2026_10_10.json`. No cambia el Gate 1 original ni se abre 2025/2026.
+
 ## Secuencia de investigación
 
-1. **Observación:** citar la observación previa, incluso si es adversa, con su N, intervalos y años.
-2. **Explicación causal:** mecanismo de mercado que explicaría el signo antes de elegir parámetros.
-3. **Predicción falsable:** especificar condición observable, lado, horario de señal, unidad y horizonte. Declarar todos los segmentos complementarios, no solo el que parece rentable.
-4. **Registro previo y tests sintéticos:** un único JSON/Markdown/fuente congelados. Registrar toda la familia con control global; cada variante consume presupuesto, sin reciclar alfa.
-5. **Diagnóstico 2020–2024:** 30m neto, estrés adicional de slippage, IC 90% por semana y BH de toda la familia. Gate 1 intacto: N >150, media neta >0, IC90 inferior >0, q BH ≤0.10, ≥3 de 5 años positivos.
-6. **Prueba exploratoria de ejecución:** salida única con SL/TP previamente especificados, MFE/MAE si existe resolución apropiada. Nunca escoger post hoc la combinación mejor y anunciarla confirmada.
-7. **Cartera:** colapsar señales duplicadas antes de calcular frecuencia, exposición y drawdown. Medir año a año, simultaneidad, concentración, correlación semanal y compatibilidad con MFFU 50K ($2,000 trailing EOD/intradía de equity), separando mini/micro.
-8. **Gate económico prospectivo:** comparar CAGR neto sobre capital nominal de referencia con el mayor entre **15 % anual, VOO y QQQM en USD, retorno total y fechas idénticas**. Verificar costes reales, estrés 1.5×, riesgo de equity flotante, exposición y retornos ajustados por riesgo. Medir **por separado** retorno efectivo de bolsillo del fondeo (desembolsos y payouts). Si faltan benchmarks o prueba de riesgo, declarar `ECONOMIC_DATA_PENDING`, nunca aprobar por defecto.
-9. **Decisión:** conservar en biblioteca como `EXPLORATORY_LIBRARY`, `MONITOR_ONLY` o `CANDIDATE_FOR_NEW_DATA`, incluso si su validación individual falla. Ninguna etiqueta implica aprobación.
-10. **Confirmación:** 2025 seguirá sellado hasta que se apruebe de forma explícita una estrategia **completamente congelada**. 2026 permanece reservado para pseudo-forward posterior, con SL/TP, costes y router ya fijados.
+1. **Hallazgo previo:** referenciar padres, N, años, intervalos, q, correlación y fallos; incluir lo que **no** funcionó.
+2. **Explicación causal y combinación:** plantear por qué coordinar 2+ componentes puede aportar ventaja, evitar conflictos o diversificar exposición.
+3. **Predicción incremental falsable:** declarar condición ex ante, reglas completas de router/AND/OR/consenso/veto y comparación contra componentes + cartera base, con ablation predefinida.
+4. **Registro previo y tests sintéticos:** congelar familia completa, variantes, comparadores, fuente y costes, preservando el presupuesto Holm y BH sin reciclar alfa.
+5. **Diagnóstico 2020–2024 de la decisión conjunta:** resultados netos y sensibilidad temporal, IC y q (Gate 1 original intacto), pero sin tratar años reutilizados como replicación independiente.
+6. **Backtest ejecutable de la combinación:** stops, TP, límite temporal, contrato real, sizing y ejecución causales **fijados antes de medir**; no seleccionar retrospectivamente parámetros ganadores.
+7. **Ablation y cartera:** confrontar combinación con cada padre y versiones sin cada bloque; unificar duplicados, exposición y máximo una posición por regla de router congelada; evaluar frecuencia, concentración, drawdown cerrado y flotante.
+8. **Gate económico prospectivo:** CAGR neto conjunto > mayor entre **15 % anual y retornos totales de VOO/QQQM** con fechas iguales, más 1.5× costes, riesgos ajustados, restricciones reales de fondeo y retorno de bolsillo por separado. Si faltan series o auditoría, `ECONOMIC_DATA_PENDING`.
+9. **Actualizar banco de aprendizaje:** incorporar evidencia favorable/adversa, contribución marginal, interacciones, errores y límites de conocimiento; no borrar señales por fallar individualmente.
+10. **Confirmación:** 2025 sellado hasta aprobación explícita de un candidato **completo y congelado**; 2026 para pseudo-forward posterior sin ajustes.
 
 ## Nuevo objetivo de rentabilidad económica (aprobado 2026-10-10)
 
@@ -32,18 +44,22 @@ Además de medir si las hipótesis tienen un efecto estadístico, **cada estrate
 
 **Documento rector del nuevo Gate:** `research/nq/NQ_PORTFOLIO_ECONOMIC_GATE_2026_10_10.md`; especificación legible por software: `research/nq/NQ_PORTFOLIO_ECONOMIC_GATE_2026_10_10.json`.
 
+## Hasta H150: combinaciones hipotéticas, no señales individuales independientes
+
+El bloque H59–H66 quedó evaluado como interacciones. **H67–H150 son cupos máximos para hipótesis conjuntas nuevas:** cada ID debe expresar una decisión coordinada distinta y estar motivado por evidencia acumulada. Si no hay mecanismo o datos, se dejará sin ejecutar en vez de fabricar una prueba. Los rangos siguientes son líneas de trabajo, no familias ya congeladas.
+
 ## Presupuesto máximo de 92 hipótesis adicionales (objetivo H150)
 
 | Fase | IDs previstos | Conteo | Pregunta deductiva, a ajustar según pruebas anteriores |
 |---|---|---:|---|
 | 1 | H59–H66 | 8 | ¿Las coincidencias y la exclusividad de H09/H29/H54/H55/H56 alteran la expectativa, duplican riesgo o agregan información? |
-| 2 | H67–H78 | 12 | ¿Qué contexto **conocido antes de 09:45** explica la concentración anual de H09, sin ajustar sus umbrales después del resultado? |
-| 3 | H79–H90 | 12 | ¿La dirección o magnitud de H55/H56 cambia por estado de volatilidad *ex ante*? Predefinir estados exhaustivos. |
-| 4 | H91–H102 | 12 | ¿Existen relaciones contemporáneas o de liderazgo ES/NQ **causales**? Solo si se verifican fuentes ES y timestamps sincronizados. |
-| 5 | H103–H114 | 12 | ¿Qué diferencia ruptura aceptada de barrida rechazada del premercado? Evitar duplicados H05/H07/H53/H54. |
-| 6 | H115–H126 | 12 | ¿El valor agregado de VWAP de distintos anclajes supera un control neutro y sobrevive a costes? |
-| 7 | H127–H138 | 12 | ¿Hay microestructura informativa respaldada por Tick Last/Bid/Ask? **Condicional a verificar datos**: no simular delta a partir de OHLCV de minuto. |
-| 8 | H139–H150 | 12 | ¿Los ensambles/contradicciones de familias antes registradas aportan selección de día o cobertura de cartera fuera del mero apilamiento de exposición? |
+| 2 | H67–H78 | 12 | **Sistemas combinados:** H09 + régimen ex ante + veto/consenso H55/H56, con router causal y ablation frente a padres para explicar la concentración de H09 sin seleccionar años retrospectivamente. |
+| 3 | H79–H90 | 12 | **Carteras condicionadas:** consenso H55/H56 y alternativa H09/H36 según régimen de volatilidad observable antes de la orden; medir valor añadido de cada bloque y frecuencia. |
+| 4 | H91–H102 | 12 | **Confirmación o veto ES–NQ:** incorporar relaciones causales entre índices a las señales NQ previas, solo con fuente ES sincronizada y validada; comparar sistemas con/sin señal intermercado. |
+| 5 | H103–H114 | 12 | **Router aceptación/rechazo:** combinar H53/H54/H05/H07 con filtros ex ante y elección mutuamente excluyente de ruptura o reversión; contrastar alternativa conjunta vs cada señal. |
+| 6 | H115–H126 | 12 | **Sistemas multianclaje VWAP:** combinar H55 con apertura, niveles y participación para gobernar entrada/veto/salida; ablation por cada anclaje y control sin VWAP. |
+| 7 | H127–H138 | 12 | **Sistemas existentes + microestructura** como confirmación/veto de H09/H55/H56, **solo** si Tick Last/Bid/Ask reales y calidad están verificados; nunca simular flujo de órdenes a partir de minuto. |
+| 8 | H139–H150 | 12 | **Carteras multicomponente:** combinar componentes distintos mediante router, exposición y riesgo ex ante; ablation completa, compatibilidad fondeo y Gate Económico con benchmarks. |
 | **Total** | **H59–H150** | **92** | No se obliga a ejecutar una fase si no hay datos o mecanismo defendible; 150 es techo, no una cuota de p-hacking. |
 
 ## Hipótesis heredadas, no descartadas
