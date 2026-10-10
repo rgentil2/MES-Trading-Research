@@ -1,0 +1,114 @@
+{
+  "basis": "Frozen 2020\u20132024 already inspected; descriptive ablations, NOT new family tests or significance claims",
+  "variants": {
+    "NQ-H67": {
+      "NQ-H09": {
+        "trades_without_component": 67,
+        "pnl_without_component_usd": 76.54,
+        "incremental_full_minus_ablation_usd": 2128.64,
+        "av_net_without_component_usd": 1.14
+      },
+      "CONSENSUS": {
+        "trades_without_component": 173,
+        "pnl_without_component_usd": 2074.26,
+        "incremental_full_minus_ablation_usd": 130.92,
+        "av_net_without_component_usd": 11.99
+      }
+    },
+    "NQ-H68": {
+      "NQ-H09": {
+        "trades_without_component": 178,
+        "pnl_without_component_usd": -285.14,
+        "incremental_full_minus_ablation_usd": 2148.9,
+        "av_net_without_component_usd": -1.6
+      },
+      "NQ-H55": {
+        "trades_without_component": 173,
+        "pnl_without_component_usd": 2074.26,
+        "incremental_full_minus_ablation_usd": -210.5,
+        "av_net_without_component_usd": 11.99
+      }
+    },
+    "NQ-H69": {
+      "NQ-H09": {
+        "trades_without_component": 100,
+        "pnl_without_component_usd": 749.5,
+        "incremental_full_minus_ablation_usd": 1954.94,
+        "av_net_without_component_usd": 7.5
+      },
+      "NQ-H56": {
+        "trades_without_component": 173,
+        "pnl_without_component_usd": 2074.26,
+        "incremental_full_minus_ablation_usd": 630.18,
+        "av_net_without_component_usd": 11.99
+      }
+    },
+    "NQ-H70": {
+      "NQ-H09": {
+        "trades_without_component": 111,
+        "pnl_without_component_usd": -429.18,
+        "incremental_full_minus_ablation_usd": 2057.66,
+        "av_net_without_component_usd": -3.87
+      },
+      "CONSENSUS": {
+        "trades_without_component": 214,
+        "pnl_without_component_usd": 1455.18,
+        "incremental_full_minus_ablation_usd": 173.3,
+        "av_net_without_component_usd": 6.8
+      },
+      "NQ-H29": {
+        "trades_without_component": 239,
+        "pnl_without_component_usd": 2205.18,
+        "incremental_full_minus_ablation_usd": -576.7,
+        "av_net_without_component_usd": 9.23
+      }
+    },
+    "NQ-H71": {
+      "NQ-H09": {
+        "trades_without_component": 1033,
+        "pnl_without_component_usd": -2823.04,
+        "incremental_full_minus_ablation_usd": 899.16,
+        "av_net_without_component_usd": -2.73
+      },
+      "CONSENSUS": {
+        "trades_without_component": 1031,
+        "pnl_without_component_usd": -1590.78,
+        "incremental_full_minus_ablation_usd": -333.1,
+        "av_net_without_component_usd": -1.54
+      },
+      "NQ-H54": {
+        "trades_without_component": 239,
+        "pnl_without_component_usd": 2205.18,
+        "incremental_full_minus_ablation_usd": -4129.06,
+        "av_net_without_component_usd": 9.23
+      }
+    },
+    "NQ-H72": {
+      "NQ-H09": {
+        "trades_without_component": 570,
+        "pnl_without_component_usd": -2216.6,
+        "incremental_full_minus_ablation_usd": 311.94,
+        "av_net_without_component_usd": -3.89
+      },
+      "NQ-H54": {
+        "trades_without_component": 143,
+        "pnl_without_component_usd": 705.16,
+        "incremental_full_minus_ablation_usd": -2609.82,
+        "av_net_without_component_usd": 4.93
+      },
+      "CONSENSUS": {
+        "trades_without_component": 556,
+        "pnl_without_component_usd": -2210.78,
+        "incremental_full_minus_ablation_usd": 306.12,
+        "av_net_without_component_usd": -3.98
+      },
+      "NQ-H29": {
+        "trades_without_component": 562,
+        "pnl_without_component_usd": -1656.06,
+        "incremental_full_minus_ablation_usd": -248.6,
+        "av_net_without_component_usd": -2.95
+      }
+    }
+  },
+  "formula": "full joint portfolio P&L minus re-routed original strategy without selected component; same daily 1 MNQ bracket prices"
+}
