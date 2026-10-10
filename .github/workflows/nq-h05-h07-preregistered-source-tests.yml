@@ -8,6 +8,8 @@ on:
       - "research/nq/NQ_PRICE_LEVEL_VOLUME_FAMILY_H05_H07_PREREG_2026_10_09.md"
       - "research/es/ES_STAGE_GATES.md"
       - "research/es/ES_STAGE_GATES_EXPLORATORY_AMENDMENT_2026_10_09.md"
+      - "results/development/nq_h05_h07_level_volume_family.json"
+      - "results/nq_h05_h07/NQ_H05_H07_DEV_REPORT_2020_2024.json"
       - "research/SEARCH_LEDGER.json"
       - "research/SEARCH_FAMILY_FREEZES.json"
       - "tools/research_governance.py"
@@ -33,5 +35,7 @@ jobs:
       # research/MFFU_MULTI_INSTRUMENT_PORTFOLIO_PLAN.md as an unregistered
       # historical plan; it must be reconciled in a separate audit, not bypassed
       # by editing protected baselines. Family preflight above is mandatory.
+      - name: Whole-family Holm audit on sealed 2020-24 results only
+        run: python tools/research_governance.py --evaluate-family NQ-LEVEL-VOLUME-H05-H07-V1
       - name: Test NQ causality, time controls, fee model and holdout firewall
         run: python -m unittest discover -s research/nq -p test_nq_h05_h07_level_volume_screen.py -v
