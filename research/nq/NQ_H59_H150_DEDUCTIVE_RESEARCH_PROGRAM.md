@@ -1,6 +1,6 @@
 # Programa NQ H59–H150 — investigación deductiva de estrategias conjuntas
 
-Estado: plan de investigación. **H59–H66 ya se estudiaron como interacciones exploratorias; H67–H150 aún no se han registrado ni comprometido sus reglas.** A partir de H67, la unidad principal será **una estrategia/hipótesis conjunta** con dos o más componentes funcionales distintos y una predicción incremental falsable contra sus padres y la cartera de referencia, no una señal individual. Las definiciones futuras surgirán de diagnósticos anteriores y quedarán congeladas antes de leer nuevos outcomes.
+Estado: plan de investigación. **H59–H66 ya se estudiaron como interacciones exploratorias; H67–H72 se registraron y evaluaron como estrategias conjuntas; H73–H150 todavía NO están preregistradas.** A partir de H67, la unidad principal será **una estrategia/hipótesis conjunta** con dos o más componentes funcionales distintos y una predicción incremental falsable contra sus padres y la cartera de referencia, no una señal individual. Las definiciones futuras surgirán de diagnósticos anteriores y quedarán congeladas antes de leer nuevos outcomes.
 
 ## Punto de partida: 58 hipótesis numeradas, no 58 ensayos independientes
 
@@ -44,16 +44,28 @@ Además de medir si las hipótesis tienen un efecto estadístico, **cada estrate
 
 **Documento rector del nuevo Gate:** `research/nq/NQ_PORTFOLIO_ECONOMIC_GATE_2026_10_10.md`; especificación legible por software: `research/nq/NQ_PORTFOLIO_ECONOMIC_GATE_2026_10_10.json`.
 
+## Primera ronda de estrategias conjuntas completada (2026-10-10): H67–H72
+
+Se congeló oficialmente la familia **`NQ-DEDUCTIVE-ENSEMBLE-H67-H72-V1` (índice 6, α=0.00119047619)** y se corrieron seis routers de un contrato MNQ hipotético sobre precios NQ minuto 2020–2024, una operación máxima por sesión, SL 0.15 rango mediano previo, TP 1.5R, salida 30min. Se probó contra padres y se registraron ablations. Auditoría oficial: sin respaldos formales, 15 tests sintéticos correctos. **No se abrieron 2025/2026.**
+
+Hallazgos acumulativos:
+- H67 (H09 OR consenso H55/H56): 239 operaciones, net +$2205.18 MNQ, PF1.295, q=.115, 4/5 años positivos. El consenso añade $130.92 respecto a H09-only.
+- H69 (H09 OR H56): 262 operaciones, net +$2704.44 MNQ, PF1.335, q=.115, 4/5 positivos, DD cerrado $890.64. H56 aporta $630.18 respecto a H09-only; **no** supera Gate 1 ni el hurdle 15% (CAGR nominal de $50k ~1.06%). Conservar exploratoriamente.
+- H68 (H09 OR H55) pierde $210.50 de contribución incremental de H55 sobre H09-only; H70 fallback H29 pierde $576.70; H71 fallback H54 pierde $4129.06 y aumenta a 1051 operaciones; H72 régimen simple vuelve a perder.
+- **Deducción para H73–H78 (ideas, NO tests aún):** investigar qué estado ex ante explica la mejora asociada a H56 sin convertir el filtro en rescate retrospectivo; estudiar por qué la entrada fallback H54 aumenta la frecuencia pero empeora la rentabilidad; verificar primero transferencia MNQ/NQ y costes de ejecución. Los próximos miembros deberán definirse como **estrategias compuestas**, con comparadores y condiciones de falsación, y registrarse **antes** de resultados.
+
+Reportes: `research/nq/NQ_H67_H72_RESULTS_2020_2024.md` y `results/nq_h67_h72/NQ_H67_H72_REPORT_2020_2024.json`. Condiciones económicas `research/nq/NQ_PORTFOLIO_ECONOMIC_GATE_2026_10_10.md`.
+
 ## Hasta H150: combinaciones hipotéticas, no señales individuales independientes
 
-El bloque H59–H66 quedó evaluado como interacciones. **H67–H150 son cupos máximos para hipótesis conjuntas nuevas:** cada ID debe expresar una decisión coordinada distinta y estar motivado por evidencia acumulada. Si no hay mecanismo o datos, se dejará sin ejecutar en vez de fabricar una prueba. Los rangos siguientes son líneas de trabajo, no familias ya congeladas.
+El bloque H59–H66 quedó evaluado como interacciones. **H73–H150 son cupos máximos para hipótesis conjuntas nuevas; H67–H72 ya ejecutadas:** cada ID debe expresar una decisión coordinada distinta y estar motivado por evidencia acumulada. Si no hay mecanismo o datos, se dejará sin ejecutar en vez de fabricar una prueba. Los rangos siguientes son líneas de trabajo, no familias ya congeladas.
 
 ## Presupuesto máximo de 92 hipótesis adicionales (objetivo H150)
 
 | Fase | IDs previstos | Conteo | Pregunta deductiva, a ajustar según pruebas anteriores |
 |---|---|---:|---|
 | 1 | H59–H66 | 8 | ¿Las coincidencias y la exclusividad de H09/H29/H54/H55/H56 alteran la expectativa, duplican riesgo o agregan información? |
-| 2 | H67–H78 | 12 | **Sistemas combinados:** H09 + régimen ex ante + veto/consenso H55/H56, con router causal y ablation frente a padres para explicar la concentración de H09 sin seleccionar años retrospectivamente. |
+| 2 | H67–H78 (H67–H72 probadas; H73–H78 pendientes) | 12 | **Sistemas combinados:** H09 + régimen ex ante + veto/consenso H55/H56, con router causal y ablation frente a padres para explicar la concentración de H09 sin seleccionar años retrospectivamente. |
 | 3 | H79–H90 | 12 | **Carteras condicionadas:** consenso H55/H56 y alternativa H09/H36 según régimen de volatilidad observable antes de la orden; medir valor añadido de cada bloque y frecuencia. |
 | 4 | H91–H102 | 12 | **Confirmación o veto ES–NQ:** incorporar relaciones causales entre índices a las señales NQ previas, solo con fuente ES sincronizada y validada; comparar sistemas con/sin señal intermercado. |
 | 5 | H103–H114 | 12 | **Router aceptación/rechazo:** combinar H53/H54/H05/H07 con filtros ex ante y elección mutuamente excluyente de ruptura o reversión; contrastar alternativa conjunta vs cada señal. |
