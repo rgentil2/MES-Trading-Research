@@ -1,0 +1,24 @@
+name: NQ Tick source-only QC safeguards (no market downloads)
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/nq/nq_tick_pilot_qc.py'
+      - 'research/nq/test_nq_tick_pilot_qc.py'
+      - '.github/workflows/nq-tick-source-qc-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Nine synthetic timestamp, contract, pilot window and holdout tests
+        run: python -m unittest discover -s research/nq -p test_nq_tick_pilot_qc.py -v
