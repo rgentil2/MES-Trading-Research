@@ -1,1 +1,19 @@
-{"schema_version": 1, "families": {}}
+{
+  "schema_version": 1,
+  "families": {
+    "NQ-LEVEL-VOLUME-H05-H07-V1": {
+      "family_sha256": "399e7c42d1eb6b9051cf75f583ce0b565473c77e76c81dc41932d32e36fdaf12",
+      "definition_sha256": {
+        "research/nq/NQ_PRICE_LEVEL_VOLUME_FAMILY_H05_H07_PREREG_2026_10_09.md": "4fe80e348487056906927ebe4b798e4a3c50d7e44a3b1cd1c5c871241759c653",
+        "research/nq/nq_h05_h07_level_volume_screen.py": "61352658a4f99e17d63ee7ebdafd39218dc59c45b8735422edfeeb04fe8988f8"
+      },
+      "index": 1,
+      "alpha": 0.025,
+      "member_ids": [
+        "NQ-H05",
+        "NQ-H06",
+        "NQ-H07"
+      ]
+    }
+  }
+}
