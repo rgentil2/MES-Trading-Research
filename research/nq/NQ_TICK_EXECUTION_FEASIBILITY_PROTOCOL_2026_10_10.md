@@ -63,3 +63,11 @@ Fuentes oficiales:
 1. **Comprobar acceso real a NQ 03-24 Tick Last (y Bid/Ask)** en la conexión actual NinjaTrader. Si no está disponible, cotizar proveedor alternativo *antes* de comprar cinco años de ticks.
 2. Recibir una muestra de 1–2 sesiones de 2024 para QC básico, luego cubrir 2024-02-05–16 para evaluar si la fuente y el formato permiten trabajo causal; si el período no está disponible, documentar sustitución elegida por disponibilidad ex ante.
 3. Solo después redactar y congelar la nueva familia de **estrategias conjuntas H79+** y ejecutar outcome. Un QC o diagnóstico de ejecución no es una H79 nueva ni consume un presupuesto de hipótesis por sí mismo.
+
+## Actualización de alcance — estudio separado 2026 con pseudo-forward histórico offline
+
+**2026-10-10: autorización posterior del usuario**, que supera únicamente para la **nueva línea scalping/tick 2026** la regla antigua de no utilizar 2026. Se **permiten** enero–abril 2026 (desarrollo) y mayo–junio 2026 (validación interna); **julio–septiembre 2026 permanece sellado como pseudo-forward histórico** y solo se abre una vez después de bloquear estrategias, costes, sizing, códigos y auditoría. Octubre–diciembre queda fuera del experimento. La investigación H01–H78 conserva sus propios holdouts 2025 y 2026 sellados.
+
+El estudio pseudo-forward es **offline histórico, no vivo ni paper-trading prospectivo**. Puede reducirse a agosto–septiembre o septiembre **solo por falta de cobertura objetiva documentada antes de examinar retornos**, no por rendimientos favorables. Tick NinjaTrader de 2026 necesita QC de disponibilidad antes de su uso.
+
+**Norma vigente y detallada:** `research/nq/NQ_TICK_SCALPING_2026_OFFLINE_PSEUDO_FORWARD_POLICY_2026_10_10.md`. El protocolo piloto de febrero 2024 anterior queda como antecedente; para la nueva línea de trabajo, primero verificar una muestra de enero–junio 2026. Este cambio no modifica familias congeladas ni confirma rentabilidad.
