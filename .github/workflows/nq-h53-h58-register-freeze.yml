@@ -1,0 +1,40 @@
+name: NQ H53-H58 register freeze and source-only tests
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/nq/register_and_freeze_h53_h58.py"
+      - ".github/workflows/nq-h53-h58-register-freeze.yml"
+permissions:
+  contents: write
+jobs:
+  freeze-new-family:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install numpy pandas
+      - name: Append six study definitions and freeze family 4 before any outcomes
+        env:
+          PYTHONPATH: .
+        run: python research/nq/register_and_freeze_h53_h58.py
+      - name: Check official preregistration lock
+        run: python tools/research_governance.py --preflight-family NQ-PREMARKET-WEEKLY-H53-H58-V1
+      - name: Seven causal source-only tests
+        env:
+          PYTHONPATH: .
+        run: python -m unittest discover -s research/nq -p test_nq_h53_h58.py -v
+      - name: Commit frozen research ledger and definition checksums
+        shell: bash
+        run: |
+          git add research/SEARCH_LEDGER.json research/SEARCH_FAMILY_FREEZES.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "Freeze NQ H53-H58 official family 4 prior to development outcomes"
+          git push origin HEAD:main
