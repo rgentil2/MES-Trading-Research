@@ -1,0 +1,44 @@
+{
+  "stage": "DEVELOPMENT_EXPLORATORY",
+  "loaded_years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "holdout_2025_loaded": false,
+  "holdout_2026_loaded": false,
+  "family_metrics": {
+    "NQ-H67": {
+      "status": "ESTIMATED",
+      "effect": 9.23,
+      "p_value_two_sided": 0.076792
+    },
+    "NQ-H68": {
+      "status": "ESTIMATED",
+      "effect": 5.36,
+      "p_value_two_sided": 0.187982
+    },
+    "NQ-H69": {
+      "status": "ESTIMATED",
+      "effect": 10.32,
+      "p_value_two_sided": 0.044196
+    },
+    "NQ-H70": {
+      "status": "ESTIMATED",
+      "effect": 5.84,
+      "p_value_two_sided": 0.211378
+    },
+    "NQ-H71": {
+      "status": "ESTIMATED",
+      "effect": -1.83,
+      "p_value_two_sided": 0.43775600000000003
+    },
+    "NQ-H72": {
+      "status": "ESTIMATED",
+      "effect": -3.27,
+      "p_value_two_sided": 0.2625740000000001
+    }
+  }
+}
