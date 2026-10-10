@@ -15,8 +15,22 @@ Se observaron 2020–2024 repetidas veces. El conjunto de pruebas no produce evi
 5. **Diagnóstico 2020–2024:** 30m neto, estrés adicional de slippage, IC 90% por semana y BH de toda la familia. Gate 1 intacto: N >150, media neta >0, IC90 inferior >0, q BH ≤0.10, ≥3 de 5 años positivos.
 6. **Prueba exploratoria de ejecución:** salida única con SL/TP previamente especificados, MFE/MAE si existe resolución apropiada. Nunca escoger post hoc la combinación mejor y anunciarla confirmada.
 7. **Cartera:** colapsar señales duplicadas antes de calcular frecuencia, exposición y drawdown. Medir año a año, simultaneidad, concentración, correlación semanal y compatibilidad con MFFU 50K ($2,000 trailing EOD/intradía de equity), separando mini/micro.
-8. **Decisión:** conservar en biblioteca como `EXPLORATORY_LIBRARY`, `MONITOR_ONLY` o `CANDIDATE_FOR_NEW_DATA`, incluso si su validación individual falla. Ninguna etiqueta implica aprobación.
-9. **Confirmación:** 2025 seguirá sellado hasta que se apruebe de forma explícita una estrategia **completamente congelada**. 2026 permanece reservado para pseudo-forward posterior, con SL/TP, costes y router ya fijados.
+8. **Gate económico prospectivo:** comparar CAGR neto sobre capital nominal de referencia con el mayor entre **15 % anual, VOO y QQQM en USD, retorno total y fechas idénticas**. Verificar costes reales, estrés 1.5×, riesgo de equity flotante, exposición y retornos ajustados por riesgo. Medir **por separado** retorno efectivo de bolsillo del fondeo (desembolsos y payouts). Si faltan benchmarks o prueba de riesgo, declarar `ECONOMIC_DATA_PENDING`, nunca aprobar por defecto.
+9. **Decisión:** conservar en biblioteca como `EXPLORATORY_LIBRARY`, `MONITOR_ONLY` o `CANDIDATE_FOR_NEW_DATA`, incluso si su validación individual falla. Ninguna etiqueta implica aprobación.
+10. **Confirmación:** 2025 seguirá sellado hasta que se apruebe de forma explícita una estrategia **completamente congelada**. 2026 permanece reservado para pseudo-forward posterior, con SL/TP, costes y router ya fijados.
+
+## Nuevo objetivo de rentabilidad económica (aprobado 2026-10-10)
+
+Además de medir si las hipótesis tienen un efecto estadístico, **cada estrategia o cartera** debe aspirar a superar **estrictamente** el mayor de: (i) **15 % de CAGR neto anual**, (ii) CAGR por retorno total de **VOO**, y (iii) CAGR por retorno total de **QQQM**, calculados sobre la misma ventana temporal, en USD y con dividendos reinvertidos. El **12 % es una referencia diagnóstica**, no un pase del gate. La prueba económica no se aplica como filtro retroactivo que elimine H01-H66 ni reescribe sus conclusiones.
+
+- **Ventana primaria 2020–2024 comparable con QQQM:** desde el **13-10-2020 o posterior** hasta una misma última fecha disponible en 2024. QQQM no existía antes; para estudiar 2020 completo se puede usar **QQQ como proxy etiquetado**, nunca como QQQM real.
+- **Capital de referencia USD 50.000:** su CAGR equivalente sirve solo para normalizar una curva de estrategia; una cuenta fondeada **no** equivale a haber invertido personalmente USD 50.000. Presentar también el retorno monetario real sobre evaluaciones/fees/resets y payouts, usando flujos fechados/XIRR cuando corresponda.
+- **Costes y supervivencia:** desglosar NinjaTrader Free frente a costes reales de la firma elegida, hacer estrés 1.5×, comprobar drawdown de cierres **y flotante**, restricciones MFFU, riesgo correlacionado y retornos ajustados por riesgo frente a ETF. Ningún CAGR alto aprueba por sí solo.
+- **Señales conservadas:** H09, H29, H36, H44, H45, H54, H55, H56 y demás quedan en el banco exploratorio incluso si fracasan individualmente. El gate económico califica **carteras completas congeladas**, no borra hipótesis.
+- **Estados:** `ECONOMIC_DATA_PENDING` si faltan ETF/curva/costes; `BELOW_ECONOMIC_HURDLE` si no vence al mayor; `ECONOMIC_HURDLE_MET_RISK_PENDING` si sí vence pero falta riesgo; `PROMISING_PORTFOLIO_EXPLORATORY` únicamente si desarrollo económico y controles de riesgo son satisfactorios (no validación OOS).
+- **Evidencia intacta:** Gate 1 y gates confirmatorios Holm originales no cambian, ni 2025/2026 se abren por una comparación de CAGR.
+
+**Documento rector del nuevo Gate:** `research/nq/NQ_PORTFOLIO_ECONOMIC_GATE_2026_10_10.md`; especificación legible por software: `research/nq/NQ_PORTFOLIO_ECONOMIC_GATE_2026_10_10.json`.
 
 ## Presupuesto máximo de 92 hipótesis adicionales (objetivo H150)
 
