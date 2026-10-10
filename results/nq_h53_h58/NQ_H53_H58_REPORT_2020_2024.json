@@ -1,0 +1,413 @@
+{
+  "stage": "DEVELOPMENT_EXPLORATORY",
+  "experiment": "NQ-H53-H58",
+  "loaded_years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "holdout_2025_loaded": false,
+  "holdout_2026_loaded": false,
+  "source_qc": {
+    "total_full_rth_sessions": 1221,
+    "original_development_nq_partitions": 25,
+    "holdouts_opened": false,
+    "excluded_partial_rth_sessions": 69
+  },
+  "context_61bar_sessions": 1276,
+  "complete_rth_sessions": 1221,
+  "signal_events": 1624,
+  "fee_nq_free_rt": 5.74,
+  "adverse_slippage_rt": 20.0,
+  "friction_rt": 25.740000000000002,
+  "bracket_method": "stop 0.15 prior median RTH range, take 1.5x stop, time 30m, stop first on OHLC tie; gap-worse stop; no tick fills",
+  "hypotheses": {
+    "NQ-H53": {
+      "n": 258,
+      "mean_net_usd": -10.18,
+      "net_usd": -2625.92,
+      "pf": 0.978,
+      "ci90": [
+        -127.46,
+        108.02
+      ],
+      "ci95": [
+        -148.09,
+        128.7
+      ],
+      "p_one_sided": 0.5572442755724427,
+      "positive_years": 2,
+      "by_year": {
+        "2020": {
+          "n": 41,
+          "mean_usd": 134.14,
+          "total_usd": 5499.66
+        },
+        "2021": {
+          "n": 57,
+          "mean_usd": 209.0,
+          "total_usd": 11912.82
+        },
+        "2022": {
+          "n": 51,
+          "mean_usd": -84.17,
+          "total_usd": -4292.74
+        },
+        "2023": {
+          "n": 52,
+          "mean_usd": -58.05,
+          "total_usd": -3018.48
+        },
+        "2024": {
+          "n": 57,
+          "mean_usd": -223.28,
+          "total_usd": -12727.18
+        }
+      },
+      "week_blocks": 166,
+      "mean_bracket_usd": -12.56,
+      "bracket_pf": 0.965,
+      "bracket_net_usd": -3241.23,
+      "stop_count": 131,
+      "target_count": 85,
+      "time_count": 42,
+      "stress_extra_tick_each_side_net_usd": -5205.92,
+      "max_gap_days": 51,
+      "gaps_gt7_days": 79,
+      "q_bh6": 0.668693,
+      "holm_p_approx_two_sided": 1.0,
+      "gate1": {
+        "N_gt150": true,
+        "positive_net": false,
+        "CI90_above_zero": false,
+        "BH_q_le_010": false,
+        "positive_3_of_5_years": false
+      },
+      "decision": "NOT_SUPPORTED_EXPLORATORY"
+    },
+    "NQ-H54": {
+      "n": 1013,
+      "mean_net_usd": 5.64,
+      "net_usd": 5715.38,
+      "pf": 1.014,
+      "ci90": [
+        -47.32,
+        59.9
+      ],
+      "ci95": [
+        -56.41,
+        70.16
+      ],
+      "p_one_sided": 0.4393560643935606,
+      "positive_years": 3,
+      "by_year": {
+        "2020": {
+          "n": 182,
+          "mean_usd": -7.83,
+          "total_usd": -1424.68
+        },
+        "2021": {
+          "n": 230,
+          "mean_usd": 5.76,
+          "total_usd": 1324.8
+        },
+        "2022": {
+          "n": 190,
+          "mean_usd": 36.55,
+          "total_usd": 6944.4
+        },
+        "2023": {
+          "n": 194,
+          "mean_usd": -111.05,
+          "total_usd": -21543.56
+        },
+        "2024": {
+          "n": 217,
+          "mean_usd": 94.08,
+          "total_usd": 20414.42
+        }
+      },
+      "week_blocks": 242,
+      "mean_bracket_usd": -11.73,
+      "bracket_pf": 0.965,
+      "bracket_net_usd": -11886.69,
+      "stop_count": 477,
+      "target_count": 296,
+      "time_count": 240,
+      "stress_extra_tick_each_side_net_usd": -4414.62,
+      "max_gap_days": 37,
+      "gaps_gt7_days": 5,
+      "q_bh6": 0.659034,
+      "holm_p_approx_two_sided": 1.0,
+      "gate1": {
+        "N_gt150": true,
+        "positive_net": true,
+        "CI90_above_zero": false,
+        "BH_q_le_010": false,
+        "positive_3_of_5_years": true
+      },
+      "decision": "NOT_SUPPORTED_EXPLORATORY"
+    },
+    "NQ-H55": {
+      "n": 178,
+      "mean_net_usd": 47.43,
+      "net_usd": 8443.28,
+      "pf": 1.104,
+      "ci90": [
+        -116.7,
+        208.36
+      ],
+      "ci95": [
+        -145.96,
+        239.71
+      ],
+      "p_one_sided": 0.31596840315968405,
+      "positive_years": 4,
+      "by_year": {
+        "2020": {
+          "n": 33,
+          "mean_usd": -39.38,
+          "total_usd": -1299.42
+        },
+        "2021": {
+          "n": 42,
+          "mean_usd": 16.52,
+          "total_usd": 693.92
+        },
+        "2022": {
+          "n": 37,
+          "mean_usd": 33.99,
+          "total_usd": 1257.62
+        },
+        "2023": {
+          "n": 25,
+          "mean_usd": 102.26,
+          "total_usd": 2556.5
+        },
+        "2024": {
+          "n": 41,
+          "mean_usd": 127.67,
+          "total_usd": 5234.66
+        }
+      },
+      "week_blocks": 120,
+      "mean_bracket_usd": -3.65,
+      "bracket_pf": 0.99,
+      "bracket_net_usd": -649.09,
+      "stop_count": 92,
+      "target_count": 64,
+      "time_count": 22,
+      "stress_extra_tick_each_side_net_usd": 6663.28,
+      "max_gap_days": 64,
+      "gaps_gt7_days": 64,
+      "q_bh6": 0.631937,
+      "holm_p_approx_two_sided": 1.0,
+      "gate1": {
+        "N_gt150": true,
+        "positive_net": true,
+        "CI90_above_zero": false,
+        "BH_q_le_010": false,
+        "positive_3_of_5_years": true
+      },
+      "decision": "NOT_SUPPORTED_EXPLORATORY"
+    },
+    "NQ-H56": {
+      "n": 100,
+      "mean_net_usd": 75.56,
+      "net_usd": 7556.0,
+      "pf": 1.149,
+      "ci90": [
+        -165.21,
+        322.97
+      ],
+      "ci95": [
+        -214.66,
+        374.73
+      ],
+      "p_one_sided": 0.30716928307169283,
+      "positive_years": 3,
+      "by_year": {
+        "2020": {
+          "n": 17,
+          "mean_usd": 77.5,
+          "total_usd": 1317.42
+        },
+        "2021": {
+          "n": 24,
+          "mean_usd": -72.82,
+          "total_usd": -1747.76
+        },
+        "2022": {
+          "n": 23,
+          "mean_usd": -120.96,
+          "total_usd": -2782.02
+        },
+        "2023": {
+          "n": 9,
+          "mean_usd": 438.7,
+          "total_usd": 3948.34
+        },
+        "2024": {
+          "n": 27,
+          "mean_usd": 252.59,
+          "total_usd": 6820.02
+        }
+      },
+      "week_blocks": 83,
+      "mean_bracket_usd": 86.98,
+      "bracket_pf": 1.269,
+      "bracket_net_usd": 8697.98,
+      "stop_count": 47,
+      "target_count": 43,
+      "time_count": 10,
+      "stress_extra_tick_each_side_net_usd": 6556.0,
+      "max_gap_days": 129,
+      "gaps_gt7_days": 59,
+      "q_bh6": 0.631937,
+      "holm_p_approx_two_sided": 1.0,
+      "gate1": {
+        "N_gt150": false,
+        "positive_net": true,
+        "CI90_above_zero": false,
+        "BH_q_le_010": false,
+        "positive_3_of_5_years": true
+      },
+      "decision": "INSUFFICIENT_EVIDENCE"
+    },
+    "NQ-H57": {
+      "n": 31,
+      "mean_net_usd": 174.26,
+      "net_usd": 5402.06,
+      "pf": 1.524,
+      "ci90": [
+        -155.45,
+        517.82
+      ],
+      "ci95": [
+        -221.71,
+        584.42
+      ],
+      "p_one_sided": 0.21147885211478853,
+      "positive_years": 4,
+      "by_year": {
+        "2020": {
+          "n": 8,
+          "mean_usd": 48.01,
+          "total_usd": 384.08
+        },
+        "2021": {
+          "n": 4,
+          "mean_usd": -46.99,
+          "total_usd": -187.96
+        },
+        "2022": {
+          "n": 7,
+          "mean_usd": 658.55,
+          "total_usd": 4609.82
+        },
+        "2023": {
+          "n": 7,
+          "mean_usd": 18.55,
+          "total_usd": 129.82
+        },
+        "2024": {
+          "n": 5,
+          "mean_usd": 93.26,
+          "total_usd": 466.3
+        }
+      },
+      "week_blocks": 31,
+      "mean_bracket_usd": -140.39,
+      "bracket_pf": 0.641,
+      "bracket_net_usd": -4351.96,
+      "stop_count": 16,
+      "target_count": 7,
+      "time_count": 8,
+      "stress_extra_tick_each_side_net_usd": 5092.06,
+      "max_gap_days": 190,
+      "gaps_gt7_days": 27,
+      "q_bh6": 0.631937,
+      "holm_p_approx_two_sided": 1.0,
+      "gate1": {
+        "N_gt150": false,
+        "positive_net": true,
+        "CI90_above_zero": false,
+        "BH_q_le_010": false,
+        "positive_3_of_5_years": true
+      },
+      "decision": "INSUFFICIENT_EVIDENCE"
+    },
+    "NQ-H58": {
+      "n": 44,
+      "mean_net_usd": -176.54,
+      "net_usd": -7767.56,
+      "pf": 0.652,
+      "ci90": [
+        -432.01,
+        81.71
+      ],
+      "ci95": [
+        -478.72,
+        141.88
+      ],
+      "p_one_sided": 0.8652134786521348,
+      "positive_years": 2,
+      "by_year": {
+        "2020": {
+          "n": 5,
+          "mean_usd": 49.26,
+          "total_usd": 246.3
+        },
+        "2021": {
+          "n": 10,
+          "mean_usd": 135.76,
+          "total_usd": 1357.6
+        },
+        "2022": {
+          "n": 12,
+          "mean_usd": -43.24,
+          "total_usd": -518.88
+        },
+        "2023": {
+          "n": 11,
+          "mean_usd": -483.47,
+          "total_usd": -5318.14
+        },
+        "2024": {
+          "n": 6,
+          "mean_usd": -589.07,
+          "total_usd": -3534.44
+        }
+      },
+      "week_blocks": 41,
+      "mean_bracket_usd": -136.18,
+      "bracket_pf": 0.662,
+      "bracket_net_usd": -5991.77,
+      "stop_count": 25,
+      "target_count": 10,
+      "time_count": 9,
+      "stress_extra_tick_each_side_net_usd": -8207.56,
+      "max_gap_days": 120,
+      "gaps_gt7_days": 31,
+      "q_bh6": 0.865213,
+      "holm_p_approx_two_sided": 1.0,
+      "gate1": {
+        "N_gt150": false,
+        "positive_net": false,
+        "CI90_above_zero": false,
+        "BH_q_le_010": false,
+        "positive_3_of_5_years": false
+      },
+      "decision": "INSUFFICIENT_EVIDENCE"
+    }
+  },
+  "warnings": [
+    "Reused DEV 2020-24 is not independent validation",
+    "Date/signal overlap across hypotheses",
+    "Contract and minute OHLC data, no quote-level execution",
+    "MNQ transfer and funded costs not tested",
+    "No 2025/26 opened"
+  ]
+}
