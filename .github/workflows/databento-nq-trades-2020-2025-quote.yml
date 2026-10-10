@@ -1,0 +1,35 @@
+name: Quote NQ Last Tick Databento 2020-2025 (Metadata Only)
+on:
+  push:
+    branches: [main]
+    paths:
+      - "tools/databento_quote_nq_trades_2020_2025.py"
+      - ".github/workflows/databento-nq-trades-2020-2025-quote.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  quote-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Databento client
+        run: pip install databento
+      - name: Query NQ.v.0 trades 2020-2025 price, bytes and count — NO DOWNLOAD
+        env:
+          DATABENTO_API_KEY: ${{ secrets.DATABENTO_API_KEY }}
+        run: python tools/databento_quote_nq_trades_2020_2025.py
+      - name: Upload metadata quote only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: databento-nq-last-tick-2020-2025-metadata-quote
+          path: results/databento_nq_trades_2020_2025_quote/**
+          if-no-files-found: ignore
+          retention-days: 30
