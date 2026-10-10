@@ -1,0 +1,40 @@
+name: NQ H73-H78 preregister and freeze causal joint routers
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/nq/register_and_freeze_h73_h78.py'
+      - '.github/workflows/nq-h73-h78-register-freeze.yml'
+permissions:
+  contents: write
+jobs:
+  register-and-freeze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy pandas
+      - name: Freeze all six strategies and prior source dependencies before market outcomes
+        env:
+          PYTHONPATH: .
+        run: python research/nq/register_and_freeze_h73_h78.py
+      - name: Official immutable preregistration preflight
+        run: python tools/research_governance.py --preflight-family NQ-DEDUCTIVE-ENSEMBLE-H73-H78-V1
+      - name: Seventeen synthetic controls, zero market reads
+        env:
+          PYTHONPATH: .
+        run: python -m unittest discover -s research/nq -p test_nq_h73_h78_joint_state_routers.py -v
+      - name: Persist the new family and immutable source SHA-256s
+        shell: bash
+        run: |
+          git add research/SEARCH_LEDGER.json research/SEARCH_FAMILY_FREEZES.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Freeze NQ H73-H78 deductive family 7 before development outcomes'
+          git push origin HEAD:main
