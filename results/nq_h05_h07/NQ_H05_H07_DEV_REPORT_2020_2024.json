@@ -1,0 +1,232 @@
+{
+  "stage": "DEVELOPMENT_EXPLORATORY_2020_2024",
+  "loaded_years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "holdout_2025_loaded": false,
+  "holdout_2026_loaded": false,
+  "source": {
+    "total_full_rth_sessions": 1221,
+    "original_development_nq_partitions": 25,
+    "holdouts_opened": false,
+    "excluded_partial_rth_sessions": 69
+  },
+  "warmup_complete_sessions": 20,
+  "calendar_days_scored": 1201,
+  "all_hypotheses_preregistered": true,
+  "preregistration": "research/nq/NQ_PRICE_LEVEL_VOLUME_FAMILY_H05_H07_PREREG_2026_10_09.md",
+  "account": "NinjaTrader Free; fee $5.74 RT plus $20 fixed modelled slippage; no stops/targets",
+  "feature_exclusions": {
+    "H05_missing_or_stale_prior": 0,
+    "H07_insufficient_overnight": 7
+  },
+  "exploratory_fdr_H05_H07": {
+    "NQ-H06": 0.927607,
+    "NQ-H07": 0.69563,
+    "NQ-H05": 0.69563
+  },
+  "exploratory_accumulated_fdr_H01_H07": {
+    "NQ-H04": 1,
+    "NQ-H03": 1,
+    "NQ-H06": 1,
+    "NQ-H07": 0.811569,
+    "NQ-H01": 0.811569,
+    "NQ-H05": 0.811569,
+    "NQ-H02": 0.811569
+  },
+  "results": {
+    "NQ-H05": {
+      "n": 545,
+      "net_30m_usd": 4351.7,
+      "mean_30m_net_usd": 7.98,
+      "pf_30m": 1.019,
+      "win_rate": 0.4881,
+      "net_15m_usd": -4138.3,
+      "net_stress_1_tick_extra_each_side_usd": -1098.3,
+      "p_one_sided": 0.429457,
+      "ci90_mean_net_usd": [
+        -64.96,
+        82.32
+      ],
+      "ci95_mean_net_usd": [
+        -78.45,
+        95.87
+      ],
+      "annual_positive_years": 3,
+      "yearly": {
+        "2020": {
+          "events": 90,
+          "net_usd": -9016.6,
+          "mean_net_usd": -100.18
+        },
+        "2021": {
+          "events": 112,
+          "net_usd": -5492.88,
+          "mean_net_usd": -49.04
+        },
+        "2022": {
+          "events": 121,
+          "net_usd": 10725.46,
+          "mean_net_usd": 88.64
+        },
+        "2023": {
+          "events": 114,
+          "net_usd": 440.64,
+          "mean_net_usd": 3.87
+        },
+        "2024": {
+          "events": 108,
+          "net_usd": 7695.08,
+          "mean_net_usd": 71.25
+        }
+      },
+      "gaps_gt_7_days": 27,
+      "max_gap_days": 20,
+      "weeks_for_inference": 242,
+      "q_h05_h07": 0.69563,
+      "q_accumulated_h01_h07_exploratory": 0.811569,
+      "gate1": {
+        "N_gt_150": true,
+        "net_expectancy_positive": true,
+        "CI90_above_zero": false,
+        "BH_q_le_010": false,
+        "positive_years_ge_3_of_5": true,
+        "no_post_hoc_rescue": true
+      },
+      "decision": "NOT_SUPPORTED_EXPLORATORY"
+    },
+    "NQ-H06": {
+      "n": 745,
+      "net_30m_usd": -42256.3,
+      "mean_30m_net_usd": -56.72,
+      "pf_30m": 0.871,
+      "win_rate": 0.4993,
+      "net_15m_usd": -8731.3,
+      "net_stress_1_tick_extra_each_side_usd": -49706.3,
+      "p_one_sided": 0.927607,
+      "ci90_mean_net_usd": [
+        -121.93,
+        7.04
+      ],
+      "ci95_mean_net_usd": [
+        -135.53,
+        19.09
+      ],
+      "annual_positive_years": 1,
+      "yearly": {
+        "2020": {
+          "events": 133,
+          "net_usd": -4248.42,
+          "mean_net_usd": -31.94
+        },
+        "2021": {
+          "events": 155,
+          "net_usd": 4045.3,
+          "mean_net_usd": 26.1
+        },
+        "2022": {
+          "events": 154,
+          "net_usd": -12118.96,
+          "mean_net_usd": -78.69
+        },
+        "2023": {
+          "events": 156,
+          "net_usd": -9705.44,
+          "mean_net_usd": -62.21
+        },
+        "2024": {
+          "events": 147,
+          "net_usd": -20228.78,
+          "mean_net_usd": -137.61
+        }
+      },
+      "gaps_gt_7_days": 7,
+      "max_gap_days": 20,
+      "weeks_for_inference": 253,
+      "q_h05_h07": 0.927607,
+      "q_accumulated_h01_h07_exploratory": 1,
+      "gate1": {
+        "N_gt_150": true,
+        "net_expectancy_positive": false,
+        "CI90_above_zero": false,
+        "BH_q_le_010": false,
+        "positive_years_ge_3_of_5": false,
+        "no_post_hoc_rescue": true
+      },
+      "decision": "NOT_SUPPORTED_EXPLORATORY"
+    },
+    "NQ-H07": {
+      "n": 229,
+      "net_30m_usd": 1325.54,
+      "mean_30m_net_usd": 5.79,
+      "pf_30m": 1.015,
+      "win_rate": 0.4672,
+      "net_15m_usd": -11269.46,
+      "net_stress_1_tick_extra_each_side_usd": -964.46,
+      "p_one_sided": 0.463754,
+      "ci90_mean_net_usd": [
+        -96.72,
+        109.53
+      ],
+      "ci95_mean_net_usd": [
+        -118.8,
+        130.37
+      ],
+      "annual_positive_years": 2,
+      "yearly": {
+        "2020": {
+          "events": 45,
+          "net_usd": 3851.7,
+          "mean_net_usd": 85.59
+        },
+        "2021": {
+          "events": 50,
+          "net_usd": -627,
+          "mean_net_usd": -12.54
+        },
+        "2022": {
+          "events": 50,
+          "net_usd": -2217,
+          "mean_net_usd": -44.34
+        },
+        "2023": {
+          "events": 39,
+          "net_usd": 8566.14,
+          "mean_net_usd": 219.64
+        },
+        "2024": {
+          "events": 45,
+          "net_usd": -8248.3,
+          "mean_net_usd": -183.3
+        }
+      },
+      "gaps_gt_7_days": 80,
+      "max_gap_days": 37,
+      "weeks_for_inference": 164,
+      "q_h05_h07": 0.69563,
+      "q_accumulated_h01_h07_exploratory": 0.811569,
+      "gate1": {
+        "N_gt_150": true,
+        "net_expectancy_positive": true,
+        "CI90_above_zero": false,
+        "BH_q_le_010": false,
+        "positive_years_ge_3_of_5": false,
+        "no_post_hoc_rescue": true
+      },
+      "decision": "NOT_SUPPORTED_EXPLORATORY"
+    }
+  },
+  "status": "DESCRIPTIVE_REUSED_DEVELOPMENT_ONLY_NO_OOS_CONFIRMATION",
+  "limitations": [
+    "No stop loss or take profit and no tick-level fills",
+    "No news filters",
+    "One NQ contract may exceed funded-account loss limit",
+    "Calendar-week inference cannot remove accumulated development data reuse",
+    "NQ/MNQ are correlated same-underlying contracts, not independent tests",
+    "2025 and 2026 holdout prices never opened"
+  ]
+}
