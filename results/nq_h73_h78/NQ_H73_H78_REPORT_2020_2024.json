@@ -1,0 +1,517 @@
+{
+  "stage": "DEVELOPMENT_EXPLORATORY",
+  "family": "NQ-DEDUCTIVE-ENSEMBLE-H73-H78-V1",
+  "loaded_years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "holdout_2025_loaded": false,
+  "holdout_2026_loaded": false,
+  "hypotheses": {
+    "NQ-H73": {
+      "n": 139,
+      "net_usd": 1140.18,
+      "closed_dd_usd": 775.4,
+      "max_single_trade_mae_proxy_usd": 171.5,
+      "gaps_gt7": 74,
+      "max_gap_days": 78,
+      "equivalent_50k_cagr_full_dev_2020_2024": 0.00452,
+      "same_window_benchmarks_available": false,
+      "economic_gate": "ECONOMIC_DATA_PENDING",
+      "intratrade_trailing_rule_audit": "NOT_VALIDATED_MINUTE_OHLC_INSUFFICIENT",
+      "strategy_authorized": false,
+      "mean_net_mnq_usd": 8.2,
+      "pf": 1.252,
+      "positive_years": 4,
+      "win_rate": 0.511,
+      "by_year": {
+        "2020": {
+          "n": 22,
+          "net_usd": -477.36
+        },
+        "2021": {
+          "n": 25,
+          "net_usd": 336.5
+        },
+        "2022": {
+          "n": 34,
+          "net_usd": 519.08
+        },
+        "2023": {
+          "n": 21,
+          "net_usd": 277.02
+        },
+        "2024": {
+          "n": 37,
+          "net_usd": 484.94
+        }
+      },
+      "cost_1_5x_total_net_usd": 870.52,
+      "ci90_mean_trade_usd": [
+        -3.2015,
+        19.7108
+      ],
+      "p_one_sided": 0.122888,
+      "incremental_total_vs_h69_usd": -1564.26,
+      "incremental_mean_daily_vs_h69_usd": -1.30355,
+      "incremental_daily_ci90_usd": [
+        -2.5202,
+        -0.1202
+      ],
+      "incremental_p_one_sided": 0.958304,
+      "bh_q6": 0.156704,
+      "incremental_bh_q6": 0.990601,
+      "gate1": {
+        "N_gt150": false,
+        "mean_positive": true,
+        "ci90_lower_positive": false,
+        "BH_q_at_most_010": false,
+        "years_positive_at_least3": true
+      },
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "economic_floor_15pct_pass": false
+    },
+    "NQ-H74": {
+      "n": 132,
+      "net_usd": 1657.84,
+      "closed_dd_usd": 444.1,
+      "max_single_trade_mae_proxy_usd": 144.0,
+      "gaps_gt7": 75,
+      "max_gap_days": 76,
+      "equivalent_50k_cagr_full_dev_2020_2024": 0.006546,
+      "same_window_benchmarks_available": false,
+      "economic_gate": "ECONOMIC_DATA_PENDING",
+      "intratrade_trailing_rule_audit": "NOT_VALIDATED_MINUTE_OHLC_INSUFFICIENT",
+      "strategy_authorized": false,
+      "mean_net_mnq_usd": 12.56,
+      "pf": 1.438,
+      "positive_years": 5,
+      "win_rate": 0.515,
+      "by_year": {
+        "2020": {
+          "n": 22,
+          "net_usd": 376.14
+        },
+        "2021": {
+          "n": 35,
+          "net_usd": 305.7
+        },
+        "2022": {
+          "n": 23,
+          "net_usd": 803.26
+        },
+        "2023": {
+          "n": 20,
+          "net_usd": 74.9
+        },
+        "2024": {
+          "n": 32,
+          "net_usd": 97.84
+        }
+      },
+      "cost_1_5x_total_net_usd": 1401.76,
+      "ci90_mean_trade_usd": [
+        1.2382,
+        23.886
+      ],
+      "p_one_sided": 0.038296,
+      "incremental_total_vs_h69_usd": -1046.6,
+      "incremental_mean_daily_vs_h69_usd": -0.87217,
+      "incremental_daily_ci90_usd": [
+        -2.1517,
+        0.407
+      ],
+      "incremental_p_one_sided": 0.861914,
+      "bh_q6": 0.114889,
+      "incremental_bh_q6": 0.990601,
+      "gate1": {
+        "N_gt150": false,
+        "mean_positive": true,
+        "ci90_lower_positive": true,
+        "BH_q_at_most_010": false,
+        "years_positive_at_least3": true
+      },
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "economic_floor_15pct_pass": false
+    },
+    "NQ-H75": {
+      "n": 165,
+      "net_usd": 1197.3,
+      "closed_dd_usd": 678.08,
+      "max_single_trade_mae_proxy_usd": 144.0,
+      "gaps_gt7": 78,
+      "max_gap_days": 56,
+      "equivalent_50k_cagr_full_dev_2020_2024": 0.004745,
+      "same_window_benchmarks_available": false,
+      "economic_gate": "ECONOMIC_DATA_PENDING",
+      "intratrade_trailing_rule_audit": "NOT_VALIDATED_MINUTE_OHLC_INSUFFICIENT",
+      "strategy_authorized": false,
+      "mean_net_mnq_usd": 7.26,
+      "pf": 1.225,
+      "positive_years": 4,
+      "win_rate": 0.491,
+      "by_year": {
+        "2020": {
+          "n": 27,
+          "net_usd": 75.24
+        },
+        "2021": {
+          "n": 41,
+          "net_usd": 343.92
+        },
+        "2022": {
+          "n": 36,
+          "net_usd": 264.32
+        },
+        "2023": {
+          "n": 22,
+          "net_usd": -152.36
+        },
+        "2024": {
+          "n": 39,
+          "net_usd": 666.18
+        }
+      },
+      "cost_1_5x_total_net_usd": 877.2,
+      "ci90_mean_trade_usd": [
+        -3.0295,
+        17.8322
+      ],
+      "p_one_sided": 0.130587,
+      "incremental_total_vs_h69_usd": -1507.14,
+      "incremental_mean_daily_vs_h69_usd": -1.25595,
+      "incremental_daily_ci90_usd": [
+        -2.3339,
+        -0.1991
+      ],
+      "incremental_p_one_sided": 0.974903,
+      "bh_q6": 0.156704,
+      "incremental_bh_q6": 0.990601,
+      "gate1": {
+        "N_gt150": true,
+        "mean_positive": true,
+        "ci90_lower_positive": false,
+        "BH_q_at_most_010": false,
+        "years_positive_at_least3": true
+      },
+      "decision": "NOT_SUPPORTED_EXPLORATORY",
+      "economic_floor_15pct_pass": false
+    },
+    "NQ-H76": {
+      "n": 92,
+      "net_usd": 1091.04,
+      "closed_dd_usd": 508.12,
+      "max_single_trade_mae_proxy_usd": 171.5,
+      "gaps_gt7": 64,
+      "max_gap_days": 147,
+      "equivalent_50k_cagr_full_dev_2020_2024": 0.004327,
+      "same_window_benchmarks_available": false,
+      "economic_gate": "ECONOMIC_DATA_PENDING",
+      "intratrade_trailing_rule_audit": "NOT_VALIDATED_MINUTE_OHLC_INSUFFICIENT",
+      "strategy_authorized": false,
+      "mean_net_mnq_usd": 11.86,
+      "pf": 1.417,
+      "positive_years": 3,
+      "win_rate": 0.522,
+      "by_year": {
+        "2020": {
+          "n": 14,
+          "net_usd": -29.32
+        },
+        "2021": {
+          "n": 19,
+          "net_usd": 298.28
+        },
+        "2022": {
+          "n": 14,
+          "net_usd": 565.68
+        },
+        "2023": {
+          "n": 15,
+          "net_usd": 339.8
+        },
+        "2024": {
+          "n": 30,
+          "net_usd": -83.4
+        }
+      },
+      "cost_1_5x_total_net_usd": 912.56,
+      "ci90_mean_trade_usd": [
+        -0.9506,
+        24.7468
+      ],
+      "p_one_sided": 0.060694,
+      "incremental_total_vs_h69_usd": -1613.4,
+      "incremental_mean_daily_vs_h69_usd": -1.3445,
+      "incremental_daily_ci90_usd": [
+        -2.8527,
+        0.1301
+      ],
+      "incremental_p_one_sided": 0.924108,
+      "bh_q6": 0.121388,
+      "incremental_bh_q6": 0.990601,
+      "gate1": {
+        "N_gt150": false,
+        "mean_positive": true,
+        "ci90_lower_positive": false,
+        "BH_q_at_most_010": false,
+        "years_positive_at_least3": true
+      },
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "economic_floor_15pct_pass": false
+    },
+    "NQ-H77": {
+      "n": 140,
+      "net_usd": 2385.3,
+      "closed_dd_usd": 584.54,
+      "max_single_trade_mae_proxy_usd": 171.5,
+      "gaps_gt7": 72,
+      "max_gap_days": 83,
+      "equivalent_50k_cagr_full_dev_2020_2024": 0.009365,
+      "same_window_benchmarks_available": false,
+      "economic_gate": "ECONOMIC_DATA_PENDING",
+      "intratrade_trailing_rule_audit": "NOT_VALIDATED_MINUTE_OHLC_INSUFFICIENT",
+      "strategy_authorized": false,
+      "mean_net_mnq_usd": 17.04,
+      "pf": 1.632,
+      "positive_years": 4,
+      "win_rate": 0.55,
+      "by_year": {
+        "2020": {
+          "n": 20,
+          "net_usd": 123.9
+        },
+        "2021": {
+          "n": 25,
+          "net_usd": 85.5
+        },
+        "2022": {
+          "n": 30,
+          "net_usd": 1792.6
+        },
+        "2023": {
+          "n": 26,
+          "net_usd": -144.38
+        },
+        "2024": {
+          "n": 39,
+          "net_usd": 527.68
+        }
+      },
+      "cost_1_5x_total_net_usd": 2113.7,
+      "ci90_mean_trade_usd": [
+        5.7162,
+        28.5995
+      ],
+      "p_one_sided": 0.007799,
+      "incremental_total_vs_h69_usd": -319.14,
+      "incremental_mean_daily_vs_h69_usd": -0.26595,
+      "incremental_daily_ci90_usd": [
+        -1.4673,
+        0.9292
+      ],
+      "incremental_p_one_sided": 0.629137,
+      "bh_q6": 0.046795,
+      "incremental_bh_q6": 0.990601,
+      "gate1": {
+        "N_gt150": false,
+        "mean_positive": true,
+        "ci90_lower_positive": true,
+        "BH_q_at_most_010": true,
+        "years_positive_at_least3": true
+      },
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "economic_floor_15pct_pass": false
+    },
+    "NQ-H78": {
+      "n": 129,
+      "net_usd": 427.98,
+      "closed_dd_usd": 684.32,
+      "max_single_trade_mae_proxy_usd": 159.5,
+      "gaps_gt7": 71,
+      "max_gap_days": 84,
+      "equivalent_50k_cagr_full_dev_2020_2024": 0.001706,
+      "same_window_benchmarks_available": false,
+      "economic_gate": "ECONOMIC_DATA_PENDING",
+      "intratrade_trailing_rule_audit": "NOT_VALIDATED_MINUTE_OHLC_INSUFFICIENT",
+      "strategy_authorized": false,
+      "mean_net_mnq_usd": 3.32,
+      "pf": 1.096,
+      "positive_years": 3,
+      "win_rate": 0.473,
+      "by_year": {
+        "2020": {
+          "n": 23,
+          "net_usd": -282.74
+        },
+        "2021": {
+          "n": 35,
+          "net_usd": 556.7
+        },
+        "2022": {
+          "n": 26,
+          "net_usd": -397.38
+        },
+        "2023": {
+          "n": 15,
+          "net_usd": 496.3
+        },
+        "2024": {
+          "n": 30,
+          "net_usd": 55.1
+        }
+      },
+      "cost_1_5x_total_net_usd": 177.72,
+      "ci90_mean_trade_usd": [
+        -8.2687,
+        15.1832
+      ],
+      "p_one_sided": 0.324868,
+      "incremental_total_vs_h69_usd": -2276.46,
+      "incremental_mean_daily_vs_h69_usd": -1.89705,
+      "incremental_daily_ci90_usd": [
+        -3.2483,
+        -0.6153
+      ],
+      "incremental_p_one_sided": 0.990601,
+      "bh_q6": 0.324868,
+      "incremental_bh_q6": 0.990601,
+      "gate1": {
+        "N_gt150": false,
+        "mean_positive": true,
+        "ci90_lower_positive": false,
+        "BH_q_at_most_010": false,
+        "years_positive_at_least3": true
+      },
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "economic_floor_15pct_pass": false
+    }
+  },
+  "baseline_H69": {
+    "n": 262,
+    "net_usd": 2704.44,
+    "closed_dd_usd": 890.64,
+    "max_single_trade_mae_proxy_usd": 171.5,
+    "gaps_gt7": 78,
+    "max_gap_days": 29,
+    "equivalent_50k_cagr_full_dev_2020_2024": 0.010592,
+    "same_window_benchmarks_available": false,
+    "economic_gate": "ECONOMIC_DATA_PENDING",
+    "intratrade_trailing_rule_audit": "NOT_VALIDATED_MINUTE_OHLC_INSUFFICIENT",
+    "strategy_authorized": false,
+    "mean_net_mnq_usd": 10.32,
+    "pf": 1.335,
+    "positive_years": 4,
+    "win_rate": 0.511,
+    "by_year": {
+      "2020": {
+        "n": 43,
+        "net_usd": -274.34
+      },
+      "2021": {
+        "n": 56,
+        "net_usd": 585.72
+      },
+      "2022": {
+        "n": 57,
+        "net_usd": 1488.84
+      },
+      "2023": {
+        "n": 41,
+        "net_usd": 351.92
+      },
+      "2024": {
+        "n": 65,
+        "net_usd": 552.3
+      }
+    },
+    "cost_1_5x_total_net_usd": 2196.16
+  },
+  "ablations": {
+    "NQ-H73": {
+      "selected_parent_counts": {
+        "NQ-H09": 97,
+        "NQ-H56": 42
+      },
+      "leave_out_H09_net_usd": 492.54,
+      "leave_out_H56_net_usd": 647.64,
+      "full_net_usd": 1140.18,
+      "compared_to_h69_same_session_total_usd": -1564.26
+    },
+    "NQ-H74": {
+      "selected_parent_counts": {
+        "NQ-H09": 76,
+        "NQ-H56": 56
+      },
+      "leave_out_H09_net_usd": 231.22,
+      "leave_out_H56_net_usd": 1426.62,
+      "full_net_usd": 1657.84,
+      "compared_to_h69_same_session_total_usd": -1046.6
+    },
+    "NQ-H75": {
+      "selected_parent_counts": {
+        "NQ-H56": 98,
+        "NQ-H09": 67
+      },
+      "leave_out_H09_net_usd": 793.76,
+      "leave_out_H56_net_usd": 403.54,
+      "full_net_usd": 1197.3,
+      "compared_to_h69_same_session_total_usd": -1507.14
+    },
+    "NQ-H76": {
+      "selected_parent_counts": {
+        "NQ-H09": 90,
+        "NQ-H56": 2
+      },
+      "leave_out_H09_net_usd": -44.26,
+      "leave_out_H56_net_usd": 1135.3,
+      "full_net_usd": 1091.04,
+      "compared_to_h69_same_session_total_usd": -1613.4
+    },
+    "NQ-H77": {
+      "selected_parent_counts": {
+        "NQ-H09": 116,
+        "NQ-H56": 24
+      },
+      "leave_out_H09_net_usd": 367.88,
+      "leave_out_H56_net_usd": 2017.42,
+      "full_net_usd": 2385.3,
+      "compared_to_h69_same_session_total_usd": -319.14
+    },
+    "NQ-H78": {
+      "selected_parent_counts": {
+        "NQ-H56": 74,
+        "NQ-H09": 55
+      },
+      "leave_out_H09_net_usd": 355.88,
+      "leave_out_H56_net_usd": 72.1,
+      "full_net_usd": 427.98,
+      "compared_to_h69_same_session_total_usd": -2276.46
+    }
+  },
+  "contexts": {
+    "V": {
+      "HIGH": 598,
+      "LOW": 582
+    },
+    "P": {
+      "CONTRACTED": 567,
+      "EXPANDED": 549
+    },
+    "G": {
+      "ALIGNED": 715,
+      "OPPOSED": 460
+    }
+  },
+  "num_sessions_complete_RTH": 1221,
+  "num_parent_events": 273,
+  "execution_proxy": "1 MNQ at NQ-minute OHLC price, no MNQ quotes, stop-first 1m intrabar",
+  "fee_and_slippage_rt_mnq": 3.88,
+  "floating_trailing_funding_risk_validated": false,
+  "exact_VOO_QQQM_total_return_loaded": false,
+  "real_funded_ROI_validated": false,
+  "research_quality": "Adaptive testing repeated 2020-2024, all apparent results exploratory only"
+}
