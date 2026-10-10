@@ -1,0 +1,39 @@
+name: NQ H04 source-only regression tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/nq/nq_h04_overnight_compression_2020_2024.py"
+      - "research/nq/test_nq_h04_overnight_compression.py"
+      - ".github/workflows/nq-h04-source-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dev-source-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install numerical library dependencies
+        run: pip install numpy pandas
+      - name: Test fixed rollover, BH adjustment and ZIP holdout firewall
+        run: python -m unittest discover -s research/nq -p 'test_nq_h04_overnight_compression.py' -v
+      - name: Check that outcome program cannot load 2025/2026 paths
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('research/nq/nq_h04_overnight_compression_2020_2024.py').read_text()
+          required=["'/development_2020_2024/'", "holdout_2025_or_2026_bar_content_opened", "BOOTSTRAPS=10000"]
+          missing=[x for x in required if x not in s]
+          if missing: raise SystemExit("Missing expected research guard: "+str(missing))
+          print("NQ H04 2020-2024 development-only static guards checked.")
+          PY
