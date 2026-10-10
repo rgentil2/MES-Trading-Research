@@ -106,14 +106,14 @@ def validate_family(root, family):
         safe_path(root, member["preregistration_path"], ("research/",))
         if member["preregistration_path"] not in family["definition_files"]:
             raise ValueError("member preregistration must be fingerprinted")
-        if member.get("research_instrument") not in {"MES", "ES"}:
+        if member.get("research_instrument") not in {"MES", "ES", "NQ", "MNQ"}:
             raise ValueError("research instrument must be explicit")
         if member.get("analysis_kind") not in {"DIRECTIONAL", "VOLATILITY", "STRATEGY"}:
             raise ValueError("analysis kind must be explicit")
         if member["analysis_kind"] == "STRATEGY":
             execution = member.get("execution_instrument")
             costs = member.get("costs", {})
-            if execution not in {"MES", "ES"} or costs.get("point_value_usd") != {"MES": 5, "ES": 50}[execution]:
+            if execution not in {"MES", "ES", "NQ", "MNQ"} or costs.get("point_value_usd") != {"MES": 5, "ES": 50, "NQ": 20, "MNQ": 2}[execution]:
                 raise ValueError("execution multiplier must match instrument")
             for key in ("commission_round_trip_usd", "slippage_round_trip_usd"):
                 value = costs.get(key)
