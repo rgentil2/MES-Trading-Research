@@ -122,3 +122,11 @@ H09 (gap continuation), H29 (reversión de impulso corto, muy baja N), H36 (reve
 - Las pruebas con pocas señales conservan q y N como fallos; no se les fabrican más datos por correlación de índices (MES/ES y MNQ/NQ no son réplicas independientes).
 - No depositar en un GitHub **público** ni los ZIP brutos de NinjaTrader ni el registro individual de operaciones, si su redistribución no está verificada.
 - Los presupuestos de alfa para futuras familias los determinará `research_governance.py` al momento del preregistro, respetando el historial; no ampliar/quitar miembros después de observar resultados.
+
+## Rama independiente para scalping 2026 — pseudo-forward histórico offline
+
+**Nuevo permiso del usuario (2026-10-10) limitado a investigación tick/scalping NQ**, sin alterar H01–H78 ni sus holdouts: **enero–abril 2026** para desarrollo, **mayo–junio** para validación interna (reutilizable, no OOS final) y **julio–septiembre 2026** reservado como **único pseudo-forward histórico offline**. Octubre–diciembre 2026 y 2025 quedan fuera; 2026 sigue sellado para el programa histórico de minutos, aunque la nueva rama sí permite enero–junio.
+
+Solo si datos de cobertura sin precios muestran falta objetiva de disponibilidad se permite **una reducción previa** a agosto–septiembre o septiembre, siempre antes de observar retornos. No utilizar el comportamiento de las estrategias para escoger el test. Enfocar las nuevas hipótesis en estrategias **conjuntas NQ** derivadas de hallazgos previos, con stops/take profit, orden de ejecución y contratos congelados antes de una sola apertura final. El pseudo-forward de 1–3 meses no valida por sí solo un CAGR sostenible del 15% anual.
+
+**Regla concreta:** `research/nq/NQ_TICK_SCALPING_2026_OFFLINE_PSEUDO_FORWARD_POLICY_2026_10_10.md`. No implica descarga de mercado ya realizada ni que ticks de 2026 estén disponibles.
