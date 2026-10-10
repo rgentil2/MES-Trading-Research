@@ -2160,6 +2160,115 @@
       "result_artifacts": [
         "results/development/nq_h53_h58_family.json"
       ]
+    },
+    {
+      "id": "NQ-PARENT-INTERACTIONS-H59-H66-V1",
+      "index": 5,
+      "question": "Does ex-ante concurrence/exclusion among prior opening-gap, overnight-VWAP and premarket signals change NQ net 30-minute directional effectiveness?",
+      "origin_units": [
+        "NQ-H59",
+        "NQ-H60",
+        "NQ-H61",
+        "NQ-H62",
+        "NQ-H63",
+        "NQ-H64",
+        "NQ-H65",
+        "NQ-H66"
+      ],
+      "data_role": "REUSED_DEVELOPMENT",
+      "independent_inference_justification": "Parents and some overlapping outcomes already inspected on reused 2020\u20132024, no independent inference; 2025/26 strictly sealed",
+      "members": [
+        {
+          "id": "NQ-H59",
+          "preregistration_path": "research/nq/NQ_H59_H66_PARENT_INTERACTIONS_PREREG_2026_10_10.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "H55 and H56 simultaneous matching directional signal at 09:45; take H55 once",
+          "alternative": "Net directional mean return over 30 minutes exceeds zero after 25.74 USD NQ Free friction",
+          "endpoint": "Frozen parent-signal next-minute OPEN to +30m OPEN, one-sided weekly signflip, bootstrap 90% CI, whole-family BH (8)"
+        },
+        {
+          "id": "NQ-H60",
+          "preregistration_path": "research/nq/NQ_H59_H66_PARENT_INTERACTIONS_PREREG_2026_10_10.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "H55 at 09:45, H56 absent at 09:45; use H55 side",
+          "alternative": "Net directional mean return over 30 minutes exceeds zero after 25.74 USD NQ Free friction",
+          "endpoint": "Frozen parent-signal next-minute OPEN to +30m OPEN, one-sided weekly signflip, bootstrap 90% CI, whole-family BH (8)"
+        },
+        {
+          "id": "NQ-H61",
+          "preregistration_path": "research/nq/NQ_H59_H66_PARENT_INTERACTIONS_PREREG_2026_10_10.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "H56 at 09:45, H55 absent at 09:45; use H56 side",
+          "alternative": "Net directional mean return over 30 minutes exceeds zero after 25.74 USD NQ Free friction",
+          "endpoint": "Frozen parent-signal next-minute OPEN to +30m OPEN, one-sided weekly signflip, bootstrap 90% CI, whole-family BH (8)"
+        },
+        {
+          "id": "NQ-H62",
+          "preregistration_path": "research/nq/NQ_H59_H66_PARENT_INTERACTIONS_PREREG_2026_10_10.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "H09 at 09:45, H55 and H56 absent at 09:45; use H09 side",
+          "alternative": "Net directional mean return over 30 minutes exceeds zero after 25.74 USD NQ Free friction",
+          "endpoint": "Frozen parent-signal next-minute OPEN to +30m OPEN, one-sided weekly signflip, bootstrap 90% CI, whole-family BH (8)"
+        },
+        {
+          "id": "NQ-H63",
+          "preregistration_path": "research/nq/NQ_H59_H66_PARENT_INTERACTIONS_PREREG_2026_10_10.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "H09 and H56 at 09:45 same directional side; one H09 position",
+          "alternative": "Net directional mean return over 30 minutes exceeds zero after 25.74 USD NQ Free friction",
+          "endpoint": "Frozen parent-signal next-minute OPEN to +30m OPEN, one-sided weekly signflip, bootstrap 90% CI, whole-family BH (8)"
+        },
+        {
+          "id": "NQ-H64",
+          "preregistration_path": "research/nq/NQ_H59_H66_PARENT_INTERACTIONS_PREREG_2026_10_10.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "H29 at 10:00, neither H55 nor H56 at 09:45; take H29 side",
+          "alternative": "Net directional mean return over 30 minutes exceeds zero after 25.74 USD NQ Free friction",
+          "endpoint": "Frozen parent-signal next-minute OPEN to +30m OPEN, one-sided weekly signflip, bootstrap 90% CI, whole-family BH (8)"
+        },
+        {
+          "id": "NQ-H65",
+          "preregistration_path": "research/nq/NQ_H59_H66_PARENT_INTERACTIONS_PREREG_2026_10_10.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "H54 signal after 09:45 and H55 pre-existing same directional side; H54 position",
+          "alternative": "Net directional mean return over 30 minutes exceeds zero after 25.74 USD NQ Free friction",
+          "endpoint": "Frozen parent-signal next-minute OPEN to +30m OPEN, one-sided weekly signflip, bootstrap 90% CI, whole-family BH (8)"
+        },
+        {
+          "id": "NQ-H66",
+          "preregistration_path": "research/nq/NQ_H59_H66_PARENT_INTERACTIONS_PREREG_2026_10_10.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "H54 signal after 09:45 and H55 pre-existing opposite directional side; H54 position",
+          "alternative": "Net directional mean return over 30 minutes exceeds zero after 25.74 USD NQ Free friction",
+          "endpoint": "Frozen parent-signal next-minute OPEN to +30m OPEN, one-sided weekly signflip, bootstrap 90% CI, whole-family BH (8)"
+        }
+      ],
+      "definition_files": [
+        "research/nq/NQ_H59_H66_PARENT_INTERACTIONS_PREREG_2026_10_10.md",
+        "research/nq/nq_h59_h66_parent_interactions.py",
+        "research/nq/test_nq_h59_h66_parent_interactions.py",
+        "research/nq/nq_h08_h32_minute_2020_2024.py",
+        "research/nq/nq_h53_h58.py"
+      ],
+      "result_artifacts": [
+        "results/development/nq_h59_h66_family.json"
+      ]
     }
   ],
   "version_changes": [

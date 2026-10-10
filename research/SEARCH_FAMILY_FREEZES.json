@@ -85,6 +85,28 @@
         "NQ-H52"
       ]
     },
+    "NQ-PARENT-INTERACTIONS-H59-H66-V1": {
+      "alpha": 0.0016666666666666668,
+      "definition_sha256": {
+        "research/nq/NQ_H59_H66_PARENT_INTERACTIONS_PREREG_2026_10_10.md": "361ccba173ff0982e19974d1395d5a82b1222f3145aed0638e639ed05c51af85",
+        "research/nq/nq_h08_h32_minute_2020_2024.py": "93669de8b6b17a5368959ad9a7fb0bdbf69c61788372d584cf8b9d2d9b427d3d",
+        "research/nq/nq_h53_h58.py": "302dfc6e8746468b2b2f47335de9c071d1a0535bf0a58d77a3ba6c6e65be9ed0",
+        "research/nq/nq_h59_h66_parent_interactions.py": "cdfb9b683294e4a81e41a243ed1a98e61357565eca144ea88461563273e8d4e0",
+        "research/nq/test_nq_h59_h66_parent_interactions.py": "d47306c3327b0f6568c3fc28c1a2aa5955668da40e86a65c059ff6f269710856"
+      },
+      "family_sha256": "33f849abe90d0937ba4802b01af26e71afd9c23b5e8e4e0bf2d8934b3e9a7158",
+      "index": 5,
+      "member_ids": [
+        "NQ-H59",
+        "NQ-H60",
+        "NQ-H61",
+        "NQ-H62",
+        "NQ-H63",
+        "NQ-H64",
+        "NQ-H65",
+        "NQ-H66"
+      ]
+    },
     "NQ-PREMARKET-WEEKLY-H53-H58-V1": {
       "alpha": 0.0025,
       "definition_sha256": {
