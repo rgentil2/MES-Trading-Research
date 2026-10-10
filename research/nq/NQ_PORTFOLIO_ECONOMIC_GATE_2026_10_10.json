@@ -108,5 +108,19 @@
     "decision_status",
     "holdout_access_flags"
   ],
-  "source_document": "research/nq/NQ_PORTFOLIO_ECONOMIC_GATE_2026_10_10.md"
+  "source_document": "research/nq/NQ_PORTFOLIO_ECONOMIC_GATE_2026_10_10.md",
+  "combo_strategy_policy": {
+    "primary_unit": "FULL_CAUSAL_COMBINED_STRATEGY_OR_PORTFOLIO",
+    "policy_ref": "research/nq/NQ_DEDUCTIVE_ENSEMBLE_POLICY_2026_10_10.json",
+    "effective_from_hypothesis": "H67",
+    "minimum_distinct_signal_context_router_components": 2,
+    "compare_constituent_parent_strategies": true,
+    "compare_frozen_baseline_router": true,
+    "require_leave_one_component_out_ablation": true,
+    "require_matched_dates_risk_costs_and_capital": true,
+    "forbid_summing_overlapping_individual_pnl": true,
+    "require_prior_learning_lineage_and_falsifiable_incremental_prediction": true,
+    "requires_complete_portfolio_before_CAGR_gate": true,
+    "older_individual_hypothesis_gates_and_results_unchanged": true
+  }
 }
