@@ -32,3 +32,8 @@ data/processed/*
 # Generated artifacts
 results/*.png
 results/*.html
+
+# Keep NQ tick exports, quote tapes and raw event ledgers off the public repository
+private/
+private_data/
+data_nq_tick_private/
