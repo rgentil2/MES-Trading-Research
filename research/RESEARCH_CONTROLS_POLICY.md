@@ -240,3 +240,33 @@ The roadmap `research/nq/NQ_H59_H150_DEDUCTIVE_RESEARCH_PROGRAM.md`
 is amended accordingly. **H67–H150 ideas remain unregistered and untested
 until each family has its own explicit preregistration and successful
 source-only preflight.**
+
+## 2026-10-10 — Prospective NQ-first execution focus for H79 onward
+
+At user direction, newly specified combined-strategy families **H79–H150**
+shall **prioritize NQ ($20/index point)** for the primary execution and
+portfolio return study. MNQ ($2/index point) remains an alternative for
+funding-compatible sizing and an equal-risk comparator; **do not** substitute
+NQ for MNQ inside already frozen H67–H78 definitions or recalculate their
+statistical p values as if this were independent data.
+
+A mechanical NQ rescaling of H69/H73–H78 using 2020–2024 already inspected
+trades and assumed NQ Free all-in $25.74 round-trip found **no** system
+above 15% nominal-equivalent CAGR on reference USD 50k; all seven had
+closed drawdown greater than the illustrative USD 2k funded-account loss
+cushion. In particular, H69 was ~9.98% CAGR equivalent and ~$8.21k closed
+drawdown. These are **not** validated NQ fills, funded results, or
+independent confirmations.
+
+For each new NQ-executable joint strategy, freeze dollar risk per trade,
+technical NQ stop distance, contract count, execution broker/funded fees,
+causal multi-signal router, intratrade mark-to-market trailing-loss
+handling and risk caps *before* outcomes. If one NQ exceeds the funded
+risk budget, mark it ineligible for that product and evaluate MNQ or a
+different product separately; **never force 1 NQ to meet the 15% target**.
+Keep the VOO/QQQM same-dates economic gate and separate funded personal
+payout ROI intact.
+
+See `research/nq/NQ_FIRST_EXECUTION_POLICY_2026_10_10.md` and
+`research/nq/NQ_VS_MNQ_EXECUTION_TRANSFER_DIAGNOSTIC_2020_2024.md`.
+No changes to locked family thresholds, Holm budget or 2025/2026 holdouts.
