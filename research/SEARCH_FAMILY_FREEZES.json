@@ -52,6 +52,39 @@
         "NQ-H31",
         "NQ-H32"
       ]
+    },
+    "NQ-MINUTE-H33-H52-V1": {
+      "family_sha256": "bc0ad866e61debe4cc4cd06e2258d119d325fd8220917b84218115b73c282849",
+      "definition_sha256": {
+        "research/nq/NQ_H33_H52_PREREG_2026_10_09.md": "d094f7403aed7e77830f4b9b4347ff427efb7815d8a11a2470b1abe9b6434160",
+        "research/nq/nq_h33_h52_minute_2020_2024.py": "258847f19e76c5260b185f42befc5dc124af954184d34542d1c4398ac9a1add0",
+        "research/nq/test_nq_h33_h52.py": "02c7348623d1ce1dd38a03955d2e1c260d5c69c53adcf40ac0ef3fe68a538312",
+        "research/nq/nq_h05_h07_level_volume_screen.py": "61352658a4f99e17d63ee7ebdafd39218dc59c45b8735422edfeeb04fe8988f8"
+      },
+      "index": 3,
+      "alpha": 0.004166666666666667,
+      "member_ids": [
+        "NQ-H33",
+        "NQ-H34",
+        "NQ-H35",
+        "NQ-H36",
+        "NQ-H37",
+        "NQ-H38",
+        "NQ-H39",
+        "NQ-H40",
+        "NQ-H41",
+        "NQ-H42",
+        "NQ-H43",
+        "NQ-H44",
+        "NQ-H45",
+        "NQ-H46",
+        "NQ-H47",
+        "NQ-H48",
+        "NQ-H49",
+        "NQ-H50",
+        "NQ-H51",
+        "NQ-H52"
+      ]
     }
   }
 }
