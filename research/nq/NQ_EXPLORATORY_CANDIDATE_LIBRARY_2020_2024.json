@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "date_created_utc": "2026-10-10",
+  "universe": "NQ 2020-2024 heavily reused development",
+  "market_data_public": false,
+  "independent_confirmation": false,
+  "strategy_authorized": false,
+  "candidate_records": [
+    {
+      "hypothesis": "NQ-H02",
+      "mechanism": "Failed opening-range breakout",
+      "n": 636,
+      "mean_net_usd_per_nq": 37.66,
+      "profit_factor": 1.096,
+      "positive_years_2020_2024": 3,
+      "exploratory_q_as_reported": "0.600",
+      "bank_tag": "EARLY_EXPLORATORY",
+      "limitations": "Annual concentration; source early NQ first diagnostic"
+    },
+    {
+      "hypothesis": "NQ-H05",
+      "mechanism": "Prior-session high/low rejection",
+      "n": 545,
+      "mean_net_usd_per_nq": 7.98,
+      "profit_factor": 1.019,
+      "positive_years_2020_2024": 3,
+      "exploratory_q_as_reported": "0.696",
+      "bank_tag": "AUDIT_ROLLOVER",
+      "limitations": "Eight roll-day signals contributed disproportionately"
+    },
+    {
+      "hypothesis": "NQ-H09",
+      "mechanism": "Gap continuation first15",
+      "n": 173,
+      "mean_net_usd_per_nq": 117.38,
+      "profit_factor": 1.255,
+      "positive_years_2020_2024": 3,
+      "exploratory_q_as_reported": "0.706",
+      "bank_tag": "KEEP_STRATEGY_ENGINEERING",
+      "limitations": "18 exploratory brackets; one 1 MNQ configuration PF1.576, post-selected; concentration in 2022"
+    },
+    {
+      "hypothesis": "NQ-H29",
+      "mechanism": "Decelerating 1m impulse reversal",
+      "n": 45,
+      "mean_net_usd_per_nq": 227.15,
+      "profit_factor": 1.998,
+      "positive_years_2020_2024": 4,
+      "exploratory_q_as_reported": "0.684",
+      "bank_tag": "KEEP_LOW_N",
+      "limitations": "Low sample; no authorization"
+    },
+    {
+      "hypothesis": "NQ-H36",
+      "mechanism": "First15 and second15 reversal",
+      "n": 114,
+      "mean_net_usd_per_nq": 173.56,
+      "profit_factor": 1.452,
+      "positive_years_2020_2024": 4,
+      "exploratory_q_as_reported": "0.535",
+      "bank_tag": "KEEP_LOW_N",
+      "limitations": "CI90 crosses zero"
+    },
+    {
+      "hypothesis": "NQ-H44",
+      "mechanism": "Early movement on low volume",
+      "n": 22,
+      "mean_net_usd_per_nq": 712.21,
+      "profit_factor": 3.694,
+      "positive_years_2020_2024": 4,
+      "exploratory_q_as_reported": "0.535",
+      "bank_tag": "KEEP_LOW_N",
+      "limitations": "Possible chance result from few events"
+    },
+    {
+      "hypothesis": "NQ-H45",
+      "mechanism": "Second15 accepted movement and volume",
+      "n": 45,
+      "mean_net_usd_per_nq": 298.59,
+      "profit_factor": 1.716,
+      "positive_years_2020_2024": 4,
+      "exploratory_q_as_reported": "0.535",
+      "bank_tag": "KEEP_LOW_N",
+      "limitations": "Very sparse; not tradable"
+    },
+    {
+      "hypothesis": "NQ-H54",
+      "mechanism": "Accepted premarket break with volume",
+      "n": 1013,
+      "mean_net_usd_per_nq": 5.64,
+      "profit_factor": 1.014,
+      "positive_years_2020_2024": 3,
+      "exploratory_q_as_reported": "0.659",
+      "bank_tag": "KEEP_CONTEXT_FILTER",
+      "limitations": "Large N but trivial net effect; fails inference"
+    },
+    {
+      "hypothesis": "NQ-H55",
+      "mechanism": "Return toward overnight VWAP",
+      "n": 178,
+      "mean_net_usd_per_nq": 47.43,
+      "profit_factor": 1.104,
+      "positive_years_2020_2024": 4,
+      "exploratory_q_as_reported": "0.632",
+      "bank_tag": "KEEP_STRATEGY_ENGINEERING",
+      "limitations": "Pre-specified bracket lost -$3.65/NQ; overlaps H56 on 67 days"
+    },
+    {
+      "hypothesis": "NQ-H56",
+      "mechanism": "Reversal of premarket body",
+      "n": 100,
+      "mean_net_usd_per_nq": 75.56,
+      "profit_factor": 1.149,
+      "positive_years_2020_2024": 3,
+      "exploratory_q_as_reported": "0.632",
+      "bank_tag": "KEEP_STRATEGY_ENGINEERING",
+      "limitations": "Pre-specified bracket +$86.98/NQ, PF1.269; closed DD ~$3599 exceeds funding nominal loss cushion"
+    },
+    {
+      "hypothesis": "NQ-H57",
+      "mechanism": "Previous-week range rejection",
+      "n": 31,
+      "mean_net_usd_per_nq": 174.26,
+      "profit_factor": 1.524,
+      "positive_years_2020_2024": 4,
+      "exploratory_q_as_reported": "0.632",
+      "bank_tag": "KEEP_LOW_N",
+      "limitations": "Sparse signals, no independent inference"
+    }
+  ],
+  "policy": "Keep all signals even if individual gate fails; do not relabel as validated. Controlled portfolio testing must be one trade per session or risk-limited, no duplicate NQ equity exposure; separately model funded commissions and trailing floating equity."
+}
