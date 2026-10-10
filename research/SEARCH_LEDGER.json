@@ -1488,7 +1488,59 @@
       "eligible_for_outcome_run": false
     }
   ],
-  "future_families": [],
+  "future_families": [
+    {
+      "id": "NQ-LEVEL-VOLUME-H05-H07-V1",
+      "index": 1,
+      "question": "Do preregistered prior-RTH and overnight high/low price-volume interactions predict net +30-minute NQ direction?",
+      "origin_units": [
+        "NQ-H05",
+        "NQ-H06",
+        "NQ-H07"
+      ],
+      "data_role": "REUSED_DEVELOPMENT",
+      "independent_inference_justification": "None: NQ 2020-2024 has already been researched; exploratory inference only; holdouts unopened",
+      "members": [
+        {
+          "id": "NQ-H05",
+          "preregistration_path": "research/nq/NQ_PRICE_LEVEL_VOLUME_FAMILY_H05_H07_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "First 09:46-11:00 ET one-tick wick sweep and closing rejection of previous complete RTH high or low, one earliest signal/day",
+          "alternative": "mean signed 30-minute Free-costed NQ effect >0",
+          "endpoint": "next-open-to-30-minute-open signed net USD"
+        },
+        {
+          "id": "NQ-H06",
+          "preregistration_path": "research/nq/NQ_PRICE_LEVEL_VOLUME_FAMILY_H05_H07_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "First two consecutive 09:46-11:00 ET closes outside previous complete RTH high or low with current minute volume >=1.25x median previous 20 same-clock eligible sessions",
+          "alternative": "mean signed 30-minute Free-costed NQ effect >0",
+          "endpoint": "next-open-to-30-minute-open signed net USD"
+        },
+        {
+          "id": "NQ-H07",
+          "preregistration_path": "research/nq/NQ_PRICE_LEVEL_VOLUME_FAMILY_H05_H07_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "First 09:31-11:00 ET one-tick overnight high/low break then within-current-plus-next-three-bar reclaim, signal 09:46-11:00, no retries",
+          "alternative": "mean signed 30-minute Free-costed NQ effect >0",
+          "endpoint": "next-open-to-30-minute-open signed net USD"
+        }
+      ],
+      "definition_files": [
+        "research/nq/NQ_PRICE_LEVEL_VOLUME_FAMILY_H05_H07_PREREG_2026_10_09.md",
+        "research/nq/nq_h05_h07_level_volume_screen.py"
+      ],
+      "result_artifacts": [
+        "results/development/nq_h05_h07_level_volume_family.json"
+      ]
+    }
+  ],
   "version_changes": [
     {
       "path": "src/es_microstructure.py",
