@@ -1,0 +1,67 @@
+{
+  "stage": "DEVELOPMENT_EXPLORATORY_2020_2024",
+  "loaded_years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "holdout_2025_loaded": false,
+  "holdout_2026_loaded": false,
+  "family": "NQ-LEVEL-VOLUME-H05-H07-V1",
+  "preflight": "frozen source/definitions passed in GitHub Actions 38016793672",
+  "method": "Two-sided week sign-flip randomization p, 10000 draws, fixed seed 20261009, supplementary whole-family Holm governance; primary one-sided q comes from preregistered source runner",
+  "account": "NinjaTrader Free one NQ $5.74 RT + $20 modeled slippage",
+  "family_metrics": {
+    "NQ-H05": {
+      "status": "EVALUATED_EXPLORATORY",
+      "effect": 7.98,
+      "p_value_two_sided": 0.861314,
+      "events": 545,
+      "one_sided_screen_p": 0.429457,
+      "one_sided_BH_q_3": 0.69563,
+      "positive_years": 3,
+      "mean_90pct_bootstrap_CI": [
+        -64.96,
+        82.32
+      ],
+      "decision": "NOT_SUPPORTED_EXPLORATORY"
+    },
+    "NQ-H06": {
+      "status": "EVALUATED_EXPLORATORY",
+      "effect": -56.72,
+      "p_value_two_sided": 0.153085,
+      "events": 745,
+      "one_sided_screen_p": 0.927607,
+      "one_sided_BH_q_3": 0.927607,
+      "positive_years": 1,
+      "mean_90pct_bootstrap_CI": [
+        -121.93,
+        7.04
+      ],
+      "decision": "NOT_SUPPORTED_EXPLORATORY"
+    },
+    "NQ-H07": {
+      "status": "EVALUATED_EXPLORATORY",
+      "effect": 5.79,
+      "p_value_two_sided": 0.927207,
+      "events": 229,
+      "one_sided_screen_p": 0.463754,
+      "one_sided_BH_q_3": 0.69563,
+      "positive_years": 2,
+      "mean_90pct_bootstrap_CI": [
+        -96.72,
+        109.53
+      ],
+      "decision": "NOT_SUPPORTED_EXPLORATORY"
+    }
+  },
+  "conclusion": "NO_HYPOTHESIS_SUPPORTED",
+  "limitations": [
+    "All 2020-24 is reused development; independent validity not established",
+    "No stops targets or intrabar execution parity",
+    "Some H05 events on roll dates compare different contract price levels; listed as contamination risk",
+    "2025 and 2026 price content untouched"
+  ]
+}
