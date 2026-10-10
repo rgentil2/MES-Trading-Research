@@ -1,14 +1,13 @@
 {
-  "schema_version": 1,
   "families": {
     "NQ-LEVEL-VOLUME-H05-H07-V1": {
-      "family_sha256": "399e7c42d1eb6b9051cf75f583ce0b565473c77e76c81dc41932d32e36fdaf12",
+      "alpha": 0.025,
       "definition_sha256": {
         "research/nq/NQ_PRICE_LEVEL_VOLUME_FAMILY_H05_H07_PREREG_2026_10_09.md": "4fe80e348487056906927ebe4b798e4a3c50d7e44a3b1cd1c5c871241759c653",
         "research/nq/nq_h05_h07_level_volume_screen.py": "61352658a4f99e17d63ee7ebdafd39218dc59c45b8735422edfeeb04fe8988f8"
       },
+      "family_sha256": "399e7c42d1eb6b9051cf75f583ce0b565473c77e76c81dc41932d32e36fdaf12",
       "index": 1,
-      "alpha": 0.025,
       "member_ids": [
         "NQ-H05",
         "NQ-H06",
@@ -16,15 +15,15 @@
       ]
     },
     "NQ-MINUTE-25-H08-H32-V1": {
-      "family_sha256": "4601e60fd418febc3199cb977ccf9b78d7a944d3a35c34af94e22ecfb1c443d0",
+      "alpha": 0.008333333333333333,
       "definition_sha256": {
         "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md": "1073473c6599d9aaf1921ffb948a96064d3aaba857ac4a0e9697ad5280506bac",
-        "research/nq/nq_h08_h32_minute_2020_2024.py": "93669de8b6b17a5368959ad9a7fb0bdbf69c61788372d584cf8b9d2d9b427d3d",
         "research/nq/nq_h05_h07_level_volume_screen.py": "61352658a4f99e17d63ee7ebdafd39218dc59c45b8735422edfeeb04fe8988f8",
+        "research/nq/nq_h08_h32_minute_2020_2024.py": "93669de8b6b17a5368959ad9a7fb0bdbf69c61788372d584cf8b9d2d9b427d3d",
         "research/nq/test_nq_h08_h32_minute_2020_2024.py": "572286ad2fed0d2bdd6300e2d33e576eb1b78701b4267f5de8852a7153e219b9"
       },
+      "family_sha256": "4601e60fd418febc3199cb977ccf9b78d7a944d3a35c34af94e22ecfb1c443d0",
       "index": 2,
-      "alpha": 0.008333333333333333,
       "member_ids": [
         "NQ-H08",
         "NQ-H09",
@@ -54,15 +53,15 @@
       ]
     },
     "NQ-MINUTE-H33-H52-V1": {
-      "family_sha256": "bc0ad866e61debe4cc4cd06e2258d119d325fd8220917b84218115b73c282849",
+      "alpha": 0.004166666666666667,
       "definition_sha256": {
         "research/nq/NQ_H33_H52_PREREG_2026_10_09.md": "d094f7403aed7e77830f4b9b4347ff427efb7815d8a11a2470b1abe9b6434160",
+        "research/nq/nq_h05_h07_level_volume_screen.py": "61352658a4f99e17d63ee7ebdafd39218dc59c45b8735422edfeeb04fe8988f8",
         "research/nq/nq_h33_h52_minute_2020_2024.py": "258847f19e76c5260b185f42befc5dc124af954184d34542d1c4398ac9a1add0",
-        "research/nq/test_nq_h33_h52.py": "02c7348623d1ce1dd38a03955d2e1c260d5c69c53adcf40ac0ef3fe68a538312",
-        "research/nq/nq_h05_h07_level_volume_screen.py": "61352658a4f99e17d63ee7ebdafd39218dc59c45b8735422edfeeb04fe8988f8"
+        "research/nq/test_nq_h33_h52.py": "02c7348623d1ce1dd38a03955d2e1c260d5c69c53adcf40ac0ef3fe68a538312"
       },
+      "family_sha256": "bc0ad866e61debe4cc4cd06e2258d119d325fd8220917b84218115b73c282849",
       "index": 3,
-      "alpha": 0.004166666666666667,
       "member_ids": [
         "NQ-H33",
         "NQ-H34",
@@ -85,6 +84,26 @@
         "NQ-H51",
         "NQ-H52"
       ]
+    },
+    "NQ-PREMARKET-WEEKLY-H53-H58-V1": {
+      "alpha": 0.0025,
+      "definition_sha256": {
+        "research/nq/NQ_H53_H58_PREREG_2026_10_10.md": "006f2f3d2f6ce1c289bc31293dddf65a99e614a243faa5a9423450dcd4ce14b0",
+        "research/nq/nq_h05_h07_level_volume_screen.py": "61352658a4f99e17d63ee7ebdafd39218dc59c45b8735422edfeeb04fe8988f8",
+        "research/nq/nq_h53_h58.py": "302dfc6e8746468b2b2f47335de9c071d1a0535bf0a58d77a3ba6c6e65be9ed0",
+        "research/nq/test_nq_h53_h58.py": "6978e2d19fa5a02d020f8a993d753a7548872fb98446fe1de2dd28d50924af0f"
+      },
+      "family_sha256": "a9b837659e5d99104775634d180c9cceace36b32ee9df2f7e0537ed867b969c9",
+      "index": 4,
+      "member_ids": [
+        "NQ-H53",
+        "NQ-H54",
+        "NQ-H55",
+        "NQ-H56",
+        "NQ-H57",
+        "NQ-H58"
+      ]
     }
-  }
+  },
+  "schema_version": 1
 }

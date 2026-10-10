@@ -369,7 +369,7 @@
     },
     {
       "experiment_id": "R001",
-      "title": "VWAP Unconditional ±2σ Reversion",
+      "title": "VWAP Unconditional \u00b12\u03c3 Reversion",
       "status": "REJECTED",
       "family": "VWAP",
       "dataset": "MES 1m 2020-2024"
@@ -1036,21 +1036,21 @@
     },
     {
       "id": "H024",
-      "title": "S1 — Morning ORB continuation",
+      "title": "S1 \u2014 Morning ORB continuation",
       "definition_path": "research/archive/R017/R017_H017_FILTER_PLAN.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H025",
-      "title": "S2 — Previous RTH high/low breakout",
+      "title": "S2 \u2014 Previous RTH high/low breakout",
       "definition_path": "research/archive/R017/R017_H017_FILTER_PLAN.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H026",
-      "title": "S3 — High-volume directional impulse",
+      "title": "S3 \u2014 High-volume directional impulse",
       "definition_path": "research/archive/R017/R017_H017_FILTER_PLAN.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
@@ -1078,7 +1078,7 @@
     },
     {
       "id": "H030",
-      "title": "Overnight Compression → Opening Expansion",
+      "title": "Overnight Compression \u2192 Opening Expansion",
       "definition_path": "research/archive/B02/B02_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
@@ -1134,35 +1134,35 @@
     },
     {
       "id": "H038",
-      "title": "R029 — Strong 5m Opening Impulse Continuation",
+      "title": "R029 \u2014 Strong 5m Opening Impulse Continuation",
       "definition_path": "research/archive/B04/B04_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H039",
-      "title": "R030 — 5m Opening Rejection Reversal",
+      "title": "R030 \u2014 5m Opening Rejection Reversal",
       "definition_path": "research/archive/B04/B04_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H040",
-      "title": "R031 — Wide First-15m Range Persistence",
+      "title": "R031 \u2014 Wide First-15m Range Persistence",
       "definition_path": "research/archive/B04/B04_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H041",
-      "title": "R032 — Narrow First-15m Range Persistence",
+      "title": "R032 \u2014 Narrow First-15m Range Persistence",
       "definition_path": "research/archive/B04/B04_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H042",
-      "title": "R033 — Three-Bar Opening Sequence Continuation",
+      "title": "R033 \u2014 Three-Bar Opening Sequence Continuation",
       "definition_path": "research/archive/B04/B04_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
@@ -1190,252 +1190,252 @@
     },
     {
       "id": "H046",
-      "title": "R035 — ORB continuation in HIGH regime",
+      "title": "R035 \u2014 ORB continuation in HIGH regime",
       "definition_path": "research/archive/B06/B06_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H047",
-      "title": "R036 — Previous RTH high/low breakout in HIGH regime",
+      "title": "R036 \u2014 Previous RTH high/low breakout in HIGH regime",
       "definition_path": "research/archive/B06/B06_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H048",
-      "title": "R037 — High-volume impulse in HIGH regime",
+      "title": "R037 \u2014 High-volume impulse in HIGH regime",
       "definition_path": "research/archive/B06/B06_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H049",
-      "title": "R038 — Previous Day + Overnight Alignment",
+      "title": "R038 \u2014 Previous Day + Overnight Alignment",
       "definition_path": "research/archive/B07/B07_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H050",
-      "title": "R039 — Overnight + Gap Alignment",
+      "title": "R039 \u2014 Overnight + Gap Alignment",
       "definition_path": "research/archive/B07/B07_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H051",
-      "title": "R040 — Previous Day + Gap Alignment",
+      "title": "R040 \u2014 Previous Day + Gap Alignment",
       "definition_path": "research/archive/B07/B07_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H052",
-      "title": "R041 — Triple Alignment",
+      "title": "R041 \u2014 Triple Alignment",
       "definition_path": "research/archive/B07/B07_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H053",
-      "title": "R042 — Strong Previous-Day / Overnight Conflict",
+      "title": "R042 \u2014 Strong Previous-Day / Overnight Conflict",
       "definition_path": "research/archive/B07/B07_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H054",
-      "title": "R043 — Three-Day Streak Exhaustion",
+      "title": "R043 \u2014 Three-Day Streak Exhaustion",
       "definition_path": "research/archive/B08/B08_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H055",
-      "title": "R044 — Five-Day Range Breakout at the Open",
+      "title": "R044 \u2014 Five-Day Range Breakout at the Open",
       "definition_path": "research/archive/B08/B08_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H056",
-      "title": "R045 — Five-Day Overextension Reversion",
+      "title": "R045 \u2014 Five-Day Overextension Reversion",
       "definition_path": "research/archive/B08/B08_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H057",
-      "title": "R046 — High Five-Day Range Persistence",
+      "title": "R046 \u2014 High Five-Day Range Persistence",
       "definition_path": "research/archive/B08/B08_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H058",
-      "title": "R047 — Low Five-Day Range Persistence",
+      "title": "R047 \u2014 Low Five-Day Range Persistence",
       "definition_path": "research/archive/B08/B08_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H059",
-      "title": "R048 — HIGH persists into the next 15-minute block",
+      "title": "R048 \u2014 HIGH persists into the next 15-minute block",
       "definition_path": "research/archive/B09/B09_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H060",
-      "title": "R049 — LOW persists into the next 15-minute block",
+      "title": "R049 \u2014 LOW persists into the next 15-minute block",
       "definition_path": "research/archive/B09/B09_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H061",
-      "title": "R050 — HIGH persists for one hour",
+      "title": "R050 \u2014 HIGH persists for one hour",
       "definition_path": "research/archive/B09/B09_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H062",
-      "title": "R051 — LOW persists for one hour",
+      "title": "R051 \u2014 LOW persists for one hour",
       "definition_path": "research/archive/B09/B09_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H063",
-      "title": "R052 — Extreme-state self-transition",
+      "title": "R052 \u2014 Extreme-state self-transition",
       "definition_path": "research/archive/B09/B09_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H064",
-      "title": "R053 — HIGH persists to +90 minutes",
+      "title": "R053 \u2014 HIGH persists to +90 minutes",
       "definition_path": "research/archive/B10/B10_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H065",
-      "title": "R054 — LOW persists to +90 minutes",
+      "title": "R054 \u2014 LOW persists to +90 minutes",
       "definition_path": "research/archive/B10/B10_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H066",
-      "title": "R055 — HIGH persists to +120 minutes",
+      "title": "R055 \u2014 HIGH persists to +120 minutes",
       "definition_path": "research/archive/B10/B10_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H067",
-      "title": "R056 — LOW persists to +120 minutes",
+      "title": "R056 \u2014 LOW persists to +120 minutes",
       "definition_path": "research/archive/B10/B10_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H068",
-      "title": "R057 — Extreme-state information remains above unconditional at +120m",
+      "title": "R057 \u2014 Extreme-state information remains above unconditional at +120m",
       "definition_path": "research/archive/B10/B10_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H069",
-      "title": "R058 — HIGH persists to +180m",
+      "title": "R058 \u2014 HIGH persists to +180m",
       "definition_path": "research/archive/B11/B11_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H070",
-      "title": "R059 — LOW persists to +180m",
+      "title": "R059 \u2014 LOW persists to +180m",
       "definition_path": "research/archive/B11/B11_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H071",
-      "title": "R060 — HIGH persists to +240m",
+      "title": "R060 \u2014 HIGH persists to +240m",
       "definition_path": "research/archive/B11/B11_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H072",
-      "title": "R061 — LOW persists to +240m",
+      "title": "R061 \u2014 LOW persists to +240m",
       "definition_path": "research/archive/B11/B11_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H073",
-      "title": "R062 — Extreme-state information remains at +240m",
+      "title": "R062 \u2014 Extreme-state information remains at +240m",
       "definition_path": "research/archive/B11/B11_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H074",
-      "title": "R065 — Direct HIGH-Regime Dynamic Breakout",
+      "title": "R065 \u2014 Direct HIGH-Regime Dynamic Breakout",
       "definition_path": "research/archive/B12/B12_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H075",
-      "title": "R066 — HIGH Breakout + Pullback Confirmation",
+      "title": "R066 \u2014 HIGH Breakout + Pullback Confirmation",
       "definition_path": "research/archive/B12/B12_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H076",
-      "title": "R067 — NORMAL→HIGH Transition Breakout",
+      "title": "R067 \u2014 NORMAL\u2192HIGH Transition Breakout",
       "definition_path": "research/archive/B12/B12_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H077",
-      "title": "R068 — HIGH Block Directional Close Continuation",
+      "title": "R068 \u2014 HIGH Block Directional Close Continuation",
       "definition_path": "research/archive/B13/B13_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H078",
-      "title": "R069 — HIGH VWAP Displacement Continuation",
+      "title": "R069 \u2014 HIGH VWAP Displacement Continuation",
       "definition_path": "research/archive/B13/B13_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H079",
-      "title": "R070 — HIGH Block Rejection Reversal",
+      "title": "R070 \u2014 HIGH Block Rejection Reversal",
       "definition_path": "research/archive/B13/B13_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H080",
-      "title": "R071 — HIGH VWAP Displacement Reversion",
+      "title": "R071 \u2014 HIGH VWAP Displacement Reversion",
       "definition_path": "research/archive/B14/B14_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
     },
     {
       "id": "H081",
-      "title": "R072 — HIGH Rejection Signal Failure / Exact Inverse",
+      "title": "R072 \u2014 HIGH Rejection Signal Failure / Exact Inverse",
       "definition_path": "research/archive/B14/B14_PRE_REGISTRATION.md",
       "instrument": "MES",
       "independent_confirmation_claimed": false
@@ -1862,7 +1862,7 @@
         "NQ-H52"
       ],
       "data_role": "REUSED_DEVELOPMENT",
-      "independent_inference_justification": "No independent inference: research 2020–24 reused after earlier NQ mechanism screens. Strictly no 2025/26 inspection.",
+      "independent_inference_justification": "No independent inference: research 2020\u201324 reused after earlier NQ mechanism screens. Strictly no 2025/26 inspection.",
       "members": [
         {
           "id": "NQ-H33",
@@ -1870,7 +1870,7 @@
           "research_instrument": "NQ",
           "analysis_kind": "DIRECTIONAL",
           "execution_instrument": null,
-          "definition": "Initial 15m >=1.20× past20 same 15m range, close in extreme 15% of its high-low; follow close",
+          "definition": "Initial 15m >=1.20\u00d7 past20 same 15m range, close in extreme 15% of its high-low; follow close",
           "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
           "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
         },
@@ -1880,7 +1880,7 @@
           "research_instrument": "NQ",
           "analysis_kind": "DIRECTIONAL",
           "execution_instrument": null,
-          "definition": "Initial 15m <=0.70× previous20 comparable range and 10:00 close beyond initial extreme by 1 tick; follow",
+          "definition": "Initial 15m <=0.70\u00d7 previous20 comparable range and 10:00 close beyond initial extreme by 1 tick; follow",
           "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
           "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
         },
@@ -1890,7 +1890,7 @@
           "research_instrument": "NQ",
           "analysis_kind": "DIRECTIONAL",
           "execution_instrument": null,
-          "definition": "Initial15 body >=0.20× prior14 RTH range then 10:00 body retracement between 30-65%; follow original",
+          "definition": "Initial15 body >=0.20\u00d7 prior14 RTH range then 10:00 body retracement between 30-65%; follow original",
           "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
           "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
         },
@@ -1900,7 +1900,7 @@
           "research_instrument": "NQ",
           "analysis_kind": "DIRECTIONAL",
           "execution_instrument": null,
-          "definition": "First15 body >=0.15× ATR then 09:46–10:00 body opposite >=0.15× ATR; follow reversal",
+          "definition": "First15 body >=0.15\u00d7 ATR then 09:46\u201310:00 body opposite >=0.15\u00d7 ATR; follow reversal",
           "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
           "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
         },
@@ -1920,7 +1920,7 @@
           "research_instrument": "NQ",
           "analysis_kind": "DIRECTIONAL",
           "execution_instrument": null,
-          "definition": "09:31–10:15 path efficiency >=0.60 and net body >=0.25× ATR; continuation",
+          "definition": "09:31\u201310:15 path efficiency >=0.60 and net body >=0.25\u00d7 ATR; continuation",
           "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
           "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
         },
@@ -1930,7 +1930,7 @@
           "research_instrument": "NQ",
           "analysis_kind": "DIRECTIONAL",
           "execution_instrument": null,
-          "definition": "09:31–10:15 path efficiency <=0.15 and net body >=0.10× ATR; fade",
+          "definition": "09:31\u201310:15 path efficiency <=0.15 and net body >=0.10\u00d7 ATR; fade",
           "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
           "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
         },
@@ -1940,7 +1940,7 @@
           "research_instrument": "NQ",
           "analysis_kind": "DIRECTIONAL",
           "execution_instrument": null,
-          "definition": "At least four of five last close changes 10:10–10:15 one direction and opposite initial15 body; follow",
+          "definition": "At least four of five last close changes 10:10\u201310:15 one direction and opposite initial15 body; follow",
           "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
           "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
         },
@@ -1950,7 +1950,7 @@
           "research_instrument": "NQ",
           "analysis_kind": "DIRECTIONAL",
           "execution_instrument": null,
-          "definition": "10:15 close 1 tick past 09:31–10:00 high or low; continuation",
+          "definition": "10:15 close 1 tick past 09:31\u201310:00 high or low; continuation",
           "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
           "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
         },
@@ -1960,7 +1960,7 @@
           "research_instrument": "NQ",
           "analysis_kind": "DIRECTIONAL",
           "execution_instrument": null,
-          "definition": "10:15 outside 09:31–10:00 range and 10:30 back inside; reversal",
+          "definition": "10:15 outside 09:31\u201310:00 range and 10:30 back inside; reversal",
           "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
           "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
         },
@@ -1970,7 +1970,7 @@
           "research_instrument": "NQ",
           "analysis_kind": "DIRECTIONAL",
           "execution_instrument": null,
-          "definition": "First15 volume >=1.40× past20 same window and body >=0.15× ATR; continuation",
+          "definition": "First15 volume >=1.40\u00d7 past20 same window and body >=0.15\u00d7 ATR; continuation",
           "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
           "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
         },
@@ -1980,7 +1980,7 @@
           "research_instrument": "NQ",
           "analysis_kind": "DIRECTIONAL",
           "execution_instrument": null,
-          "definition": "First15 volume <=0.65× past20 comparable and body >=0.15× ATR; fade",
+          "definition": "First15 volume <=0.65\u00d7 past20 comparable and body >=0.15\u00d7 ATR; fade",
           "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
           "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
         },
@@ -1990,7 +1990,7 @@
           "research_instrument": "NQ",
           "analysis_kind": "DIRECTIONAL",
           "execution_instrument": null,
-          "definition": "Second15 volume >=1.30× past20 second15, 10:00 close inside first15 range, body >=0.10× ATR; continuation",
+          "definition": "Second15 volume >=1.30\u00d7 past20 second15, 10:00 close inside first15 range, body >=0.10\u00d7 ATR; continuation",
           "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
           "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
         },
@@ -2000,7 +2000,7 @@
           "research_instrument": "NQ",
           "analysis_kind": "DIRECTIONAL",
           "execution_instrument": null,
-          "definition": "Second15 volume >=1.40× comparable and second15 wick crosses first15 high/low then close rejects; fade",
+          "definition": "Second15 volume >=1.40\u00d7 comparable and second15 wick crosses first15 high/low then close rejects; fade",
           "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
           "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
         },
@@ -2010,7 +2010,7 @@
           "research_instrument": "NQ",
           "analysis_kind": "DIRECTIONAL",
           "execution_instrument": null,
-          "definition": "Second15 volume relative to its baseline <=0.70× first15 relative ratio, body >=0.12× ATR; fade",
+          "definition": "Second15 volume relative to its baseline <=0.70\u00d7 first15 relative ratio, body >=0.12\u00d7 ATR; fade",
           "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
           "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
         },
@@ -2020,7 +2020,7 @@
           "research_instrument": "NQ",
           "analysis_kind": "DIRECTIONAL",
           "execution_instrument": null,
-          "definition": "Prior day close top/bottom 20%, opening gap opposite >=0.15× ATR and first15 drive aligned >=0.10× ATR; follow",
+          "definition": "Prior day close top/bottom 20%, opening gap opposite >=0.15\u00d7 ATR and first15 drive aligned >=0.10\u00d7 ATR; follow",
           "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
           "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
         },
@@ -2030,7 +2030,7 @@
           "research_instrument": "NQ",
           "analysis_kind": "DIRECTIONAL",
           "execution_instrument": null,
-          "definition": "Previous RTH inside second-previous RTH and first15 body >=0.12× ATR; continuation",
+          "definition": "Previous RTH inside second-previous RTH and first15 body >=0.12\u00d7 ATR; continuation",
           "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
           "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
         },
@@ -2040,7 +2040,7 @@
           "research_instrument": "NQ",
           "analysis_kind": "DIRECTIONAL",
           "execution_instrument": null,
-          "definition": "Previous RTH outside second-previous RTH, close in middle 35-65%, first15 body >=0.12× ATR; fade",
+          "definition": "Previous RTH outside second-previous RTH, close in middle 35-65%, first15 body >=0.12\u00d7 ATR; fade",
           "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
           "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
         },
@@ -2050,7 +2050,7 @@
           "research_instrument": "NQ",
           "analysis_kind": "DIRECTIONAL",
           "execution_instrument": null,
-          "definition": "Previous 3 RTH ranges strictly decreasing, current first15 >= past20 range median, body >=0.10× ATR; continuation",
+          "definition": "Previous 3 RTH ranges strictly decreasing, current first15 >= past20 range median, body >=0.10\u00d7 ATR; continuation",
           "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
           "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
         },
@@ -2060,7 +2060,7 @@
           "research_instrument": "NQ",
           "analysis_kind": "DIRECTIONAL",
           "execution_instrument": null,
-          "definition": "Previous 3 close-to-close changes same sign and first15 body opposite >=0.10× ATR; follow reversal",
+          "definition": "Previous 3 close-to-close changes same sign and first15 body opposite >=0.10\u00d7 ATR; follow reversal",
           "alternative": "preregistered direction predicts strictly positive Free-friction NQ 30m net event mean",
           "endpoint": "Fixed +30-minute next-open-to-open directional USD net result (H33-H52), calendar-week clustered"
         }
@@ -2073,6 +2073,92 @@
       ],
       "result_artifacts": [
         "results/development/nq_h33_h52_minute_family.json"
+      ]
+    },
+    {
+      "id": "NQ-PREMARKET-WEEKLY-H53-H58-V1",
+      "index": 4,
+      "question": "Do premarket references, overnight VWAP, weekly levels or overnight-to-RTH transitions predict positive net NQ 30 minute returns?",
+      "origin_units": [
+        "NQ-H53",
+        "NQ-H54",
+        "NQ-H55",
+        "NQ-H56",
+        "NQ-H57",
+        "NQ-H58"
+      ],
+      "data_role": "REUSED_DEVELOPMENT",
+      "independent_inference_justification": "Previously mined development 2020\u20132024, no independent support. Strictly no 2025 or 2026 market reads.",
+      "members": [
+        {
+          "id": "NQ-H53",
+          "preregistration_path": "research/nq/NQ_H53_H58_PREREG_2026_10_10.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "First premarket 08:30\u201309:30 high/low wick break from 09:46\u201310:45 ET that closes inside; first break consumes day; fade",
+          "alternative": "Directional mean net NQ +30min after Free commission and slippage >0",
+          "endpoint": "Next-minute entry OPEN to +30min OPEN; block-week bootstrap 90%, BH on six"
+        },
+        {
+          "id": "NQ-H54",
+          "preregistration_path": "research/nq/NQ_H53_H58_PREREG_2026_10_10.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Two close confirmation beyond premarket range with volume >=1.20 prior20 same-minute median; continuation",
+          "alternative": "Directional mean net NQ +30min after Free commission and slippage >0",
+          "endpoint": "Next-minute entry OPEN to +30min OPEN; block-week bootstrap 90%, BH on six"
+        },
+        {
+          "id": "NQ-H55",
+          "preregistration_path": "research/nq/NQ_H53_H58_PREREG_2026_10_10.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Overnight VWAP >=800 bars, first15 reversion toward 0.15 ATR gap from VWAP, body >=0.07 ATR and residual >=0.05 ATR",
+          "alternative": "Directional mean net NQ +30min after Free commission and slippage >0",
+          "endpoint": "Next-minute entry OPEN to +30min OPEN; block-week bootstrap 90%, BH on six"
+        },
+        {
+          "id": "NQ-H56",
+          "preregistration_path": "research/nq/NQ_H53_H58_PREREG_2026_10_10.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Premarket body >=0.20 past14 median RTH range, initial15 body >=0.10 past14 median RTH range opposite; follow reversal",
+          "alternative": "Directional mean net NQ +30min after Free commission and slippage >0",
+          "endpoint": "Next-minute entry OPEN to +30min OPEN; block-week bootstrap 90%, BH on six"
+        },
+        {
+          "id": "NQ-H57",
+          "preregistration_path": "research/nq/NQ_H53_H58_PREREG_2026_10_10.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Previous completed ISO week >=3 RTH sessions same contract; first wick sweep and close reentry; fade",
+          "alternative": "Directional mean net NQ +30min after Free commission and slippage >0",
+          "endpoint": "Next-minute entry OPEN to +30min OPEN; block-week bootstrap 90%, BH on six"
+        },
+        {
+          "id": "NQ-H58",
+          "preregistration_path": "research/nq/NQ_H53_H58_PREREG_2026_10_10.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Premarket range <=0.65 past20 median and initial15 >=1.10 past20 median with >=0.10 past14 ATR body; follow impulse",
+          "alternative": "Directional mean net NQ +30min after Free commission and slippage >0",
+          "endpoint": "Next-minute entry OPEN to +30min OPEN; block-week bootstrap 90%, BH on six"
+        }
+      ],
+      "definition_files": [
+        "research/nq/NQ_H53_H58_PREREG_2026_10_10.md",
+        "research/nq/nq_h53_h58.py",
+        "research/nq/test_nq_h53_h58.py",
+        "research/nq/nq_h05_h07_level_volume_screen.py"
+      ],
+      "result_artifacts": [
+        "results/development/nq_h53_h58_family.json"
       ]
     }
   ],
