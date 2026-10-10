@@ -1,0 +1,140 @@
+{
+  "stage": "DEVELOPMENT_EXPLORATORY",
+  "loaded_years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "holdout_2025_loaded": false,
+  "holdout_2026_loaded": false,
+  "family_metrics": {
+    "NQ-H08": {
+      "status": "ESTIMATED",
+      "effect": -42.02,
+      "p_value_two_sided": 0.4201579842015799
+    },
+    "NQ-H09": {
+      "status": "ESTIMATED",
+      "effect": 117.38,
+      "p_value_two_sided": 0.28357164283571645
+    },
+    "NQ-H10": {
+      "status": "ESTIMATED",
+      "effect": 510.76,
+      "p_value_two_sided": 0.10938906109389061
+    },
+    "NQ-H11": {
+      "status": "ESTIMATED",
+      "effect": 100.01,
+      "p_value_two_sided": 0.33896610338966104
+    },
+    "NQ-H12": {
+      "status": "ESTIMATED",
+      "effect": -33.7,
+      "p_value_two_sided": 0.7329267073292671
+    },
+    "NQ-H13": {
+      "status": "ESTIMATED",
+      "effect": -41.53,
+      "p_value_two_sided": 0.6991300869913009
+    },
+    "NQ-H14": {
+      "status": "ESTIMATED",
+      "effect": 64.43,
+      "p_value_two_sided": 0.5789421057894211
+    },
+    "NQ-H15": {
+      "status": "ESTIMATED",
+      "effect": 185.49,
+      "p_value_two_sided": 0.20057994200579943
+    },
+    "NQ-H16": {
+      "status": "ESTIMATED",
+      "effect": -27.97,
+      "p_value_two_sided": 0.6729327067293271
+    },
+    "NQ-H17": {
+      "status": "ESTIMATED",
+      "effect": -62.8,
+      "p_value_two_sided": 0.5905409459054094
+    },
+    "NQ-H18": {
+      "status": "ESTIMATED",
+      "effect": -46.0,
+      "p_value_two_sided": 0.5991400859914009
+    },
+    "NQ-H19": {
+      "status": "ESTIMATED",
+      "effect": -94.3,
+      "p_value_two_sided": 0.46175382461753833
+    },
+    "NQ-H20": {
+      "status": "ESTIMATED",
+      "effect": -57.72,
+      "p_value_two_sided": 0.2959704029597041
+    },
+    "NQ-H21": {
+      "status": "ESTIMATED",
+      "effect": 174.26,
+      "p_value_two_sided": 0.4647535246475352
+    },
+    "NQ-H22": {
+      "status": "ESTIMATED",
+      "effect": -19.72,
+      "p_value_two_sided": 0.8199180081991801
+    },
+    "NQ-H23": {
+      "status": "ESTIMATED",
+      "effect": 170.65,
+      "p_value_two_sided": 0.3247675232476752
+    },
+    "NQ-H24": {
+      "status": "ESTIMATED",
+      "effect": 90.44,
+      "p_value_two_sided": 0.76992300769923
+    },
+    "NQ-H25": {
+      "status": "ESTIMATED",
+      "effect": 8.15,
+      "p_value_two_sided": 0.9927007299270072
+    },
+    "NQ-H26": {
+      "status": "ESTIMATED",
+      "effect": 61.09,
+      "p_value_two_sided": 0.7313268673132687
+    },
+    "NQ-H27": {
+      "status": "ESTIMATED",
+      "effect": -384.07,
+      "p_value_two_sided": 0.48535146485351466
+    },
+    "NQ-H28": {
+      "status": "ESTIMATED",
+      "effect": -40.78,
+      "p_value_two_sided": 0.6495350464953504
+    },
+    "NQ-H29": {
+      "status": "ESTIMATED",
+      "effect": 227.15,
+      "p_value_two_sided": 0.09019098090190981
+    },
+    "NQ-H30": {
+      "status": "ESTIMATED",
+      "effect": -62.78,
+      "p_value_two_sided": 0.3233676632336766
+    },
+    "NQ-H31": {
+      "status": "ESTIMATED",
+      "effect": -67.25,
+      "p_value_two_sided": 0.33696630336966304
+    },
+    "NQ-H32": {
+      "status": "ESTIMATED",
+      "effect": -8.92,
+      "p_value_two_sided": 0.7965203479652034
+    }
+  },
+  "caveat": "Fixed-rule weekly signflip two-sided inversion is an approximate sign-symmetry test; long/short are prespecified. No OOS or executable strategy."
+}
