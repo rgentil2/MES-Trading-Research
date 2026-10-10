@@ -234,6 +234,180 @@
       "result_source": "results/nq_h67_h72/NQ_H67_H72_REPORT_2020_2024.json",
       "holdouts_opened": false,
       "validated": false
+    },
+    {
+      "hypothesis": "NQ-H73",
+      "mechanism": "High prior-day relative RTH volatility selects H09, low selects H56; single bracket MNQ",
+      "parents": [
+        "NQ-H09",
+        "NQ-H56",
+        "NQ-H69"
+      ],
+      "n": 139,
+      "net_usd_per_1mnq_2020_2024": 1140.18,
+      "profit_factor": 1.252,
+      "positive_years_2020_2024": 4,
+      "exploratory_q_as_reported": "0.156704",
+      "closed_drawdown_usd_1mnq": 775.4,
+      "nominal_50k_cagr": 0.00452,
+      "bank_tag": "KEEP_NEGATIVE_INCREMENTAL_EVIDENCE",
+      "limitations": "No incremental cumulative-PnL improvement over H69; 2020–24 reused development; source price NQ minute MNQ proxy; fails Gate1; 2025–26 still sealed",
+      "one_nq_mechanical_transfer": {
+        "net_usd": 13217.14,
+        "equivalent_50k_cagr_pct": 4.803,
+        "closed_dd_usd": 7362.2,
+        "cost_rt_assumed_usd": 25.74,
+        "not_executable_validation": true
+      },
+      "source": "research/nq/NQ_H73_H78_RESULTS_2020_2024.md",
+      "preregistration": "research/nq/NQ_H73_H78_PREREG_2026_10_10.md",
+      "validated": false,
+      "holdouts_opened": false
+    },
+    {
+      "hypothesis": "NQ-H74",
+      "mechanism": "Low prior-day relative RTH volatility selects H09, high selects H56; single bracket MNQ",
+      "parents": [
+        "NQ-H09",
+        "NQ-H56",
+        "NQ-H69"
+      ],
+      "n": 132,
+      "net_usd_per_1mnq_2020_2024": 1657.84,
+      "profit_factor": 1.438,
+      "positive_years_2020_2024": 5,
+      "exploratory_q_as_reported": "0.114889",
+      "closed_drawdown_usd_1mnq": 444.1,
+      "nominal_50k_cagr": 0.006546,
+      "bank_tag": "KEEP_EXPLORATORY_LOW_N",
+      "limitations": "No incremental cumulative-PnL improvement over H69; 2020–24 reused development; source price NQ minute MNQ proxy; fails Gate1; 2025–26 still sealed",
+      "one_nq_mechanical_transfer": {
+        "net_usd": 18302.32,
+        "equivalent_50k_cagr_pct": 6.437,
+        "closed_dd_usd": 4179.8,
+        "cost_rt_assumed_usd": 25.74,
+        "not_executable_validation": true
+      },
+      "source": "research/nq/NQ_H73_H78_RESULTS_2020_2024.md",
+      "preregistration": "research/nq/NQ_H73_H78_PREREG_2026_10_10.md",
+      "validated": false,
+      "holdouts_opened": false
+    },
+    {
+      "hypothesis": "NQ-H75",
+      "mechanism": "Compressed prior premarket range selects H09, expanded selects H56; single bracket MNQ",
+      "parents": [
+        "NQ-H09",
+        "NQ-H56",
+        "NQ-H69"
+      ],
+      "n": 165,
+      "net_usd_per_1mnq_2020_2024": 1197.3,
+      "profit_factor": 1.225,
+      "positive_years_2020_2024": 4,
+      "exploratory_q_as_reported": "0.156704",
+      "closed_drawdown_usd_1mnq": 678.08,
+      "nominal_50k_cagr": 0.004745,
+      "bank_tag": "KEEP_NEGATIVE_INCREMENTAL_EVIDENCE",
+      "limitations": "No incremental cumulative-PnL improvement over H69; 2020–24 reused development; source price NQ minute MNQ proxy; fails Gate1; 2025–26 still sealed",
+      "one_nq_mechanical_transfer": {
+        "net_usd": 14127.9,
+        "equivalent_50k_cagr_pct": 5.103,
+        "closed_dd_usd": 6245.34,
+        "cost_rt_assumed_usd": 25.74,
+        "not_executable_validation": true
+      },
+      "source": "research/nq/NQ_H73_H78_RESULTS_2020_2024.md",
+      "preregistration": "research/nq/NQ_H73_H78_PREREG_2026_10_10.md",
+      "validated": false,
+      "holdouts_opened": false
+    },
+    {
+      "hypothesis": "NQ-H76",
+      "mechanism": "Expanded premarket range selects H09, compressed selects H56; single bracket MNQ",
+      "parents": [
+        "NQ-H09",
+        "NQ-H56",
+        "NQ-H69"
+      ],
+      "n": 92,
+      "net_usd_per_1mnq_2020_2024": 1091.04,
+      "profit_factor": 1.417,
+      "positive_years_2020_2024": 3,
+      "exploratory_q_as_reported": "0.121388",
+      "closed_drawdown_usd_1mnq": 508.12,
+      "nominal_50k_cagr": 0.004327,
+      "bank_tag": "KEEP_NEGATIVE_INCREMENTAL_EVIDENCE",
+      "limitations": "No incremental cumulative-PnL improvement over H69; 2020–24 reused development; source price NQ minute MNQ proxy; fails Gate1; 2025–26 still sealed",
+      "one_nq_mechanical_transfer": {
+        "net_usd": 12111.92,
+        "equivalent_50k_cagr_pct": 4.434,
+        "closed_dd_usd": 4767.76,
+        "cost_rt_assumed_usd": 25.74,
+        "not_executable_validation": true
+      },
+      "source": "research/nq/NQ_H73_H78_RESULTS_2020_2024.md",
+      "preregistration": "research/nq/NQ_H73_H78_PREREG_2026_10_10.md",
+      "validated": false,
+      "holdouts_opened": false
+    },
+    {
+      "hypothesis": "NQ-H77",
+      "mechanism": "Gap and premarket aligned selects H09; opposed selects H56; single bracket MNQ",
+      "parents": [
+        "NQ-H09",
+        "NQ-H56",
+        "NQ-H69"
+      ],
+      "n": 140,
+      "net_usd_per_1mnq_2020_2024": 2385.3,
+      "profit_factor": 1.632,
+      "positive_years_2020_2024": 4,
+      "exploratory_q_as_reported": "0.046795",
+      "closed_drawdown_usd_1mnq": 584.54,
+      "nominal_50k_cagr": 0.009365,
+      "bank_tag": "KEEP_EXPLORATORY_LOW_N",
+      "limitations": "No incremental cumulative-PnL improvement over H69; 2020–24 reused development; source price NQ minute MNQ proxy; fails Gate1; 2025–26 still sealed",
+      "one_nq_mechanical_transfer": {
+        "net_usd": 25681.4,
+        "equivalent_50k_cagr_pct": 8.644,
+        "closed_dd_usd": 5414.42,
+        "cost_rt_assumed_usd": 25.74,
+        "not_executable_validation": true
+      },
+      "source": "research/nq/NQ_H73_H78_RESULTS_2020_2024.md",
+      "preregistration": "research/nq/NQ_H73_H78_PREREG_2026_10_10.md",
+      "validated": false,
+      "holdouts_opened": false
+    },
+    {
+      "hypothesis": "NQ-H78",
+      "mechanism": "Gap and premarket opposed selects H09; aligned selects H56; single bracket MNQ",
+      "parents": [
+        "NQ-H09",
+        "NQ-H56",
+        "NQ-H69"
+      ],
+      "n": 129,
+      "net_usd_per_1mnq_2020_2024": 427.98,
+      "profit_factor": 1.096,
+      "positive_years_2020_2024": 3,
+      "exploratory_q_as_reported": "0.324868",
+      "closed_drawdown_usd_1mnq": 684.32,
+      "nominal_50k_cagr": 0.001706,
+      "bank_tag": "KEEP_NEGATIVE_INCREMENTAL_EVIDENCE",
+      "limitations": "No incremental cumulative-PnL improvement over H69; 2020–24 reused development; source price NQ minute MNQ proxy; fails Gate1; 2025–26 still sealed",
+      "one_nq_mechanical_transfer": {
+        "net_usd": 5964.54,
+        "equivalent_50k_cagr_pct": 2.279,
+        "closed_dd_usd": 6660.36,
+        "cost_rt_assumed_usd": 25.74,
+        "not_executable_validation": true
+      },
+      "source": "research/nq/NQ_H73_H78_RESULTS_2020_2024.md",
+      "preregistration": "research/nq/NQ_H73_H78_PREREG_2026_10_10.md",
+      "validated": false,
+      "holdouts_opened": false
     }
   ],
   "policy": "Keep all signals even if individual gate fails; do not relabel as validated. Controlled portfolio testing must be one trade per session or risk-limited, no duplicate NQ equity exposure; separately model funded commissions and trailing floating equity.",
@@ -326,13 +500,47 @@
       "observation": "H29 fallback after H09/consensus lost $576.70 incremental MNQ; H54 as late fallback lost $4129.06 and raises frequency to 1051 trades; crude pre-existing range regime did not rescue H54.",
       "deduction": "Do not use high-frequency H54 to force trade coverage without independent mechanism. Distinguish market-state information from merely increasing activity; future fallback strategies need a genuinely new informational filter or different execution data.",
       "evidence_status": "REUSED_DEVELOPMENT_NOT_CONFIRMED"
+    },
+    {
+      "parent_ids": [
+        "NQ-H69",
+        "NQ-H73",
+        "NQ-H74",
+        "NQ-H75",
+        "NQ-H76",
+        "NQ-H77",
+        "NQ-H78"
+      ],
+      "observation": "Six complementary joint routers reduced H69 total 1MNQ profit despite H74 5/5 positive years (n132, q=.1149) and H77 PF1.632 (n140, q=.0468, 75% gains in 2022). None passed gate1 or incremental gain after corrections.",
+      "deduction": "Do not re-segment and rescue the repeatedly tested 2020-24. Design H79+ multi-component execution risk or new independent information, not just AND filters that reduce activity.",
+      "evidence_status": "REUSED_DEVELOPMENT_NOT_CONFIRMED"
+    },
+    {
+      "parent_ids": [
+        "NQ-H69",
+        "NQ-H74",
+        "NQ-H77"
+      ],
+      "observation": "Mechanical NQ transfer of frozen 1MNQ trade paths using 25.74 USD NQ RT friction: H69 30466.12 USD 5yrs (9.98% equivalent 50k CAGR) but 8214.22 closed DD; H74 18302.32 (6.44%) DD4179.80; H77 25681.40 (8.64%) DD5414.42. All seven rescaled strategies miss 15% and closed-DD cushion 2000.",
+      "deduction": "From H79 use NQ as primary research/execution instrument with frozen realistic instrument fees and a funded-compatible dollar stop. Keep MNQ as risk-sized fallback; nominal leverage is not predictive advantage.",
+      "evidence_status": "COST_TRANSFER_DIAGNOSTIC_NOT_NEW_MARKET_SIGNAL"
     }
   ],
   "current_progress": {
-    "highest_executed_hypothesis_id": "H72",
-    "next_unpreregistered_range": "H73-H78",
-    "completed_sixth_family": "NQ-DEDUCTIVE-ENSEMBLE-H67-H72-V1",
+    "highest_executed_hypothesis_id": "H78",
+    "next_unpreregistered_range": "H79-H90",
+    "completed_seventh_family": "NQ-DEDUCTIVE-ENSEMBLE-H73-H78-V1",
     "family_formal_support": "NONE",
-    "economic_hurdle_pass_count": 0
+    "economic_hurdle_pass_count": 0,
+    "prospective_execution_priority": "NQ",
+    "mnq_role": "risk_sizing_fallback"
+  },
+  "instrument_priority_2026_10_10": {
+    "primary": "NQ",
+    "secondary": "MNQ for risk sizing / equal-risk comparison",
+    "rule": "No 1-NQ execution if frozen point stop and venue risk exceed the chosen funded account drawdown and intratrade risk limits",
+    "authoritative_addendum": "research/nq/NQ_FIRST_EXECUTION_POLICY_2026_10_10.md",
+    "conversion_audit": "research/nq/NQ_VS_MNQ_EXECUTION_TRANSFER_DIAGNOSTIC_2020_2024.md",
+    "funding_50k_strategy_authorized": false
   }
 }
