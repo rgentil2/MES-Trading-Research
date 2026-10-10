@@ -29,8 +29,11 @@ GAP_LOW = 0.10
 GAP_HIGH = 0.20
 STOP_MULT = 0.30
 CUTOFF = 690   # ET 11:30
-FEE_ES_RT = 4.68
+FEE_ES_RT = 4.68  # Original MFFU comparison: preserved unchanged
 FEE_MES_RT = 1.90
+_FREE_TABLE = json.loads((ROOT/'research/costs/NINJATRADER_FREE_ALL_IN_124_SYMBOLS_2026_10_09.json').read_text(encoding='utf-8'))['rates']
+FREE_FEE_ES_RT = float(_FREE_TABLE['ES']['all_in_free_round_trip_usd'])  # 5.74
+FREE_FEE_MES_RT = float(_FREE_TABLE['MES']['all_in_free_round_trip_usd'])  # 1.88
 MONTHS = 60
 
 
@@ -178,7 +181,11 @@ def execute_candidate(g:pd.DataFrame,candidate:dict)->dict|None:
       'gap_atr':round(candidate['gap_ratio'],5),'atr_prev':round(candidate['atr_prev'],5),
       'reason':reason,'gross_points':gross_points,
       'net_es_usd':round(gross_points*POINT_ES-FEE_ES_RT,2),
-      'net_mes_usd':round(gross_points*POINT_MES-FEE_MES_RT,2)}
+      'net_mes_usd':round(gross_points*POINT_MES-FEE_MES_RT,2),
+      'net_es_free_usd':round(gross_points*POINT_ES-FREE_FEE_ES_RT,2),
+      'net_mes_free_usd':round(gross_points*POINT_MES-FREE_FEE_MES_RT,2),
+      'stop_risk_ES_free_usd':round((candidate['stop_ticks']*TICK+SLIP)*POINT_ES+FREE_FEE_ES_RT,2),
+      'stop_risk_MES_free_usd':round((candidate['stop_ticks']*TICK+SLIP)*POINT_MES+FREE_FEE_MES_RT,2)}
 
 
 def generate_trades(sessions:list[tuple[str,pd.DataFrame]])->list[dict]:
@@ -224,6 +231,16 @@ def summarize(trades:list[dict],diag:dict)->dict:
         'fills':'2 ticks adverse entry and stop/time market exits; touch-fill PDC limit, stop-first ambiguity',
         'ES_1_CONTRACT':money_metrics('net_es_usd'),
         'MES_1_CONTRACT_SAME_ES_DERIVED_SIGNALS':money_metrics('net_mes_usd'),
+        'NINJATRADER_FREE_FEE_SCENARIO':{
+            'source':'Operator supplied all-in Free per side * 2; do not conflate with MFFU',
+            'ES_fee_round_trip_usd':FREE_FEE_ES_RT,'MES_fee_round_trip_usd':FREE_FEE_MES_RT,
+            'ES':money_metrics('net_es_free_usd'),
+            'MES_same_ES_derived_signals':money_metrics('net_mes_free_usd'),
+            'ES_stop_risk_median':round(float(df.stop_risk_ES_free_usd.median()),2),
+            'ES_stop_risk_p95':round(float(df.stop_risk_ES_free_usd.quantile(.95)),2),
+            'ES_stop_risk_max':round(float(df.stop_risk_ES_free_usd.max()),2),
+            'ES_stop_risk_gt_2000':int((df.stop_risk_ES_free_usd>2000).sum())
+        },
         'ES_risk':{'median':round(float(np.median(risk)),2),'p95':round(float(np.quantile(risk,.95)),2),'max':round(float(risk.max()),2),
                    'n_gt_200':int((risk>200).sum()),'n_gt_500':int((risk>500).sum()),'n_gt_1000':int((risk>1000).sum()),'n_gt_2000':int((risk>2000).sum()),
                    'veto_ES_single_contract':bool((risk>2000).any())},
