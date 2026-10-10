@@ -1,0 +1,879 @@
+{
+  "source": "Screenshot and Markdown table supplied by operator 2026-10-09",
+  "currency": "USD",
+  "unit": "per contract, per side and round trip",
+  "pricing_scope": "NinjaTrader brokerage Free plan, NOT MFFU account plan",
+  "price_components": "ALL-IN RATES FREE, including itemized exchange, NFA, clearing, and Free commission as shown in source",
+  "slippage": "Not included; account for separately in entry/exit execution prices",
+  "source_staleness": "Provider pricing may change; verify again before using real funds",
+  "rates": {
+    "10Y": {
+      "product": "Micro 10-Year Yield",
+      "exchange": "CBOT",
+      "group": "Financials",
+      "all_in_free_one_side_usd": "0.89",
+      "all_in_free_round_trip_usd": "1.78"
+    },
+    "1OZ": {
+      "product": "1-Ounce Gold",
+      "exchange": "COMEX",
+      "group": "Metals",
+      "all_in_free_one_side_usd": "1.09",
+      "all_in_free_round_trip_usd": "2.18"
+    },
+    "2YY": {
+      "product": "Micro 2-Year Yield",
+      "exchange": "CBOT",
+      "group": "Financials",
+      "all_in_free_one_side_usd": "0.81",
+      "all_in_free_round_trip_usd": "1.62"
+    },
+    "30Y": {
+      "product": "Micro 30-Year Yield",
+      "exchange": "CBOT",
+      "group": "Financials",
+      "all_in_free_one_side_usd": "0.85",
+      "all_in_free_round_trip_usd": "1.70"
+    },
+    "6A": {
+      "product": "Australian Dollar",
+      "exchange": "CME",
+      "group": "Currencies",
+      "all_in_free_one_side_usd": "3.09",
+      "all_in_free_round_trip_usd": "6.18"
+    },
+    "6B": {
+      "product": "British Pound",
+      "exchange": "CME",
+      "group": "Currencies",
+      "all_in_free_one_side_usd": "3.09",
+      "all_in_free_round_trip_usd": "6.18"
+    },
+    "6C": {
+      "product": "Canadian Dollar",
+      "exchange": "CME",
+      "group": "Currencies",
+      "all_in_free_one_side_usd": "3.09",
+      "all_in_free_round_trip_usd": "6.18"
+    },
+    "6E": {
+      "product": "Euro FX",
+      "exchange": "CME",
+      "group": "Currencies",
+      "all_in_free_one_side_usd": "3.09",
+      "all_in_free_round_trip_usd": "6.18"
+    },
+    "6J": {
+      "product": "Japanese Yen",
+      "exchange": "CME",
+      "group": "Currencies",
+      "all_in_free_one_side_usd": "3.09",
+      "all_in_free_round_trip_usd": "6.18"
+    },
+    "6L": {
+      "product": "Brazilian Real",
+      "exchange": "CME",
+      "group": "Currencies",
+      "all_in_free_one_side_usd": "3.09",
+      "all_in_free_round_trip_usd": "6.18"
+    },
+    "6M": {
+      "product": "Mexican Peso",
+      "exchange": "CME",
+      "group": "Currencies",
+      "all_in_free_one_side_usd": "3.09",
+      "all_in_free_round_trip_usd": "6.18"
+    },
+    "6N": {
+      "product": "New Zealand Dollar",
+      "exchange": "CME",
+      "group": "Currencies",
+      "all_in_free_one_side_usd": "3.09",
+      "all_in_free_round_trip_usd": "6.18"
+    },
+    "6S": {
+      "product": "Swiss Franc",
+      "exchange": "CME",
+      "group": "Currencies",
+      "all_in_free_one_side_usd": "3.09",
+      "all_in_free_round_trip_usd": "6.18"
+    },
+    "B5": {
+      "product": "Nano Bloomberg Large Cap Index",
+      "exchange": "Coinbase",
+      "group": "Indices",
+      "all_in_free_one_side_usd": "0.41",
+      "all_in_free_round_trip_usd": "0.82"
+    },
+    "BCH": {
+      "product": "Bitcoin Cash",
+      "exchange": "Coinbase",
+      "group": "Crypto Indices",
+      "all_in_free_one_side_usd": "1.29",
+      "all_in_free_round_trip_usd": "2.58"
+    },
+    "BIP": {
+      "product": "Nano Bitcoin Perp Style Futures",
+      "exchange": "Coinbase",
+      "group": "Crypto Indices",
+      "all_in_free_one_side_usd": "0.50",
+      "all_in_free_round_trip_usd": "1.00"
+    },
+    "BIT": {
+      "product": "Coinbase Nano Bitcoin",
+      "exchange": "Coinbase",
+      "group": "Crypto Indices",
+      "all_in_free_one_side_usd": "0.50",
+      "all_in_free_round_trip_usd": "1.00"
+    },
+    "BTC": {
+      "product": "CME Bitcoin",
+      "exchange": "CME",
+      "group": "Crypto Indices",
+      "all_in_free_one_side_usd": "8.99",
+      "all_in_free_round_trip_usd": "17.98"
+    },
+    "BTI": {
+      "product": "Coinbase Bitcoin Futures",
+      "exchange": "Coinbase",
+      "group": "Crypto Indices",
+      "all_in_free_one_side_usd": "2.20",
+      "all_in_free_round_trip_usd": "4.40"
+    },
+    "BX": {
+      "product": "Bloomberg 500 Index Futures",
+      "exchange": "MIAX",
+      "group": "Indices",
+      "all_in_free_one_side_usd": "1.515",
+      "all_in_free_round_trip_usd": "3.030"
+    },
+    "CL": {
+      "product": "Crude Oil",
+      "exchange": "NYMEX",
+      "group": "Energies",
+      "all_in_free_one_side_usd": "2.99",
+      "all_in_free_round_trip_usd": "5.98"
+    },
+    "DOG": {
+      "product": "Dogecoin",
+      "exchange": "Coinbase",
+      "group": "Crypto Indices",
+      "all_in_free_one_side_usd": "0.50",
+      "all_in_free_round_trip_usd": "1.00"
+    },
+    "E7": {
+      "product": "E-Mini Euro FX",
+      "exchange": "CME",
+      "group": "Currencies",
+      "all_in_free_one_side_usd": "2.34",
+      "all_in_free_round_trip_usd": "4.68"
+    },
+    "EMD": {
+      "product": "E-Mini S&P Midcap 400",
+      "exchange": "CME",
+      "group": "Indices",
+      "all_in_free_one_side_usd": "2.87",
+      "all_in_free_round_trip_usd": "5.74"
+    },
+    "ES": {
+      "product": "E-Mini S&P 500",
+      "exchange": "CME",
+      "group": "E-Mini Indices",
+      "all_in_free_one_side_usd": "2.87",
+      "all_in_free_round_trip_usd": "5.74"
+    },
+    "ET": {
+      "product": "Coinbase Nano Ether",
+      "exchange": "Coinbase",
+      "group": "Crypto Indices",
+      "all_in_free_one_side_usd": "0.50",
+      "all_in_free_round_trip_usd": "1.00"
+    },
+    "ETP": {
+      "product": "Nano Ether Perp Style Futures",
+      "exchange": "Coinbase",
+      "group": "Crypto Indices",
+      "all_in_free_one_side_usd": "0.50",
+      "all_in_free_round_trip_usd": "1.00"
+    },
+    "FDAX": {
+      "product": "DAX Index",
+      "exchange": "EUREX",
+      "group": "Indices",
+      "all_in_free_one_side_usd": "2.98",
+      "all_in_free_round_trip_usd": "5.96"
+    },
+    "FDXM": {
+      "product": "Mini-DAX",
+      "exchange": "EUREX",
+      "group": "Indices",
+      "all_in_free_one_side_usd": "1.78",
+      "all_in_free_round_trip_usd": "3.56"
+    },
+    "FDXS": {
+      "product": "Micro DAX Index",
+      "exchange": "EUREX",
+      "group": "Indices",
+      "all_in_free_one_side_usd": "0.70",
+      "all_in_free_round_trip_usd": "1.40"
+    },
+    "FESX": {
+      "product": "Euro Stoxx 50",
+      "exchange": "EUREX",
+      "group": "Indices",
+      "all_in_free_one_side_usd": "1.90",
+      "all_in_free_round_trip_usd": "3.80"
+    },
+    "FGBL": {
+      "product": "Euro-Bund",
+      "exchange": "EUREX",
+      "group": "Financials",
+      "all_in_free_one_side_usd": "1.73",
+      "all_in_free_round_trip_usd": "3.46"
+    },
+    "FGBM": {
+      "product": "Euro-Bobl",
+      "exchange": "EUREX",
+      "group": "Financials",
+      "all_in_free_one_side_usd": "1.69",
+      "all_in_free_round_trip_usd": "3.38"
+    },
+    "FGBS": {
+      "product": "Euro-Schatz",
+      "exchange": "EUREX",
+      "group": "Financials",
+      "all_in_free_one_side_usd": "1.69",
+      "all_in_free_round_trip_usd": "3.38"
+    },
+    "FGBX": {
+      "product": "Euro-Buxl",
+      "exchange": "EUREX",
+      "group": "Financials",
+      "all_in_free_one_side_usd": "1.85",
+      "all_in_free_round_trip_usd": "3.70"
+    },
+    "FSXE": {
+      "product": "Micro EURO STOXX 50",
+      "exchange": "EUREX",
+      "group": "Indices",
+      "all_in_free_one_side_usd": "0.67",
+      "all_in_free_round_trip_usd": "1.34"
+    },
+    "FVS": {
+      "product": "VSTOXX",
+      "exchange": "EUREX",
+      "group": "Indices",
+      "all_in_free_one_side_usd": "1.92",
+      "all_in_free_round_trip_usd": "3.84"
+    },
+    "FXXP": {
+      "product": "STOXX Europe 600",
+      "exchange": "EUREX",
+      "group": "Indices",
+      "all_in_free_one_side_usd": "1.69",
+      "all_in_free_round_trip_usd": "3.38"
+    },
+    "GC": {
+      "product": "Gold",
+      "exchange": "COMEX",
+      "group": "Metals",
+      "all_in_free_one_side_usd": "3.14",
+      "all_in_free_round_trip_usd": "6.28"
+    },
+    "GE": {
+      "product": "Eurodollar",
+      "exchange": "CME",
+      "group": "Financials",
+      "all_in_free_one_side_usd": "2.73",
+      "all_in_free_round_trip_usd": "5.46"
+    },
+    "GF": {
+      "product": "Feeder Cattle",
+      "exchange": "CME",
+      "group": "Meats",
+      "all_in_free_one_side_usd": "3.59",
+      "all_in_free_round_trip_usd": "7.18"
+    },
+    "GOL": {
+      "product": "Gold",
+      "exchange": "Coinbase",
+      "group": "Metals",
+      "all_in_free_one_side_usd": "0.50",
+      "all_in_free_round_trip_usd": "1.00"
+    },
+    "GXRP": {
+      "product": "CME XRP",
+      "exchange": "CME",
+      "group": "Indices",
+      "all_in_free_one_side_usd": "8.99",
+      "all_in_free_round_trip_usd": "17.98"
+    },
+    "HE": {
+      "product": "Lean Hogs",
+      "exchange": "CME",
+      "group": "Meats",
+      "all_in_free_one_side_usd": "3.59",
+      "all_in_free_round_trip_usd": "7.18"
+    },
+    "HG": {
+      "product": "Copper",
+      "exchange": "COMEX",
+      "group": "Metals",
+      "all_in_free_one_side_usd": "3.14",
+      "all_in_free_round_trip_usd": "6.28"
+    },
+    "HO": {
+      "product": "Heating Oil",
+      "exchange": "NYMEX",
+      "group": "Energies",
+      "all_in_free_one_side_usd": "2.99",
+      "all_in_free_round_trip_usd": "5.98"
+    },
+    "J7": {
+      "product": "E-Mini Japanese Yen",
+      "exchange": "CME",
+      "group": "Currencies",
+      "all_in_free_one_side_usd": "2.34",
+      "all_in_free_round_trip_usd": "4.68"
+    },
+    "LB5": {
+      "product": "Micro Bloomberg Large Cap Index",
+      "exchange": "Coinbase",
+      "group": "Indices",
+      "all_in_free_one_side_usd": "0.44",
+      "all_in_free_round_trip_usd": "0.88"
+    },
+    "LBR": {
+      "product": "Lumber",
+      "exchange": "CME",
+      "group": "Softs",
+      "all_in_free_one_side_usd": "2.99",
+      "all_in_free_round_trip_usd": "5.98"
+    },
+    "LBS": {
+      "product": "Random Length Lumber",
+      "exchange": "CME",
+      "group": "Softs",
+      "all_in_free_one_side_usd": "3.58",
+      "all_in_free_round_trip_usd": "7.16"
+    },
+    "LC": {
+      "product": "Litecoin",
+      "exchange": "Coinbase",
+      "group": "Crypto Indices",
+      "all_in_free_one_side_usd": "0.50",
+      "all_in_free_round_trip_usd": "1.00"
+    },
+    "LE": {
+      "product": "Live Cattle",
+      "exchange": "CME",
+      "group": "Meats",
+      "all_in_free_one_side_usd": "3.59",
+      "all_in_free_round_trip_usd": "7.18"
+    },
+    "LTEC": {
+      "product": "Micro SuperTech Index",
+      "exchange": "Coinbase",
+      "group": "Indices",
+      "all_in_free_one_side_usd": "0.44",
+      "all_in_free_round_trip_usd": "0.88"
+    },
+    "M2K": {
+      "product": "Micro E-mini Russell 2000",
+      "exchange": "CME",
+      "group": "Micro Indices",
+      "all_in_free_one_side_usd": "0.94",
+      "all_in_free_round_trip_usd": "1.88"
+    },
+    "M6A": {
+      "product": "E-Micro Australian Dollar",
+      "exchange": "CME",
+      "group": "Currencies",
+      "all_in_free_one_side_usd": "0.83",
+      "all_in_free_round_trip_usd": "1.66"
+    },
+    "M6B": {
+      "product": "E-Micro British Pound",
+      "exchange": "CME",
+      "group": "Currencies",
+      "all_in_free_one_side_usd": "0.83",
+      "all_in_free_round_trip_usd": "1.66"
+    },
+    "M6E": {
+      "product": "E-Micro Euro",
+      "exchange": "CME",
+      "group": "Currencies",
+      "all_in_free_one_side_usd": "0.83",
+      "all_in_free_round_trip_usd": "1.66"
+    },
+    "MBT": {
+      "product": "Micro Bitcoin",
+      "exchange": "CME",
+      "group": "Crypto Indices",
+      "all_in_free_one_side_usd": "1.74",
+      "all_in_free_round_trip_usd": "3.48"
+    },
+    "MC": {
+      "product": "Mag7 plus Crypto Equity Index",
+      "exchange": "Coinbase",
+      "group": "Indices",
+      "all_in_free_one_side_usd": "0.50",
+      "all_in_free_round_trip_usd": "1.00"
+    },
+    "MCD": {
+      "product": "E-Micro Canadian Dollar",
+      "exchange": "CME",
+      "group": "Currencies",
+      "all_in_free_one_side_usd": "0.83",
+      "all_in_free_round_trip_usd": "1.66"
+    },
+    "MCL": {
+      "product": "Micro Crude Oil",
+      "exchange": "NYMEX",
+      "group": "Energies",
+      "all_in_free_one_side_usd": "1.19",
+      "all_in_free_round_trip_usd": "2.38"
+    },
+    "MES": {
+      "product": "Micro E-mini S&P 500",
+      "exchange": "CME",
+      "group": "Micro Indices",
+      "all_in_free_one_side_usd": "0.94",
+      "all_in_free_round_trip_usd": "1.88"
+    },
+    "MET": {
+      "product": "Micro Ether",
+      "exchange": "CME",
+      "group": "Crypto Indices",
+      "all_in_free_one_side_usd": "0.69",
+      "all_in_free_round_trip_usd": "1.38"
+    },
+    "MFS": {
+      "product": "Mini-MSCI EAFE Index",
+      "exchange": "ICE Futures US",
+      "group": "Indices",
+      "all_in_free_one_side_usd": "2.64",
+      "all_in_free_round_trip_usd": "5.28"
+    },
+    "MGC": {
+      "product": "E-Micro Gold",
+      "exchange": "COMEX",
+      "group": "Metals",
+      "all_in_free_one_side_usd": "1.29",
+      "all_in_free_round_trip_usd": "2.58"
+    },
+    "MHG": {
+      "product": "Micro Copper",
+      "exchange": "COMEX",
+      "group": "Metals",
+      "all_in_free_one_side_usd": "1.29",
+      "all_in_free_round_trip_usd": "2.58"
+    },
+    "MJY": {
+      "product": "E-Micro Japanese Yen",
+      "exchange": "CME",
+      "group": "Currencies",
+      "all_in_free_one_side_usd": "0.83",
+      "all_in_free_round_trip_usd": "1.66"
+    },
+    "MNG": {
+      "product": "Micro Henry Hub Natural Gas",
+      "exchange": "NYMEX",
+      "group": "Energies",
+      "all_in_free_one_side_usd": "1.19",
+      "all_in_free_round_trip_usd": "2.38"
+    },
+    "MNK": {
+      "product": "Micro Nikkei Stock Average",
+      "exchange": "CME",
+      "group": "Micro Indices",
+      "all_in_free_one_side_usd": "1.02",
+      "all_in_free_round_trip_usd": "2.04"
+    },
+    "MNQ": {
+      "product": "Micro E-mini NASDAQ-100",
+      "exchange": "CME",
+      "group": "Micro Indices",
+      "all_in_free_one_side_usd": "0.94",
+      "all_in_free_round_trip_usd": "1.88"
+    },
+    "MSF": {
+      "product": "E-Micro Swiss Franc",
+      "exchange": "CME",
+      "group": "Currencies",
+      "all_in_free_one_side_usd": "0.83",
+      "all_in_free_round_trip_usd": "1.66"
+    },
+    "MSL": {
+      "product": "Micro Solana",
+      "exchange": "CME",
+      "group": "Crypto Indices",
+      "all_in_free_one_side_usd": "1.74",
+      "all_in_free_round_trip_usd": "3.48"
+    },
+    "MSSF": {
+      "product": "Single Stock Futures (Micro)",
+      "exchange": "CME",
+      "group": "Single Stock Futures",
+      "all_in_free_one_side_usd": "0.89",
+      "all_in_free_round_trip_usd": "1.78"
+    },
+    "MTN": {
+      "product": "Micro Ultra 10yr Note",
+      "exchange": "CBOT",
+      "group": "Financials",
+      "all_in_free_one_side_usd": "0.89",
+      "all_in_free_round_trip_usd": "1.78"
+    },
+    "MWN": {
+      "product": "Micro Ultra T-Bond",
+      "exchange": "CBOT",
+      "group": "Financials",
+      "all_in_free_one_side_usd": "0.85",
+      "all_in_free_round_trip_usd": "1.70"
+    },
+    "MXP": {
+      "product": "CME Micro XRP",
+      "exchange": "CME",
+      "group": "Crypto Indices",
+      "all_in_free_one_side_usd": "1.74",
+      "all_in_free_round_trip_usd": "3.48"
+    },
+    "MYM": {
+      "product": "Micro E-mini Dow $0.50",
+      "exchange": "CBOT",
+      "group": "Micro Indices",
+      "all_in_free_one_side_usd": "0.94",
+      "all_in_free_round_trip_usd": "1.88"
+    },
+    "MZC": {
+      "product": "Micro Corn",
+      "exchange": "CBOT",
+      "group": "Grains",
+      "all_in_free_one_side_usd": "1.05",
+      "all_in_free_round_trip_usd": "2.10"
+    },
+    "MZM": {
+      "product": "Micro Soybean Meal",
+      "exchange": "CBOT",
+      "group": "Grains",
+      "all_in_free_one_side_usd": "1.05",
+      "all_in_free_round_trip_usd": "2.10"
+    },
+    "MZW": {
+      "product": "Micro Wheat",
+      "exchange": "CBOT",
+      "group": "Grains",
+      "all_in_free_one_side_usd": "1.05",
+      "all_in_free_round_trip_usd": "2.10"
+    },
+    "N2K": {
+      "product": "E-nano Russell 2000",
+      "exchange": "CME",
+      "group": "Nano Indices",
+      "all_in_free_one_side_usd": "0.94",
+      "all_in_free_round_trip_usd": "1.88"
+    },
+    "NDOW": {
+      "product": "E-nano Dow",
+      "exchange": "CBOT",
+      "group": "Nano Indices",
+      "all_in_free_one_side_usd": "0.94",
+      "all_in_free_round_trip_usd": "1.88"
+    },
+    "NES": {
+      "product": "E-nano S&P 500",
+      "exchange": "CME",
+      "group": "Nano Indices",
+      "all_in_free_one_side_usd": "0.94",
+      "all_in_free_round_trip_usd": "1.88"
+    },
+    "NG": {
+      "product": "Natural Gas",
+      "exchange": "NYMEX",
+      "group": "Energies",
+      "all_in_free_one_side_usd": "3.09",
+      "all_in_free_round_trip_usd": "6.18"
+    },
+    "NKD": {
+      "product": "Nikkei 225 (USD)",
+      "exchange": "CME",
+      "group": "Indices",
+      "all_in_free_one_side_usd": "3.64",
+      "all_in_free_round_trip_usd": "7.28"
+    },
+    "NNQ": {
+      "product": "E-nano Nasdaq-100",
+      "exchange": "CME",
+      "group": "Nano Indices",
+      "all_in_free_one_side_usd": "0.94",
+      "all_in_free_round_trip_usd": "1.88"
+    },
+    "NOL": {
+      "product": "Coinbase Nano Oil",
+      "exchange": "Coinbase",
+      "group": "Energies",
+      "all_in_free_one_side_usd": "0.50",
+      "all_in_free_round_trip_usd": "1.00"
+    },
+    "NQ": {
+      "product": "E-Mini NASDAQ 100",
+      "exchange": "CME",
+      "group": "E-Mini Indices",
+      "all_in_free_one_side_usd": "2.87",
+      "all_in_free_round_trip_usd": "5.74"
+    },
+    "PA": {
+      "product": "Palladium",
+      "exchange": "NYMEX",
+      "group": "Metals",
+      "all_in_free_one_side_usd": "3.09",
+      "all_in_free_round_trip_usd": "6.18"
+    },
+    "PL": {
+      "product": "Platinum",
+      "exchange": "NYMEX",
+      "group": "Metals",
+      "all_in_free_one_side_usd": "3.14",
+      "all_in_free_round_trip_usd": "6.28"
+    },
+    "QG": {
+      "product": "E-Mini Natural Gas",
+      "exchange": "NYMEX",
+      "group": "Energies",
+      "all_in_free_one_side_usd": "1.99",
+      "all_in_free_round_trip_usd": "3.98"
+    },
+    "QH": {
+      "product": "E-Mini Heating Oil",
+      "exchange": "NYMEX",
+      "group": "Energies",
+      "all_in_free_one_side_usd": "2.68",
+      "all_in_free_round_trip_usd": "5.36"
+    },
+    "QM": {
+      "product": "E-Mini Crude Oil",
+      "exchange": "NYMEX",
+      "group": "Energies",
+      "all_in_free_one_side_usd": "2.69",
+      "all_in_free_round_trip_usd": "5.38"
+    },
+    "QO": {
+      "product": "E-Mini Gold",
+      "exchange": "COMEX",
+      "group": "Metals",
+      "all_in_free_one_side_usd": "2.49",
+      "all_in_free_round_trip_usd": "4.98"
+    },
+    "RB": {
+      "product": "RBOB Gasoline",
+      "exchange": "NYMEX",
+      "group": "Energies",
+      "all_in_free_one_side_usd": "2.99",
+      "all_in_free_round_trip_usd": "5.98"
+    },
+    "RTY": {
+      "product": "E-Mini Russell 2000",
+      "exchange": "CME",
+      "group": "E-Mini Indices",
+      "all_in_free_one_side_usd": "2.87",
+      "all_in_free_round_trip_usd": "5.74"
+    },
+    "SI": {
+      "product": "Silver",
+      "exchange": "COMEX",
+      "group": "Metals",
+      "all_in_free_one_side_usd": "3.14",
+      "all_in_free_round_trip_usd": "6.28"
+    },
+    "SIC": {
+      "product": "100-Ounce Silver",
+      "exchange": "COMEX",
+      "group": "Metals",
+      "all_in_free_one_side_usd": "1.09",
+      "all_in_free_round_trip_usd": "2.18"
+    },
+    "SIL": {
+      "product": "Micro Silver",
+      "exchange": "COMEX",
+      "group": "Metals",
+      "all_in_free_one_side_usd": "1.69",
+      "all_in_free_round_trip_usd": "3.38"
+    },
+    "SOL": {
+      "product": "Nano Solana",
+      "exchange": "Coinbase",
+      "group": "Crypto Indices",
+      "all_in_free_one_side_usd": "0.50",
+      "all_in_free_round_trip_usd": "1.00"
+    },
+    "SPK": {
+      "product": "SPIKES Volatility Index",
+      "exchange": "MGE",
+      "group": "Indices",
+      "all_in_free_one_side_usd": "1.68",
+      "all_in_free_round_trip_usd": "3.36"
+    },
+    "SSF": {
+      "product": "Single Stock Futures (Standard)",
+      "exchange": "CME",
+      "group": "Single Stock Futures",
+      "all_in_free_one_side_usd": "2.09",
+      "all_in_free_round_trip_usd": "4.18"
+    },
+    "TBX / TBQ": {
+      "product": "Tini Bloomberg 500 / 100 Index Futures",
+      "exchange": "MIAX",
+      "group": "Micro Indices",
+      "all_in_free_one_side_usd": "0.615",
+      "all_in_free_round_trip_usd": "1.230"
+    },
+    "TEC": {
+      "product": "Nano SuperTech Index",
+      "exchange": "Coinbase",
+      "group": "Indices",
+      "all_in_free_one_side_usd": "0.41",
+      "all_in_free_round_trip_usd": "0.82"
+    },
+    "TN": {
+      "product": "Ultra 10-Year T-Note",
+      "exchange": "CBOT",
+      "group": "Financials",
+      "all_in_free_one_side_usd": "2.29",
+      "all_in_free_round_trip_usd": "4.58"
+    },
+    "TWE": {
+      "product": "20yr US Treasury Bond",
+      "exchange": "CBOT",
+      "group": "Financials",
+      "all_in_free_one_side_usd": "2.35",
+      "all_in_free_round_trip_usd": "4.70"
+    },
+    "UB": {
+      "product": "Ultra US Treasury Bond",
+      "exchange": "CBOT",
+      "group": "Financials",
+      "all_in_free_one_side_usd": "2.44",
+      "all_in_free_round_trip_usd": "4.88"
+    },
+    "XC": {
+      "product": "Mini Corn",
+      "exchange": "CBOT",
+      "group": "Grains",
+      "all_in_free_one_side_usd": "2.55",
+      "all_in_free_round_trip_usd": "5.10"
+    },
+    "XK": {
+      "product": "Mini Soybean",
+      "exchange": "CBOT",
+      "group": "Grains",
+      "all_in_free_one_side_usd": "2.55",
+      "all_in_free_round_trip_usd": "5.10"
+    },
+    "XRP": {
+      "product": "Nano XRP",
+      "exchange": "Coinbase",
+      "group": "Crypto Indices",
+      "all_in_free_one_side_usd": "0.50",
+      "all_in_free_round_trip_usd": "1.00"
+    },
+    "XW": {
+      "product": "Mini Wheat",
+      "exchange": "CBOT",
+      "group": "Grains",
+      "all_in_free_one_side_usd": "2.55",
+      "all_in_free_round_trip_usd": "5.10"
+    },
+    "YM": {
+      "product": "E-Mini Dow ($5)",
+      "exchange": "CBOT",
+      "group": "E-Mini Indices",
+      "all_in_free_one_side_usd": "2.87",
+      "all_in_free_round_trip_usd": "5.74"
+    },
+    "ZB": {
+      "product": "US Treasury Bond",
+      "exchange": "CBOT",
+      "group": "Financials",
+      "all_in_free_one_side_usd": "2.36",
+      "all_in_free_round_trip_usd": "4.72"
+    },
+    "ZC": {
+      "product": "Corn",
+      "exchange": "CBOT",
+      "group": "Grains",
+      "all_in_free_one_side_usd": "3.64",
+      "all_in_free_round_trip_usd": "7.28"
+    },
+    "ZF": {
+      "product": "5-Year T-Note",
+      "exchange": "CBOT",
+      "group": "Financials",
+      "all_in_free_one_side_usd": "2.14",
+      "all_in_free_round_trip_usd": "4.28"
+    },
+    "ZL": {
+      "product": "Soybean Oil",
+      "exchange": "CBOT",
+      "group": "Grains",
+      "all_in_free_one_side_usd": "3.64",
+      "all_in_free_round_trip_usd": "7.28"
+    },
+    "ZM": {
+      "product": "Soybean Meal",
+      "exchange": "CBOT",
+      "group": "Grains",
+      "all_in_free_one_side_usd": "3.62",
+      "all_in_free_round_trip_usd": "7.24"
+    },
+    "ZN": {
+      "product": "10-Year T-Note",
+      "exchange": "CBOT",
+      "group": "Financials",
+      "all_in_free_one_side_usd": "2.29",
+      "all_in_free_round_trip_usd": "4.58"
+    },
+    "ZO": {
+      "product": "Oats",
+      "exchange": "CBOT",
+      "group": "Grains",
+      "all_in_free_one_side_usd": "3.62",
+      "all_in_free_round_trip_usd": "7.24"
+    },
+    "ZQ": {
+      "product": "Fed Funds 30 Day (Globex)",
+      "exchange": "CBOT",
+      "group": "Financials",
+      "all_in_free_one_side_usd": "2.41",
+      "all_in_free_round_trip_usd": "4.82"
+    },
+    "ZR": {
+      "product": "Rough Rice",
+      "exchange": "CBOT",
+      "group": "Grains",
+      "all_in_free_one_side_usd": "3.62",
+      "all_in_free_round_trip_usd": "7.24"
+    },
+    "ZS": {
+      "product": "Soybeans",
+      "exchange": "CBOT",
+      "group": "Grains",
+      "all_in_free_one_side_usd": "3.62",
+      "all_in_free_round_trip_usd": "7.24"
+    },
+    "ZT": {
+      "product": "2-Year T-Note",
+      "exchange": "CBOT",
+      "group": "Financials",
+      "all_in_free_one_side_usd": "2.14",
+      "all_in_free_round_trip_usd": "4.28"
+    },
+    "ZW": {
+      "product": "Wheat",
+      "exchange": "CBOT",
+      "group": "Grains",
+      "all_in_free_one_side_usd": "3.64",
+      "all_in_free_round_trip_usd": "7.28"
+    }
+  }
+}
