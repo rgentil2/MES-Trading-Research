@@ -24,7 +24,10 @@ from research.archive.B12.b12_strategy_architecture import prepare_rth
 SPEC={"POC":{"stop_atr":0.45,"horizon":15,"entry_cutoff":690},
       "R072":{"stop_atr":0.70,"horizon":30,"entry_cutoff":660}}
 POINT={"ES":50.0,"MES":5.0}
-FEE={"ES":4.68,"MES":1.90}
+FEE={"ES":4.68,"MES":1.90}  # Original MFFU comparison, unchanged
+_FREE_TABLE=json.loads((ROOT/"research/costs/NINJATRADER_FREE_ALL_IN_124_SYMBOLS_2026_10_09.json").read_text(encoding="utf-8"))["rates"]
+FREE_FEE={asset:float(_FREE_TABLE[asset]["all_in_free_round_trip_usd"]) for asset in ("ES","MES")}
+# FREE_FEE ES=$5.74/MES=$1.88 round trip. Slippage is separate.
 TICK=0.25
 SLIPPAGE_TICKS=2
 SLIP=TICK*SLIPPAGE_TICKS
@@ -115,25 +118,28 @@ def execute(g,signal_pos,side,atr,strategy):
     for asset in ('ES','MES'):
         row['net_'+asset.lower()]=round(gross_pts*POINT[asset]-FEE[asset],2)
         row['stop_risk_'+asset.lower()]=round((st_ticks*TICK+SLIP)*POINT[asset]+FEE[asset],2)
+        row['net_'+asset.lower()+'_free']=round(gross_pts*POINT[asset]-FREE_FEE[asset],2)
+        row['stop_risk_'+asset.lower()+'_free']=round((st_ticks*TICK+SLIP)*POINT[asset]+FREE_FEE[asset],2)
     return row
 
 
-def stats(df,asset='ES'):
+def stats(df,asset='ES',account='mffu'):
     if df.empty:
         return {'trades':0,'net':0,'pf':None,'dd':None}
-    pnl=df['net_'+asset.lower()].to_numpy(float)
+    suffix='_free' if account=='ninjatrader_free' else ''
+    pnl=df['net_'+asset.lower()+suffix].to_numpy(float)
     s=pnl.cumsum(); dd=np.maximum.accumulate(np.r_[0,s])[1:]-s
     wins=float(pnl[pnl>0].sum());loss=float(-pnl[pnl<0].sum())
     return {'trades':len(df),'net':round(float(pnl.sum()),2),
             'expectancy':round(float(pnl.mean()),2),'pf':round(wins/loss,3) if loss>0 else None,
             'closed_trade_dd':round(float(dd.max()),2),
-            'yearly':{str(int(y)):round(float(g['net_'+asset.lower()].sum()),2)
+            'yearly':{str(int(y)):round(float(g['net_'+asset.lower()+suffix].sum()),2)
                       for y,g in df.groupby('year')},
-            'stop_risk_median':round(float(df['stop_risk_'+asset.lower()].median()),2),
-            'stop_risk_p95':round(float(df['stop_risk_'+asset.lower()].quantile(.95)),2),
-            'stop_risk_max':round(float(df['stop_risk_'+asset.lower()].max()),2),
-            'stop_risk_gt_500':int((df['stop_risk_'+asset.lower()]>500).sum()),
-            'stop_risk_gt_2000':int((df['stop_risk_'+asset.lower()]>2000).sum())}
+            'stop_risk_median':round(float(df['stop_risk_'+asset.lower()+suffix].median()),2),
+            'stop_risk_p95':round(float(df['stop_risk_'+asset.lower()+suffix].quantile(.95)),2),
+            'stop_risk_max':round(float(df['stop_risk_'+asset.lower()+suffix].max()),2),
+            'stop_risk_gt_500':int((df['stop_risk_'+asset.lower()+suffix]>500).sum()),
+            'stop_risk_gt_2000':int((df['stop_risk_'+asset.lower()+suffix]>2000).sum())}
 
 
 def report_gap(df):
@@ -185,10 +191,18 @@ def build():
       'exclusions':dropped,'assumptions':{'slippage_each_market_order_ticks':2,
       'poc_horizon':15,'poc_stop_atr':0.45,'r072_horizon':30,'r072_stop_atr':0.70,
       'news':'NOT APPLIED (cannot claim NinjaTrader parity)',
-      'costs_ES_RT':4.68,'costs_MES_RT':1.90},
+      'costs_ES_RT':4.68,'costs_MES_RT':1.90,
+      'ninjatrader_free_all_in_round_trip_usd':FREE_FEE},
       'strategies':{k:{'ES':stats(z,'ES'),'MES_same_ES_signal':stats(z,'MES'),
                         'activity':report_gap(z)} for k,z in trades.groupby('strategy')},
       'combined_ES_two_independent_orders':stats(trades,'ES'),
+      'ninjatrader_free_accounting':{
+        'cost_scope':'Free brokerage plan all-in fees from supplied operator screenshot, NOT MFFU fees',
+        'strategies':{k:{'ES':stats(z,'ES','ninjatrader_free'),
+                          'MES_same_ES_signal':stats(z,'MES','ninjatrader_free')}
+                      for k,z in trades.groupby('strategy')},
+        'combined_ES_two_independent_orders':stats(trades,'ES','ninjatrader_free')
+      },
       'combined_activity':report_gap(trades),
       'limitations':['No news blackouts or forced exits','ES 2020-2024 development tested with previously MES-selected strategy parameters',
        'Tick sequence, stop gaps and limit fills not NinjaTrader verified','2025/2026 holdouts SEALED',
