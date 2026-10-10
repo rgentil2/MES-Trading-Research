@@ -128,5 +128,71 @@
       "limitations": "Sparse signals, no independent inference"
     }
   ],
-  "policy": "Keep all signals even if individual gate fails; do not relabel as validated. Controlled portfolio testing must be one trade per session or risk-limited, no duplicate NQ equity exposure; separately model funded commissions and trailing floating equity."
+  "policy": "Keep all signals even if individual gate fails; do not relabel as validated. Controlled portfolio testing must be one trade per session or risk-limited, no duplicate NQ equity exposure; separately model funded commissions and trailing floating equity.",
+  "prospective_ensemble_policy": {
+    "effective_date": "2026-10-10",
+    "hypothesis_ids": "H67-H150",
+    "research_unit": "CAUSAL_COMBINED_STRATEGY_OR_PORTFOLIO",
+    "source": "research/nq/NQ_DEDUCTIVE_ENSEMBLE_POLICY_2026_10_10.md",
+    "all_parent_records_retained": true,
+    "required_next_study": "derive joint primary decision from at least two differentiated components and prior evidence, freeze before outcomes",
+    "requires_incremental_ablation_against_each_parent_and_baseline": true,
+    "requires_same_capital_costs_calendar_and_risk": true,
+    "economic_gate": "strategy net annualized CAGR > max(15%, VOO total-return CAGR, QQQM total-return CAGR), with risk and funded terms verified",
+    "independent_validation_status": "NONE",
+    "holdouts_2025_2026_sealed": true
+  },
+  "accumulated_learning": [
+    {
+      "parent_ids": [
+        "NQ-H09"
+      ],
+      "observation": "NQ H09: +$117.38 net mean for +30m 1 NQ, n173; concentrated in 2022 with inadequate statistical support.",
+      "deduction": "Test H09 as one component of a causally defined regime-conditioned portfolio; compare to unfiltered H09 under equal costs and risk, never choose years retrospectively.",
+      "evidence_status": "REUSED_DEVELOPMENT_NOT_CONFIRMED"
+    },
+    {
+      "parent_ids": [
+        "NQ-H55",
+        "NQ-H56",
+        "NQ-H59",
+        "NQ-H60",
+        "NQ-H61"
+      ],
+      "observation": "H55 and H56 shared 67 trade dates with matching direction; exploratory H59 intersection +$111.50 per NQ, n67, while H60/H61 exclusive subgroups not independently supported.",
+      "deduction": "Evaluate a consensus-as-single-signal router with veto/priority and full ablation against each parent; no duplicated Nasdaq position or assumed independent alpha.",
+      "evidence_status": "REUSED_DEVELOPMENT_NOT_CONFIRMED"
+    },
+    {
+      "parent_ids": [
+        "NQ-H54"
+      ],
+      "observation": "H54 n1013 but PF close to one and near-zero net effect; gate failure.",
+      "deduction": "Investigate only as an ex-ante contextual filter or no-trade veto for a joint strategy, with an ablation and a false-positive cost measured.",
+      "evidence_status": "REUSED_DEVELOPMENT_NOT_CONFIRMED"
+    },
+    {
+      "parent_ids": [
+        "NQ-H29",
+        "NQ-H36",
+        "NQ-H44",
+        "NQ-H45",
+        "NQ-H57"
+      ],
+      "observation": "Some promising-looking means with very low frequencies; statistical support absent.",
+      "deduction": "Use sparingly as composite components with sample-size constraints and explicit trade-frequency cost; do not call them profitable standalone strategies.",
+      "evidence_status": "LOW_SAMPLE_NOT_CONFIRMED"
+    },
+    {
+      "parent_ids": [
+        "NQ-H09",
+        "NQ-H29",
+        "NQ-H55",
+        "NQ-H56"
+      ],
+      "observation": "One-MNQ no-duplicate illustrative portfolio yielded 407 trades, net +$2739.84 and closed DD about $2718.12 across 2020-2024, with long inactivity gaps.",
+      "deduction": "Improve unified router and risk only when preregistered; require floating drawdown and exact funded rules, cost stress and VOO/QQQM economic hurdle.",
+      "evidence_status": "EXPLORATORY_PORTFOLIO_NOT_FUNDED_SAFE"
+    }
+  ]
 }
