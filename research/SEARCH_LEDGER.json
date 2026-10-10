@@ -1539,6 +1539,301 @@
       "result_artifacts": [
         "results/development/nq_h05_h07_level_volume_family.json"
       ]
+    },
+    {
+      "id": "NQ-MINUTE-25-H08-H32-V1",
+      "index": 2,
+      "question": "Can one of 25 exactly predeclared gap, overnight, prior-day, VWAP, minute-volume or intraday-price mechanism signals predict positive NQ Free-costed 30-minute direction?",
+      "origin_units": [
+        "NQ-H08",
+        "NQ-H09",
+        "NQ-H10",
+        "NQ-H11",
+        "NQ-H12",
+        "NQ-H13",
+        "NQ-H14",
+        "NQ-H15",
+        "NQ-H16",
+        "NQ-H17",
+        "NQ-H18",
+        "NQ-H19",
+        "NQ-H20",
+        "NQ-H21",
+        "NQ-H22",
+        "NQ-H23",
+        "NQ-H24",
+        "NQ-H25",
+        "NQ-H26",
+        "NQ-H27",
+        "NQ-H28",
+        "NQ-H29",
+        "NQ-H30",
+        "NQ-H31",
+        "NQ-H32"
+      ],
+      "data_role": "REUSED_DEVELOPMENT",
+      "independent_inference_justification": "None; same 2020-2024 minute data previously searched, exploratory only. 2025/2026 fully sealed.",
+      "members": [
+        {
+          "id": "NQ-H08",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Opening gap retained at 09:45, contrarian fade after gap >=.25ATR and retained fraction >=.6",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H09",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Opening gap >=.25ATR and first 15m directional drive >=.15ATR aligned, continuation",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H10",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Gap >=.25ATR approaches prior close <=.10ATR by 09:45 then rejects >=.10ATR by 10:00",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H11",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Opening in overnight extreme fifth and aligned 15m drive >=.12ATR after overnight range >=.4ATR",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H12",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Opening in overnight extreme fifth then contrary 15m drive >=.12ATR after overnight range >=.4ATR",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H13",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Previous RTH close in upper/lower fifth and 15m aligned drive >=.12ATR",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H14",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Previous RTH range <=.75*prior20median range and opening drive >=.2ATR",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H15",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Previous RTH range >=1.25*prior20median and first15 aligned prev RTH body >=.12ATR, contrarian",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H16",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Prior close-close daily direction and first15 opposing >=.12ATR, continuation of reversal",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H17",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Two prior close-close changes plus prior body same direction and first15 continuation >=.1ATR, fade",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H18",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "Current 10:15 close crossed causal VWAP in prior5 min with 5m matching VWAP slope, follow",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H19",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "10:15 high directional efficiency >=.6 with >=1.5x past20min 1m change and >=.1ATR VWAP dev, follow",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H20",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "10:15 low directional efficiency <=.3 with >=1.5x past20min 1m change and >=.1ATR VWAP dev, fade",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H21",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "10:30 VWAP slope opposite signed >=.1ATR price displacement, fade displacement",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H22",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "10:30 3+ VWAP crosses in last30min and 15m return >=.15ATR, follow",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H23",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "10:00 6m volume >=1.5x previous20 same-window median and 6m move >=.2ATR, follow",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H24",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "10:00 high relative 6m volume with modest move .03-.10 ATR, fade",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H25",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "10:15 six-minute volume <=.75x previous20 same-window median with move >=.15ATR, fade",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H26",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "10:15 high 6m relative volume >=1.5x and close in 20% end of 6m range with >=.1ATR move, follow",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H27",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "10:30 high 15m relative volume >=1.5x with >=.15ATR move opposing VWAP deviation, follow",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H28",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "10:00 three consecutive signed 1m closes total >=.1ATR, follow",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H29",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "10:00 three same-sign successive closes with strictly decelerating bodies, fade",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H30",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "10:15 break one tick beyond 09:46-10:00 low quartile prior20 range, follow",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H31",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "10:30 range last15 >=1.5x previous20 same-window median and move >=.15ATR, follow",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        },
+        {
+          "id": "NQ-H32",
+          "preregistration_path": "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+          "research_instrument": "NQ",
+          "analysis_kind": "DIRECTIONAL",
+          "execution_instrument": null,
+          "definition": "10:45 close one tick beyond high/low previous 10:16-10:30 window, follow",
+          "alternative": "One-contract NQ directionally signed, all-in Free and adverse slippage costed mean effect strictly >0",
+          "endpoint": "30-minute next-open-to-open 1-minute NQ signed PnL USD, session clustered"
+        }
+      ],
+      "definition_files": [
+        "research/nq/NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md",
+        "research/nq/nq_h08_h32_minute_2020_2024.py",
+        "research/nq/nq_h05_h07_level_volume_screen.py",
+        "research/nq/test_nq_h08_h32_minute_2020_2024.py"
+      ],
+      "result_artifacts": [
+        "results/development/nq_h08_h32_minute_family.json"
+      ]
     }
   ],
   "version_changes": [
