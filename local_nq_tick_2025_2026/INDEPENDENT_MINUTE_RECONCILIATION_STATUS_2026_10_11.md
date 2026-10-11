@@ -1,37 +1,27 @@
-# NQ Minute Last independiente vs Tick Last — estado del puente, 2026-10-11
+# NQ Minute Last independiente vs Tick Last — actualización 2026-10-11
 
-**Estado: CÓDIGO Y PRUEBAS LISTOS; COMPARACIÓN CON LA FUENTE INDEPENDIENTE BLOQUEADA POR AUSENCIA DEL ARCHIVO EN LA NUBE.**
+**Estado: archivo Minute Last ORIGINAL LOCALIZADO EN RELEASE PRIVADA; comparador y 34 pruebas sintéticas aprobados; conciliación efectiva minuto-a-minuto AÚN NO EJECUTADA.** Sustituye el estado anterior que decía que el ZIP faltaba de GitHub.
 
-El código original [NQMNQBulkMinuteExporter.cs](../ninjatrader/NQMNQBulkMinuteExporter.cs) exporta velas NinjaTrader `Minute Last` en formato UTC `yyyyMMdd HHmmss;Open;High;Low;Close;Volume`. La línea histórica NQ/MNQ H01–H78 (2020–2024) cargó un ZIP del usuario mediante `load_development(zip_path)` en `research/nq/nq_h05_h07_level_volume_screen.py`. GitHub MES conserva código e informes; no se confirmó disponibilidad del ZIP `NQMNQ_Research_2020_2026.zip` en la rama principal, otras ramas, Releases, archivos de proyecto/Biblioteca ni artefactos consultados de los Actions históricos. **Que se haya usado en Python no significa que el ZIP se haya subido al repositorio MES.**
+## Evidencia de almacenamiento
+- Release privado: https://github.com/rgentil2/NQ-Tick-Data/releases/tag/nqmnq-minute-2020-2026-v1
+- Archivo real en GitHub: `NQMNQ_Research_2020_2026.1.zip`, **65.405.000 bytes**, único asset según API GitHub.
+- README privado: documenta SHA256 `a85a37eb66abda2621cab8110af30d8afb115f652dafc02cc76c7577b2280bc8`, validación contra el original y la normalización del nombre.
+- Archivo original **no es solo Dev**: incluye 2025 validation y 2026 pseudo-forward históricos. No montar/descomprimir el ZIP completo dentro de Actions del repositorio público MES, ni dar al workflow público acceso al repositorio maestro.
 
-## Trabajo realizado
+## Trabajo existente y validación
+- `qc_tick_to_minutes.py`: cuatro días de Tick Last reales con 240/240 minutos y consistencia interna 1m–5m. Run https://github.com/rgentil2/MES-Trading-Research/actions/runs/38148506627.
+- `compare_independent_nq_minutes.py`: comparador separado OHLCV por contrato exacto, timestamp UTC/ET y convención de etiqueta (start/end), con resultados agregados.
+- `test_compare_independent_nq_minutes.py`, `test_qc_tick_to_minutes.py`, `test_sim_nq_last_execution_skeleton.py`: **34/34 pruebas sintéticas** en https://github.com/rgentil2/MES-Trading-Research/actions/runs/38150302279. Esto NO constituye conciliación real ni estrategia rentable.
+- Inspección local autorizada de fuente independiente **NQ 12-25, 2025-10-15**: 240 registros etiquetados consecutivamente **08:01–12:00 ET** (convención aparente de fin de barra), sin huecos ni repeticiones en esta franja; volumen total de estas 240 barras **262.422**. Es evidencia solo del archivo Minute, no de igualdad con Tick Last. El registro de 08:00 ET del ZIP corresponde a una barra adicional fuera de la ventana según etiquetado a fin y NO debe incluirse para comparar los ticks de 08:00–12:00.
 
-- `qc_tick_to_minutes.py`: QC de cuatro días reales de NQ Tick Last (15-oct y 16-dic de 2025; 9-mar y 16-jun de 2026). En cada día: **240 de 240 minutos** y consistencia exacta entre barras de 1m/5m **creadas desde los MISMOS ticks**. [Run 38148506627](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38148506627). Esto NO compara contra las velas independientes.
-- `compare_independent_nq_minutes.py`: nuevo comparador de `Open, High, Low, Close, Volume` y cobertura entre ticks Last y archivo de minutos distinto, con **exactitud por contrato**, horario America/New_York, convención de marca de minuto explícita (`end` o `start`) y salida exclusivamente agregada. Se descartan y se informan diferencias; no se toleran ni se ajustan silenciosamente.
-- `test_compare_independent_nq_minutes.py` y workflow [nq-independent-minute-reconcile-tests.yml](../.github/workflows/nq-independent-minute-reconcile-tests.yml): **11/11 tests nuevos aprobados**, además de 10/10 tests de agregación tick y 13/13 del simulador sintético (total **34/34**), [run 38150302279](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38150302279). Sin descargas de datos privados en ese run.
+## Próximo paso: un piloto real de conciliación, sin minutos privados desperdiciados
+1. Crear en entorno privado autorizado un **extracto de un único día NQ 12-25, 2025-10-15**, tomando exclusivamente las 240 marcas UTC correspondientes a **08:01–12:00 ET** de la fuente Minute Last; mantenerlo privado. No pasar todo el ZIP maestro a Actions públicos.
+2. Leer desde `NQ-Ticks-Dev-2026` exclusivamente el Tick Last del mismo contrato y fecha, con el token de solo lectura ya empleado en las validaciones anteriores; verificar SHA256 del release de ticks.
+3. Ejecutar `compare_independent_nq_minutes.py --root <DIRECTORIO_PRIVADO> --day 2025-10-15 --minute-label end` y conservar métricas agregadas: igualdad de O/H/L/C/V, minutos faltantes, desvíos máximos. Reportar explícitamente un mismatch, no optimizar silenciosamente el timestamp.
+4. Si pasa (o se entienden y documentan discrepancias), ampliar a días *del mismo contrato* distribuidos por Oct 2025–Jun 2026, rechazando diferencias por rollovers (en particular junio 2026).
+5. Continuar de forma separada la investigación **Tick Last/Bid/Ask**: Oct 2025–Abr 2026 desarrollo; May–Jun validación interna; Jul–Sep 2026 **sellado**. No usar los meses validados para optimizar después de ver sus retornos.
 
-## Restricciones y archivo requerido
+## Foco de investigación
+El ZIP 1m sirve como fuente independiente para **control de calidad y contexto de barras cerradas**, no para sustituir los ticks ni reabrir H01–H78. Las siguientes hipótesis *conjuntas* propuestas son NQ-T01 continuación condicionada, NQ-T02 ruptura fallida/reversión y NQ-T03 router de régimen. El motor conservador con entrada posterior a la señal, comisiones explícitas, slippage adverso, SL/TP y cierre por tiempo está sometido solo a pruebas sintéticas: no hay P&L validado ni fills reales.
 
-La nueva rama de estudio permite **octubre-diciembre 2025, enero-abril 2026** como desarrollo y **mayo-junio 2026** como validación interna; **julio-septiembre 2026 sigue sellado**. Las investigaciones antiguas 2020–2024 conservan sus holdouts propios.
-
-El comparador **NO abre ZIP anual ni archivos originales multi-día**, porque su contenido podría mezclar meses sellados. Exige un archivo de un solo día y exactamente un contrato, bajo esta estructura **privada** (no hacer commits de precios al repositorio MES público):
-
-```
-data/Tick_Last/NQ_12-25_2025_20251015_Tick_Last_ET0800_1200.txt
-data/Minute_Last/NQ_12-25_2025_20251015_Minute_Last_ET0800_1200.txt
-```
-
-La serie Minute Last debe provenir de la exportación **independiente** de NinjaTrader, no de reconstruir a partir del mismo archivo Tick Last que se quiere auditar. Debe cubrir los 240 minutos ET 08:00–12:00 del día elegido. NinjaTrader BarsRequest suele etiquetar cada barra con su instante final; confirmar la convención en el origen, NO elegirla basándose en cuál opción ajusta mejor los precios.
-
-Una vez se haya separado un día **sin cargar ni analizar otras fechas** y colocado en un espacio privado autorizado, ejecutar:
-
-```bash
-PYTHONPATH=local_nq_tick_2025_2026 python local_nq_tick_2025_2026/compare_independent_nq_minutes.py \
-  --root data --day 2025-10-15 --minute-label end
-```
-
-El resultado publica solo: cobertura, diferencias por columna, desvíos máximos y estado `INDEPENDENT_MINUTE_MATCH` o `SOURCE_MISMATCH_OR_INCOMPLETE`; nunca precios ni barras individuales. Este comando solo se ejecuta con datos que el usuario haya puesto a disposición **fuera del repo público**.
-
-**Próximo gate:** recuperar o conectar el ZIP fuente, aislar un día permitido sin exponer o abrir meses sellados, guardar las velas de 1m en almacenamiento privado y ejecutar por primera vez la comparación real. Si hay desajuste, comprobar etiquetado de barras, zona horaria/DST, volumen de proveedor y contrato sin alterar los resultados originales.
-
-No se ha probado rentabilidad de las familias T01/T02/T03, ni un SLA de ejecución real, ni un forward test.
+**Costes GitHub Actions:** priorizar pruebas locales o runner público de código/diagnósticos agregados; solo usar un entorno privado autorizado para aislar el minuto y evitar cualquier acceso de la investigación pública al maestro sellado.
