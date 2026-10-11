@@ -145,9 +145,7 @@ def analyze_pairs(trades, snaps):
         last_exit=trade['exit_price_ticks']/4.0
         delta=round(side*((q_exit-last_exit)+(last_entry-q_entry))*20.0,2)
         adjusted=round(trade['estimated_net_usd']+delta,2)
-        check=round(side*(q_exit-q_entry)*20.0
-                    -trade['assumed_adverse_slippage_total_ticks']*0.0
-                    -trade['estimated_net_usd']*0.0,2)
+        check=round(side*(q_exit-q_entry)*20.0,2)
         # Existing assumed slippage embedded in frozen Last entry/exit prices;
         # no second slippage charge is assessed in this *endpoint-only* comparison.
         # Fee reconstruction should match q-based accounting exactly.
