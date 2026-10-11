@@ -20,7 +20,7 @@
 
 **SEGUNDA ESTRATEGIA:** AÚN NO IDENTIFICADA. T09 falló como candidata incremental; no sumar T05 y T09. T05-233+377 es un subconjunto del mismo disparador, NO alfa independiente.
 
-**TRABAJO ACTUAL:** auditoría **T10**, disponibilidad de cotizaciones **Bid/Ask estrictamente anteriores** a entradas/salidas hipotéticas T05-377. Estado **EN PROCESO / SIN RESULTADO CONSOLIDADO VALIDADO** en este corte documental. Ejecución más reciente al preparar el documento: [GitHub Actions T10, intento 38177036580](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38177036580), iniciado después de dos fallas de implementación ya diagnosticadas; consultar estado real del run, sus logs y artefactos antes de actualizar esta sección. T10 es ingeniería de calidad, **no nueva hipótesis rentable**.
+**TRABAJO ACTUAL:** auditoría **T10**, disponibilidad de cotizaciones **Bid/Ask estrictamente anteriores** a entradas/salidas hipotéticas T05-377. Estado **EN PROCESO / SIN RESULTADO CONSOLIDADO VALIDADO** en este corte documental. Ejecución más reciente al preparar el documento: [GitHub Actions T10, intento 38177582699](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38177582699), iniciado después de tres bloqueos de ingeniería (prueba sintética, días sin entradas y orden de archivos de contratos en diciembre); el último fue corregido sin tocar T05; consultar estado real del run, sus logs y artefactos antes de actualizar esta sección. T10 es ingeniería de calidad, **no nueva hipótesis rentable**.
 
 **PRÓXIMO PASO:** cerrar T10 verificando paridad de los 115 trades y 7 meses, documentar resultado completo (incluidos fallos); luego conciliar **fuente privada de NQ 1 minuto vs ticks** en un único día predefinido 2025-10-15 y mismo contrato; revisar viabilidad de ejecución y DD; investigar **otra fuente causal de alpha** para complementar T05. **No abrir holdouts.**
 
@@ -53,13 +53,13 @@ El estudio T no convierte 2025 en una validación limpia de H. **Los periodos y 
 | [MES-Trading-Research](https://github.com/rgentil2/MES-Trading-Research) (público) | Código, prerregistros, tests, resúmenes agregados, este manual | No publicar raw NQ licenciado ni las listas privadas de operaciones derivadas. |
 | [NQ-Ticks-Dev-2026](https://github.com/rgentil2/NQ-Ticks-Dev-2026) (privado) | Releases mensuales NQ **Last/Bid/Ask** de octubre 2025–junio 2026, autorizados según cortafuegos | SHA256 obligatorio, acceso read-only con secreto Dev; no tocar meses fuera del protocolo activo. |
 | [NQ-Ticks-Sealed](https://github.com/rgentil2/NQ-Ticks-Sealed) (privado) | Reserva julio–septiembre 2026 | **NO ABRIR** hasta preregistro de estrategia/cartera completa y gate formal. |
-| [NQ-Tick-Data release](https://github.com/rgentil2/NQ-Tick-Data/releases/tag/nqmnq-minute-2020-2026-v1) (privado) | Archivo independiente histórico **NQ/MNQ 1 minuto** | ZIP **contiene material mixto incluido reservado**. No dar acceso a ZIP entero desde Actions público ni descomprimirlo allí. Extraer solo día/contrato DEV necesarios en entorno privado autorizado. SHA256 original registrado: \`a85a37eb66abda2621cab8110af30d8afb115f652dafc02cc76c7577b2280bc8\`, 65.405.000 bytes. |
+| [NQ-Tick-Data release](https://github.com/rgentil2/NQ-Tick-Data/releases/tag/nqmnq-minute-2020-2026-v1) (privado) | Archivo independiente histórico **NQ/MNQ 1 minuto** | ZIP **contiene material mixto incluido reservado**. No dar acceso a ZIP entero desde Actions público ni descomprimirlo allí. Extraer solo día/contrato DEV necesarios en entorno privado autorizado. SHA256 original registrado: `a85a37eb66abda2621cab8110af30d8afb115f652dafc02cc76c7577b2280bc8`, 65.405.000 bytes. |
 
-**Fuente de archivos concreta:** \`local_nq_tick_2025_2026/\`; programas H en \`research/nq/\`. Mantener prerregistros y reportes con links a commits y Actions. **Si falta acceso, nunca sustituir por datos sintéticos afirmando que son resultados reales.**
+**Fuente de archivos concreta:** `local_nq_tick_2025_2026/`; programas H en `research/nq/`. Mantener prerregistros y reportes con links a commits y Actions. **Si falta acceso, nunca sustituir por datos sintéticos afirmando que son resultados reales.**
 
 ### Conciliación independiente aún pendiente
 
-\`compare_independent_nq_minutes.py\` y sus **34 pruebas sintéticas** pasaron, pero **NO se realizó la comparación real fuente Minute ↔ ticks Last**. Primer día congelado: **NQ 12-25, 2025-10-15**, 240 barras originales de minuto etiquetadas **08:01–12:00 ET** (fin de vela), total de volumen informado **262.422**. Las barras de tick corresponden a **08:00–12:00 ET**; no confundir 08:00 con el cierre de 08:01. Ver [estado independiente](local_nq_tick_2025_2026/INDEPENDENT_MINUTE_RECONCILIATION_STATUS_2026_10_11.md).
+`compare_independent_nq_minutes.py` y sus **34 pruebas sintéticas** pasaron, pero **NO se realizó la comparación real fuente Minute ↔ ticks Last**. Primer día congelado: **NQ 12-25, 2025-10-15**, 240 barras originales de minuto etiquetadas **08:01–12:00 ET** (fin de vela), total de volumen informado **262.422**. Las barras de tick corresponden a **08:00–12:00 ET**; no confundir 08:00 con el cierre de 08:01. Ver [estado independiente](local_nq_tick_2025_2026/INDEPENDENT_MINUTE_RECONCILIATION_STATUS_2026_10_11.md).
 
 ## 4. REGLAS DEL PROCESO DE INVESTIGACIÓN
 
@@ -81,19 +81,19 @@ Para **cada hipótesis/estrategia nueva**:
 
 ### Gate económico
 
-\`portfolio_cagr > max(15%, VOO_total_return_CAGR, QQQM_total_return_CAGR)\`, con fechas iguales y USD, datos de dividendos ajustados, exposición/riesgo y costos auditados. Separa **(A) CAGR equivalente sobre capital nominal de referencia** (ilustrativo) de **(B) XIRR/flujo neto de bolsillo** de evaluaciones pagadas y payouts reales. Capital US$50k en una evaluación **no equivale** a US$50k propio invertido; no prometer ROI sobre cifra nominal. Con solo 7 meses de desarrollo la comparación robusta sigue **NO DISPONIBLE**.
+`portfolio_cagr > max(15%, VOO_total_return_CAGR, QQQM_total_return_CAGR)`, con fechas iguales y USD, datos de dividendos ajustados, exposición/riesgo y costos auditados. Separa **(A) CAGR equivalente sobre capital nominal de referencia** (ilustrativo) de **(B) XIRR/flujo neto de bolsillo** de evaluaciones pagadas y payouts reales. Capital US$50k en una evaluación **no equivale** a US$50k propio invertido; no prometer ROI sobre cifra nominal. Con solo 7 meses de desarrollo la comparación robusta sigue **NO DISPONIBLE**.
 
 ## 5. ÚLTIMO MOTOR NQ CONGELADO PARA COMPARACIONES (T04/T05)
 
 **No cambiar estos parámetros al auditar T08/T10:**
-- Datos: NQ prints \`Last\` 08:00–12:00 ET; señales a partir de barras **completas** de 5 s.
+- Datos: NQ prints `Last` 08:00–12:00 ET; señales a partir de barras **completas** de 5 s.
 - Apertura de referencia: rango **09:30–09:35 ET**; nuevas entradas hasta **11:10 ET** y cierre hasta **11:30 ET**.
 - T02: ruptura fallida / reversión y desaceleración de número de prints Last, según código congelado. **T05-377** toma señales T02 con condición de últimas dos barras completas de **377 prints** que difieren contra la dirección de señal; no cuenta prints posteriores al instante de decisión.
 - 1 NQ, 1 posición concurrente, **máx. 2 operaciones diarias**, bloqueo de entradas cuando P&L cerrado del día <= **−US$600**.
 - SL = 25 % del rango de apertura, acotado a **16–48 ticks de precio**; TP **2R**; timeout **300 s**; stops conservadores ante evento ambiguo según motor T04.
 - **Base:** US$5 RT de comisión supuesta + **1 tick adverso por lado**.
 - **Estrés T04:** US$7,50 RT + **2 ticks adversos por lado**. Es estrés predefinido, **NO** una certificación de tarifa/fill real ni necesariamente 1,5× exacto de TODOS los costos.
-- \`NQ_TICK_USD=5\` por NQ; NO confundir Last prints con precio de ticks.
+- `NQ_TICK_USD=5` por NQ; NO confundir Last prints con precio de ticks.
 - Los registros T04/T05 provienen de una muestra altamente explorada; son **simulación**, no operaciones reales ni garantía.
 
 ## 6. HISTORIAL RESUMIDO (PARA NO REPETIR INVESTIGACIONES)
@@ -110,12 +110,12 @@ Para **cada hipótesis/estrategia nueva**:
 | **T07** | Combinación 233/4181/10946: 29 trades y +$790 base; comparador cercano 240/4200/11000: −$980 | Multiescala estricta reduce demasiado oportunidades; útil como contexto, no imponer tres filtros. |
 | **T08** | Auditoría continua Last envelope: T05-377 **DD $1.750 base / $1.825 estrés**; 115 trades, PF estrés 1,31826, mín. 8/mes; todos los tests y 7 meses GitHub SUCCESS | **Único PASS PRELIMINAR CONDICIONAL** entre T02, T05-377 y T05-233+377. **No aprobado para fondeo**. |
 | **T09** | Segunda estrategia propuesta: T01 aceleración→fallo rápido confirmado <=60s y retorno al rango. Solo **+$160 base / −$2.087,50 estrés**. Router T05+T09 **+$3.520 base / +$630 estrés**, vs T05 solo +$6.220/+5.102,50 | **FAIL incremental**: **−$2.700 base**, **−$4.472,50 estrés**; 170 operaciones compartidas (86 T05, 84 T09) pero destruye eficiencia. **NO añadir T09**. |
-| **T10 (actual)** | Auditoría de cobertura de Bid/Ask estrictamente anterior a timestamps de las 115 entradas/salidas Last T05; se ejecuta en 7 meses DEV | **AÚN SIN RESULTADO FINAL VERIFIED** en el corte. Primer intento falló prueba sintética por campo auxiliar inexistente, corregido. Segundo encontró QC de flujo vacío en días sin operación, corregido. Tercer run en marcha. No afirmarlo aprobado sin logs/aggregate. |
+| **T10 (actual)** | Auditoría de cobertura de Bid/Ask estrictamente anterior a timestamps de las 115 entradas/salidas Last T05; se ejecuta en 7 meses DEV | **AÚN SIN RESULTADO FINAL VERIFIED** en el corte. Primer intento falló prueba sintética por campo auxiliar inexistente, corregido. Segundo encontró QC de flujo vacío en días sin operación, corregido. Cuarto run iniciado. No afirmarlo aprobado sin logs/aggregate. |
 
 **Resultados y evidencia primarios:**
 - [T08 audit y gates](local_nq_tick_2025_2026/NQ_T08_FUNDED_RISK_AUDIT_RESULTS_2026_10_11.md) · [run](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38175102957)
 - [T09 prueba incremental y tabla mensual](local_nq_tick_2025_2026/NQ_T09_FAST_TRAP_SEVEN_MONTH_RESULTS_2026_10_11.md) · [run](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38176029358)
-- [T10 PRERREGISTRADO (sin usar un resultado aún)](local_nq_tick_2025_2026/NQ_T10_T05_377_BBO_EXECUTION_QC_PREREG_2026_10_11.md) · [run reciente](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38177036580)
+- [T10 PRERREGISTRADO (sin usar un resultado aún)](local_nq_tick_2025_2026/NQ_T10_T05_377_BBO_EXECUTION_QC_PREREG_2026_10_11.md) · [run reciente](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38177582699)
 - [Control H67–H72](research/nq/NQ_H67_H72_RESULTS_2020_2024.md) · [Control H73–H78](research/nq/NQ_H73_H78_RESULTS_2020_2024.md)
 - [Política deductiva H67–H150](research/nq/NQ_DEDUCTIVE_ENSEMBLE_POLICY_2026_10_10.md) · [Gate económico](research/nq/NQ_PORTFOLIO_ECONOMIC_GATE_2026_10_10.md)
 - [BBO QC 36 días](local_nq_tick_2025_2026/BBO_36_DAY_SOURCE_QC_AND_NEXT_RESEARCH_2026_10_11.md)
@@ -143,7 +143,7 @@ Para **cada hipótesis/estrategia nueva**:
 
 ### Política de actualización de tareas
 
-Al iniciar un bloque: cambiar estado a \`EN CURSO\`, vincular prerregistro y commit, recordar datasets autorizados. **Al finalizar**, actualizar resumen/resultado exacto, estado \`COMPLETADO\` / \`FALLÓ\` / \`BLOQUEADO\`, ejecución de GitHub, **fecha** y decisión, más una entrada sin borrar el historial en el log. Si un gate falla, NO silenciarlo ni reetiquetarlo.
+Al iniciar un bloque: cambiar estado a `EN CURSO`, vincular prerregistro y commit, recordar datasets autorizados. **Al finalizar**, actualizar resumen/resultado exacto, estado `COMPLETADO` / `FALLÓ` / `BLOQUEADO`, ejecución de GitHub, **fecha** y decisión, más una entrada sin borrar el historial en el log. Si un gate falla, NO silenciarlo ni reetiquetarlo.
 
 ## 8. CÓMO RETOMAR EN OTRA CONVERSACIÓN (PROMPT LISTO PARA COPIAR)
 
@@ -153,8 +153,8 @@ Al iniciar un bloque: cambiar estado a \`EN CURSO\`, vincular prerregistro y com
 
 - **Este archivo**: único punto de entrada, objetivo, reglas, estado y backlog.
 - **[NQ_RESEARCH_LOG.md](NQ_RESEARCH_LOG.md)**: fechas, evidencias, decisiones y correcciones registradas cronológicamente; **añadir, nunca borrar**.
-- **Prerregistros y reports**: \`local_nq_tick_2025_2026/\` y \`research/nq/\`. Si el master contradice el último registro científico congelado, **NO alterar aquel documento**: emitir nota de discrepancia y corregir el master con historial.
+- **Prerregistros y reports**: `local_nq_tick_2025_2026/` y `research/nq/`. Si el master contradice el último registro científico congelado, **NO alterar aquel documento**: emitir nota de discrepancia y corregir el master con historial.
 - **GitHub Actions**: estado/ejecución reales, commits y artefactos de cada experimento; un archivo de resultados escrito a mano no reemplaza un workflow fallido.
-- Antes de responder "ya está": comprobar enlace, commit, run exitoso, hash y guardas de acceso a datos. Si no se completó, declarar \`INCOMPLETO\` y registrar el bloqueo.
+- Antes de responder "ya está": comprobar enlace, commit, run exitoso, hash y guardas de acceso a datos. Si no se completó, declarar `INCOMPLETO` y registrar el bloqueo.
 
 **Este manual documenta decisiones de investigación, NO ofrece asesoría financiera personalizada ni promete rentabilidad.**
