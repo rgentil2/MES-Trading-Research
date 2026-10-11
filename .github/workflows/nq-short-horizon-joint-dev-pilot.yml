@@ -1,0 +1,77 @@
+name: NQ T01-T03 short-horizon joint signals DEV pilot (public)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-short-horizon-joint-dev-pilot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nq-short-horizon-joint-pilot-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  development-only:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        day: ['2025-10-15','2025-11-03','2026-02-11','2026-04-15']
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SELECTED_DAY: ${{ matrix.day }}
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Predeclared short-horizon signal and anti-lookahead synthetic tests
+        run: python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_tick_short_horizon.py -v
+      - name: Dev-only preflight BEFORE reading private data
+        run: |
+          python - <<'PY'
+          import os
+          from nq_tick_short_horizon import dev_day
+          day=os.environ['SELECTED_DAY']
+          print('Predeclared DEVELOPMENT day:',dev_day(day))
+          PY
+      - name: Fetch and verify ONLY private DEV Tick Last, no sealed/holdout access
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${GH_TOKEN:-}" ]];then echo 'Missing DEV Contents:Read token'; exit 2;fi
+          MONTH="${SELECTED_DAY:0:7}"
+          mkdir -p _nq_private_tmp/archives _nq_private_tmp/extracted
+          gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 \
+            --pattern "NQ_${MONTH}_Last.7z.001" \
+            --pattern "NQ_${MONTH}_Last.7z.sha256" \
+            --dir _nq_private_tmp/archives
+          (
+            cd _nq_private_tmp/archives
+            sha256sum -c "NQ_${MONTH}_Last.7z.sha256"
+          )
+          if ! command -v 7z >/dev/null 2>&1;then
+            sudo apt-get update -qq
+            sudo apt-get install -qq -y p7zip-full
+          fi
+          DATE_COMPACT="${SELECTED_DAY//-/}"
+          7z x "_nq_private_tmp/archives/NQ_${MONTH}_Last.7z.001" \
+            -y -r "*${DATE_COMPACT}*" -o_nq_private_tmp/extracted >/dev/null
+      - name: Run Last-only T01/T02/T03 and ablations - GROSS directional diagnostic
+        run: |
+          python local_nq_tick_2025_2026/nq_tick_short_horizon.py \
+            --root _nq_private_tmp/extracted --day "$SELECTED_DAY"
+      - name: Remove temporary private tick data
+        if: ${{ always() }}
+        run: rm -rf _nq_private_tmp
