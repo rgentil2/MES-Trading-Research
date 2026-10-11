@@ -1,0 +1,91 @@
+name: NQ Fibonacci multi-context tick-bar activity QC (public standard runner)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-multiscale-tick-bars-dev.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nq-multiscale-bars-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  monthly-dev-only:
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        month: ['2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04','2026-05','2026-06']
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      MONTH: ${{ matrix.month }}
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test event-count bar builders and seal firewall (synthetic)
+        run: |
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_qc_nq_multiscale_tick_bars.py' -v
+      - name: Fail-closed preflight for four locked manifest days in permitted month
+        run: |
+          python - <<'PY'
+          import os
+          from qc_tick_day import check_day
+          from qc_bbo_month_batch import DAYS_BY_MONTH
+          month=os.environ['MONTH']
+          if month not in DAYS_BY_MONTH:raise SystemExit('Forbidden month')
+          if len(DAYS_BY_MONTH[month])!=4:raise SystemExit('Locked day list incomplete')
+          for day in DAYS_BY_MONTH[month]:
+              d=check_day(month+'-'+day)
+              if d.weekday()>=5:raise SystemExit('Unexpected weekend')
+          print('Permitted 4-day DEV/QC sample:',month,DAYS_BY_MONTH[month])
+          PY
+      - name: Download only Last from PRIVATE Dev month and verify SHA256
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${GH_TOKEN:-}" ]];then
+            echo 'Missing DEV-only private Contents Read token';exit 2
+          fi
+          mkdir -p _nq_private_tmp/archives _nq_private_tmp/extracted
+          gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 \
+            --pattern "NQ_${MONTH}_Last.7z.001" \
+            --pattern "NQ_${MONTH}_Last.7z.sha256" \
+            --dir _nq_private_tmp/archives
+          (
+            cd _nq_private_tmp/archives
+            sha256sum -c "NQ_${MONTH}_Last.7z.sha256"
+          )
+          if ! command -v 7z >/dev/null 2>&1;then
+            sudo apt-get update -qq
+            sudo apt-get install -qq -y p7zip-full
+          fi
+          DAYS=$(python -c "import os;from qc_bbo_month_batch import DAYS_BY_MONTH;print(' '.join(DAYS_BY_MONTH[os.environ['MONTH']]))")
+          read -ra PARTS <<< "$DAYS"
+          YYYYMM="${MONTH//-/}"
+          PATTERNS=()
+          for DD in "${PARTS[@]}";do
+            PATTERNS+=("*${YYYYMM}${DD}*")
+          done
+          7z x "_nq_private_tmp/archives/NQ_${MONTH}_Last.7z.001" \
+            -y -r "${PATTERNS[@]}" -o_nq_private_tmp/extracted >/dev/null
+      - name: Study 233-4181-10946 versus 240-4200-11000 (aggregate metrics only)
+        run: |
+          python local_nq_tick_2025_2026/qc_nq_multiscale_tick_bars.py \
+            --month "$MONTH" --root _nq_private_tmp/extracted
+      - name: Remove all temporary licensed tick data
+        if: ${{ always() }}
+        run: rm -rf _nq_private_tmp
