@@ -1,0 +1,79 @@
+name: NQ T01-T03 frozen joint short-horizon full DEV months (public)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-short-horizon-joint-dev-months.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nq-short-horizon-dev-months-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  month-dev-only:
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        month: ['2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04']
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      MONTH: ${{ matrix.month }}
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Synthetic T01-T03 causality, clocks and May-Sep firewall
+        run: |
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_tick_short_horizon.py -v
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_tick_short_horizon_month.py -v
+      - name: Validate study-month whitelist BEFORE private market access
+        run: |
+          python - <<'PY'
+          import os
+          from nq_tick_short_horizon_month import MONTHS
+          if os.environ['MONTH'] not in MONTHS:raise SystemExit('SEALED_OR_OUT_OF_SCOPE')
+          print('Authorized DEVELOPMENT month:',os.environ['MONTH'])
+          PY
+      - name: Download one private DEV NQ Last month and validate SHA256
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${GH_TOKEN:-}" ]]; then
+            echo 'Missing DEV-only Contents:Read credential'; exit 2
+          fi
+          mkdir -p _nq_private_tmp/archives _nq_private_tmp/extracted
+          gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 \
+            --pattern "NQ_${MONTH}_Last.7z.001" \
+            --pattern "NQ_${MONTH}_Last.7z.sha256" \
+            --dir _nq_private_tmp/archives
+          (
+            cd _nq_private_tmp/archives
+            sha256sum -c "NQ_${MONTH}_Last.7z.sha256"
+          )
+          if ! command -v 7z >/dev/null 2>&1;then
+            sudo apt-get update -qq
+            sudo apt-get install -qq -y p7zip-full
+          fi
+          7z x "_nq_private_tmp/archives/NQ_${MONTH}_Last.7z.001" \
+            -y -o_nq_private_tmp/extracted >/dev/null
+      - name: Entire month T01/T02/T03 and ablations, horizons 1 3 5 10 20m
+        run: |
+          python local_nq_tick_2025_2026/nq_tick_short_horizon_month.py \
+            --root _nq_private_tmp/extracted --month "$MONTH"
+      - name: Securely remove private tick data
+        if: ${{ always() }}
+        run: rm -rf _nq_private_tmp
