@@ -264,7 +264,7 @@ def summarize_private_day_files(root,month,day_dir):
     files=list(day_dir.glob('nq_t10_day_*.json'))
     if len(files)!=len(expected):raise ValueError('Incomplete day set')
     days=[json.loads(f.read_text(encoding='utf8')) for f in files]
-    if sorted(x['date_et'] for x in days)!=expected:
+    if sorted(x['date_et'] for x in days)!=sorted(expected):
         raise ValueError('Missing/duplicate/out-of-month day')
     return aggregate_month(month,sorted(days,key=lambda d:d['date_et']))
 
