@@ -1,0 +1,131 @@
+name: NQ T09 distinct fast-trap and T05-only portfolio DEV
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t09-fast-trap-portfolio-dev.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nq-t09-portfolio-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  synthetics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax, event-causality, portfolio parity and holdout checks
+        run: |
+          python -m compileall -q local_nq_tick_2025_2026/nq_t09_fast_trap.py local_nq_tick_2025_2026/nq_t09_month.py local_nq_tick_2025_2026/nq_t09_aggregate.py
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_t09_fast_trap.py' -v
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_t05_fibonacci_bars.py' -v
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_t04_execution.py' -v
+
+  t09-dev:
+    needs: synthetics
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        month: ['2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04']
+    env:
+      MONTH: ${{ matrix.month }}
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: DEV month whitelist BEFORE data access
+        run: |
+          python - <<'PY'
+          import os
+          from nq_tick_short_horizon_month import MONTHS
+          assert os.environ['MONTH'] in MONTHS, 'SEALED/INVALID period'
+          print('Allowed T09 development month:',os.environ['MONTH'])
+          PY
+      - name: Private NQ Last with monthly SHA256
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${GH_TOKEN:-}" ]];then echo 'Private DEV read token absent';exit 2;fi
+          mkdir -p _nq_t09_private/archives _nq_t09_private/extracted
+          gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 \
+            --pattern "NQ_${MONTH}_Last.7z.001" \
+            --pattern "NQ_${MONTH}_Last.7z.sha256" \
+            --dir _nq_t09_private/archives
+          (cd _nq_t09_private/archives && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+          if ! command -v 7z >/dev/null 2>&1;then
+            sudo apt-get update -qq
+            sudo apt-get install -qq -y p7zip-full
+          fi
+          7z x "_nq_t09_private/archives/NQ_${MONTH}_Last.7z.001" \
+            -y -o_nq_t09_private/extracted >/dev/null
+      - name: Execute 5 portfolios with identical T04 risk and costs
+        run: |
+          python local_nq_tick_2025_2026/nq_t09_month.py \
+            --root _nq_t09_private/extracted --month "$MONTH" \
+            --out "t09_month/nq_t09_${MONTH}.json"
+      - name: Delete temporary licensed Last source
+        if: ${{ always() }}
+        run: rm -rf _nq_t09_private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: t09-month-${{ matrix.month }}
+          path: t09_month/nq_t09_${{ matrix.month }}.json
+          if-no-files-found: error
+          retention-days: 30
+
+  aggregate:
+    needs: t09-dev
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: t09-month-*
+          merge-multiple: true
+          path: _t09_dev_results
+      - name: Seven-month T09 vs T05 incremental shared-capital evaluation
+        run: |
+          python local_nq_tick_2025_2026/nq_t09_aggregate.py \
+            --inputs _t09_dev_results \
+            --out t09_results/t09_seven_months_aggregate.json \
+            --report t09_results/t09_portfolio_results.md
+          cat t09_results/t09_portfolio_results.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: t09-seven-months-nq-only-portfolio
+          path: t09_results/
+          if-no-files-found: error
+          retention-days: 60
