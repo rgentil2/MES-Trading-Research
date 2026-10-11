@@ -60,7 +60,7 @@ class T09Tests(unittest.TestCase):
         with self.assertRaises(ValueError):
             analyze_events(NeverRead(),'2026-07-01')
         with self.assertRaises(ValueError):
-            summarize_month('2026-09',[],[])
+            summarize_month('2026-09',[])
     def test_bad_signal_fails_closed(self):
         with self.assertRaises(ValueError):
             combine_signals([(1200,0)],[])
