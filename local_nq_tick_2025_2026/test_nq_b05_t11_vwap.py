@@ -2,7 +2,7 @@
 from __future__ import annotations
 import unittest
 from qc_tick_day import utc_bounds
-from nq_tick_short_horizon import STEP_100NS,OR_START
+from nq_tick_short_horizon import STEP_100NS,OR_START,dev_day
 from nq_b05_t11_vwap import (causal_vwap,vwapside_signal,
                              FIRST_SIGNAL,COOLDOWN_BARS)
 from nq_b05_t11_month import tagged_signals,monthly_audit
@@ -43,7 +43,7 @@ class T11Tests(unittest.TestCase):
         for k in range(1170,1194):bars[k][3]=20000
         self.assertFalse(vwapside_signal(bars,num,den,1200,1))
     def test_vwap_source_future_print_no_lookahead(self):
-        base,_=utc_bounds(DAY)
+        base,_=utc_bounds(dev_day(DAY))
         e=[
           (base+OR_START*STEP_100NS+1000,20001,3),
           (base+(OR_START+1)*STEP_100NS+1000,20003,7)]
