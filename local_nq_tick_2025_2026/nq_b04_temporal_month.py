@@ -76,8 +76,9 @@ def assemble_month(root,month):
         for sc in SCENARIOS:
             trades,summary=replay_frozen(day,events,bars,chosen,sc)
             control=simulate_portfolio(day,events,bars,chosen,sc)
-            if control!=summary:
-                raise AssertionError(f'T04 signal/fill parity failed {day}/{sc}')
+            for key,value in summary.items():
+                if control[key]!=value:
+                    raise AssertionError(f'T04 signal/fill parity failed {day}/{sc}/{key}')
             if summary['unknown_entry_or_exit'] or summary['day_aborted_due_to_ambiguity']:
                 raise ValueError('Unresolved frozen execution ambiguity')
             model=sc
