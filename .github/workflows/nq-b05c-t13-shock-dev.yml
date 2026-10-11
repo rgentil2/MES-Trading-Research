@@ -30,7 +30,7 @@ jobs:
           python-version: '3.12'
       - name: Synthetic T13 causality and sealed-data regression tests
         run: |
-          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_b05c_t13_compression.py' -v
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_b05c_t13_shock.py' -v
           python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_t05_fibonacci_bars.py' -v
       - name: Download only frozen DEV NQ Tick Last and verify SHA256
         env:
