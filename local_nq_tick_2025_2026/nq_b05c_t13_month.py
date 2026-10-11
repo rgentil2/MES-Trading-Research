@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""DEV month T13 compression/prints NQ alternative models + one T05-priority router.
+"""DEV month T13 high-volume shock/retracement NQ + one T05-priority router.
 
 Reuses frozen T04 trace from B05; publishes only aggregate counters and envelopes.
 """
@@ -16,7 +16,7 @@ from nq_t04_execution import SCENARIOS,simulate_portfolio
 from nq_t08_risk_audit import Envelope
 from nq_t10_t05_bbo_endpoints import SKIPS
 from nq_b05_t11_month import trace,counter
-from nq_b05c_t13_compression import FAMILIES,candidates_t13
+from nq_b05c_t13_shock import FAMILIES,candidates_t13
 
 BASE='T05_377'
 NEW='T13_FULL'
