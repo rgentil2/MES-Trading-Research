@@ -153,7 +153,7 @@ if __name__=='__main__':
     ap.add_argument('--report',type=Path,required=True)
     args=ap.parse_args()
     results={}
-    for f in args.inputs.rglob('nq_b05b_*.json'):
+    for f in args.inputs.rglob('nq_b05c_*.json'):
         x=json.loads(f.read_text(encoding='utf8'))
         if x['month'] in results:raise ValueError('Duplicate month')
         results[x['month']]=x
