@@ -1,0 +1,148 @@
+name: NQ T10 frozen T05 strict-prior BBO endpoint QC DEV
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t10-t05-bbo-endpoints-dev.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Strict BBO causality/parity plus sealed-month synthetic tests
+        run: |
+          python -m compileall -q local_nq_tick_2025_2026/nq_t10_t05_bbo_endpoints.py local_nq_tick_2025_2026/nq_t10_aggregate.py
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_t10_t05_bbo_endpoints.py' -v
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_t05_fibonacci_bars.py' -v
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_qc_quote_trade.py' -v
+
+  month:
+    needs: synthetics
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        month: ['2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04']
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+      MONTH: ${{ matrix.month }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: DEV-only whitelist BEFORE access
+        run: |
+          python - <<'PY'
+          import os
+          from nq_tick_short_horizon_month import MONTHS
+          assert os.environ['MONTH'] in MONTHS, 'SEALED month refused'
+          PY
+      - name: Download private three source files per month and verify SHA256
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          [[ -n "${GH_TOKEN:-}" ]] || { echo 'Missing private DEV token';exit 2; }
+          mkdir -p _t10_private/archives _t10_private/extracted _t10_internal_days
+          for KIND in Last Bid Ask; do
+            gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 \
+              --pattern "NQ_${MONTH}_${KIND}.7z.001" \
+              --pattern "NQ_${MONTH}_${KIND}.7z.sha256" \
+              --dir _t10_private/archives
+          done
+          (cd _t10_private/archives && for HASH in *.sha256;do sha256sum -c "$HASH";done)
+          if ! command -v 7z >/dev/null 2>&1;then
+            sudo apt-get update -qq
+            sudo apt-get install -qq -y p7zip-full
+          fi
+          7z x "_t10_private/archives/NQ_${MONTH}_Last.7z.001" -y -o_t10_private/extracted >/dev/null
+      - name: Analyze every DEV day with temporary Bid Ask extraction
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY' > _t10_dev_days.txt
+          import os
+          from pathlib import Path
+          from nq_tick_short_horizon_month import month_days
+          for day in month_days(Path('_t10_private/extracted'),os.environ['MONTH']):
+              print(day)
+          PY
+          while IFS= read -r DAY; do
+            DATE="${DAY//-/}"
+            for KIND in Bid Ask; do
+              7z x "_t10_private/archives/NQ_${MONTH}_${KIND}.7z.001" \
+                -y -r "*${DATE}*" -o_t10_private/extracted >/dev/null
+            done
+            python local_nq_tick_2025_2026/nq_t10_t05_bbo_endpoints.py \
+              --root _t10_private/extracted --month "$MONTH" --day "$DAY" \
+              --out "_t10_internal_days/nq_t10_day_${DATE}.json"
+            rm -rf _t10_private/extracted/Tick_Bid _t10_private/extracted/Tick_Ask
+          done < _t10_dev_days.txt
+          python local_nq_tick_2025_2026/nq_t10_t05_bbo_endpoints.py \
+            --root _t10_private/extracted --month "$MONTH" \
+            --internal-day-inputs _t10_internal_days \
+            --out "t10_safe_results/nq_t10_${MONTH}.json"
+      - name: Remove private tick/quote data and intermediates
+        if: ${{ always() }}
+        run: rm -rf _t10_private _t10_internal_days _t10_dev_days.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: t10-month-${{ matrix.month }}
+          path: t10_safe_results/nq_t10_${{ matrix.month }}.json
+          if-no-files-found: error
+          retention-days: 30
+
+  aggregate:
+    needs: month
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: t10-month-*
+          merge-multiple: true
+          path: _t10_safe_monthly
+      - name: Require exact T05 115-trade and 7-month parity
+        run: |
+          python local_nq_tick_2025_2026/nq_t10_aggregate.py \
+            --inputs _t10_safe_monthly \
+            --out t10_results/t10_strict_bbo_qc.json \
+            --report t10_results/t10_strict_bbo_report.md
+          cat t10_results/t10_strict_bbo_report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: t10-seven-month-safe-report
+          path: t10_results/
+          if-no-files-found: error
+          retention-days: 60
