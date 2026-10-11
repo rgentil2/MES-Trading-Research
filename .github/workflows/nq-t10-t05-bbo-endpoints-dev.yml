@@ -1,4 +1,5 @@
 name: NQ T10 frozen T05 strict-prior BBO endpoint QC DEV
+# Rerun after fixing December contract-file lexicographic ordering in month date-set QC.
 # Update: frozen simulator no-trade sessions correctly have zero quote endpoints
 # Regression rerun after fixing source-independent quote accounting test
 
