@@ -180,15 +180,20 @@ def analyze_day(root,day):
         captures[sc]=(trades,summary)
         endpoints.extend(t for r in trades for t in
                          (r['entry_timestamp'],r['exit_timestamp']))
-    lo,hi=utc_bounds(d)
-    qc=Counter()
-    streams=[quote_events(paths[k],k,lo,hi,qc) for k in ('Bid','Ask')]
-    snapshots=quote_snapshots(day,streams,endpoints)
-    for kind in ('Bid','Ask'):
-        if not qc[kind+'_rows'] or any(v for k,v in qc.items()
-            if k.startswith(kind+'_') and ('invalid' in k or
-                'outside_ET_window' in k or 'off_tick_grid' in k)):
-            raise ValueError('Quote source QC failed')
+    # A date with no frozen simulated fills has no quote endpoint to audit.
+    # Source filenames are still checked above. Do not falsely fail source QC
+    # just because lazy quote streams correctly were never consumed.
+    snapshots={}
+    if endpoints:
+        lo,hi=utc_bounds(d)
+        qc=Counter()
+        streams=[quote_events(paths[k],k,lo,hi,qc) for k in ('Bid','Ask')]
+        snapshots=quote_snapshots(day,streams,endpoints)
+        for kind in ('Bid','Ask'):
+            if not qc[kind+'_rows'] or any(v for k,v in qc.items()
+                if k.startswith(kind+'_') and ('invalid' in k or
+                    'outside_ET_window' in k or 'off_tick_grid' in k)):
+                raise ValueError('Quote source QC failed')
     output={}
     for sc,(trades,summary) in captures.items():
         c,s_entry,s_exit,deltas=analyze_pairs(trades,snapshots)
