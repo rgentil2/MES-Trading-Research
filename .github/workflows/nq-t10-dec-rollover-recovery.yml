@@ -1,0 +1,139 @@
+name: NQ T10 Dec rollover-only correction and seven-month safe merge
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t10-dec-rollover-recovery.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  dec-corrected:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+      MONTH: '2025-12'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Assert only DEC-2025 DEV, before private download
+        run: |
+          python - <<'PY'
+          from nq_tick_short_horizon_month import MONTHS
+          assert '2025-12' in MONTHS
+          PY
+      - name: Download only NQ PRIVATE DEV Dec Last-Bid-Ask and check hashes
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          [[ -n "${GH_TOKEN:-}" ]] || { echo 'Missing DEV token';exit 2; }
+          mkdir -p _private/archives _private/extracted _day_internal
+          for KIND in Last Bid Ask; do
+            gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 \
+              --pattern "NQ_${MONTH}_${KIND}.7z.001" \
+              --pattern "NQ_${MONTH}_${KIND}.7z.sha256" \
+              --dir _private/archives
+          done
+          (cd _private/archives && for HASH in *.sha256;do sha256sum -c "$HASH";done)
+          if ! command -v 7z >/dev/null 2>&1;then
+            sudo apt-get update -qq
+            sudo apt-get install -qq -y p7zip-full
+          fi
+          7z x "_private/archives/NQ_${MONTH}_Last.7z.001" -y -o_private/extracted >/dev/null
+      - name: Replay every Dec DEV date, sorted chronologically after rollover
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY' > _days.txt
+          from pathlib import Path
+          from nq_tick_short_horizon_month import month_days
+          for d in sorted(month_days(Path('_private/extracted'),'2025-12')):print(d)
+          PY
+          while IFS= read -r DAY; do
+            DATE="${DAY//-/}"
+            for KIND in Bid Ask; do
+              7z x "_private/archives/NQ_${MONTH}_${KIND}.7z.001" \
+                 -y -r "*${DATE}*" -o_private/extracted >/dev/null
+            done
+            python local_nq_tick_2025_2026/nq_t10_t05_bbo_endpoints.py \
+              --root _private/extracted --month "$MONTH" --day "$DAY" \
+              --out "_day_internal/nq_t10_day_${DATE}.json"
+            rm -rf _private/extracted/Tick_Bid _private/extracted/Tick_Ask
+          done < _days.txt
+          python local_nq_tick_2025_2026/nq_t10_t05_bbo_endpoints.py \
+            --root _private/extracted --month "$MONTH" \
+            --internal-day-inputs _day_internal \
+            --out "t10_dec_safe/nq_t10_${MONTH}.json"
+      - name: Delete private data and day intermediate
+        if: ${{ always() }}
+        run: rm -rf _private _day_internal _days.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: t10-month-2025-12
+          path: t10_dec_safe/nq_t10_2025-12.json
+          if-no-files-found: error
+          retention-days: 30
+
+  merge:
+    needs: dec-corrected
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Wait for prior DEV run to finish artifact uploads
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 48); do
+            STATUS=$(gh run view 38177036580 --repo rgentil2/MES-Trading-Research --json status -q .status)
+            if [[ "$STATUS" == completed ]];then exit 0;fi
+            sleep 10
+          done
+          echo 'Prior 7-month run not completed'; exit 3
+      - uses: actions/download-artifact@v4
+        with:
+          run-id: 38177036580
+          github-token: ${{ github.token }}
+          pattern: t10-month-*
+          merge-multiple: true
+          path: _t10_month_results
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: t10-month-2025-12
+          merge-multiple: true
+          path: _t10_month_results
+      - name: Verify all 7 T05 historical totals unchanged, aggregate BBO coverage
+        run: |
+          python local_nq_tick_2025_2026/nq_t10_aggregate.py \
+            --inputs _t10_month_results \
+            --out t10_results/t10_strict_bbo_qc.json \
+            --report t10_results/t10_strict_bbo_report.md
+          cat t10_results/t10_strict_bbo_report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: t10-complete-seven-month-qc-results
+          path: t10_results/
+          if-no-files-found: error
+          retention-days: 60
