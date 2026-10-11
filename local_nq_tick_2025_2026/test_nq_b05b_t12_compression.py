@@ -13,7 +13,7 @@ def fixture():
         b[i]=[20030,20100,19900,20030,10,10]
     for i in range(INDEX-12,INDEX):
         b[i]=[20016,20020,20010,20016,20,20]
-    b[INDEX]=[20018,20025,20015,20024,40,40]
+    b[INDEX]=[20018,20025,20015,20024,70,70]
     return b
 
 class B05BT12Tests(unittest.TestCase):
@@ -35,7 +35,7 @@ class B05BT12Tests(unittest.TestCase):
         b=fixture()
         for i in range(INDEX-12,INDEX):
             b[i]=[20040,20110,19940,20040,20,20]
-        b[INDEX]=[20110,20114,20108,20113,40,40]
+        b[INDEX]=[20110,20114,20108,20113,70,70]
         self.assertFalse(signal_at(b,INDEX,1))
         self.assertTrue(signal_at(b,INDEX,1,without_compression=True))
     def test_trigger_not_inside_compressed_range(self):
