@@ -76,6 +76,13 @@ jobs:
         run: |
           python local_nq_tick_2025_2026/qc_tick_to_minutes.py \
             --day "$SELECTED_DAY" --root _nq_private_tmp/extracted
+      - name: B02 fixed-date Oct15 NQ 12-25 canonical 240-minute digest
+        if: matrix.day == '2025-10-15'
+        run: |
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_b02_tick_single_day_digest.py -v
+          python local_nq_tick_2025_2026/nq_b02_tick_single_day_digest.py \
+            --root _nq_private_tmp/extracted \
+            --out _safe_b02_digest/nq_tick_20251015_sha256.json
       - name: Remove private raw ticks from runner
         if: ${{ always() }}
         run: rm -rf _nq_private_tmp
