@@ -1,4 +1,8 @@
 import unittest
+import json
+import tempfile
+from pathlib import Path
+from unittest.mock import patch
 from datetime import date
 from qc_tick_day import utc_bounds
 from nq_tick_short_horizon import OR_START,OR_END,N_BARS,STEP_100NS
@@ -72,6 +76,22 @@ class TestT10(unittest.TestCase):
             for key,val in result.items():
                 self.assertEqual(val,expected[key])
             self.assertEqual(len(ts),1)
+
+    def test_december_contract_rollover_file_order_does_not_change_date_set(self):
+        from nq_t10_t05_bbo_endpoints import summarize_private_day_files
+        dates=['2025-12-01','2025-12-02']
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder)
+            for d in dates:
+                (root/('nq_t10_day_'+d.replace('-','')+'.json')).write_text(
+                    json.dumps({'date_et':d,
+                        'status':'SKIP_MISSING_OPENING_RANGE',
+                        'simulated':{},'holdouts_opened':False}))
+            with patch('nq_t10_t05_bbo_endpoints.month_days',
+                       return_value=list(reversed(dates))):
+                result=summarize_private_day_files(root,'2025-12',root)
+            self.assertEqual(result['source_days'],2)
+            self.assertEqual(result['month'],'2025-12')
 
     def test_sealed_month_blocked_before_filesystem(self):
         with self.assertRaises(ValueError):
