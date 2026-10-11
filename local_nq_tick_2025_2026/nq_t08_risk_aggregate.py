@@ -110,12 +110,9 @@ def markdown(out):
         'Todos los números representan portafolios **ALTERNATIVOS**, nunca sumables.',
         'El drawdown Last-envelope es una envolvente adversa hipotética, no broker equity.',
         '',
-        '| Cartera | Trades | Neto base USD | Neto estrés USD | PF estrés |',
-        'DD continuo Last envolvente base USD | DD estrés USD |',
+        '| Cartera | Trades | Neto base USD | Neto estrés USD | PF estrés | DD continuo Last envolvente base USD | DD estrés USD |',
+        '|---|---:|---:|---:|---:|---:|---:|',
     ]
-    # combine header into a single markdown row
-    lines[-2]=lines[-2]+' '+lines.pop()
-    lines+=['|---|---:|---:|---:|---:|---:|---:|']
     for fam in FAMILIES:
         b=out['candidates'][fam]['baseline']
         s=out['candidates'][fam]['stress_1p5_fee_2ticks_each_side']
