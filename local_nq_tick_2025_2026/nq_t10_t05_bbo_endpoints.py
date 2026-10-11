@@ -260,7 +260,7 @@ def run_month(root,month):
 def summarize_private_day_files(root,month,day_dir):
     # Last month source list is used to prove all DEV source dates were processed.
     if month not in MONTHS:raise ValueError('Forbidden month')
-    expected=month_days(root,month)
+    expected=sorted(month_days(root,month))  # rollover filenames can sort by contract, not by date
     files=list(day_dir.glob('nq_t10_day_*.json'))
     if len(files)!=len(expected):raise ValueError('Incomplete day set')
     days=[json.loads(f.read_text(encoding='utf8')) for f in files]
