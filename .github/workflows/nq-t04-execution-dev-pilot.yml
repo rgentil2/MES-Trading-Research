@@ -1,0 +1,78 @@
+name: NQ T04 prereg T02 5min conservative execution pilot (public)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t04-execution-dev-pilot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nq-t04-execution-pilot-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  development-execution:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        day: ['2025-10-15','2025-11-03','2026-02-11','2026-04-15']
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      SELECTED_DAY: ${{ matrix.day }}
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Synthetic gate for T02/C02 costs, stops and May-Sep holdout
+        run: |
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_t04_execution.py -v
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_sim_nq_last_execution_skeleton.py -v
+      - name: Validate development-only session BEFORE access to private releases
+        run: |
+          python - <<'PY'
+          import os
+          from nq_tick_short_horizon import dev_day
+          print('Eligible dev day:', dev_day(os.environ['SELECTED_DAY']))
+          PY
+      - name: Download only DEV NQ Last and SHA verify
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${GH_TOKEN:-}" ]];then echo 'No DEV-only read credential';exit 2;fi
+          MONTH="${SELECTED_DAY:0:7}"
+          mkdir -p _nq_private_tmp/archives _nq_private_tmp/extracted
+          gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 \
+            --pattern "NQ_${MONTH}_Last.7z.001" \
+            --pattern "NQ_${MONTH}_Last.7z.sha256" \
+            --dir _nq_private_tmp/archives
+          (
+            cd _nq_private_tmp/archives
+            sha256sum -c "NQ_${MONTH}_Last.7z.sha256"
+          )
+          if ! command -v 7z >/dev/null 2>&1;then
+            sudo apt-get update -qq
+            sudo apt-get install -qq -y p7zip-full
+          fi
+          DAY_COMPACT="${SELECTED_DAY//-/}"
+          7z x "_nq_private_tmp/archives/NQ_${MONTH}_Last.7z.001" \
+            -y -r "*${DAY_COMPACT}*" -o_nq_private_tmp/extracted >/dev/null
+      - name: Exploratory T04 T02 vs C02 single-position risk (illustrative broker costs)
+        run: |
+          python local_nq_tick_2025_2026/nq_t04_execution.py \
+            --root _nq_private_tmp/extracted --day "$SELECTED_DAY"
+      - name: Remove private market data
+        if: ${{ always() }}
+        run: rm -rf _nq_private_tmp
