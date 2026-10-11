@@ -1,0 +1,133 @@
+name: NQ T08 stitched Last-envelope funded-risk audit (DEV only)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t08-continuous-funded-risk-dev.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nq-t08-risk-dev-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: T08 syntax/causality and regression tests
+        run: |
+          python -m compileall -q local_nq_tick_2025_2026/nq_t08_risk_audit.py local_nq_tick_2025_2026/nq_t08_risk_aggregate.py
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_t08_risk_audit.py' -v
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_t04_execution.py' -v
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_t05_fibonacci_bars.py' -v
+
+  t08-months:
+    needs: synthetic
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        month: ['2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04']
+    env:
+      MONTH: ${{ matrix.month }}
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reject forbidden months BEFORE private data access
+        run: |
+          python - <<'PY'
+          import os
+          from nq_tick_short_horizon_month import MONTHS
+          assert os.environ['MONTH'] in MONTHS, 'SEALED DATA: refused'
+          print('Allowed T08 DEV month:',os.environ['MONTH'])
+          PY
+      - name: Fetch private monthly NQ Last and verify SHA256
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${GH_TOKEN:-}" ]];then echo 'Private DEV token missing';exit 2;fi
+          mkdir -p _nq_t08_private/archives _nq_t08_private/extracted
+          gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 \
+            --pattern "NQ_${MONTH}_Last.7z.001" \
+            --pattern "NQ_${MONTH}_Last.7z.sha256" \
+            --dir _nq_t08_private/archives
+          (cd _nq_t08_private/archives && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+          if ! command -v 7z >/dev/null 2>&1;then
+            sudo apt-get update -qq
+            sudo apt-get install -qq -y p7zip-full
+          fi
+          7z x "_nq_t08_private/archives/NQ_${MONTH}_Last.7z.001" \
+            -y -o_nq_t08_private/extracted >/dev/null
+      - name: Replay same 3 portfolios x both costs, generate safe aggregate
+        run: |
+          python local_nq_tick_2025_2026/nq_t08_risk_audit.py \
+            --root _nq_t08_private/extracted --month "$MONTH" \
+            --out "t08_out/nq_t08_${MONTH}.json"
+      - name: Remove temporary licensed source, always
+        if: ${{ always() }}
+        run: rm -rf _nq_t08_private
+      - name: Upload aggregate-only month summary (no raw ticks)
+        uses: actions/upload-artifact@v4
+        with:
+          name: t08-dev-${{ matrix.month }}
+          path: t08_out/nq_t08_${{ matrix.month }}.json
+          if-no-files-found: error
+          retention-days: 30
+
+  final-aggregate:
+    needs: t08-months
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: t08-dev-*
+          merge-multiple: true
+          path: _t08_month_reports
+      - name: Stitch all 7 months without resetting high-water mark
+        run: |
+          python local_nq_tick_2025_2026/nq_t08_risk_aggregate.py \
+            --inputs _t08_month_reports \
+            --out t08_results/t08_seven_months_aggregate.json \
+            --report t08_results/t08_risk_report.md
+          cat t08_results/t08_risk_report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload complete report without proprietary raw ticks
+        uses: actions/upload-artifact@v4
+        with:
+          name: t08-seven-month-risk-results
+          path: t08_results/
+          if-no-files-found: error
+          retention-days: 60
