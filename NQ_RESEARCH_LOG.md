@@ -177,3 +177,31 @@ Copiar esta estructura **al final del archivo** cuando cierre un bloque, y actua
 - **Master actualizado:** [NQ_PROJECT_MASTER.md](NQ_PROJECT_MASTER.md), commit `4393e98a970b8c2b9593e4a213fb655d666872c9`, B02 COMPLETADO, B03 siguiente.
 - **Próximo paso:** NQ-B03 — ingeniería de secuencia Last/Bid/Ask y estimación de ejecución adversa sin contar quotes snapshot como fills garantizados. Después NQ-B05 — otra fuente real de ventaja incremental para portafolio NQ, con hipótesis preregistrada, comparadores, riesgo compartido, control estadístico y todos los meses negativos. B12 opcional para QC de rollovers por fechas predeclaradas.
 - **Corrección a entrada B02 anterior del master:** el texto anterior decía «no se ha ejecutado»; queda reemplazado en estado maestro por **PASS de 1 día**, sin borrar resultados históricos ni cambiar holdouts.
+
+### 2026-10-11 — NQ-B03 CIERRE, fragilidad real del modelo de costes y corrección cronológica T08
+
+- **Objeto:** medir el margen de T05-377 ante recargos de ejecución sin retocar ninguna señal, y verificar posible error de ordenación de fechas ET descubierto al inspeccionar el motor T08. **No es nueva hipótesis de alpha**.
+- **Prerregistro ANTES de resultados:** [NQ_B03_HEADROOM_PREREG_2026_10_11.md](local_nq_tick_2025_2026/NQ_B03_HEADROOM_PREREG_2026_10_11.md), commit `4e26f27f2864a7003cec237ed91cd0ddacd6f61c`. Por adelantado se fijaron los DOS escenarios originales y CUATRO recargos de **$0/$10/$20/$40 por round-trip** (0,1,2,4 ticks adversos adicionales por lado), ocho alternativas de contabilidad sobre rutas congeladas.
+- **Universo y privacidad:** NQ Last mensual de `rgentil2/NQ-Ticks-Dev-2026`, SHA256 de archivos privados verificado; solo 2025-10 a 2026-04, **140 días fuente / 135 elegibles**, 115 trades congelados; sin lectura de resultados mayo–junio 2026 ni reserva julio–septiembre 2026 ni programa H sellado.
+- **Código:** [nq_b03_execution_headroom.py](local_nq_tick_2025_2026/nq_b03_execution_headroom.py), commit `4d6a6f09c0bdaca3efa2507bbf0ade1a6af8a504`; [nq_b03_aggregate.py](local_nq_tick_2025_2026/nq_b03_aggregate.py), commit `01cc7b05bb983fbdb8fe94469405f9e35bb8a62e`; [tests sintéticos](local_nq_tick_2025_2026/test_nq_b03_execution_headroom.py), commit `e573fb552c40a0242523a2d518995d6fc764b56c`; [workflow](.github/workflows/nq-b03-t05-headroom-dev.yml), commit `e00dece6b6753ba41a0ecfa558498c26f985bfc9`.
+- **Ejecución real:** [GitHub Actions 38179855851](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38179855851) **COMPLETED SUCCESS** — siete jobs mensuales, tests regresión T08 y sintéticos B03, agregador SUCCESS; artifact `b03-seven-month-safe-summary` con informe y JSON solo agregado; referencia de origen comprobada.
+- **Paridad:** mismos **115 trades**, neto sin recargos **+$6.220 baseline** y **+$5.102,50 estrés**. Nada se eligió o descartó basado en retornos. Los stops, TP, horarios, ocupación de capital y daily stops **NO se recalculan** ante recargo; son resultados de ruta fija de Last.
+- **Resultado completo (modelo / recargo por trade / P&L USD / PF / DD Last-envelope USD):**
+  
+  | Alternativa | Recargo RT | Neto USD | PF contable | DD Last continuo |
+  |---|---:|---:|---:|---:|
+  | Base | $0 | +6.220 | 1,39923 | 1.725 |
+  | Base +1 tick/lado | $10 | +5.070 | 1,31277 | 1.815 |
+  | Base +2 ticks/lado | $20 | +3.920 | 1,23278 | 1.905 |
+  | Base +4 ticks/lado | $40 | +1.620 | 1,08940 | 2.085 |
+  | Estrés | $0 | +5.102,50 | 1,31826 | 1.797,50 |
+  | Estrés +1 tick/lado | $10 | +3.952,50 | **1,23717** | 1.887,50 |
+  | Estrés +2 ticks/lado | $20 | +2.802,50 | 1,16195 | 1.977,50 |
+  | Estrés +4 ticks/lado | $40 | +502,50 | 1,02699 | **2.157,50** |
+
+- **Hallazgo técnico de orden cronológico:** T08 original publicó DD Last **$1.750 base / $1.825 estrés**. B03, recorriendo días ET en orden real `sorted(month_days(...))`, registró DD de **$1.725 base / $1.797,50 estrés**, diferencia descriptiva **−$25/−$27,50** con las MISMAS transacciones y método de marcas. Esta es una **corrección de auditoría**, no mejor rendimiento operativo. El T08 previo se conserva sin borrar ni editar.
+- **Gates y significado:** estrés +1 tick adicional por lado (solo $10 RT) ya baja **PF 1,31826→1,23717**, FALLA pantalla exploratoria 1,25. Estrés +4 ticks adicionales por lado lleva DD $2.157,50, mayor que referencia **histórica/no verificada** $2.000. Estos recargos NO certifican fills ni son cota garantizada broker; los snapshots BBO de T10 y la paridad OHLCV de B02 tampoco certifican ejecución real.
+- **Decisión:** `NQ-B03 COMPLETADO_DIAGNOSTICO`, `T05_377_COST_FRAGILE_EXPLORATORY`, NO aprobado fondeo/OOS. Mantener T09 fuera de cartera (falló incremental); no filtrar febrero ni reoptimizar stops para salvar PF.
+- **Informe definitivo:** [NQ_B03_T05_EXECUTION_HEADROOM_RESULTS_2026_10_11.md](local_nq_tick_2025_2026/NQ_B03_T05_EXECUTION_HEADROOM_RESULTS_2026_10_11.md), commit `8fbacd6529c29cace25fdfaeddf420f38d4f0595`.
+- **Master actualizado:** [NQ_PROJECT_MASTER.md](NQ_PROJECT_MASTER.md), commit `e1a33d99cabffbe6cd8a68aae9c92601b3b40763`.
+- **Próximo paso:** **NQ-B04** estabilidad semana→diagnóstico, mes→diagnóstico, trimestre/semestre→evaluación, régimen causal→interpretación de fragilidad, a partir de mismos siete meses y coste fijo declarado; después **NQ-B05/B06** segunda estrategia realmente independiente, portfolio/router con riesgo compartido y eventual OOS con puertas formales. Los datos/artefactos quedan enlazados para reanudar conversación nueva.
