@@ -1,5 +1,14 @@
 # MES Trading Research
 
+> **INVESTIGACIÓN ACTIVA NQ/MNQ — PUNTO DE ENTRADA OBLIGATORIO**
+>
+> - **[NQ_PROJECT_MASTER.md — objetivo, reglas, estados, decisiones, backlog y prompt para otro chat](NQ_PROJECT_MASTER.md)**
+> - **[NQ_RESEARCH_LOG.md — bitácora cronológica completa, resultados y errores T01–T10](NQ_RESEARCH_LOG.md)**
+>
+> El proyecto conserva MES/ES y el programa histórico NQ, pero **el enfoque activo actual es construir un portafolio de estrategias complementarias NQ**. MES/ES queda en pausa por decisión del usuario. **No hay estrategia aprobada para operar**. Para continuar, leer los dos documentos anteriores y comprobar el último GitHub Actions antes de cambiar estados. La descripción histórica debajo corresponde al proyecto MES original y no sustituye el estado NQ.
+
+---
+
 Laboratorio cuantitativo para investigar y validar estrategias intradía sobre MES.
 
 ## Restricción operativa actual
