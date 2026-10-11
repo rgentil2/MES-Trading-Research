@@ -1,0 +1,45 @@
+name: NQ B05D evidence audit T10 B03 B05C (no raw market data)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-b05d-evidence-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download only published safe evidence (T10,B03,B05C), never private ticks
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p _evidence/t10 _evidence/b03 _evidence/b05c
+          gh run download 38177582699 --repo rgentil2/MES-Trading-Research --name t10-seven-month-safe-report --dir _evidence/t10
+          gh run download 38179855851 --repo rgentil2/MES-Trading-Research --name b03-seven-month-safe-summary --dir _evidence/b03
+          gh run download 38183250984 --repo rgentil2/MES-Trading-Research --name b05c-seven-month-safe-summary --dir _evidence/b05c
+          test -s _evidence/t10/t10_strict_bbo_qc.json
+          test -s _evidence/b03/summary.json
+          test -s _evidence/b05c/summary.json
+      - name: Run B05D fail-closed audit and artificial-corruption self tests
+        run: |
+          python local_nq_tick_2025_2026/nq_b05d_evidence_audit.py --t10 _evidence/t10/t10_strict_bbo_qc.json --b03 _evidence/b03/summary.json --b05c _evidence/b05c/summary.json --out b05d_safe/summary.json --report b05d_safe/report.md
+          cat b05d_safe/report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Delete source evidence after audit
+        if: always()
+        run: rm -rf _evidence
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b05d-audited-evidence-safe-report
+          path: b05d_safe/
+          if-no-files-found: error
