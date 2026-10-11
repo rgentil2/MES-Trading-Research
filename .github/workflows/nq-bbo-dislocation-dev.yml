@@ -1,0 +1,87 @@
+name: NQ BBO dislocation segmented DEV QC (public standard runner)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-bbo-dislocation-dev.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nq-bbo-dislocation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source-diagnostic:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        day: ['2025-10-15', '2025-11-03', '2026-03-09', '2026-06-16']
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      SELECTED_DAY: ${{ matrix.day }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Synthetic causal, segment, quote age and sealed-month tests
+        env:
+          PYTHONPATH: local_nq_tick_2025_2026
+        run: python -m unittest discover -s local_nq_tick_2025_2026 -p test_qc_bbo_dislocation.py -v
+      - name: Validate development ET day before private download
+        env:
+          PYTHONPATH: local_nq_tick_2025_2026
+        run: |
+          python - <<'PY'
+          import os
+          from qc_tick_day import check_day
+          d=check_day(os.environ['SELECTED_DAY'])
+          if d.weekday()>=5:raise SystemExit('Weekend not allowed')
+          print('Authorized dev day:',d)
+          PY
+      - name: Read only private DEV Last Bid Ask, verify SHA256 and extract single day
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${GH_TOKEN:-}" ]]; then
+            echo 'Missing DEV-only token with Contents:Read'; exit 2
+          fi
+          MONTH="${SELECTED_DAY:0:7}"
+          TAG="nq-tick-$MONTH"
+          mkdir -p _nq_private_tmp/archives _nq_private_tmp/extracted
+          for KIND in Last Bid Ask; do
+            gh release download "$TAG" --repo rgentil2/NQ-Ticks-Dev-2026 \
+              --pattern "NQ_${MONTH}_${KIND}.7z.001" \
+              --pattern "NQ_${MONTH}_${KIND}.7z.sha256" \
+              --dir _nq_private_tmp/archives
+          done
+          (
+            cd _nq_private_tmp/archives
+            for HASH in *.sha256; do sha256sum -c "$HASH"; done
+          )
+          if ! command -v 7z >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -qq -y p7zip-full
+          fi
+          DATE_COMPACT="${SELECTED_DAY//-/}"
+          for ARCHIVE in _nq_private_tmp/archives/*.7z.001; do
+            7z x "$ARCHIVE" -y -r "*${DATE_COMPACT}*" -o_nq_private_tmp/extracted >/dev/null
+          done
+      - name: Diagnostic outside-BBO by time, age and same-time repricing (aggregates)
+        run: |
+          python local_nq_tick_2025_2026/qc_bbo_dislocation.py \
+            --day "$SELECTED_DAY" --root _nq_private_tmp/extracted
+      - name: Remove private tick files from runner
+        if: ${{ always() }}
+        run: rm -rf _nq_private_tmp
