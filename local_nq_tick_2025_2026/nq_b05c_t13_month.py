@@ -157,7 +157,7 @@ if __name__=='__main__':
     x=analyze_month(args.root,args.month)
     args.out.parent.mkdir(parents=True,exist_ok=True)
     args.out.write_text(json.dumps(x,indent=2,sort_keys=True)+'\n',encoding='utf8')
-    print('NQ_B05B_SAFE_MONTH='+json.dumps({
+    print('NQ_B05C_SAFE_MONTH='+json.dumps({
         'month':args.month,'eligible':x['eligible_days'],
         'trades':{m:z[STRESS]['trades'] for m,z in x['models'].items()},
         'status':x['status']},sort_keys=True))
