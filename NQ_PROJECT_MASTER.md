@@ -20,9 +20,9 @@
 
 **SEGUNDA ESTRATEGIA:** AÚN NO IDENTIFICADA. T09 falló como candidata incremental; no sumar T05 y T09. T05-233+377 es un subconjunto del mismo disparador, NO alfa independiente.
 
-**TRABAJO ACTUAL:** auditoría **T10**, disponibilidad de cotizaciones **Bid/Ask estrictamente anteriores** a entradas/salidas hipotéticas T05-377. Estado **EN PROCESO / SIN RESULTADO CONSOLIDADO VALIDADO** en este corte documental. Ejecución más reciente al preparar el documento: [GitHub Actions T10, intento 38177582699](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38177582699), iniciado después de tres bloqueos de ingeniería (prueba sintética, días sin entradas y orden de archivos de contratos en diciembre); el último fue corregido sin tocar T05; consultar estado real del run, sus logs y artefactos antes de actualizar esta sección. T10 es ingeniería de calidad, **no nueva hipótesis rentable**.
+**TRABAJO ACTUAL:** **NQ-B02 conciliación independiente NQ 1 minuto original ↔ ticks Last de 2025-10-15**. B01/T10 quedó CERRADO, con [GitHub Actions 38177582699](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38177582699) **SUCCESS en sintéticos, siete meses y agregador**, y [reporte final](local_nq_tick_2025_2026/NQ_T10_FROZEN_T05_ASOF_BBO_QC_RESULTS_2026_10_11.md): **113/115 (98,26%)** trades simulados T05 tienen Bid/Ask estrictamente anteriores y frescos en ambas puntas (<=250 ms); **2 operaciones febrero** carecen de par fresco. Reproducción exacta T05 115 trades, +USD 6.220 base / +USD 5.102,50 estrés. **Cobertura BBO ≠ fills reales ni profit nuevo**. Siguiente B02: comparación exacta fuente independiente con guardas de permisos, contrato, hora ET y privacidad.
 
-**PRÓXIMO PASO:** cerrar T10 verificando paridad de los 115 trades y 7 meses, documentar resultado completo (incluidos fallos); luego conciliar **fuente privada de NQ 1 minuto vs ticks** en un único día predefinido 2025-10-15 y mismo contrato; revisar viabilidad de ejecución y DD; investigar **otra fuente causal de alpha** para complementar T05. **No abrir holdouts.**
+**PRÓXIMO PASO:** ejecutar **NQ-B02**: cotejo independiente Minute Last original **NQ 12-25, 2025-10-15**, intervalo 08:00–12:00 ET de ticks contra 240 barras Minute 08:01–12:00 ET etiquetadas a fin. Conservar ZIP multianual exclusivamente en entorno privado, nunca descomprimirlo en Actions público; validar SHA, contrato y timestamps. Registrar resultado real de la comparación o bloqueo explícito. Después pasar a **NQ-B03** ejecución/fills y **NQ-B05** mecanismo independiente para cartera NQ. **No abrir outcomes reservados**.
 
 ## 1. ALCANCE, OBJETIVO Y PRINCIPIOS INNEGOCIABLES
 
@@ -110,12 +110,12 @@ Para **cada hipótesis/estrategia nueva**:
 | **T07** | Combinación 233/4181/10946: 29 trades y +$790 base; comparador cercano 240/4200/11000: −$980 | Multiescala estricta reduce demasiado oportunidades; útil como contexto, no imponer tres filtros. |
 | **T08** | Auditoría continua Last envelope: T05-377 **DD $1.750 base / $1.825 estrés**; 115 trades, PF estrés 1,31826, mín. 8/mes; todos los tests y 7 meses GitHub SUCCESS | **Único PASS PRELIMINAR CONDICIONAL** entre T02, T05-377 y T05-233+377. **No aprobado para fondeo**. |
 | **T09** | Segunda estrategia propuesta: T01 aceleración→fallo rápido confirmado <=60s y retorno al rango. Solo **+$160 base / −$2.087,50 estrés**. Router T05+T09 **+$3.520 base / +$630 estrés**, vs T05 solo +$6.220/+5.102,50 | **FAIL incremental**: **−$2.700 base**, **−$4.472,50 estrés**; 170 operaciones compartidas (86 T05, 84 T09) pero destruye eficiencia. **NO añadir T09**. |
-| **T10 (actual)** | Auditoría de cobertura de Bid/Ask estrictamente anterior a timestamps de las 115 entradas/salidas Last T05; se ejecuta en 7 meses DEV | **AÚN SIN RESULTADO FINAL VERIFIED** en el corte. Primer intento falló prueba sintética por campo auxiliar inexistente, corregido. Segundo encontró QC de flujo vacío en días sin operación, corregido. Cuarto run iniciado. No afirmarlo aprobado sin logs/aggregate. |
+| **T10 (cerrado)** | 7 meses DEV, 115 trades originales reproducidos; **113/115 (98,26 %) tienen BBO previo <=250ms en ambas puntas**, 2 casos no emparejados en febrero; T05 neto base +$6.220 / estrés +$5.102,50 **sin cambios** | **PASS de ejecución del AUDIT, FAIL de cobertura técnica 100% predefinida; NO se certificaron fills ni rentabilidad ejecutable**. [Reporte](local_nq_tick_2025_2026/NQ_T10_FROZEN_T05_ASOF_BBO_QC_RESULTS_2026_10_11.md), [Actions 38177582699 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38177582699). |
 
 **Resultados y evidencia primarios:**
 - [T08 audit y gates](local_nq_tick_2025_2026/NQ_T08_FUNDED_RISK_AUDIT_RESULTS_2026_10_11.md) · [run](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38175102957)
 - [T09 prueba incremental y tabla mensual](local_nq_tick_2025_2026/NQ_T09_FAST_TRAP_SEVEN_MONTH_RESULTS_2026_10_11.md) · [run](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38176029358)
-- [T10 PRERREGISTRADO (sin usar un resultado aún)](local_nq_tick_2025_2026/NQ_T10_T05_377_BBO_EXECUTION_QC_PREREG_2026_10_11.md) · [run reciente](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38177582699)
+- [T10 resultado consolidado de 7 meses](local_nq_tick_2025_2026/NQ_T10_FROZEN_T05_ASOF_BBO_QC_RESULTS_2026_10_11.md) · [Action final SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38177582699) · [prerregistro](local_nq_tick_2025_2026/NQ_T10_T05_377_BBO_EXECUTION_QC_PREREG_2026_10_11.md)
 - [Control H67–H72](research/nq/NQ_H67_H72_RESULTS_2020_2024.md) · [Control H73–H78](research/nq/NQ_H73_H78_RESULTS_2020_2024.md)
 - [Política deductiva H67–H150](research/nq/NQ_DEDUCTIVE_ENSEMBLE_POLICY_2026_10_10.md) · [Gate económico](research/nq/NQ_PORTFOLIO_ECONOMIC_GATE_2026_10_10.md)
 - [BBO QC 36 días](local_nq_tick_2025_2026/BBO_36_DAY_SOURCE_QC_AND_NEXT_RESEARCH_2026_10_11.md)
@@ -127,8 +127,8 @@ Para **cada hipótesis/estrategia nueva**:
 | ID | Prioridad | Estado al corte | Entregable / criterio de cierre | Dependencias |
 |---|---|---|---|---|
 | **NQ-B00** | P0 | **COMPLETADO** | Manual maestro + registro append-only + acceso desde README. Actualizar por cambio | GitHub público |
-| **NQ-B01** | P0 | **EN CURSO** | **Cerrar T10**, leer Actions finales, comprobar reproducción de **115 trades** y +$6.220/+5.102,50, contabilizar cobertura BBO en TODAS las sesiones DEV y fallos; documento de resultado y decisión | Run T10 y fixes de ingeniería; no cambiar señales |
-| **NQ-B02** | P0 | **PENDIENTE** | **Conciliación real** NQ 1m original ↔ Tick Last NQ 12-25 **15-oct-2025**, 240 barras cierre 08:01–12:00 ET, coincidencia OHLCV, timestamp/contrato/rollover. Solo privado: nunca montar ZIP completo en repo público | Fuente 1m privada; comparador y tests ya preparados |
+| **NQ-B01** | P0 | **COMPLETADO 2026-10-11** | T10: **113/115 BBO previos válidos (98,26%)**, 2 febrero sin pareja fresca; 115 trades y netos base/estrés idénticos. Gates: cobertura 100% **FAIL**, retorno operable **NO EVALUADO**. [Run 38177582699 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38177582699) y reporte completo | No optimizar T05 ni inferir fills de BBO |
+| **NQ-B02** | P0 | **EN CURSO — PILOTO INDEPENDIENTE** | **Conciliación real** NQ 1m original ↔ Tick Last NQ 12-25 **15-oct-2025**, 240 barras cierre 08:01–12:00 ET, coincidencia OHLCV, timestamp/contrato/rollover. Solo privado: nunca montar ZIP completo en repo público | Fuente 1m privada; comparador y tests ya preparados |
 | **NQ-B03** | P1 | **PENDIENTE** | Interpretar as-of Bid/Ask / Last y las discrepancias de T10; posible motor BBO con secuenciación REAL o cotas adversas justificadas, comisiones NQ/MNQ, no sustituir snapshots por fills | B01+B02 |
 | **NQ-B04** | P1 | **PENDIENTE** | Robustez T05: semanas, meses (febrero negativo), trimestre; spread/costos, parámetros cercanos **sin optimización retrospectiva**, tests de secuencia y equity en una cuenta 50K nominal; DD y mini/micro | B01+B02 |
 | **NQ-B05** | P1 | **PENDIENTE** | **Prerregistro de una segunda hipótesis NQ de mecanismo DIFERENTE** (no otra variante 60s T09): definir causa, comparadores T05, aportación incremental al portafolio y reglas completas ANTES del resultado | Aprendizaje T09 + calidad B01–B03 |
@@ -139,7 +139,7 @@ Para **cada hipótesis/estrategia nueva**:
 | **NQ-B10** | P2 | **BLOQUEADO** | Verificar términos de fondeo vigentes, órdenes en NinjaTrader/Market Replay, cuenta simulada actual, precio ejecutable, limitaciones de automatización/noticias, capital real y payout; luego, si pasa, evaluar compra | B07–B09 |
 | **NQ-B11** | Continuo | **OBLIGATORIO** | Antes/después de cada T o H: prerregistro + código + tests + Action + resultado + decisión + actualización de ESTE backlog y nueva entrada a [NQ_RESEARCH_LOG.md](NQ_RESEARCH_LOG.md) | Todos |
 
-**Orden de ejecución recomendado al reanudar ahora:** **B01 → B02 → B03/B04 → B05/B06.** No iniciar por B08 ni por cambiar la escala Fibonacci basada en la rentabilidad ya observada. Si B01 resulta no concluyente, documentarlo y priorizar B02/B03, no inventar un PASS.
+**Orden al reanudar AHORA:** **B02 → B03/B04 → B05/B06.** B01/T10 está documentado y cerrado, aunque falló el requisito técnico 100% de cobertura. No repetir ni optimizar T05 por esos retornos. El primer trabajo activo es **B02**, piloto minuto↔tick del mismo contrato/día. A medida que se ejecuten bloques, registrar commits y estados en ambos archivos antes de responder.
 
 ### Política de actualización de tareas
 
@@ -158,3 +158,9 @@ Al iniciar un bloque: cambiar estado a `EN CURSO`, vincular prerregistro y commi
 - Antes de responder "ya está": comprobar enlace, commit, run exitoso, hash y guardas de acceso a datos. Si no se completó, declarar `INCOMPLETO` y registrar el bloqueo.
 
 **Este manual documenta decisiones de investigación, NO ofrece asesoría financiera personalizada ni promete rentabilidad.**
+
+## 10. CONTRATO DE CONTINUIDAD PARA CADA NUEVA CONVERSACIÓN
+
+**Protocolo obligatorio:** leer este documento y `NQ_RESEARCH_LOG.md` completos, comprobar el último GitHub Actions, y anunciar qué ID `NQ-Bxx` se va a ejecutar. Tras cada bloque técnico, escribir una NUEVA entrada `NQ_RESEARCH_LOG.md` (append-only) con fuente autorizada, contrato, fecha ET, prereg/commit, tests, enlace y estado real de Actions, resultados completos incluyendo fallos, limitaciones, decisión y siguiente ID. Actualizar **simultáneamente** la sección 0, la fila de historial y el estado/backlog de este master. No sustituir hechos por promesas de trabajos futuros. Si una ejecución queda inconclusa, registrar `EN CURSO` o `BLOQUEADO` y las condiciones de cierre. Registrar cualquier corrección sin borrar errores pasados.
+
+**Reinicio en un chat nuevo:** proporcionar solo este enlace `https://github.com/rgentil2/MES-Trading-Research/blob/main/NQ_PROJECT_MASTER.md` y decir «Continúa por el primer NQ-B pendiente, lee también el log y actualiza ambos». La conversación nueva no necesita reconstruir el historial oral; los enlaces a código y Actions son la trazabilidad. No abrir periodos sellados ni continuar MES/ES sin nueva autorización.
