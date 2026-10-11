@@ -10,7 +10,7 @@
 
 Copiar esta estructura **al final del archivo** cuando cierre un bloque, y actualizar simultáneamente la sección 0, el histórico breve y el backlog en el documento maestro.
 
-\`\`\`markdown
+```markdown
 ### AAAA-MM-DD — [ID] Título
 
 - Objetivo/mecanismo; padres y comparadores:
@@ -23,7 +23,7 @@ Copiar esta estructura **al final del archivo** cuando cierre un bloque, y actua
 - Decisión: PASA EXPLORACIÓN / FALLA / INSUFICIENTE / PENDIENTE — NUNCA aprobación para fondeo sin su gate:
 - Próximo paso vinculado a ID del backlog:
 - Correcciones a entradas previas (si aplica):
-\`\`\`
+```
 
 ---
 
@@ -121,7 +121,7 @@ Copiar esta estructura **al final del archivo** cuando cierre un bloque, y actua
 - **Alcance:** solo 7 meses T DEV, ambos escenarios de costos T04, paridad exacta con trades/P&L previos; **no** simular fills reales a partir de snapshots BBO.
 - **Prerregistro escrito antes de outcomes:** [T10](local_nq_tick_2025_2026/NQ_T10_T05_377_BBO_EXECUTION_QC_PREREG_2026_10_11.md), GitHub commits previos; implementación [nq_t10_t05_bbo_endpoints.py](local_nq_tick_2025_2026/nq_t10_t05_bbo_endpoints.py), tests y [agregador](local_nq_tick_2025_2026/nq_t10_aggregate.py).
 - **Ejecución 38176910994:** FALLÓ un test sintético por acceso a campo de contabilidad auxiliar inexistente; corregido antes de outcomes.
-- **Ejecución 38176951230:** sintéticos PASS; falló QC de flujo lazy \`Bid/Ask\` en días sin endpoints/trades. Corregido permitiendo \`0\` quotes consumidos **únicamente si no hay operación congelada** (no es modificación de señal o fill).
+- **Ejecución 38176951230:** sintéticos PASS; falló QC de flujo lazy `Bid/Ask` en días sin endpoints/trades. Corregido permitiendo `0` quotes consumidos **únicamente si no hay operación congelada** (no es modificación de señal o fill).
 - **Nuevo run al crear esta entrada:** [38177036580](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38177036580) **INICIADO/PENDIENTE DE VERIFICACIÓN FINAL**. NO afirmar éxito/resultado de quote matches hasta tener los siete jobs y el agregador final.
 - **Decisión:** no cambiar T05 ni los datos H/T; resolver problemas de ingeniería sin suavizar thresholds. **Primer P0 del backlog NQ-B01**.
 - **Próximo:** revisar jobs, logs de errores, checksum, recuento de ambos escenarios y reporte BBO por mes; registrar falla o éxito en una NUEVA entrada y actualizar el documento maestro.
@@ -143,3 +143,10 @@ Copiar esta estructura **al final del archivo** cuando cierre un bloque, y actua
 - Nunca sumar netos de **alternativas incompatibles** ni comparar las 115 operaciones T05 contra retornos de otros periodos como si fueran el mismo capital.
 - Los resultados de calidad de fuente de mayo–junio de 2026 NO constituyen autorización para revisar outcomes de trading allí.
 - Las políticas de holdouts y seguridad prevalecen sobre cualquier texto de una respuesta conversacional que proponga “abrir todo”.
+
+### 2026-10-11 — Corrección de estado T10 tras el arranque de la bitácora
+
+- **Corrección a la entrada T10 anterior:** en el tercer intento [38177036580](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38177036580), el trabajo de diciembre falló en una comprobación de fechas: los archivos Last pueden estar ordenados por contrato en vez de por fecha cuando hay rollover. **No se cambió T05 ni sus resultados monetarios.**
+- **Corrección técnica:** comparar los conjuntos de fechas ordenados cronológicamente; regresión específica con fechas de contrato en orden diferente. Commits [7a4053b](https://github.com/rgentil2/MES-Trading-Research/commit/7a4053b1fabfd272bfeecaa142dca2ca96f68b85) y [d05114c](https://github.com/rgentil2/MES-Trading-Research/commit/d05114c9574d21d6138f0b2bab199daf29f22568).
+- **Nuevo intento:** [T10 run 38177582699](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38177582699) lanzado, **todavía sin consolidado final comprobado** al registrar esta entrada. También existe un [trabajo técnico para diciembre y consolidación 38177472643](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38177472643); comprobar el resultado real antes de declarar cierre.
+- **Decisión:** backlog **NQ-B01 EN CURSO**; falta evidencia consolidada de los siete meses y no hay aprobación para fondeo. Registrar nuevo resultado sin reescribir esta historia.
