@@ -1,0 +1,79 @@
+name: NQ T05 Fibonacci 233-377 Last-print bars pilot DEV (public)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t05-233-377-pilot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nq-t05-pilot-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  short-horizon-tick-count-context:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        day: ['2025-10-15','2025-11-03','2026-02-11','2026-04-15']
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      SELECTED_DAY: ${{ matrix.day }}
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Preregistered 233/377 prints, strict causal bar closure, sealed month tests
+        run: |
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_t05_fibonacci_bars.py -v
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_t04_execution.py -v
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_sim_nq_last_execution_skeleton.py -v
+      - name: Deny May-Sep before downloading private data
+        run: |
+          python - <<'PY'
+          import os
+          from nq_tick_short_horizon import dev_day
+          print('DEV day:',dev_day(os.environ['SELECTED_DAY']))
+          PY
+      - name: Read private DEV Last for one day and verify checksum
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${GH_TOKEN:-}" ]]; then echo 'Missing DEV read-only token';exit 2;fi
+          MONTH="${SELECTED_DAY:0:7}"
+          mkdir -p _nq_private_tmp/archives _nq_private_tmp/extracted
+          gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 \
+            --pattern "NQ_${MONTH}_Last.7z.001" \
+            --pattern "NQ_${MONTH}_Last.7z.sha256" \
+            --dir _nq_private_tmp/archives
+          (
+            cd _nq_private_tmp/archives
+            sha256sum -c "NQ_${MONTH}_Last.7z.sha256"
+          )
+          if ! command -v 7z >/dev/null 2>&1;then
+            sudo apt-get update -qq
+            sudo apt-get install -qq -y p7zip-full
+          fi
+          COMPACT="${SELECTED_DAY//-/}"
+          7z x "_nq_private_tmp/archives/NQ_${MONTH}_Last.7z.001" \
+            -y -r "*${COMPACT}*" -o_nq_private_tmp/extracted >/dev/null
+      - name: 233 and 377 count bars added to T02 with same T04 execution assumptions
+        run: |
+          python local_nq_tick_2025_2026/nq_t05_fibonacci_bars.py \
+            --root _nq_private_tmp/extracted --day "$SELECTED_DAY"
+      - name: Clear licensed data
+        if: ${{ always() }}
+        run: rm -rf _nq_private_tmp
