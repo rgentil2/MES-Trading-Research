@@ -254,19 +254,41 @@ def run_month(root,month):
     if month not in MONTHS:raise ValueError('Sealed or invalid month')
     return aggregate_month(month,[analyze_day(root,d) for d in month_days(root,month)])
 
+def summarize_private_day_files(root,month,day_dir):
+    # Last month source list is used to prove all DEV source dates were processed.
+    if month not in MONTHS:raise ValueError('Forbidden month')
+    expected=month_days(root,month)
+    files=list(day_dir.glob('nq_t10_day_*.json'))
+    if len(files)!=len(expected):raise ValueError('Incomplete day set')
+    days=[json.loads(f.read_text(encoding='utf8')) for f in files]
+    if sorted(x['date_et'] for x in days)!=expected:
+        raise ValueError('Missing/duplicate/out-of-month day')
+    return aggregate_month(month,sorted(days,key=lambda d:d['date_et']))
+
 if __name__=='__main__':
     p=argparse.ArgumentParser()
     p.add_argument('--root',type=Path,required=True)
     p.add_argument('--month',required=True)
+    p.add_argument('--day',required=False)
+    p.add_argument('--internal-day-inputs',type=Path,required=False)
     p.add_argument('--out',type=Path,required=True)
     a=p.parse_args()
     if a.month not in MONTHS:raise SystemExit('HOLDOUT_BLOCKED')
-    result=run_month(a.root,a.month)
-    a.out.parent.mkdir(parents=True,exist_ok=True)
-    a.out.write_text(json.dumps(result,sort_keys=True,indent=2)+'\n',encoding='utf8')
-    print('T10_MONTH_SAFE_SUMMARY='+json.dumps({
-        'month':result['month'],'eligible_days':result['eligible_days'],
-        'trades':{k:v['trades'] for k,v in result['scenarios'].items()},
-        'valid_pairs':{k:v['counts'].get('valid_quote_pairs',0)
-                       for k,v in result['scenarios'].items()},
-        'status':result['status']},sort_keys=True))
+    if a.day:
+        if a.day[:7]!=a.month:raise SystemExit('DAY_NOT_IN_MONTH')
+        dev_day(a.day)
+        result=analyze_day(a.root,a.day)
+        a.out.parent.mkdir(parents=True,exist_ok=True)
+        a.out.write_text(json.dumps(result,sort_keys=True)+'\n',encoding='utf8')
+        print('T10_DAY_COMPLETED_QC_ONLY')
+    else:
+        result=(summarize_private_day_files(a.root,a.month,a.internal_day_inputs)
+                if a.internal_day_inputs else run_month(a.root,a.month))
+        a.out.parent.mkdir(parents=True,exist_ok=True)
+        a.out.write_text(json.dumps(result,sort_keys=True,indent=2)+'\n',encoding='utf8')
+        print('T10_MONTH_SAFE_SUMMARY='+json.dumps({
+            'month':result['month'],'eligible_days':result['eligible_days'],
+            'trades':{k:v['trades'] for k,v in result['scenarios'].items()},
+            'valid_pairs':{k:v['counts'].get('valid_quote_pairs',0)
+                           for k,v in result['scenarios'].items()},
+            'status':result['status']},sort_keys=True))
