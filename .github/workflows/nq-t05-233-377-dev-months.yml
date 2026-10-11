@@ -1,0 +1,78 @@
+name: NQ T05 233-377 event-bar context full DEV months (public)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t05-233-377-dev-months.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nq-t05-fib-dev-months-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  seven-month-comparison:
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        month: ['2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04']
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      MONTH: ${{ matrix.month }}
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Synthetic 233-377 count bar, strict causality and development gate tests
+        run: |
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_t05_fibonacci_bars.py -v
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_t05_month.py -v
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_t04_execution.py -v
+      - name: Month whitelist BEFORE private download
+        run: |
+          python - <<'PY'
+          import os
+          from nq_tick_short_horizon_month import MONTHS
+          assert os.environ['MONTH'] in MONTHS, 'OUT_OF_SCOPE'
+          print('Authorized DEV month:',os.environ['MONTH'])
+          PY
+      - name: Private DEV Last download and SHA256 verification
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${GH_TOKEN:-}" ]]; then echo 'Missing DEV read key'; exit 2;fi
+          mkdir -p _nq_private_tmp/archives _nq_private_tmp/extracted
+          gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 \
+            --pattern "NQ_${MONTH}_Last.7z.001" \
+            --pattern "NQ_${MONTH}_Last.7z.sha256" \
+            --dir _nq_private_tmp/archives
+          (
+            cd _nq_private_tmp/archives
+            sha256sum -c "NQ_${MONTH}_Last.7z.sha256"
+          )
+          if ! command -v 7z >/dev/null 2>&1;then
+            sudo apt-get update -qq
+            sudo apt-get install -qq -y p7zip-full
+          fi
+          7z x "_nq_private_tmp/archives/NQ_${MONTH}_Last.7z.001" \
+            -y -o_nq_private_tmp/extracted >/dev/null
+      - name: T02 parent vs T05 233 377 combined and separate - frozen costs/risks
+        run: |
+          python local_nq_tick_2025_2026/nq_t05_month.py \
+            --root _nq_private_tmp/extracted --month "$MONTH"
+      - name: Remove private ticks and archives
+        if: ${{ always() }}
+        run: rm -rf _nq_private_tmp
