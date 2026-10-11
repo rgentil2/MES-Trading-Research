@@ -150,8 +150,8 @@ def summarize_month(month,day_rows,tracks):
     valid=[x for x in day_rows if x['status']=='PARITY_OK_LAST_ENVELOPE_ONLY']
     if not valid:raise ValueError('No eligible sessions')
     for day in day_rows:
-        if day['date'][:7]!=month or day['status'] not in
-           ('PARITY_OK_LAST_ENVELOPE_ONLY',*VALID_SKIP):
+        if (day['date'][:7]!=month or day['status'] not in
+                ('PARITY_OK_LAST_ENVELOPE_ONLY',*VALID_SKIP)):
             raise ValueError('Bad month/date/QC')
     families={}
     for fam in FAMILIES:
