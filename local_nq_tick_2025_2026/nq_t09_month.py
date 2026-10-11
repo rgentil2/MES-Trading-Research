@@ -76,8 +76,17 @@ if __name__=='__main__':
     p=argparse.ArgumentParser()
     p.add_argument('--root',type=Path,required=True)
     p.add_argument('--month',required=True)
+    p.add_argument('--out',type=Path,required=False)
     a=p.parse_args()
     if a.month not in MONTHS:raise SystemExit('SEALED_OR_INVALID_MONTH')
     days=[analyze_day(a.root,d) for d in month_days(a.root,a.month)]
     r=summarize_month(a.month,days)
-    print('T09_MONTH='+json.dumps(r,sort_keys=True,separators=(',',':')))
+    if a.out:
+        a.out.parent.mkdir(parents=True,exist_ok=True)
+        a.out.write_text(json.dumps(r,indent=2,sort_keys=True)+'\n',encoding='utf8')
+    print('T09_MONTH_SUMMARY='+json.dumps({
+        'month':r['month'],'eligible_days':r['eligible_days'],
+        't01':r['initial_fast_breakout_opportunities'],
+        'fast_traps':r['confirmed_fast_trap_signals'],
+        'baseline':{f:r['families'][f]['baseline']['net_usd']
+                    for f in PORTFOLIOS}},sort_keys=True))
