@@ -1,0 +1,74 @@
+name: NQ B03 T05 frozen path cost DD DEV
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/nq-b03-t05-headroom-dev.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  months:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        month: ['2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04']
+    env:
+      MONTH: ${{ matrix.month }}
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Synthetic and previous T05/T08 regression tests
+        run: |
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_b03_execution_headroom.py' -v
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_t08_risk_audit.py' -v
+      - name: Download only authorized NQ DEV Last
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p _private/arc _private/data
+          gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/arc
+          (cd _private/arc && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          7z x "_private/arc/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+      - name: B03 frozen risk headroom aggregated
+        run: python local_nq_tick_2025_2026/nq_b03_execution_headroom.py --root _private/data --month "$MONTH" --out "b03_safe/nq_b03_${MONTH}.json"
+      - name: Remove source
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b03-month-${{ matrix.month }}
+          path: b03_safe/*.json
+          if-no-files-found: error
+  aggregate:
+    needs: months
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b03-month-*
+          merge-multiple: true
+          path: _monthly
+      - name: B03 seven month readout
+        run: |
+          python local_nq_tick_2025_2026/nq_b03_aggregate.py --inputs _monthly --out b03_final/summary.json --report b03_final/report.md
+          cat b03_final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b03-seven-month-safe-summary
+          path: b03_final/
