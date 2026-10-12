@@ -131,6 +131,21 @@ Fuentes verificadas con 140 días fuente/135 DEV elegibles, 7/7 meses y SHA256 d
 
 **Importante:** En el programa T faltan intervalos IC90 inferidos con dependencia temporal, p y q familiares completos, y una muestra de cinco años para esa versión de las estrategias. N de trades no equivale automáticamente a N eventos independientes. **Nunca estimar q desde P&L agregado** ni presentar N/D como aprobación. Los 135 días DEV están reutilizados adaptativamente y los holdouts siguen cerrados.
 
+## T20–T25 bajo metodología adoptada G0→D0→D1→D2 (12-oct-2026)
+
+**Norma vigente:** [política D1 y gates](research/nq/NQ_DISCOVERY_STAGED_GATES_POLICY_2026_10_12.md) / [CI validado 38295393496 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38295393496). **QC técnico standalone completo:** [Action 38293741380 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38293741380), [informe](research/nq/NQ_T20_T25_EXECUTION_STATUS_QC_RESULTS_2026_10_12.md), 140/135/7 meses. T20–T25 etapa1 económica con N trades/P&L/PF/DD/Δrouter **N/D por fills Last ambiguos**. Nuevo [prerregistro de D1 observacional](research/nq/NQ_T20_T25_D1_ATOMIC_TIMESTAMP_MARKOUT_PREREG_2026_10_12.md), Action [38296113086](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38296113086) iniciado. Un markout de VWAP futuro es **predicción descriptiva, NO trade/P&L**.
+
+| T | Pregunta | N caso/control sesión | G0 QC standalone | D0 viabilidad | N trades fase1 | IC90 económico | p/q BH económico | Holm | PF/DD/Δrouter | D1 predictivo | ¿Estrategia cumple? |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| **T20** | Valor en extremo vs centro | 0/100 | QC OK, 1 control ambiguo | UNIDENTIFIABLE | N/D | N/D | N/D | N/D | N/D | Estudio registrado; 0 casos | **NO** |
+| **T21** | Rechazo extremo vs aceptación | 38/40 | QC OK, 0 casos/1 control ambiguo | TESTABLE (baja potencia) | N/D | N/D | N/D | N/D | N/D | PENDIENTE markout no fill | **NO** |
+| **T22** | Qty/print con avance | 1/113 | QC OK, 1 control ambiguo | LOW_POWER | N/D | N/D | N/D | N/D | N/D | PENDIENTE; caso n=1 | **NO** |
+| **T23** | Desaceleración vs rango futuro | 1/8 | QC OK, no entrada (magnitud) | LOW_POWER | N/A magnitud | N/D | N/D | N/D | N/A magnitud | PENDIENTE rango 15m | **NO** |
+| **T24** | Alternancia de VWAP vs tendencia | 39/50 | QC OK, 0 casos/1 control ambiguo | TESTABLE (baja potencia) | N/D | N/D | N/D | N/D | N/D | PENDIENTE markout no fill | **NO** |
+| **T25** | Divergencia 233/4181 vs alineación | 47/59 | QC OK, 0 casos/1 control ambiguo | TESTABLE (baja potencia) | N/D | N/D | N/D | N/D | N/D | PENDIENTE markout no fill | **NO** |
+
+**Cuidado:** un status `SYNTHETIC_FILL_MODEL_ONLY` NO significa fill de broker. El QC por pregunta puede contar el mismo día/operación en más de una familia. IC90/p/q de una futura prueba de markout **en price ticks** deben quedar en tabla D1 separada, NO reemplazar IC90 económico/p/q de trades. La familia fija tiene seis miembros (no elegir solo T21/24/25 al calcular BH). Los períodos sellados no se han abierto.
+
 ## Regla permanente de reporte
 
 Cada nueva hipótesis debe figurar en esta tabla con **ID, pregunta falsable, familia, N eventos independientes y N trades, efecto y costes, IC90 y método, p unilateral y q BH, resultado Holm confirmatorio separado, años/regímenes, PF, DD, frecuencia, P&L incremental en router único, fuente/Action y PASS/FAIL/NO EVALUABLE por condición**. Registrar antes de outcome la familia completa y dirección. La unidad estadística día/semana prevalece sobre la cantidad de prints, y las métricas faltantes son N/D, no inventadas. Históricos H anteriores conservan sus reglas originales, nuevas T siguen por barras de transacciones y **no por 5 segundos**. Sin adquirir nueva data ni abrir periodos reservados.
