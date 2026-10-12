@@ -94,7 +94,11 @@ def classify_day(events,day,registry,include_structure=False):
       'RTH_0930_1000_OUTER':rth,
       'PRIOR_CD_377_OUTER':{'hi':max(d['hi'],c['hi']),'lo':min(d['lo'],c['lo'])},
       'PRIOR_3_MICRO_233_OUTER':({'hi':max(x['hi'] for x in micro),'lo':min(x['lo'] for x in micro)} if len(micro)==3 else None),
+      # Frozen C146/C147 use explicit aliases without separator.
+      # SAME structural context as A136/A137; fix routing ONLY.
+      'PRIOR_3_MICRO233_OUTER':({'hi':max(x['hi'] for x in micro),'lo':min(x['lo'] for x in micro)} if len(micro)==3 else None),
       'PRIOR_MACRO_4181_OUTER':last_macro,
+      'PRIOR_MACRO4181_OUTER':last_macro,
       'PM_0830_0930_VWAP':pm,
       'RTH_0930_1000_VWAP':rth,
       'D377_VWAP':d,
