@@ -1,0 +1,102 @@
+name: NQ T133-T152 Complete Strategies - Four Blocks - D0 Existing DEV ONLY
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t133-t152-20-strategies-four-blocks-d0-dev.yml'
+      - 'research/nq/NQ_T133_T152_EXECUTABLE_D0_PREREG_2026_10_12.json'
+      - 'local_nq_tick_2025_2026/nq_t133_t152_executable_d0_features.py'
+      - 'local_nq_tick_2025_2026/nq_t133_t152_executable_d0_batch.py'
+      - 'local_nq_tick_2025_2026/test_nq_t133_t152_executable_d0.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prereg-and-synthetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prereg frozen before observing 20 strategy opportunity masks
+        run: |
+          set -euo pipefail
+          test -s research/nq/NQ_EXECUTABLE_STRATEGY_COHORT_POLICY_2026_10_12.md
+          test -s research/nq/NQ_T133_T152_EXECUTABLE_D0_PREREG_2026_10_12.md
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_t133_t152_executable_d0.py -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_t133_t152_executable_d0_features.py local_nq_tick_2025_2026/nq_t133_t152_executable_d0_batch.py
+  month:
+    needs: prereg-and-synthetic
+    runs-on: ubuntu-latest
+    timeout-minutes: 95
+    strategy:
+      max-parallel: 4
+      fail-fast: false
+      matrix:
+        month: ['2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04']
+    env:
+      MONTH: ${{ matrix.month }}
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: ONLY previously downloaded private NQ Last DEV, verify SHA256
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p _private/arc _private/data
+          gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/arc
+          (cd _private/arc && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          7z x "_private/arc/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+      - name: D0 only - classify 20 preregistered trade plans by causal trigger and fixed risk
+        run: |
+          set -euo pipefail
+          python local_nq_tick_2025_2026/nq_t133_t152_executable_d0_batch.py --root _private/data --month "$MONTH" --out "safe/t133_t152_d0_${MONTH}.json"
+      - name: Shred ephemeral raw Last and quotes always
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-t133-t152-four-blocks-d0-safe-${{ matrix.month }}
+          path: safe/t133_t152_d0_*.json
+          if-no-files-found: error
+  aggregate:
+    needs: month
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: nq-t133-t152-four-blocks-d0-safe-*
+          merge-multiple: true
+          path: _monthly
+      - name: Full family 20, source 140/135, duplicates, chrono counts, no outcomes
+        run: |
+          set -euo pipefail
+          python local_nq_tick_2025_2026/nq_t133_t152_executable_d0_batch.py --inputs _monthly --out final/summary.json --report final/report.md
+          cat final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-t133-t152-20-complete-strategies-D0-seven-month-safe
+          path: final/
+          if-no-files-found: error
