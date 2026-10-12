@@ -1,0 +1,99 @@
+name: NQ T26-T28 New Microstructure Mechanisms - G0 D0 ONLY - DEV
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t26-t28-d0-new-mechanisms-dev.yml'
+      - 'local_nq_tick_2025_2026/nq_t26_t28_d0_screen.py'
+      - 'local_nq_tick_2025_2026/test_nq_t26_t28_d0_screen.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify advance G0-D0 prereregistration and synthetic controls, no outcomes
+        run: |
+          set -euo pipefail
+          test -s research/nq/NQ_T26_T28_G0_D0_NEW_MECHANISMS_PREREG_2026_10_12.md
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_t26_t28_d0_screen.py -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_t26_t28_d0_screen.py
+  month:
+    needs: synthetic
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        month: ['2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04']
+    env:
+      MONTH: ${{ matrix.month }}
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reuse seven EXISTING DEV Last archives, validate SHA256; no provider acquisition
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p _private/arc _private/data
+          gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/arc
+          (cd _private/arc && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          7z x "_private/arc/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+      - name: Emit case-control counts ONLY from completed 377-print bars, NO future data
+        run: |
+          set -euo pipefail
+          python local_nq_tick_2025_2026/nq_t26_t28_d0_screen.py --root _private/data --month "$MONTH" --out "safe/d0_${MONTH}.json"
+      - name: Delete licensed DEV Last and all intermediate private files
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: t26-t28-d0-safe-month-${{ matrix.month }}
+          path: safe/d0_*.json
+          if-no-files-found: error
+  aggregate:
+    needs: month
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: t26-t28-d0-safe-month-*
+          merge-multiple: true
+          path: _monthly
+      - name: Reconcile all 7 DEV months and 140/135/135; classify three mechanisms
+        run: |
+          set -euo pipefail
+          python local_nq_tick_2025_2026/nq_t26_t28_d0_screen.py --inputs _monthly --out final/summary.json --report final/report.md
+          cat final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-t26-t28-g0-d0-three-mechanisms-no-outcomes
+          path: final/
+          if-no-files-found: error
