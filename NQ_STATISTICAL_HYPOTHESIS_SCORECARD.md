@@ -42,6 +42,19 @@
 
 **Siguiente nivel pendiente:** a partir de **todas** las 135 sesiones con P&L diario **incluyendo ceros**, estimar IC90/p exploratorio de bloques móviles **5 sesiones con 10.000 bootstrap**, sensibilidad 3/10, unidad **USD/día**, intervalos de incremento diario router−padre emparejado, LOMO y precisión/poder. q BH solo si la familia **completa** y los p están definidos *antes de outcomes*, Holm sigue siendo requisito separado. No inventar N independiente mínimo de 75, 100 o 115 trades para promover estrategias. El programa H de cinco años y su propio Gate 1 no se tocan.
 
+## B05K ejecutado — T05 con 135 retornos diarios y estadística de dependencia temporal
+
+[Prerregistro B05K](research/nq/NQ_B05K_T05_DAILY_BLOCK_BOOTSTRAP_PREREG_2026_10_11.md) · [informe completo y sensitivity L=3/5/10](research/nq/NQ_B05K_T05_DAILY_BLOCK_BOOTSTRAP_RESULTS_2026_10_11.md) · [Action 38201169890 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38201169890) con **6 tests PASS**, ningún tick nuevo, datos T/H reservados sin abrir. **135 sesiones elegibles, 77 días con trade, 115 trades, 29 semanas calendario**, N efectivo independiente **N/D**. Reconciliación T05 original EXACTA +$5102,50 estrés /+$3952,50 estrés+$10 RT fijo.
+
+| Hipótesis/escenario | Pregunta | N sesiones / N trades | N activos | Media USD/sesión | IC90 bootstrap L5 USD/sesión | IC90 sensibilidad L3 y L10 USD/sesión | p unilateral exploratorio L5* | q BH / Holm | ¿Cumple estadísticamente? |
+|---|---|---|---:|---:|---|---|---:|---|---|
+| **T05-377, estrés** | ¿La esperanza neta diaria permanece positiva con costes de estrés? | 135 /115 | 77 | +37,80 | **[+3,83,+71,02]** | L3 **[−0,62,+74,17]**; L10 [+7,09,+67,93] | **0,0293** | **N/D** | **NO confirmado**; IC90 L3 incluye 0, prueba postselección |
+| **T05-377, estrés+$10 RT** | ¿Resiste US$10 RT adicionales sobre la misma trayectoria? | 135 /115 | 77 | +29,28 | **[−4,63,+62,22]** | L3 [−9,08,+65,69]; L10 [−1,33,+59,48] | **0,0692** | **N/D** | **NO CUMPLE robustez de precisión** (todos IC90 incluyen 0) |
+
+* p bootstrap centrado con B=10.000 y bloques móviles no circulares de **5 sesiones**; sensibilidad 3/10 preregistrada. **NO es un p válido de selección adaptativa ni q de Benjamini–Hochberg**, y no abre confirmación. 38 días de P&L positivos, 39 negativos, 58 cero; 6/7 meses positivos; LOMO de seis meses mantiene neto estrés entre +US$3530 y +US$5930. El cost extra no recalcula decisiones de riesgo ni stops. Con +$10RT el PF congelado T05 **1,23717 <1,25**. Bajo perturbación de orden de mismo timestamp, DD Last llegó a $2462,50 (umbral $2000 meramente orientativo, no firma verificada). **T05 sigue CANDIDATA EXPLORATORIA, no cumple aprobacion de estrategia, fondeo ni Gate1 confirmatorio.**
+
+**El contraste principal aquí es de MEDIA USD/SESIÓN con ceros**, no de USD/mes ni USD/trade. No inventar N efectivo ni años 3/5. El programa histórico H y Holm original se conservan; el resto del panel de T sigue con IC90/q N/D hasta ejecutar el análisis correspondiente con fuente y reglas congeladas.
+
 ## T recientes: NQ Last con 7 meses DEV y estadísticas faltantes
 
 | Hipótesis | Pregunta | N trades | P&L estrés USD | PF estrés | DD Last estrés USD | IC90 | q BH | Holm | Estabilidad 3/5 años | Estado estadístico / económico |
