@@ -38,6 +38,8 @@
 
 * El p binomial exacto supone siete meses con signos independientes y equiprobables; es un **diagnóstico posterior de estrategias YA probadas**, no q BH ni una prueba confirmatoria. Para T05, incluso el IC90 positivo de media mensual **no** aprueba simulación de fondeo: bajo estrés+$10 RT PF=1,23717. Si se omite cualquier mes, ΔRouter−T05 sigue negativo: neto LOMO de 6 meses entre **−US$2.895 y −US$1.442,50**.
 
+**Precaución:** octubre-2025 inicia a mitad de mes (15-oct) mientras otras observaciones son meses completos; los siete P&L mensuales no tienen exactamente la misma exposición. El IC90 en USD/mes es solo descriptivo y debe sustituirse para inferencia por estadísticas sobre las 135 sesiones elegibles, incluidos ceros.
+
 **Siguiente nivel pendiente:** a partir de **todas** las 135 sesiones con P&L diario **incluyendo ceros**, estimar IC90/p exploratorio de bloques móviles **5 sesiones con 10.000 bootstrap**, sensibilidad 3/10, unidad **USD/día**, intervalos de incremento diario router−padre emparejado, LOMO y precisión/poder. q BH solo si la familia **completa** y los p están definidos *antes de outcomes*, Holm sigue siendo requisito separado. No inventar N independiente mínimo de 75, 100 o 115 trades para promover estrategias. El programa H de cinco años y su propio Gate 1 no se tocan.
 
 ## T recientes: NQ Last con 7 meses DEV y estadísticas faltantes
