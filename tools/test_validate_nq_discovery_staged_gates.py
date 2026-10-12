@@ -60,6 +60,24 @@ class DiscoveryPolicyTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             check_policy(x)
 
+    def test_twenty_diverse_candidates_required_before_new_d1(self):
+        x = copy.deepcopy(self.base)
+        x["batch_discovery_gate"]["minimum_diverse_d0_candidates_before_new_D1"] = 10
+        with self.assertRaises(ValueError):
+            check_policy(x)
+
+    def test_no_relaxed_batch_rules_after_d0_count(self):
+        for key, value in [
+            ("allow_retuning_if_below_20", True),
+            ("adaptive_DEV_pq_confirmatory", True),
+            ("all_original_family_members_remain_in_D1_BH", False),
+            ("holdouts_opened", True),
+        ]:
+            x = copy.deepcopy(self.base)
+            x["batch_discovery_gate"][key] = value
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                check_policy(x)
+
     def test_no_2026_reserved_month_in_dev(self):
         x = copy.deepcopy(self.base)
         x["authorized_data"]["dev_T_months"].append("2026-08")
