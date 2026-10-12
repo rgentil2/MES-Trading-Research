@@ -51,7 +51,7 @@ class ScreenTests(unittest.TestCase):
             detect(Bomb(),'2026-07-15')
     def test_no_false_q_or_p_result(self):
         import nq_t14_t16_signal_screen_aggregate as agg
-        x={'month':m,'status':'T14_T16_FROZEN_SIGNAL_SCREEN_ONLY_NO_RETURNS',
+        x={m:{'month':m,'status':'T14_T16_FROZEN_SIGNAL_SCREEN_ONLY_NO_RETURNS',
           'source_days':n,'eligible_days':e,'excluded_days':n-e,
           'hypotheses':{k:{'candidate_signal_days':1,'candidate_signals':1,
                 'executed_trades':None,'net_pnl':None,'IC90':None,
