@@ -66,6 +66,19 @@ class TwentyCompletePlans(unittest.TestCase):
         bar=completed_bars_by_print_count(rows,DAY,(233,))[233][0]
         self.assertEqual(completed_summary(rows,[tm]*240,bar)['duration100ns'],0)
 
+    def test_missing_registered_reference_key_fails_closed(self):
+        import copy
+        r=copy.deepcopy(self.r)
+        r['members'][10]['reference']='INVALID_NEVER_MAPPED'
+        with self.assertRaisesRegex(AssertionError,'FROZEN_FEATURE_REFERENCE'):
+            classify_day(sample(),DAY,r)
+    def test_reversal_micro_and_macro_reference_aliases_known(self):
+        # The 20 preregistered references, including T146/T147, must
+        # resolve to actual causal context keys, never silently MISSING.
+        labels=classify_day(sample(),DAY,self.r)
+        self.assertIn('T146',labels)
+        self.assertIn('T147',labels)
+
     def test_sealed_month_rejected_prior_to_io(self):
         with self.assertRaises(ValueError):
             month_stage(Path('/never-used'), '2026-09',self.r)
