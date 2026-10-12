@@ -3,7 +3,7 @@
   "ledger_id": "NQ-COHORT-FUNNEL-LEDGER-V1",
   "policy_id": "NQ-COHORT-FUNNEL-V1",
   "effective_on": "2026-10-12",
-  "snapshot_as_of": "2026-10-12 after T97–T132 multiscale D0/D1 successes, all D2 empty",
+  "snapshot_as_of": "2026-10-12 after corrected T133-T152 four-strategy-block D0 15 of20 distinct, D1 LOCKED",
   "data_role": "DEV_ONLY_AGGREGATES_NO_RAW_OUTCOMES",
   "holdouts_opened": false,
   "new_data_acquired": false,
@@ -801,6 +801,126 @@
         "assessed_ids": [],
         "promoted_ids": []
       }
+    },
+    {
+      "id": "NQ-C133-152",
+      "label": "Cuatro bloques de estrategias con entrada/stops/targets/riesgo: ruptura, pullback, reversión y régimen",
+      "origin": "NEW_BATCH_20_PLUS",
+      "stage": "D0_POOL_FORMING",
+      "all_preregistered_ids": [
+        "T133",
+        "T134",
+        "T135",
+        "T136",
+        "T137",
+        "T138",
+        "T139",
+        "T140",
+        "T141",
+        "T142",
+        "T143",
+        "T144",
+        "T145",
+        "T146",
+        "T147",
+        "T148",
+        "T149",
+        "T150",
+        "T151",
+        "T152"
+      ],
+      "G0": {
+        "status": "PASS",
+        "source": 140,
+        "eligible": 135,
+        "workflow_run": 38324292967
+      },
+      "D0": {
+        "status": "COMPLETE_PARTIAL_COHORT",
+        "evaluated_ids": [
+          "T133",
+          "T134",
+          "T135",
+          "T136",
+          "T137",
+          "T138",
+          "T139",
+          "T140",
+          "T141",
+          "T142",
+          "T143",
+          "T144",
+          "T145",
+          "T146",
+          "T147",
+          "T148",
+          "T149",
+          "T150",
+          "T151",
+          "T152"
+        ],
+        "testable_ids": [
+          "T133",
+          "T135",
+          "T136",
+          "T137",
+          "T140",
+          "T141",
+          "T142",
+          "T145",
+          "T146",
+          "T147",
+          "T148",
+          "T149",
+          "T150",
+          "T151",
+          "T152"
+        ],
+        "diverse_ids": [
+          "T133",
+          "T135",
+          "T136",
+          "T137",
+          "T140",
+          "T141",
+          "T142",
+          "T145",
+          "T146",
+          "T147",
+          "T148",
+          "T149",
+          "T150",
+          "T151",
+          "T152"
+        ],
+        "low_power_ids": [
+          "T134",
+          "T138",
+          "T139",
+          "T143",
+          "T144"
+        ],
+        "near_duplicate_ids": [],
+        "workflow_run": 38324292967,
+        "report": "research/nq/NQ_T133_T152_FOUR_COMPLETE_STRATEGIES_BLOCKS_D0_RESULTS_2026_10_12.md"
+      },
+      "D1": {
+        "status": "LOCKED_WAITING_FOR_20_DIVERSE_D0",
+        "evaluated_ids": [],
+        "individual_ci90_positive_ids": [],
+        "statistical_screen_pass_ids": [],
+        "economic_screen_pass_ids": [],
+        "q_min": null,
+        "workflow_run": null,
+        "report": null,
+        "outcomes_class": "NOT_OBSERVED",
+        "reason": "15/20 diverse testable, 5 LOW_POWER. Need new preregistered genuinely different strategies; no D1 before 20-gate."
+      },
+      "D2": {
+        "status": "NOT_STARTED_NO_ELIGIBLE_SURVIVORS",
+        "assessed_ids": [],
+        "promoted_ids": []
+      }
     }
   ],
   "pooled_D2": {
@@ -812,7 +932,7 @@
       "T49"
     ],
     "d2_batch_ids": [],
-    "status": "ALL_CURRENT_D1_COHORTS_CLOSED_ZERO_ECONOMIC_SURVIVORS",
+    "status": "ALL_PREVIOUS_D1_COHORTS_CLOSED_ZERO_SURVIVORS; NEW_T133_D0_FORMING_15_20",
     "monetary_validated_strategies": 0
   },
   "separate_baselines": [
@@ -832,5 +952,5 @@
     "H74",
     "H77"
   ],
-  "updated_by": "T97-T132 Action D0 38318189842 and Action D1 38318511015; exact q .2639736026"
+  "updated_by": "T133–152 strategy D0 Action 38324292967 corrected alias and 1-timestamp parser, 15 testable+diverse. D1 not run and no financial data."
 }
