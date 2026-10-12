@@ -1,0 +1,36 @@
+name: NQ Statistical Gate 1 scorecard H67-H78 and recent T (SAFE reports only)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-statistical-gate1-scorecard.yml'
+      - 'research/nq/nq_gate1_statistical_scorecard.py'
+      - 'research/nq/test_nq_gate1_statistical_scorecard.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  historical-safe-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      PYTHONPATH: research/nq
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test original prereg statistical gates against 2020-2024 public aggregate JSON only
+        run: |
+          python -m unittest discover -s research/nq -p 'test_nq_gate1_statistical_scorecard.py' -v
+      - name: Publish safe NQ hypothesis scorecard, H/H statistical + T statistical missing
+        run: |
+          python research/nq/nq_gate1_statistical_scorecard.py --root . --out-json safe_scorecard/summary.json --out-md safe_scorecard/report.md
+          cat safe_scorecard/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-statistical-gate1-safe-scorecard
+          path: safe_scorecard/
+          if-no-files-found: error
