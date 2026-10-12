@@ -1,0 +1,102 @@
+name: NQ 38-member T59-T96 New Six Blocks Cohort - D0 only - Existing DEV
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t61-t96-six-blocks-d0-cohort-dev.yml'
+      - 'research/nq/NQ_T61_T96_SIX_BLOCK_D0_FROZEN_2026_10_12.json'
+      - 'local_nq_tick_2025_2026/nq_t61_t96_d0_features.py'
+      - 'local_nq_tick_2025_2026/nq_t61_t96_d0_cohort.py'
+      - 'local_nq_tick_2025_2026/test_nq_t61_t96_d0_cohort.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prereg-and-synthetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Enforce prereg before REAL D0 and fixed 38-member family
+        run: |
+          set -euo pipefail
+          test -s research/nq/NQ_T61_T96_SIX_BLOCK_D0_PREREG_2026_10_12.md
+          test -s research/nq/NQ_T61_T96_SIX_BLOCK_D0_FROZEN_2026_10_12.json
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_t61_t96_d0_cohort.py' -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_t61_t96_d0_features.py local_nq_tick_2025_2026/nq_t61_t96_d0_cohort.py
+  seven-months-D0:
+    needs: prereg-and-synthetic
+    runs-on: ubuntu-latest
+    timeout-minutes: 110
+    strategy:
+      max-parallel: 4
+      fail-fast: false
+      matrix:
+        month: ['2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04']
+    env:
+      MONTH: ${{ matrix.month }}
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reuse SHA256-verified EXISTING NQ DEV Last (no new data)
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p _private/arc _private/data
+          gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/arc
+          (cd _private/arc && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          7z x "_private/arc/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+      - name: Classify ALL 38 T59-T96 once daily, with case overlaps and NO outcomes
+        run: |
+          set -euo pipefail
+          python local_nq_tick_2025_2026/nq_t61_t96_d0_cohort.py --root _private/data --month "$MONTH" --out "safe/t61_t96_d0_${MONTH}.json"
+      - name: Erase all licensed Last regardless of failure
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-t61-t96-d0-safe-month-${{ matrix.month }}
+          path: safe/t61_t96_d0_*.json
+          if-no-files-found: error
+  aggregate:
+    needs: seven-months-D0
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: nq-t61-t96-d0-safe-month-*
+          merge-multiple: true
+          path: _monthly
+      - name: Verify all 38, 7 DEV, 140/135, original T59/T60 parity and >=20 distinct
+        run: |
+          set -euo pipefail
+          python local_nq_tick_2025_2026/nq_t61_t96_d0_cohort.py --inputs _monthly --out final/summary.json --report final/report.md
+          cat final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-t59-t96-new-cohort-six-blocks-D0-safe-no-outcomes
+          path: final/
+          if-no-files-found: error
