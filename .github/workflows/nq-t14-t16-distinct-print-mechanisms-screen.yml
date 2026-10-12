@@ -1,0 +1,93 @@
+name: NQ T14-T16 distinct 377 print mechanisms - 7 DEV months SIGNAL screen no PnL
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t14-t16-distinct-print-mechanisms-screen.yml'
+      - 'local_nq_tick_2025_2026/nq_t14_t16_signal_*.py'
+      - 'local_nq_tick_2025_2026/test_nq_t14_t16_signal_feasibility.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify distinct full-group Last VWAP signal conditions and sealed guard BEFORE DEV source
+        run: |
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_t14_t16_signal_feasibility.py' -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_t14_t16_signal_feasibility.py local_nq_tick_2025_2026/nq_t14_t16_signal_screen_aggregate.py
+  months:
+    needs: synthetic
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        month: ['2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04']
+    env:
+      MONTH: ${{ matrix.month }}
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reuse ONLY existing authenticated NQ Last DEV release with SHA256 integrity
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p _private/arc _private/data
+          gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/arc
+          (cd _private/arc && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          7z x "_private/arc/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+      - name: Three NEW mechanism questions 377 prints count signals ONLY, absolutely no PnL or trading
+        run: |
+          python local_nq_tick_2025_2026/nq_t14_t16_signal_feasibility.py --root _private/data --month "$MONTH" --out "t14_t16_safe/t14_t16_${MONTH}.json"
+      - name: Clean private tick source
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: t14-t16-signal-screen-${{ matrix.month }}
+          path: t14_t16_safe/t14_t16_*.json
+          if-no-files-found: error
+  aggregate:
+    needs: months
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: t14-t16-signal-screen-*
+          merge-multiple: true
+          path: _safe_months
+      - name: Reconcile all 7 DEV months 140/135 and publish only signal opportunity counts
+        run: |
+          python local_nq_tick_2025_2026/nq_t14_t16_signal_screen_aggregate.py --inputs _safe_months --out t14_t16_final/summary.json --report t14_t16_final/report.md
+          cat t14_t16_final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: t14-t16-seven-month-opportunity-screen-no-PnL
+          path: t14_t16_final/
+          if-no-files-found: error
