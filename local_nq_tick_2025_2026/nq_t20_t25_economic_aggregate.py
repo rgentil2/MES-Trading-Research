@@ -262,8 +262,10 @@ def aggregate(months):
                 'router':r_mod,
                 'router_extra10_increment_usd':delta,
                 'router_extra10_increment_monthly':[
-                    round(x-y,2) for x,y in zip(r_mod['net_stress_by_month'],
-                                                baseline['net_stress_by_month'])],
+                    round((x-10*nx)-(y-10*ny),2)
+                    for x,nx,y,ny in zip(r_mod['net_stress_by_month'],
+                        r_mod['trades_by_month'],baseline['net_stress_by_month'],
+                        baseline['trades_by_month'])],
                 'router_bootstrap_daily_extra10':{
                     str(L):moving_block_stats(deltas,L,seed=BASE_SEED+100*L+
                           int(k[1:3])+1000,reps=REPS) for L in LENGTHS}})
