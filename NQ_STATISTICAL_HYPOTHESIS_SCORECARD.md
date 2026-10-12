@@ -55,6 +55,25 @@
 
 **El contraste principal aquí es de MEDIA USD/SESIÓN con ceros**, no de USD/mes ni USD/trade. No inventar N efectivo ni años 3/5. El programa histórico H y Holm original se conservan; el resto del panel de T sigue con IC90/q N/D hasta ejecutar el análisis correspondiente con fuente y reglas congeladas.
 
+## NUEVO programa T14–T19 — seis preguntas genuinamente distintas, ambos lotes FASE 0 COMPLETADOS (12-oct-2026)
+
+El usuario decidió **cambiar de objetivo: dejar de sobreoptimizar T05** y pasar a múltiples preguntas causales. [Registro de seis mecanismos T14–T19](research/nq/NQ_T14_T19_NEW_MECHANISMS_REGISTER_2026_10_12.md) · [prerregistro de T17–T19](research/nq/NQ_T17_T19_STAGE0_RULES_2026_10_12.md), antes de las respectivas mediciones; los cinco segundos quedan reservados únicamente a benchmark antiguo T05, nunca al disparador de estas hipótesis.
+
+| Hipótesis | Pregunta falsable | N días con señal /135 | N trades monetarios | Media neta | IC90 | p | q BH | Holm | ¿Cumple / estado? |
+|---|---|---:|---|---|---|---|---|---|---|
+| **T14 — persistencia** | ¿Una serie de avances VWAP suaves mantiene la dirección sin expansión? | **115** | N/D | N/D | N/D | N/D | N/D | N/D | **PATRÓN DISPONIBLE, ALFA NO EVALUADA** |
+| **T15 — precio redondo** | ¿Aceptar un nivel de 25 puntos NQ aporta continuidad? | **133** | N/D | N/D | N/D | N/D | N/D | N/D | **PATRÓN DISPONIBLE, ALFA NO EVALUADA** |
+| **T16 — esfuerzo sin progreso** | ¿Mucho qty/print con poco avance precede reversión? | **0** | 0 con parámetros iniciales | N/D | N/D | N/D | N/D | N/D | **NO VIABLE sin alterar condición; NO RETUNEAR** |
+| **T17 — intensidad vs rango** | ¿Más prints/segundo sin mayor rango anticipa volatilidad? | **135** | N/D, MAGNITUD | N/D | N/D | N/D | N/D | N/D | **PREDICCIÓN DE MAGNITUD NO EVALUADA** |
+| **T18 — subasta apertura** | ¿La dirección preopen 08:00–09:30 persiste postapertura? | **98** | N/D | N/D | N/D | N/D | N/D | N/D | **PATRÓN DISPONIBLE, ALFA NO EVALUADA** |
+| **T19 — trayectoria ineficiente** | ¿Mucho recorrido con escaso desplazamiento anticipa volatilidad? | **135** | N/D, MAGNITUD | N/D | N/D | N/D | N/D | N/D | **PREDICCIÓN DE MAGNITUD NO EVALUADA** |
+
+**N de esta sección = sesiones en las que aparece al menos una señal; NO N trades ejecutados ni N efectivo estadístico.** Todos los tests de las pantallas son de **viabilidad**, sin P&L, precios de ejecución, SL/TP, IC90, q BH, Holm o declaración de rentabilidad. No dar PASS de Gate1 a ningún T14–T19. **T14 y T15 comparten 113 días de señal** (no demuestra mismo timestamp/side). T17 y T19 comparten 135 días; T18 coincide con ambos en 98. Por eso multiplicidad e independencia económica exigen pruebas futuras, no sumar oportunidades como si fueran tres estrategias distintas.
+
+Fuentes verificadas con 140 días fuente/135 DEV elegibles, 7/7 meses y SHA256 de historial ya almacenado: [T14–T16 informe](research/nq/NQ_T14_T16_SIGNAL_SCREEN_RESULTS_2026_10_12.md) · [Action 38265573879 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38265573879), [T17–T19 informe](research/nq/NQ_T17_T19_SIGNAL_SCREEN_RESULTS_2026_10_12.md) · [Action 38266818415 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38266818415). 6+6 pruebas sintéticas PASS; sin historia nueva ni periodos sellados.
+
+**SIGUIENTE FASE:** preregistro [económico T14–T16](research/nq/NQ_T14_T16_ECONOMIC_FIRST_PASS_PREREG_2026_10_12.md) YA creado, **NO EJECUTADO**: analizar las tres alternativas sin reoptimizar sus señales, stop/TP y costes fijos y su incremento en un solo router con T05 congelada. Se debe incluir T16 sin señales y corregir multiplicidad familiar sin escoger solo “ganadoras”. En paralelo T17/T19 requieren objetivo sobre **amplitud futura**, no falsa dirección; T18 económica en lote separado si se preregistra. **No retomar B05L/T05 retuning.**
+
 ## T recientes: NQ Last con 7 meses DEV y estadísticas faltantes
 
 | Hipótesis | Pregunta | N trades | P&L estrés USD | PF estrés | DD Last estrés USD | IC90 | q BH | Holm | Estabilidad 3/5 años | Estado estadístico / económico |
