@@ -1,0 +1,101 @@
+name: NQ T29-T58 Thirty Frozen Hypotheses - Five G0 D0 Blocks - DEV ONLY
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t29-t58-30-d0-breadth-dev.yml'
+      - 'local_nq_tick_2025_2026/nq_t29_t58_d0_features.py'
+      - 'local_nq_tick_2025_2026/nq_t29_t58_d0_batch.py'
+      - 'local_nq_tick_2025_2026/test_nq_t29_t58_d0_batch.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Assert written prereg predates any D0 reading and synthetic protections
+        run: |
+          set -euo pipefail
+          test -s research/nq/NQ_T29_T58_30_HYPOTHESES_G0_D0_PREREG_2026_10_12.md
+          test -s research/nq/NQ_T29_T58_30_HYPOTHESES_G0_D0_FROZEN_2026_10_12.json
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_t29_t58_d0_batch.py -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_t29_t58_d0_features.py local_nq_tick_2025_2026/nq_t29_t58_d0_batch.py
+  months:
+    needs: synthetic
+    runs-on: ubuntu-latest
+    timeout-minutes: 80
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        month: ['2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04']
+    env:
+      MONTH: ${{ matrix.month }}
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reuse ONLY 7 EXISTING DEV Last archives and verify SHA256; NO new market source
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p _private/arc _private/data
+          gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/arc
+          (cd _private/arc && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          7z x "_private/arc/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+      - name: Frozen 30 hypotheses, group-atomic G0 D0 case/control only
+        run: |
+          set -euo pipefail
+          python local_nq_tick_2025_2026/nq_t29_t58_d0_batch.py --root _private/data --month "$MONTH" --out "safe/t29_t58_d0_${MONTH}.json"
+      - name: Erase all original private Last files regardless of result
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: t29-t58-d0-safe-month-${{ matrix.month }}
+          path: safe/t29_t58_d0_*.json
+          if-no-files-found: error
+  aggregate:
+    needs: months
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: t29-t58-d0-safe-month-*
+          merge-multiple: true
+          path: _monthly
+      - name: Reconcile 7/7 140/135 and 30 family members, overlap and >=20 distinct gate
+        run: |
+          set -euo pipefail
+          python local_nq_tick_2025_2026/nq_t29_t58_d0_batch.py --inputs _monthly --out final/summary.json --report final/report.md
+          cat final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-t29-t58-five-blocks-thirty-d0-safe-results-no-outcomes
+          path: final/
+          if-no-files-found: error
