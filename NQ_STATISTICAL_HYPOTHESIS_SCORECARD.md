@@ -1,6 +1,6 @@
 # NQ — Tabla estadística de hipótesis (Gate 1, q-BH e IC90)
 
-**Última revisión: 11 de octubre de 2026.** Fuente: [Gate exploratorio original](research/es/ES_STAGE_GATES_EXPLORATORY_AMENDMENT_2026_10_09.md), [confirmatorio original](research/es/ES_STAGE_GATES.md), [gobernanza Holm](research/RESEARCH_CONTROLS_POLICY.md). Evaluación automatizada [código](research/nq/nq_gate1_statistical_scorecard.py) · [GitHub Action 38198391656 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38198391656) (6 pruebas PASS; resumen estadístico reproducible).
+**Última revisión: 11 de octubre de 2026; añadido diagnóstico estadístico T de siete meses, ejecutado 12-oct UTC.** Fuente: [Gate exploratorio original](research/es/ES_STAGE_GATES_EXPLORATORY_AMENDMENT_2026_10_09.md), [confirmatorio original](research/es/ES_STAGE_GATES.md), [gobernanza Holm](research/RESEARCH_CONTROLS_POLICY.md). Evaluación automatizada [código](research/nq/nq_gate1_statistical_scorecard.py) · [GitHub Action 38198391656 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38198391656) (6 pruebas PASS; resumen estadístico reproducible).
 
 **Gate 1 prospectivo:** N>150 eventos elegibles independientes; efecto medio neto favorable; intervalo bilateral **IC90** en el lado preregistrado (>0 si la hipótesis es positiva); **q Benjamini–Hochberg ≤0,10 sobre los miembros completos de la familia**; ≥3/5 años positivos. Todo obligatorio. Holm con α_k=0,05/[k(k+1)] es confirmación separada, no reemplaza q ni las reservas OOS. Este Gate 1 es exploratorio: PASS no permitiría fondeo. Los preregistros antiguos más estrictos permanecen intactos.
 
@@ -22,6 +22,23 @@
 | NQ-H78 | ¿Oposición gap H09/alineación H56 mejora H69? | 129 | 3.32 | [-8.27, 15.18] | 0.3249 | 3/5 | 1.096 | 427.98 | **NO CUMPLE** |
 
 **Resultado: 0/12 cumplen Gate 1.** H69 tiene IC90 favorable pero q=0,1152; H77 tiene IC90 favorable y q=0,0468, pero N=140 (inferior a 151). La auditoría de Holm sobre los p bilaterales de las familias 6 y 7 tampoco arroja confirmados. Se conserva el detalle de cada puerta y p-values en el artefacto del Action.
+
+## Adaptación T verificable con la muestra actual (135 sesiones / 7 meses)
+
+**Regla adicional, no reemplazo Gate H:** [Política estadística T siete meses](research/nq/NQ_TICK_SEVEN_MONTH_STATISTICAL_POLICY_2026_10_11.md), [resultado con IC90 mensual, signo y LOMO](research/nq/NQ_TICK_SEVEN_MONTH_STATISTICAL_RESULTS_2026_10_11.md), [Action 38200366148 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38200366148) y [código/test 6 PASS](research/nq/nq_tick_seven_month_diagnostic.py). Reutiliza SOLO el safe summary T05/H02 ya guardado, sin reabrir archivos Last, sin nuevos datos ni OOS.
+
+**IMPORTANTE:** `N_sessions=135` vs `N_trades` y **solo siete unidades de inferencia MENSUAL disponibles en el artifact**. Estos son intervalos t-Student 90% de la **MEDIA USD/MES** sobre 7 meses, no IC90 de efecto por trade o efecto diario por semanas. Los meses consecutivos quizá no son independientes. No reportar q BH/Holm ni declaración de "pasa Gate1" derivada de estos IC mensuales.
+
+| Hipótesis/contrafactual | Pregunta | N trades | Meses con P&L +/7 | Neto estrés USD | IC90 **media mensual** USD/mes | p de signo mensual unilateral* | q BH | ¿Cumple estadísticamente? |
+|---|---|---:|---:|---:|---|---:|---|---|
+| **T05-377** | ¿La reversión T05 aporta beneficio mensual neto constante? | 115 | **6/7** | +5.102,50 | **[+98,03, +1.359,83]** | **0,0625** | N/D | **NO EVALUABLE formalmente**, solo favorable descriptivamente |
+| **B05H-02** | ¿La reversión VWAP genera ventaja con 377 prints? | 75 | 2/7 | −1.427,50 | [−576,31, +168,45] | 0,9375 | N/D | **NO EVALUABLE formalmente**, descartada económicamente |
+| **Router T05+H02** | ¿Compartir ambas señales aumenta el neto en la cuenta? | 166 | 6/7 | +2.195,00 | [−221,53, +848,67] | 0,0625 | N/D | **NO EVALUABLE formalmente**, peor que T05 sola |
+| **Δ Router−T05** | ¿Agregar H02 crea P&L incremental en mismas fechas? | Emparejado 7 meses | **0/7** | **−2.907,50** | **[−777,42, −53,29]** | **1,0000** para mejora positiva | N/D | **NO CUMPLE económicamente**; inferencia formal pendiente |
+
+* El p binomial exacto supone siete meses con signos independientes y equiprobables; es un **diagnóstico posterior de estrategias YA probadas**, no q BH ni una prueba confirmatoria. Para T05, incluso el IC90 positivo de media mensual **no** aprueba simulación de fondeo: bajo estrés+$10 RT PF=1,23717. Si se omite cualquier mes, ΔRouter−T05 sigue negativo: neto LOMO de 6 meses entre **−US$2.895 y −US$1.442,50**.
+
+**Siguiente nivel pendiente:** a partir de **todas** las 135 sesiones con P&L diario **incluyendo ceros**, estimar IC90/p exploratorio de bloques móviles **5 sesiones con 10.000 bootstrap**, sensibilidad 3/10, unidad **USD/día**, intervalos de incremento diario router−padre emparejado, LOMO y precisión/poder. q BH solo si la familia **completa** y los p están definidos *antes de outcomes*, Holm sigue siendo requisito separado. No inventar N independiente mínimo de 75, 100 o 115 trades para promover estrategias. El programa H de cinco años y su propio Gate 1 no se tocan.
 
 ## T recientes: NQ Last con 7 meses DEV y estadísticas faltantes
 
