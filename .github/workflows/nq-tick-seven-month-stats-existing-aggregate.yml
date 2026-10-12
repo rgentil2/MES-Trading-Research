@@ -1,0 +1,44 @@
+name: NQ T seven-month sample-adapted stats - SAFE EXISTING artifact only
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-tick-seven-month-stats-existing-aggregate.yml'
+      - 'research/nq/nq_tick_seven_month_diagnostic.py'
+      - 'research/nq/test_nq_tick_seven_month_diagnostic.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  monthly-diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: research/nq:local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test exact monthly inference assumptions and fail-closed coverage
+        run: |
+          python -m unittest discover -s research/nq -p 'test_nq_tick_seven_month_diagnostic.py' -v
+      - name: Retrieve existing PUBLIC aggregated H02 report only (NOT new tick history)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p _existing_summary
+          gh run download 38193895252 --repo rgentil2/MES-Trading-Research --name b05h02-seven-month-safe-reversion-report --dir _existing_summary
+          test -f _existing_summary/summary.json
+      - name: Seven-month t CI90, sign p and paired LOMO; q Holm NOT applicable
+        run: |
+          python research/nq/nq_tick_seven_month_diagnostic.py --source _existing_summary/summary.json --out safe_statistical/summary.json --report safe_statistical/report.md
+          cat safe_statistical/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-seven-month-descriptive-stats-no-new-ticks
+          path: safe_statistical/
+          if-no-files-found: error
