@@ -1,0 +1,94 @@
+name: NQ B05F QC existing archived Last DEV only (no new market history)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-b05f-existing-last-qc.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run synthetic causal/source QC tests before touching historic files
+        run: |
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_b05f_existing_last_qc.py' -v
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_t05_fibonacci_bars.py' -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_b05f_existing_last_qc.py
+  months:
+    needs: tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        month: ['2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04']
+    env:
+      MONTH: ${{ matrix.month }}
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reprocess only exact existing archived DEV Last; verify checksums
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p _private/arc _private/data
+          gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/arc
+          (cd _private/arc && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          7z x "_private/arc/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+      - name: Run streaming QC only, no trading/PnL
+        run: |
+          python local_nq_tick_2025_2026/nq_b05f_existing_last_qc.py --root _private/data --month "$MONTH" --out "b05f_safe/nq_b05f_${MONTH}.json"
+      - name: Erase licensed source before artifact
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b05f-existing-${{ matrix.month }}
+          path: b05f_safe/nq_b05f_*.json
+          if-no-files-found: error
+  aggregate:
+    needs: months
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b05f-existing-*
+          merge-multiple: true
+          path: _month_summary
+      - name: Exact 140/135 DEV reconciliation and safe context readiness report
+        run: |
+          python local_nq_tick_2025_2026/nq_b05f_existing_last_qc.py --inputs _month_summary --out b05f_final/summary.json --report b05f_final/report.md
+          cat b05f_final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b05f-seven-month-existing-last-safe-qc
+          path: b05f_final/
+          if-no-files-found: error
