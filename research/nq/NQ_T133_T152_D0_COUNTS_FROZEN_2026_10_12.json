@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "cohort_id": "NQ-C133-152",
+  "prereg_id": "NQ-T133-T152-EXECUTABLE-STRATEGIES-D0-V1",
+  "source_action_run": 38324292967,
+  "source_artifact_id": 11779419992,
+  "source_digest": "sha256:aad65e794f5dee30fa27b543fe692ee2409535438ca11d187f4ec891be8d43c3",
+  "supersedes_preliminary_run": 38323990208,
+  "source": 140,
+  "eligible": 135,
+  "family_size": 20,
+  "all_ids": [
+    "T133",
+    "T134",
+    "T135",
+    "T136",
+    "T137",
+    "T138",
+    "T139",
+    "T140",
+    "T141",
+    "T142",
+    "T143",
+    "T144",
+    "T145",
+    "T146",
+    "T147",
+    "T148",
+    "T149",
+    "T150",
+    "T151",
+    "T152"
+  ],
+  "case_control_other_missing": {
+    "T133": {
+      "CASE": 52,
+      "CONTROL": 77,
+      "OTHER": 6,
+      "NOT_EVALUABLE": 0,
+      "diagnostic_2025_10_to_12_CASE": 26,
+      "chronological_internal_2026_01_to_04_CASE": 26
+    },
+    "T134": {
+      "CASE": 14,
+      "CONTROL": 121,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0,
+      "diagnostic_2025_10_to_12_CASE": 6,
+      "chronological_internal_2026_01_to_04_CASE": 8
+    },
+    "T135": {
+      "CASE": 56,
+      "CONTROL": 79,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0,
+      "diagnostic_2025_10_to_12_CASE": 18,
+      "chronological_internal_2026_01_to_04_CASE": 38
+    },
+    "T136": {
+      "CASE": 36,
+      "CONTROL": 99,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0,
+      "diagnostic_2025_10_to_12_CASE": 15,
+      "chronological_internal_2026_01_to_04_CASE": 21
+    },
+    "T137": {
+      "CASE": 38,
+      "CONTROL": 96,
+      "OTHER": 1,
+      "NOT_EVALUABLE": 0,
+      "diagnostic_2025_10_to_12_CASE": 12,
+      "chronological_internal_2026_01_to_04_CASE": 26
+    },
+    "T138": {
+      "CASE": 5,
+      "CONTROL": 130,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0,
+      "diagnostic_2025_10_to_12_CASE": 0,
+      "chronological_internal_2026_01_to_04_CASE": 5
+    },
+    "T139": {
+      "CASE": 3,
+      "CONTROL": 132,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0,
+      "diagnostic_2025_10_to_12_CASE": 1,
+      "chronological_internal_2026_01_to_04_CASE": 2
+    },
+    "T140": {
+      "CASE": 61,
+      "CONTROL": 70,
+      "OTHER": 4,
+      "NOT_EVALUABLE": 0,
+      "diagnostic_2025_10_to_12_CASE": 24,
+      "chronological_internal_2026_01_to_04_CASE": 37
+    },
+    "T141": {
+      "CASE": 73,
+      "CONTROL": 59,
+      "OTHER": 3,
+      "NOT_EVALUABLE": 0,
+      "diagnostic_2025_10_to_12_CASE": 26,
+      "chronological_internal_2026_01_to_04_CASE": 47
+    },
+    "T142": {
+      "CASE": 17,
+      "CONTROL": 116,
+      "OTHER": 2,
+      "NOT_EVALUABLE": 0,
+      "diagnostic_2025_10_to_12_CASE": 5,
+      "chronological_internal_2026_01_to_04_CASE": 12
+    },
+    "T143": {
+      "CASE": 9,
+      "CONTROL": 126,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0,
+      "diagnostic_2025_10_to_12_CASE": 2,
+      "chronological_internal_2026_01_to_04_CASE": 7
+    },
+    "T144": {
+      "CASE": 5,
+      "CONTROL": 130,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0,
+      "diagnostic_2025_10_to_12_CASE": 2,
+      "chronological_internal_2026_01_to_04_CASE": 3
+    },
+    "T145": {
+      "CASE": 51,
+      "CONTROL": 69,
+      "OTHER": 15,
+      "NOT_EVALUABLE": 0,
+      "diagnostic_2025_10_to_12_CASE": 22,
+      "chronological_internal_2026_01_to_04_CASE": 29
+    },
+    "T146": {
+      "CASE": 32,
+      "CONTROL": 100,
+      "OTHER": 3,
+      "NOT_EVALUABLE": 0,
+      "diagnostic_2025_10_to_12_CASE": 15,
+      "chronological_internal_2026_01_to_04_CASE": 17
+    },
+    "T147": {
+      "CASE": 21,
+      "CONTROL": 113,
+      "OTHER": 1,
+      "NOT_EVALUABLE": 0,
+      "diagnostic_2025_10_to_12_CASE": 9,
+      "chronological_internal_2026_01_to_04_CASE": 12
+    },
+    "T148": {
+      "CASE": 102,
+      "CONTROL": 20,
+      "OTHER": 13,
+      "NOT_EVALUABLE": 0,
+      "diagnostic_2025_10_to_12_CASE": 40,
+      "chronological_internal_2026_01_to_04_CASE": 62
+    },
+    "T149": {
+      "CASE": 58,
+      "CONTROL": 64,
+      "OTHER": 11,
+      "NOT_EVALUABLE": 2,
+      "diagnostic_2025_10_to_12_CASE": 20,
+      "chronological_internal_2026_01_to_04_CASE": 38
+    },
+    "T150": {
+      "CASE": 72,
+      "CONTROL": 53,
+      "OTHER": 10,
+      "NOT_EVALUABLE": 0,
+      "diagnostic_2025_10_to_12_CASE": 28,
+      "chronological_internal_2026_01_to_04_CASE": 44
+    },
+    "T151": {
+      "CASE": 93,
+      "CONTROL": 28,
+      "OTHER": 14,
+      "NOT_EVALUABLE": 0,
+      "diagnostic_2025_10_to_12_CASE": 38,
+      "chronological_internal_2026_01_to_04_CASE": 55
+    },
+    "T152": {
+      "CASE": 29,
+      "CONTROL": 96,
+      "OTHER": 10,
+      "NOT_EVALUABLE": 0,
+      "diagnostic_2025_10_to_12_CASE": 15,
+      "chronological_internal_2026_01_to_04_CASE": 14
+    }
+  },
+  "D0_testable_ids": [
+    "T133",
+    "T135",
+    "T136",
+    "T137",
+    "T140",
+    "T141",
+    "T142",
+    "T145",
+    "T146",
+    "T147",
+    "T148",
+    "T149",
+    "T150",
+    "T151",
+    "T152"
+  ],
+  "D0_diverse_ids": [
+    "T133",
+    "T135",
+    "T136",
+    "T137",
+    "T140",
+    "T141",
+    "T142",
+    "T145",
+    "T146",
+    "T147",
+    "T148",
+    "T149",
+    "T150",
+    "T151",
+    "T152"
+  ],
+  "D0_LOW_POWER_ids": [
+    "T134",
+    "T138",
+    "T139",
+    "T143",
+    "T144"
+  ],
+  "D0_duplicate_ids": [],
+  "D0_testable_count": 15,
+  "D0_diverse_count": 15,
+  "D1_gate_20": false,
+  "D1_executed": false,
+  "D1_economic_prereg_pending": true,
+  "PNL": null,
+  "PF": null,
+  "DD": null,
+  "p": null,
+  "q": null,
+  "CI90": null,
+  "broker_fills_verified": false,
+  "OOS_opened": false,
+  "new_data_acquired": false,
+  "stage": "D0_POOL_FORMING_WAIT_FOR_NEW_DISTINCT_STRATEGIES",
+  "periods": [
+    {
+      "name": "DIAGNOSTIC",
+      "months": [
+        "2025-10",
+        "2025-11",
+        "2025-12"
+      ],
+      "sessions": 53
+    },
+    {
+      "name": "INTERNAL_CHRONOLOGICAL_SENSITIVITY_NOT_OOS",
+      "months": [
+        "2026-01",
+        "2026-02",
+        "2026-03",
+        "2026-04"
+      ],
+      "sessions": 82
+    }
+  ]
+}
