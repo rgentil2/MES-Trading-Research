@@ -148,17 +148,17 @@ Fuentes verificadas con 140 días fuente/135 DEV elegibles, 7/7 meses y SHA256 d
 
 **Decisión:** 0/6 alfa confirmada. D1 T21/T24 con signo puntual adverso (no es inferencia robusta de pérdida porque sus IC cruzan0), T25 positivo pequeño INCONCLUSO y no se promueve; T22 caso único no permite selección de parámetro ni trading. **La fase1 económica original continúa FAIL-CLOSED [38286173182](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38286173182)**. Próximo backlog: D0 de mecanismos NUEVOS con preregistro previo y control observacional, sin nuevas fuentes ni 5s.
 
-## T26–T28 — lote nuevo G0/D0 ejecutado, D1 solo prerregistrado (12-oct-2026)
+## T26–T28 — D0 y D1 FAMILIAR CERRADOS, resultado negativo/no estimable (12-oct-2026)
 
-**Fuente:** [Prerregistro inicial antes de clasificar](research/nq/NQ_T26_T28_G0_D0_NEW_MECHANISMS_PREREG_2026_10_12.md), [Action 38297611186 COMPLETED SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38297611186), 10 tests sintéticos PASS, siete meses 140 fuente/135 READY/135 anclas, [artifact 11769260262](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38297611186/artifacts/11769260262), [informe exacto](research/nq/NQ_T26_T28_G0_D0_RESULTS_2026_10_12.md). Sin nueva historia, sin 5s nuevos, sin periodos sellados ni futura rentabilidad. [D1 predictivo PRERREGISTRADO, pero NO EJECUTADO](research/nq/NQ_T26_T28_D1_OBSERVATIONAL_PREREG_2026_10_12.md).
+[Prerregistro original T26–T28](research/nq/NQ_T26_T28_D1_OBSERVATIONAL_PREREG_2026_10_12.md), congelado antes de outcomes; [D0](research/nq/NQ_T26_T28_G0_D0_RESULTS_2026_10_12.md), 140/135, casos/controles 18/36, 6/65 y 3/0. [**D1 Action 38306171742 COMPLETED SUCCESS**](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38306171742), [informe 3 integrantes](research/nq/NQ_T26_T28_D1_OBSERVATIONAL_RESULTS_2026_10_12.md), [artifact 11772618236](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38306171742/artifacts/11772618236), digest `b5fd4fafdd5379cbfa1448d36a6a8ea1a5ce2f9e0cc118d86b92ed84649cce01`. 7 DEV meses existentes, 140 fuente/135 READY. Primer Action 38306058654 FAILURE por argumento fecha en `file_for`, corregido sin variar hipótesis.
 
-| ID / pregunta | Familia | N CASE | N CONTROL | N trades / N efectivo | G0 / D0 | N/IC90 de efecto | p / BH q / Holm | Años positivos | P&L/neto/expectativa | PF / DD / Δrouter | ¿Cumple Gate1 o rentabilidad? |
-|---|---|---:|---:|---|---|---|---|---|---|---|---|
-| **T26** ¿chop interno predice rango +15min? | T26–T28 | **18** | **36** | N/D / N/D | QC PASS / **TESTABLE, baja muestra** | N/D sin outcomes | N/D | N/D | N/D | N/D | **NO**, D1 pendiente |
-| **T27** ¿prima de precio por qty vs simple predice continuación? | T26–T28 | **6** | **65** | N/D / N/D | QC PASS / **LOW_POWER** | N/D sin outcomes | N/D | N/D | N/D | N/D | **NO** |
-| **T28** ¿burstiness de tiempo predice rango? | T26–T28 | **3** | **0** | N/D / N/D | QC PASS / **UNIDENTIFIABLE** | N/D sin outcomes | N/D | N/D | N/D | N/D | **NO** |
+| ID / pregunta | D0 CASE/CTRL | N trades / N efectivo | Δ esperado (ticks de precio) | IC90 L3 | **IC90 L5** | IC90 L10 | p L5 exploratorio | q BH3 descriptivo | D1 | PF/DD/NETO/Holm/OOS | ¿Gate1/monetizable? |
+|---|---:|---|---:|---|---|---|---:|---:|---|---|---|
+| **T26** ¿mayor chop implica mayor rango próximo? | **18/36** | 0 / N/D | **−67,750** rango 15min | [−140,589,−0,887] | **[−136,302,−5,412]** | [−128,818,−22,483] | **0,948105** | **1,000** | **NOT_SUPPORTED_DESCRIPTIVE** | N/D | **NO** |
+| **T27** ¿prima qty/VWAP anticipa continuación? | **6/65** | 0 / N/D | −38,596 markout +300s con 6 casos | N/D | N/D | N/D | N/D | N/D (p=1 sentinela solo BH) | NOT_ESTIMABLE | N/D | **NO** |
+| **T28** ¿CV2 de llegadas anticipa rango? | **3/0** | 0 / N/D | N/D | N/D | N/D | N/D | N/D | N/D (p=1 sentinela solo BH) | NOT_ESTIMABLE/UNIDENTIFIABLE | N/D | **NO** |
 
-**Regla:** son recuentos por **sesión clasificada**, no 18, 6 o 3 trades ni eventos independientes; el gate exploratorio histórico `N>150`, IC90, q BH≤0,10, 3/5 años no es evaluable/realizable con un día por sesión de estos siete meses. Ningún PF, retorno neto, IC90, p/q o DD de D1 puede atribuirse antes de correr el análisis. T26 es **hipótesis de magnitud no direccional**, sin permiso de convertir rango en beneficios. Conservamos los tres miembros en la familia, incluso sin control; no ajustar umbrales de T27/T28 para rescatarlos.
+**Importante:** Los IC negativos del rango de T26 son contrarios a la dirección POSITIVA prerregistrada. No invertir signo ahora para anunciar un sistema ganador ni convertir rango físico en USD. **0/3** cumplen BH familiar ≤0,10, todo DEV reutilizado => inferencia solo descriptiva, no independencia ni Holm. T26 no se suma a T30 como mecanismo diferente. Para recuperar H77/H69/H74 históricos, [G0 original no portable con Last 08–12](research/nq/NQ_LEGACY_H77_H69_H74_T26_PORTABILITY_GATE_2026_10_12.md); sus nuevas variantes T59/T60 conservan IDs distintos y solo D0.
 
 ## T29–T58 — cinco bloques, 30 hipótesis, D0 y D1 VERIFICADOS 12-oct-2026
 
