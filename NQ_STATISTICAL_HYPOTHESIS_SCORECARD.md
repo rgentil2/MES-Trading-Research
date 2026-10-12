@@ -20,13 +20,23 @@
 
 **Los 31 nombres D0 viables NO son alfas; las siete medias con IC90 individual positivo NO alcanzaron la corrección BH sobre los 38 miembros**, incluidos T60/T77 no estimables y T71/T81/T82/T83/T84 casi duplicadas. No se cambian side, CASE/CONTROL ni umbrales para rescatar q. [Detalle D0 de los 38 y redundancia](research/nq/NQ_T59_T96_SIX_BLOCK_COHORT_D0_RESULTS_2026_10_12.md) y [scorecard D1 los 38](research/nq/NQ_T59_T96_38_MEMBER_WHOLE_COHORT_D1_RESULTS_2026_10_12.md) contienen TODAS las decisiones. **N_trades=0; USD neto/PF/DD/Δrouter/Holm/OOS/ROI=N/D**: markout VWAP o rango 15m físicos NO son ejecuciones de cuenta.
 
-## Nueva cohorte de contexto 233/377/4181: T97–T132 (12-oct-2026), D0 TERMINADO
+## T97–T132 — 36 hipótesis en SEIS BLOQUES, D0/D1 CERRADOS (12-oct-2026)
 
-[Prerregistro de las 36 hipótesis antes de conteos](research/nq/NQ_T97_T132_SIX_BLOCKS_D0_PREREG_2026_10_12.md) · [36 filas de N CASE/CONTROL/OTHER/NO EVAL](research/nq/NQ_T97_T132_SIX_BLOCKS_D0_RESULTS_2026_10_12.md) · [Action D0 38318189842 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38318189842) · [artifact safe 11777123195](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38318189842/artifacts/11777123195), SHA256 `b6a9eac2a9924dd18f9c9c9664ba0b1ef7529c02fe9cf254c6fbac29cfb677d0`.
+**D0** [Action 38318189842 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38318189842): 7 DEV SHA256 140/135, **36 registradas→30 TESTABLE→26 diversas (gate20 PASS)**, [tabla de casos y controles de los 36](research/nq/NQ_T97_T132_SIX_BLOCKS_D0_RESULTS_2026_10_12.md), [conteos congelados](research/nq/NQ_T97_T132_D0_FROZEN_COUNTS_2026_10_12.json). T110/T127/T128/T129/T132 LOW_POWER, T125 135/0 UNIDENTIFIABLE; T102/T114/T115/T120 cerca de duplicados CASE.
 
-**7 DEV 2025-10…2026-04, fuente140/135 READY**, **36 inscritas, 30 TESTABLE, 26 distintas** (Jaccard<0,85), supera gate20. LOW_POWER T110 T127 T128 T129 T132; UNIDENTIFIABLE T125 (135/0), near duplicates T102 T114 T115 T120. **N trades/PnL/IC90/p/q/Holm/PF/DD=N/D** en G0/D0. Familias: micro233, contexto4181, breakouts/barriers, retest/location, actividad/compression, consenso de dos padres; sin nuevos 5s/holdouts.
+**D1 de TODO k36**, preregistrado ANTES de mirar D0/outcomes [protocolo](research/nq/NQ_T97_T132_D1_WHOLE_COHORT_PREREG_2026_10_12.md), [Action 38318511015 COMPLETED SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38318511015), artifact seguro [11777853779](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38318511015/artifacts/11777853779), sha256 `04feccb80476d4dd939c9d06b79a356633113e2d064ccb269f5a07c9d2ac5d8f`. **Tabla de TODOS los 36 con N, efecto, IC90 L5, p, qBH36, PASS/NO PASS:** [informe completo](research/nq/NQ_T97_T132_36_MEMBER_D1_RESULTS_2026_10_12.md). **24 INCONCLUSIVE, 6 NOT_SUPPORTED por signo desfavorable y 6 NOT_ESTIMABLE**. Siete IC90 L5 positivos de markout firmado +300s, pero **qBH36 mínima = 0,2639736 > 0,10: 0/36 PASA**, por tanto **0 para D2**.
 
-**D1 de todo el bloque 36 miembros**, [prerregistrado ANTES del outcome y D0](research/nq/NQ_T97_T132_D1_WHOLE_COHORT_PREREG_2026_10_12.md) commit `060c3f03e7c45639a1373e55aaa2bc71023f389d`, [Action 38318511015](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38318511015) iniciada. Primario VWAP markout firmado +300s, IC90 moving block 10.000 L5, BH de **k36**, incluye todas las 36 originales y desfavorables. **No afirmar que D1 pasó hasta inspeccionar artifact final**; aun si alguna cumple, no implica fill ejecutable ni estrategia económica. Datos DEV reutilizados exploratorios.
+| Hipótesis / mecanismo | N CASE/CTRL | Efecto `Δ` ticks PRECIO, no PnL | IC90 L5 | p exploratoria | q BH36 | ¿Cumple D1? |
+|---|---:|---:|---|---:|---:|---|
+| T100, micro233 | 88/47 | +60,770 | [+16,683;+110,483] | 0,0223 | 0,2640 | **NO** |
+| T103, macro4181 | 69/64 | +33,047 | [+2,899;+69,795] | 0,0712 | 0,2910 | **NO** |
+| T108, contexto4181 | 69/64 | +55,349 | [+18,812;+102,849] | 0,0259 | 0,2640 | **NO** |
+| T111, barrera 377 | 57/76 | +60,348 | [+11,545;+115,838] | 0,0353 | 0,2640 | **NO** |
+| **T112, barrera 233** | 39/96 | **+69,985** | **[+23,592;+122,477]** | **0,0132** | **0,2640** | **NO** |
+| T119, centro 233 | 105/29 | +45,875 | [+0,405;+101,895] | 0,0890 | 0,2910 | **NO** |
+| T130, confluencia 4181/PM | 36/30 | +47,159 | [+4,052;+100,909] | 0,0764 | 0,2910 | **NO** |
+
+**N_trades=0; fills Last no verificables; USD neto/PF/DD/ROI/DeltaRouter/Holm/OOS=N/D.** L5 bootstrap bloques por sesiones B=10.000, L3/L10 sensibilidad en artifact. Reutilización DEV ⇒ q/p DESCRIPTIVAS, no autorización de fondeo, no extraer ocho mejores ni retunar T112. Siguiente cohorte debe **formular mecanismos económicamente ejecutables nuevos y preregistrar validación cronológica interna** antes de ver resultados.
 
 ## Embudo global obligatorio POR COHORTES (actualización 12-oct-2026)
 
