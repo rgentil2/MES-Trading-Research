@@ -1,0 +1,230 @@
+#!/usr/bin/env python3
+"""Offline audit + dashboard for the NQ cohort research funnel.
+
+NEVER reads licensed market data, session-level returns or holdouts.
+Source: research/nq/NQ_COHORT_FUNNEL_POLICY_2026_10_12.json
+        research/nq/NQ_COHORT_FUNNEL_LEDGER_2026_10_12.json
+"""
+from __future__ import annotations
+import argparse
+import json
+from pathlib import Path
+
+POLICY = Path("research/nq/NQ_COHORT_FUNNEL_POLICY_2026_10_12.json")
+LEDGER = Path("research/nq/NQ_COHORT_FUNNEL_LEDGER_2026_10_12.json")
+REPORT = Path("research/nq/NQ_COHORT_FUNNEL_STATUS_2026_10_12.md")
+
+def require(ok, reason):
+    if not ok:
+        raise ValueError("NQ_FUNNEL_BLOCKED: " + reason)
+
+def unique(seq):
+    return len(seq) == len(set(seq))
+
+def subset(a,b):
+    return set(a) <= set(b)
+
+def validate(policy,ledger):
+    require(policy.get("policy_id") == "NQ-COHORT-FUNNEL-V1"
+            and ledger.get("policy_id") == policy["policy_id"], "wrong policy")
+    require(policy.get("schema_version")==1 and ledger.get("schema_version")==1,
+            "schema version")
+    require(policy.get("status")=="ACTIVE_USER_DIRECTED"
+            and policy.get("extends_policy")=="NQ-DISCOVERY-STAGED-GATES-V1",
+            "existing gates cannot be silently replaced")
+    require(policy.get("stages")==["IDEAS","G0","D0","D1","D2","CONFIRMATION"],
+            "stage routing")
+    require(policy.get("transition_unit")=="BATCH_ONLY_NO_INDIVIDUAL_HYPOTHESIS_RUNS",
+            "individual-stage shortcuts prohibited")
+    rules=policy["stage_rules"]
+    require(rules["D0"]["testable_min_case"]==15
+            and rules["D0"]["testable_min_control"]==15
+            and rules["D0"]["diversity_case_jaccard_below"]==0.85
+            and rules["D0"]["minimum_diverse_testable_for_new_D1_cohort"]==20,
+            "D0 batch entry thresholds")
+    require(rules["D2"]["minimum_nonredundant_survivors_to_start_economic_batch"]==2,
+            "do not research single D2 survivor")
+    f=policy["permanent_invariants"]
+    require(all(f.values()), "a permanently forbidden action was re-enabled")
+    require(policy["previous_completed_batches_are_not_retroactively_qualified"] is True,
+            "closed families cannot be requalified")
+    require(ledger.get("holdouts_opened") is False
+            and ledger.get("new_data_acquired") is False,
+            "sealed holdout/new data flag changed")
+    cohorts=ledger.get("cohorts",[])
+    require(len(cohorts)>=4, "missing historical stage cohorts")
+    all_seen=set()
+    stat_survivors=set()
+    econ_survivors=set()
+    for b in cohorts:
+        ids=b["all_preregistered_ids"]
+        require(bool(ids) and unique(ids), "bad original family members")
+        require(not (all_seen & set(ids)), "same hypothesis inserted in two cohorts")
+        all_seen.update(ids)
+        require(b["G0"]["status"]=="PASS"
+                and b["G0"]["source"]==140
+                and b["G0"]["eligible"]==135,
+                "G0 source coverage failed: "+b["id"])
+        d0=b["D0"];d1=b["D1"];d2=b["D2"]
+        require(set(d0["evaluated_ids"])==set(ids),
+                "D0 omitted original family member: "+b["id"])
+        for key in ("testable_ids","diverse_ids","low_power_ids","near_duplicate_ids"):
+            require(unique(d0[key]) and subset(d0[key],ids), "invalid D0 "+key)
+        require(subset(d0["diverse_ids"],d0["testable_ids"]), "a non-testable was included as diverse")
+        require(not set(d0["testable_ids"]) & set(d0["low_power_ids"]),
+                "D0 testable and low power contradict")
+        require(not set(d0["diverse_ids"]) & set(d0["near_duplicate_ids"]),
+                "near-duplicate counted as independent")
+        require(d0["workflow_run"] and d0["report"], "missing reproducible D0 proof")
+        require(d1["status"] in ("COMPLETE","LOCKED_WAITING_FOR_20_DIVERSE_D0"),
+                "unknown D1 state")
+        if d1["status"]=="COMPLETE":
+            require(b["stage"]=="D1_CLOSED"
+                    and set(d1["evaluated_ids"])==set(ids),
+                    "ALL original IDs must be evaluated together in D1")
+            if b["origin"]=="NEW_BATCH_20_PLUS":
+                require(len(d0["diverse_ids"])>=20,
+                        "cannot advance solitary NEW idea to D1")
+            require(d1["workflow_run"] and d1["report"], "D1 evidence missing")
+            require(subset(d1["individual_ci90_positive_ids"],ids),
+                    "unregistered D1 outcome")
+            require(subset(d1["statistical_screen_pass_ids"],d0["testable_ids"]),
+                    "D1 statistical survivor did not pass D0")
+            require(subset(d1["economic_screen_pass_ids"],d0["testable_ids"]),
+                    "D1 economic survivor did not pass D0")
+            if d1["q_min"] is not None and d1["q_min"] > .1:
+                require(not d1["statistical_screen_pass_ids"],
+                        "BH q>0.10 cohort cannot claim statistical PASS")
+            stat_survivors.update(d1["statistical_screen_pass_ids"])
+            econ_survivors.update(d1["economic_screen_pass_ids"])
+        else:
+            require(b["stage"]=="D0_POOL_FORMING"
+                    and len(d0["diverse_ids"])<20
+                    and d1["evaluated_ids"]==[]
+                    and d1["workflow_run"] is None
+                    and d1["q_min"] is None,
+                    "D1 started individually before 20+ D0")
+            require(not d1["statistical_screen_pass_ids"]
+                    and not d1["economic_screen_pass_ids"],
+                    "unrun D1 fabricated survivors")
+        require(not d2["assessed_ids"] and not d2["promoted_ids"],
+                "D2 not actually performed; cannot be marked PASS")
+    pool=ledger["pooled_D2"]
+    require(set(pool["statistically_eligible_ids"])==stat_survivors
+            and set(pool["economically_eligible_ids"])==econ_survivors,
+            "D2 promotion queue does not reconcile with D1")
+    require(set(pool["d2_batch_ids"]) <= stat_survivors | econ_survivors,
+            "unqualified member promoted to economic batch")
+    require(not pool["d2_batch_ids"]
+            or len(pool["d2_batch_ids"]) >= 2,
+            "no one-at-a-time D2")
+    require(pool["monetary_validated_strategies"]==0,
+            "cannot declare monetization via D0/D1 ledger")
+    baseline=ledger["separate_baselines"]
+    require(any(x["id"]=="T05-377"
+                and x["status"]=="FROZEN_LEGACY_BENCHMARK_ONLY"
+                and x["qualifies_D1_to_D2"] is False for x in baseline),
+            "T05 benchmark cannot shortcut cohort progression")
+    require("T05-377" not in all_seen, "legacy benchmark enrolled as new alpha")
+    require(set(ledger["nonportable_historical_reference_ids"]) ==
+            {"H69","H74","H77"}, "historical incompatible refs cannot be revived")
+    require({b["id"] for b in cohorts} ==
+            {"NQ-C29-58","NQ-C20-25","NQ-C26-28","NQ-C59-NEXT"},
+            "unexpected cohort roster; version ledger before adding one")
+    latest=next(x for x in cohorts if x["id"]=="NQ-C29-58")
+    require(len(latest["all_preregistered_ids"])==30
+            and len(latest["D0"]["testable_ids"])==27
+            and len(latest["D0"]["diverse_ids"])==25
+            and len(latest["D1"]["individual_ci90_positive_ids"])==3
+            and not latest["D1"]["statistical_screen_pass_ids"],
+            "audited existing main batch was rewritten")
+    seed=next(x for x in cohorts if x["id"]=="NQ-C59-NEXT")
+    require(seed["D0"]["testable_ids"]==["T59"]
+            and seed["D0"]["low_power_ids"]==["T60"],
+            "preregistered next pool rewritten")
+    return {"status":"FUNNEL_VALIDATED","cohorts":len(cohorts),
+            "new_D0_diverse_candidates":len(seed["D0"]["diverse_ids"]),
+            "new_D0_gap_to_next_D1":20-len(seed["D0"]["diverse_ids"]),
+            "D1_statistical_survivors":len(stat_survivors),
+            "D1_economic_survivors":len(econ_survivors),
+            "D2_batch_size":len(pool["d2_batch_ids"]),
+            "holdouts_opened":False}
+
+def render(policy,ledger):
+    a=validate(policy,ledger)
+    lines=["# NQ — Tablero del embudo por COHORTES",
+           "", "**Control de flujo:** unidad operativa = BLOQUE COMPLETO. "
+               "D1 nueva exige ≥20 candidatas D0 diversas, y el universo BH "
+               "sigue incluyendo todos los miembros prerregistrados.",
+           "",
+           "| Cohorte | D0: registradas → testables → diversas | D1: medidas → selección familiar | D2: calificadas | Estado |",
+           "|---|---:|---:|---:|---|"]
+    for b in ledger["cohorts"]:
+        d=b["D0"];s=b["D1"]
+        scored=len(s["evaluated_ids"])
+        surv=len(set(s["statistical_screen_pass_ids"]) |
+                 set(s["economic_screen_pass_ids"]))
+        state=("**ESPERA:** completar bloque D0" if b["stage"]=="D0_POOL_FORMING"
+               else "D1 cerrado (sin calificadas)")
+        lines.append(f"| {b['id']} | {len(b['all_preregistered_ids'])} → "
+          f"{len(d['testable_ids'])} → {len(d['diverse_ids'])} "
+          f"| {scored} → {surv} | {len(b['D2']['promoted_ids'])} | {state} |")
+    lines.extend(["",
+      "## Cuello de botella actual",
+      "",
+      f"- **Candidatas viables y diversas acumuladas en NUEVA cohorte:** "
+      f"**{a['new_D0_diverse_candidates']} / 20**. Faltan **{a['new_D0_gap_to_next_D1']}**; "
+      "T59 viable (45 CASE/42 CONTROL), T60 LOW_POWER (71/6).",
+      "- **T29–T58 ya cerró D1:** 30 medidas; T29/T45/T49 tienen IC90 individuales "
+      "de RANGO futuro favorable, pero q-BH mínima 0,212229; **0/30 pasan filtro**. "
+      "Los tres quedan como variables contextuales NO monetarias, NO entrada D2.",
+      "- **T26–T28:** D1 cerrada, T26 signo contrario; T27/28 no estimables. "
+      "**T20–T25:** D1 predictiva cerrada, economía no ejecutable por fills ambiguos.",
+      f"- **Bandeja D2:** **{a['D2_batch_size']}** candidatas agrupadas de "
+      "mínimo 2 mecanismos distintos; **vacía** hasta superar D1 y comprobar "
+      "ruta de ejecución. No saltar desde D0 a riesgo/fondeo.",
+      "",
+      "## Próximo trabajo (no repetir señales individuales)",
+      "",
+      "1. **Solo cohorte siguiente D0:** prerregistrar nuevos bloques de preguntas "
+      "verdaderamente distintas que se añadan al inventario T59; jamás relajar "
+      "ratios T59/T60 por N observado.",
+      "2. Cuando existan ≥20 D0 TESTABLE distintas, congelar y ejecutar D1 "
+      "de la familia NUEVA COMPLETA, con endpoints y denominador BH establecidos "
+      "antes de ver retorno. Evaluar TODOS los miembros y documentar descartar/fallar.",
+      "3. Agrupar en bandeja POST-D1 sobrevivientes de TODAS las cohortes; "
+      "esperar grupo ejecutable plural para D2 con UNA cuenta, costos/riesgo y "
+      "DeltaRouter neto. Confirmación/OOS solo bajo autorización independiente.",
+      "",
+      "**T05-377:** benchmark histórico congelado, NO integrante de cohorte "
+      "D2, ni prueba de renta fondeable. H69/H74/H77 no portables con Last "
+      "08–12 sin cierre RTH del día previo ni ATR de sesión completa.",
+      "",
+      "**Evidencia D0/D1:** [T29–T58 D0]"
+      "(NQ_T29_T58_30_HYPOTHESES_G0_D0_RESULTS_2026_10_12.md) · "
+      "[T29–T58 D1](NQ_T29_T58_30_HYPOTHESES_D1_BATCH_RESULTS_2026_10_12.md) · "
+      "[T26–T28 D1](NQ_T26_T28_D1_OBSERVATIONAL_RESULTS_2026_10_12.md) · "
+      "[T59–T60 D0](NQ_T59_T60_NEW_PREMARKET_D0_RESULTS_2026_10_12.md).",
+      "",
+      "Esta fotografía se genera SOLO desde el ledger agregado; no abre "
+      "ni recuenta datos de mercado, no ejecuta trades ni abre holdouts.",
+      ""])
+    return "\n".join(lines)
+
+if __name__=="__main__":
+    p=argparse.ArgumentParser()
+    p.add_argument("--policy",type=Path,default=POLICY)
+    p.add_argument("--ledger",type=Path,default=LEDGER)
+    p.add_argument("--output",type=Path,default=REPORT)
+    p.add_argument("--verify-report",action="store_true")
+    a=p.parse_args()
+    policy=json.loads(a.policy.read_text())
+    ledger=json.loads(a.ledger.read_text())
+    status=validate(policy,ledger)
+    report=render(policy,ledger)
+    if a.verify_report:
+        require(a.output.read_text()==report,"committed dashboard is stale")
+    else:
+        a.output.parent.mkdir(parents=True,exist_ok=True)
+        a.output.write_text(report)
+    print(json.dumps(status,sort_keys=True))
