@@ -1,0 +1,380 @@
+{
+  "prereg_id": "NQ-T61-T96-G0-D0-FROZEN-V1",
+  "cohort_id": "NQ-C59-NEXT",
+  "as_of": "2026-10-12",
+  "source_action_run": 38313046875,
+  "source_artifact_id": 11775368631,
+  "source_artifact_sha256": "9827541e8f4c4ff8d67c4f0b54a5de373252d5d9a0f92c00bc6164597e583f9e",
+  "source": 140,
+  "eligible": 135,
+  "anchors": 135,
+  "all_ids": [
+    "T59",
+    "T60",
+    "T61",
+    "T62",
+    "T63",
+    "T64",
+    "T65",
+    "T66",
+    "T67",
+    "T68",
+    "T69",
+    "T70",
+    "T71",
+    "T72",
+    "T73",
+    "T74",
+    "T75",
+    "T76",
+    "T77",
+    "T78",
+    "T79",
+    "T80",
+    "T81",
+    "T82",
+    "T83",
+    "T84",
+    "T85",
+    "T86",
+    "T87",
+    "T88",
+    "T89",
+    "T90",
+    "T91",
+    "T92",
+    "T93",
+    "T94",
+    "T95",
+    "T96"
+  ],
+  "case_control_other_missing": {
+    "T59": {
+      "CASE": 45,
+      "CONTROL": 42,
+      "OTHER": 48,
+      "NOT_EVALUABLE": 0
+    },
+    "T60": {
+      "CASE": 71,
+      "CONTROL": 6,
+      "OTHER": 58,
+      "NOT_EVALUABLE": 0
+    },
+    "T61": {
+      "CASE": 72,
+      "CONTROL": 63,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T62": {
+      "CASE": 71,
+      "CONTROL": 64,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T63": {
+      "CASE": 68,
+      "CONTROL": 67,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T64": {
+      "CASE": 64,
+      "CONTROL": 71,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T65": {
+      "CASE": 79,
+      "CONTROL": 56,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T66": {
+      "CASE": 69,
+      "CONTROL": 66,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T67": {
+      "CASE": 74,
+      "CONTROL": 61,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T68": {
+      "CASE": 93,
+      "CONTROL": 42,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T69": {
+      "CASE": 82,
+      "CONTROL": 53,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T70": {
+      "CASE": 64,
+      "CONTROL": 71,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T71": {
+      "CASE": 89,
+      "CONTROL": 46,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T72": {
+      "CASE": 75,
+      "CONTROL": 60,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T73": {
+      "CASE": 74,
+      "CONTROL": 61,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T74": {
+      "CASE": 60,
+      "CONTROL": 75,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T75": {
+      "CASE": 66,
+      "CONTROL": 69,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T76": {
+      "CASE": 114,
+      "CONTROL": 18,
+      "OTHER": 3,
+      "NOT_EVALUABLE": 0
+    },
+    "T77": {
+      "CASE": 119,
+      "CONTROL": 12,
+      "OTHER": 4,
+      "NOT_EVALUABLE": 0
+    },
+    "T78": {
+      "CASE": 102,
+      "CONTROL": 33,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T79": {
+      "CASE": 82,
+      "CONTROL": 52,
+      "OTHER": 1,
+      "NOT_EVALUABLE": 0
+    },
+    "T80": {
+      "CASE": 81,
+      "CONTROL": 54,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T81": {
+      "CASE": 80,
+      "CONTROL": 54,
+      "OTHER": 1,
+      "NOT_EVALUABLE": 0
+    },
+    "T82": {
+      "CASE": 98,
+      "CONTROL": 37,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T83": {
+      "CASE": 71,
+      "CONTROL": 64,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T84": {
+      "CASE": 94,
+      "CONTROL": 41,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T85": {
+      "CASE": 94,
+      "CONTROL": 40,
+      "OTHER": 1,
+      "NOT_EVALUABLE": 0
+    },
+    "T86": {
+      "CASE": 95,
+      "CONTROL": 40,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T87": {
+      "CASE": 79,
+      "CONTROL": 56,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T88": {
+      "CASE": 96,
+      "CONTROL": 39,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T89": {
+      "CASE": 80,
+      "CONTROL": 55,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T90": {
+      "CASE": 69,
+      "CONTROL": 66,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T91": {
+      "CASE": 76,
+      "CONTROL": 59,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T92": {
+      "CASE": 63,
+      "CONTROL": 72,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T93": {
+      "CASE": 77,
+      "CONTROL": 57,
+      "OTHER": 1,
+      "NOT_EVALUABLE": 0
+    },
+    "T94": {
+      "CASE": 82,
+      "CONTROL": 53,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T95": {
+      "CASE": 112,
+      "CONTROL": 22,
+      "OTHER": 1,
+      "NOT_EVALUABLE": 0
+    },
+    "T96": {
+      "CASE": 112,
+      "CONTROL": 20,
+      "OTHER": 3,
+      "NOT_EVALUABLE": 0
+    }
+  },
+  "D0_testable_ids": [
+    "T59",
+    "T61",
+    "T62",
+    "T63",
+    "T64",
+    "T65",
+    "T66",
+    "T67",
+    "T68",
+    "T69",
+    "T70",
+    "T71",
+    "T72",
+    "T73",
+    "T74",
+    "T75",
+    "T76",
+    "T78",
+    "T79",
+    "T80",
+    "T81",
+    "T82",
+    "T83",
+    "T84",
+    "T85",
+    "T86",
+    "T87",
+    "T88",
+    "T89",
+    "T90",
+    "T91",
+    "T92",
+    "T93",
+    "T94",
+    "T95",
+    "T96"
+  ],
+  "D0_diverse_ids": [
+    "T59",
+    "T61",
+    "T67",
+    "T73",
+    "T79",
+    "T85",
+    "T91",
+    "T62",
+    "T68",
+    "T74",
+    "T80",
+    "T86",
+    "T92",
+    "T63",
+    "T69",
+    "T75",
+    "T87",
+    "T93",
+    "T64",
+    "T70",
+    "T76",
+    "T88",
+    "T94",
+    "T65",
+    "T78",
+    "T89",
+    "T95",
+    "T66",
+    "T72",
+    "T90",
+    "T96"
+  ],
+  "near_duplicate_ids": {
+    "T71": {
+      "case_jaccard": 0.857143,
+      "of": "T68"
+    },
+    "T81": {
+      "case_jaccard": 0.951807,
+      "of": "T79"
+    },
+    "T82": {
+      "case_jaccard": 0.892157,
+      "of": "T86"
+    },
+    "T83": {
+      "case_jaccard": 0.860759,
+      "of": "T91"
+    },
+    "T84": {
+      "case_jaccard": 0.979167,
+      "of": "T88"
+    }
+  },
+  "D0_diverse_count": 31,
+  "D0_testable_count": 36,
+  "D1_threshold_satisfied": true,
+  "D1_executed": false,
+  "outcomes_read": false,
+  "holdouts_opened": false
+}
