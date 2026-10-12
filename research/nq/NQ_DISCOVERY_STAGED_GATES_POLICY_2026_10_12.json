@@ -253,5 +253,31 @@
     "independent_confirmation_not_substituted_by_significance_on_dev": true,
     "freeze_before_outcome": true
   },
-  "source_document": "research/nq/NQ_DISCOVERY_STAGED_GATES_POLICY_2026_10_12.md"
+  "source_document": "research/nq/NQ_DISCOVERY_STAGED_GATES_POLICY_2026_10_12.md",
+  "batch_discovery_gate": {
+    "adopted_on": "2026-10-12",
+    "scope": "PROSPECTIVE_NEW_BATCHES_ONLY",
+    "policy_type": "ADDITIVE_RESEARCH_CADENCE_NOT_PROFIT_GATE",
+    "minimum_diverse_d0_candidates_before_new_D1": 20,
+    "minimum_CASE_sessions_for_TESTABLE": 15,
+    "minimum_CONTROL_sessions_for_TESTABLE": 15,
+    "case_jaccard_near_duplicate_at_or_above": 0.85,
+    "preregister_hypotheses_and_thresholds_before_D0": true,
+    "freeze_new_D1_endpoints_before_outcomes": true,
+    "diversified_shortlist_must_exclude_near_duplicates": true,
+    "all_original_family_members_remain_in_D1_BH": true,
+    "adaptive_DEV_pq_confirmatory": false,
+    "allow_retuning_if_below_20": false,
+    "holdouts_opened": false,
+    "original_Gate1_Holm_unchanged": true,
+    "live_trading_authorized": false,
+    "adoption_evidence": "research/nq/NQ_T29_T58_30_HYPOTHESES_G0_D0_RESULTS_2026_10_12.md",
+    "observed_example": {
+      "preregistered": 30,
+      "D0_testable": 27,
+      "D0_diverse": 25,
+      "expected_source_sessions": 140,
+      "expected_eligible_sessions": 135
+    }
+  }
 }
