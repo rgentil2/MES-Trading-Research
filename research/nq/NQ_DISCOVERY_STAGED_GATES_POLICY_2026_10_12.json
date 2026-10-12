@@ -1,0 +1,257 @@
+{
+  "schema_version": 1,
+  "effective_date": "2026-10-12",
+  "policy_id": "NQ-DISCOVERY-STAGED-GATES-V1",
+  "policy_type": "PROSPECTIVE_ADDITIVE_RESEARCH_TRIAGE",
+  "status": "ACTIVE_USER_APPROVED",
+  "scope": [
+    "NQ",
+    "MNQ"
+  ],
+  "prior_experiments_reclassified": false,
+  "original_frozen_gates_changed": false,
+  "original_holm_budget_changed": false,
+  "original_economic_hurdle_changed": false,
+  "broker_executability_assumed": false,
+  "authorized_data": {
+    "new_market_history_acquisition": false,
+    "new_five_second_signals": false,
+    "holdouts_opened": false,
+    "dev_T_months": [
+      "2025-10",
+      "2025-11",
+      "2025-12",
+      "2026-01",
+      "2026-02",
+      "2026-03",
+      "2026-04"
+    ],
+    "expected_source_sessions": 140,
+    "expected_eligible_sessions": 135,
+    "holdout_T_internal": [
+      "2026-05",
+      "2026-06"
+    ],
+    "holdout_T_sealed": [
+      "2026-07",
+      "2026-08",
+      "2026-09"
+    ],
+    "holdout_H_years": [
+      2025,
+      2026
+    ],
+    "source_only_existing_stored_NQ_MNQ": true,
+    "legacy_T05_frozen_comparator_only": true,
+    "raw_last_private_and_cleanup_required": true,
+    "atomic_same_timestamp_groups": true
+  },
+  "stages": [
+    {
+      "id": "G0",
+      "name": "DATA_QC_AND_CAUSALITY",
+      "requires": [],
+      "outputs": [
+        "QC_OK",
+        "BLOCKED_DATA"
+      ],
+      "outcomes_allowed": false,
+      "required": [
+        "dev_whitelist",
+        "source_sha256",
+        "complete_time_groups",
+        "no_lookahead",
+        "preregistered_family",
+        "safe_artifact_only",
+        "fail_closed"
+      ]
+    },
+    {
+      "id": "D0",
+      "name": "FEASIBILITY_NO_OUTCOMES",
+      "requires": [
+        "G0"
+      ],
+      "outputs": [
+        "TESTABLE",
+        "LOW_POWER",
+        "UNIDENTIFIABLE"
+      ],
+      "outcomes_allowed": false,
+      "required": [
+        "case_control_counts",
+        "monthwise_labels",
+        "signal_coverage",
+        "causal_side",
+        "control_observability",
+        "family_complete",
+        "no_threshold_rescue"
+      ]
+    },
+    {
+      "id": "D1",
+      "name": "EXPLORATORY_ECONOMICS_OR_PREDICTION",
+      "requires": [
+        "G0",
+        "D0"
+      ],
+      "outputs": [
+        "PROMISING_IN_SAMPLE_ONLY",
+        "INCONCLUSIVE",
+        "FAIL_ECONOMIC",
+        "NOT_ESTIMABLE"
+      ],
+      "outcomes_allowed": true,
+      "required": [
+        "locked_endpoint_and_costs",
+        "full_family",
+        "daily_paired_router_delta",
+        "zero_trade_days_included",
+        "noncircular_block_bootstrap",
+        "unfavorable_cost_sensitivity",
+        "effect_ci_p_q_disclosed_with_selection_caveat",
+        "no_missing_fill_as_pnl"
+      ]
+    },
+    {
+      "id": "D2",
+      "name": "EXECUTION_AND_RISK_SHORTLIST",
+      "requires": [
+        "G0",
+        "D0",
+        "D1"
+      ],
+      "outputs": [
+        "EXECUTION_RESEARCH_ONLY",
+        "ROBUST_EXPLORATORY",
+        "BLOCKED_EXECUTION",
+        "FAIL_RISK"
+      ],
+      "outcomes_allowed": true,
+      "required": [
+        "single_account_router",
+        "no_exchange_order_invention",
+        "cost_stress_1_5x",
+        "extra_10_round_trip",
+        "floating_drawdown",
+        "closed_drawdown",
+        "timestamp_order_sensitivity",
+        "broker_rules_if_verified",
+        "no_selective_signal_removal"
+      ]
+    },
+    {
+      "id": "CONFIRMATION",
+      "name": "FROZEN_LEGACY_GATES_AND_AUTHORIZED_HOLDOUT",
+      "requires": [
+        "G0",
+        "D0",
+        "D1",
+        "D2",
+        "separate_authorization"
+      ],
+      "outputs": [
+        "REFER_TO_FROZEN_LEGACY_POLICY"
+      ],
+      "outcomes_allowed": false,
+      "required": [
+        "prior_gate1_respected",
+        "holm_nonrecycled_alpha",
+        "independent_validation",
+        "holdouts_only_if_authorized",
+        "portfolio_risk_and_return_hurdle"
+      ]
+    }
+  ],
+  "exploratory_inference": {
+    "sample_unit": "eligible_session_including_zero_trades",
+    "n_effective_inferred_from_trade_count": false,
+    "moving_block_bootstrap": {
+      "type": "non_circular",
+      "n_replicates_min": 10000,
+      "main_block_sessions": 5,
+      "sensitivity_block_sessions": [
+        3,
+        10
+      ],
+      "ci_two_sided": 0.9
+    },
+    "paired_primary_delta": "router_daily_net_usd_minus_frozen_baseline_daily_net_usd",
+    "extra_usd_per_round_trip_sensitivity": 10,
+    "robust_costs_multiplier": 1.5,
+    "side_case_control_report_without_missing": false,
+    "p_values_existing_adaptive_dev_confirmatory": false,
+    "bh_q_if_complete_family_only": true,
+    "holm_requires_independent_valid_inference": true,
+    "min_n_independent_events_for_initial_D1": null,
+    "yearly_positive_years_required_for_initial_D1": null,
+    "ci_p_no_estimate_label": "N/D",
+    "endpoints_non_directional_not_relabelled_as_trades": true
+  },
+  "legacy_controls": {
+    "gate1_new_prospective": {
+      "min_independent_events_exclusive": 150,
+      "two_sided_ci": 0.9,
+      "bh_q_max": 0.1,
+      "positive_dev_years_min": 3,
+      "dev_years_total": 5
+    },
+    "older_frozen_when_applicable": {
+      "min_events": 300,
+      "two_sided_ci": 0.95,
+      "bh_q_max": 0.05,
+      "positive_dev_years_min": 4,
+      "dev_years_total": 5
+    },
+    "holm_family_alpha": "0.05/[k*(k+1)]",
+    "portfolio_hurdle": "net_nominal_equivalent_cagr > max(0.15,VOO_TR_CAGR,QQQM_TR_CAGR)",
+    "no_live_trading_or_funding_from_D0_D1_D2": true
+  },
+  "required_report_fields": [
+    "id",
+    "question",
+    "family",
+    "parent_ids",
+    "data_role",
+    "prereg_sha",
+    "code_sha",
+    "G0",
+    "N_case",
+    "N_control",
+    "N_sessions",
+    "N_trades",
+    "N_active_days",
+    "N_weeks",
+    "N_effective",
+    "CI90_units_method",
+    "p_value_selection_status",
+    "BH_q_family_status",
+    "Holm_status",
+    "positive_years",
+    "net_effect_after_cost",
+    "stress_1_5x",
+    "extra_10_rt",
+    "PF",
+    "closed_DD",
+    "floating_DD",
+    "router_paired_delta",
+    "monthly_frequency",
+    "D0",
+    "D1",
+    "D2",
+    "legacy_gate1_status",
+    "decision",
+    "workflow_run",
+    "artifact_digest"
+  ],
+  "governance": {
+    "repo_master": "NQ_PROJECT_MASTER.md",
+    "append_log": "NQ_RESEARCH_LOG.md",
+    "scorecard": "NQ_STATISTICAL_HYPOTHESIS_SCORECARD.md",
+    "preflight_original_required": true,
+    "change_gates_after_outcomes_allowed": false,
+    "independent_confirmation_not_substituted_by_significance_on_dev": true,
+    "freeze_before_outcome": true
+  },
+  "source_document": "research/nq/NQ_DISCOVERY_STAGED_GATES_POLICY_2026_10_12.md"
+}
