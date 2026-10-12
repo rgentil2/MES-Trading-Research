@@ -1,0 +1,35 @@
+name: NQ Discovery Staged Gates V1 Policy Validation (NO MARKET DATA)
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/nq/NQ_DISCOVERY_STAGED_GATES_POLICY_2026_10_12.md'
+      - 'research/nq/NQ_DISCOVERY_STAGED_GATES_POLICY_2026_10_12.json'
+      - 'tools/validate_nq_discovery_staged_gates.py'
+      - 'tools/test_validate_nq_discovery_staged_gates.py'
+      - '.github/workflows/nq-discovery-policy-validation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  policy-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check machine-readable gates and immutable protections
+        run: |
+          set -euo pipefail
+          python tools/validate_nq_discovery_staged_gates.py
+          PYTHONPATH=tools python -m unittest discover -s tools -p test_validate_nq_discovery_staged_gates.py -v
+      - name: Confirm referenced documents exist (no market data)
+        run: |
+          set -euo pipefail
+          test -s research/nq/NQ_DISCOVERY_STAGED_GATES_POLICY_2026_10_12.md
+          test -s NQ_PROJECT_MASTER.md
+          test -s NQ_RESEARCH_LOG.md
