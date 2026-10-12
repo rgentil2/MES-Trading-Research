@@ -1,0 +1,353 @@
+{
+  "schema_version": 1,
+  "cohort_id": "NQ-C97-132",
+  "prereg_id": "NQ-T97-T132-SIX-BLOCKS-D0-V1",
+  "source_action_run": 38318189842,
+  "source_artifact_id": 11777123195,
+  "source_artifact_digest": "sha256:b6a9eac2a9924dd18f9c9c9664ba0b1ef7529c02fe9cf254c6fbac29cfb677d0",
+  "source": 140,
+  "eligible": 135,
+  "family_size": 36,
+  "all_ids": [
+    "T97",
+    "T98",
+    "T99",
+    "T100",
+    "T101",
+    "T102",
+    "T103",
+    "T104",
+    "T105",
+    "T106",
+    "T107",
+    "T108",
+    "T109",
+    "T110",
+    "T111",
+    "T112",
+    "T113",
+    "T114",
+    "T115",
+    "T116",
+    "T117",
+    "T118",
+    "T119",
+    "T120",
+    "T121",
+    "T122",
+    "T123",
+    "T124",
+    "T125",
+    "T126",
+    "T127",
+    "T128",
+    "T129",
+    "T130",
+    "T131",
+    "T132"
+  ],
+  "case_control_other_missing": {
+    "T97": {
+      "CASE": 115,
+      "CONTROL": 20,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T98": {
+      "CASE": 117,
+      "CONTROL": 18,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T99": {
+      "CASE": 101,
+      "CONTROL": 33,
+      "OTHER": 1,
+      "NOT_EVALUABLE": 0
+    },
+    "T100": {
+      "CASE": 88,
+      "CONTROL": 47,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T101": {
+      "CASE": 109,
+      "CONTROL": 22,
+      "OTHER": 4,
+      "NOT_EVALUABLE": 0
+    },
+    "T102": {
+      "CASE": 107,
+      "CONTROL": 24,
+      "OTHER": 4,
+      "NOT_EVALUABLE": 0
+    },
+    "T103": {
+      "CASE": 69,
+      "CONTROL": 64,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 2
+    },
+    "T104": {
+      "CASE": 75,
+      "CONTROL": 60,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T105": {
+      "CASE": 48,
+      "CONTROL": 87,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T106": {
+      "CASE": 67,
+      "CONTROL": 65,
+      "OTHER": 1,
+      "NOT_EVALUABLE": 2
+    },
+    "T107": {
+      "CASE": 67,
+      "CONTROL": 65,
+      "OTHER": 1,
+      "NOT_EVALUABLE": 2
+    },
+    "T108": {
+      "CASE": 69,
+      "CONTROL": 64,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 2
+    },
+    "T109": {
+      "CASE": 58,
+      "CONTROL": 77,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T110": {
+      "CASE": 14,
+      "CONTROL": 120,
+      "OTHER": 1,
+      "NOT_EVALUABLE": 0
+    },
+    "T111": {
+      "CASE": 57,
+      "CONTROL": 76,
+      "OTHER": 2,
+      "NOT_EVALUABLE": 0
+    },
+    "T112": {
+      "CASE": 39,
+      "CONTROL": 96,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T113": {
+      "CASE": 40,
+      "CONTROL": 95,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T114": {
+      "CASE": 92,
+      "CONTROL": 43,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T115": {
+      "CASE": 120,
+      "CONTROL": 15,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T116": {
+      "CASE": 89,
+      "CONTROL": 46,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T117": {
+      "CASE": 90,
+      "CONTROL": 45,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T118": {
+      "CASE": 88,
+      "CONTROL": 47,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T119": {
+      "CASE": 105,
+      "CONTROL": 29,
+      "OTHER": 1,
+      "NOT_EVALUABLE": 0
+    },
+    "T120": {
+      "CASE": 92,
+      "CONTROL": 43,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T121": {
+      "CASE": 74,
+      "CONTROL": 60,
+      "OTHER": 1,
+      "NOT_EVALUABLE": 0
+    },
+    "T122": {
+      "CASE": 108,
+      "CONTROL": 27,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T123": {
+      "CASE": 43,
+      "CONTROL": 91,
+      "OTHER": 1,
+      "NOT_EVALUABLE": 0
+    },
+    "T124": {
+      "CASE": 63,
+      "CONTROL": 69,
+      "OTHER": 1,
+      "NOT_EVALUABLE": 2
+    },
+    "T125": {
+      "CASE": 135,
+      "CONTROL": 0,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T126": {
+      "CASE": 118,
+      "CONTROL": 17,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T127": {
+      "CASE": 61,
+      "CONTROL": 9,
+      "OTHER": 65,
+      "NOT_EVALUABLE": 0
+    },
+    "T128": {
+      "CASE": 76,
+      "CONTROL": 14,
+      "OTHER": 45,
+      "NOT_EVALUABLE": 0
+    },
+    "T129": {
+      "CASE": 62,
+      "CONTROL": 13,
+      "OTHER": 58,
+      "NOT_EVALUABLE": 2
+    },
+    "T130": {
+      "CASE": 36,
+      "CONTROL": 30,
+      "OTHER": 67,
+      "NOT_EVALUABLE": 2
+    },
+    "T131": {
+      "CASE": 49,
+      "CONTROL": 31,
+      "OTHER": 53,
+      "NOT_EVALUABLE": 2
+    },
+    "T132": {
+      "CASE": 63,
+      "CONTROL": 9,
+      "OTHER": 63,
+      "NOT_EVALUABLE": 0
+    }
+  },
+  "D0_testable_ids": [
+    "T97",
+    "T98",
+    "T99",
+    "T100",
+    "T101",
+    "T102",
+    "T103",
+    "T104",
+    "T105",
+    "T106",
+    "T107",
+    "T108",
+    "T109",
+    "T111",
+    "T112",
+    "T113",
+    "T114",
+    "T115",
+    "T116",
+    "T117",
+    "T118",
+    "T119",
+    "T120",
+    "T121",
+    "T122",
+    "T123",
+    "T124",
+    "T126",
+    "T130",
+    "T131"
+  ],
+  "D0_diverse_ids": [
+    "T97",
+    "T103",
+    "T109",
+    "T121",
+    "T130",
+    "T98",
+    "T104",
+    "T111",
+    "T116",
+    "T122",
+    "T131",
+    "T99",
+    "T105",
+    "T112",
+    "T117",
+    "T123",
+    "T100",
+    "T106",
+    "T113",
+    "T118",
+    "T124",
+    "T101",
+    "T107",
+    "T119",
+    "T126",
+    "T108"
+  ],
+  "D0_testable_count": 30,
+  "D0_diverse_count": 26,
+  "D0_near_duplicate_ids": {
+    "T102": {
+      "of": "T97",
+      "case_jaccard": 0.85
+    },
+    "T114": {
+      "of": "T117",
+      "case_jaccard": 0.956989
+    },
+    "T115": {
+      "of": "T97",
+      "case_jaccard": 0.850394
+    },
+    "T120": {
+      "of": "T116",
+      "case_jaccard": 0.885417
+    }
+  },
+  "D1_20_diverse_gate_satisfied": true,
+  "D1_executed": false,
+  "outcomes_read": false,
+  "holdouts_opened": false,
+  "new_data": false,
+  "notes": "Aggregate-only 36-member exact labels from completed GitHub run; D1 outcomes frozen in separate earlier prereg"
+}
