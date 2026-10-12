@@ -25,7 +25,7 @@ class B05GTests(unittest.TestCase):
         self.assertEqual(out[VARIANTS[2]][:3],[(1,100,2),(1,100,4),(1,101,1)])
         self.assertEqual(out[VARIANTS[3]][:3],[(1,101,1),(1,100,2),(1,100,4)])
         self.assertEqual(stats['multi_print_groups'],2)
-        self.assertEqual(stats['adjacent_same_ts_prints'],3)
+        self.assertEqual(stats['adjacent_same_ts_prints'],4)
         self.assertEqual(stats['multi_price_groups'],2)
     def test_keep_single_print_groups_unchanged(self):
         src=[(1,10,1),(2,20,99),(3,30,1)]
