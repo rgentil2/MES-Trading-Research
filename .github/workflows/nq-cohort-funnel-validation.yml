@@ -1,0 +1,41 @@
+name: NQ Cohort Funnel Gate - Whole-Batch Progression (NO MARKET DATA)
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/nq/NQ_COHORT_FUNNEL_POLICY_2026_10_12.md'
+      - 'research/nq/NQ_COHORT_FUNNEL_POLICY_2026_10_12.json'
+      - 'research/nq/NQ_COHORT_FUNNEL_LEDGER_2026_10_12.json'
+      - 'research/nq/NQ_COHORT_FUNNEL_STATUS_2026_10_12.md'
+      - 'tools/nq_cohort_funnel.py'
+      - 'tools/test_nq_cohort_funnel.py'
+      - '.github/workflows/nq-cohort-funnel-validation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  whole-cohort-policy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Audit original gates and new prospective cohort transitions
+        run: |
+          set -euo pipefail
+          python tools/validate_nq_discovery_staged_gates.py
+          python tools/nq_cohort_funnel.py --verify-report
+          PYTHONPATH=tools python -m unittest discover -s tools -p test_nq_cohort_funnel.py -v
+      - name: Verify frozen source references and no OOS permissions
+        run: |
+          set -euo pipefail
+          test -s research/nq/NQ_COHORT_FUNNEL_POLICY_2026_10_12.md
+          test -s research/nq/NQ_COHORT_FUNNEL_LEDGER_2026_10_12.json
+          test -s research/nq/NQ_COHORT_FUNNEL_STATUS_2026_10_12.md
+          test -s NQ_PROJECT_MASTER.md
+          test -s NQ_RESEARCH_LOG.md
+          test -s NQ_STATISTICAL_HYPOTHESIS_SCORECARD.md
