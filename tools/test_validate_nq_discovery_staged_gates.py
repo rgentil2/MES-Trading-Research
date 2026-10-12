@@ -78,6 +78,21 @@ class DiscoveryPolicyTest(unittest.TestCase):
             with self.subTest(key=key), self.assertRaises(ValueError):
                 check_policy(x)
 
+    def test_disallow_individual_hypothesis_stage_shortcut(self):
+        x = copy.deepcopy(self.base)
+        x["cohort_funnel_reference"]["transition_unit"] = "INDIVIDUAL_HYPOTHESIS"
+        with self.assertRaises(ValueError):
+            check_policy(x)
+
+    def test_no_unbacked_D1_or_D2_advancement(self):
+        for name in ("D0_to_D1_requires_20_distinct_viable",
+                     "D1_measures_all_original_members",
+                     "D2_collects_only_economically_executable_survivors"):
+            x = copy.deepcopy(self.base)
+            x["cohort_funnel_reference"][name] = False
+            with self.subTest(gate=name), self.assertRaises(ValueError):
+                check_policy(x)
+
     def test_no_2026_reserved_month_in_dev(self):
         x = copy.deepcopy(self.base)
         x["authorized_data"]["dev_T_months"].append("2026-08")
