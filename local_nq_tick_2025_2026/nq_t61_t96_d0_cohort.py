@@ -160,7 +160,7 @@ def aggregate(months,registry):
             'p':None,'q':None,'Holm':None,'PnL':None,'PF':None,'DD':None,
             'router_delta':None}
     if (qs['T59']['N_case'],qs['T59']['N_control'])!=(45,42) or (
-        qs['T60']['N_case'],qs['T60']['N_control'])!=(71,6)):
+        qs['T60']['N_case'],qs['T60']['N_control'])!=(71,6):
         raise AssertionError('PRIOR_T59_T60_D0_PARITY_BROKEN')
     overlaps={}
     for a,b in combinations(IDS,2):
