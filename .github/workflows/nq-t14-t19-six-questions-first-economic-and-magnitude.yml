@@ -1,4 +1,4 @@
-name: NQ T14-T19 measure SIX questions: four economic + two magnitude, 135 DEV ONLY
+name: 'NQ T14-T19 measure SIX questions - four economic and two magnitude - DEV only'
 on:
   push:
     branches: [main]
