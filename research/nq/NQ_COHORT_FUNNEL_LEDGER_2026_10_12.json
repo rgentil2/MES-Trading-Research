@@ -1,0 +1,416 @@
+{
+  "schema_version": 1,
+  "ledger_id": "NQ-COHORT-FUNNEL-LEDGER-V1",
+  "policy_id": "NQ-COHORT-FUNNEL-V1",
+  "effective_on": "2026-10-12",
+  "snapshot_as_of": "2026-10-12",
+  "data_role": "DEV_ONLY_AGGREGATES_NO_RAW_OUTCOMES",
+  "holdouts_opened": false,
+  "new_data_acquired": false,
+  "cohorts": [
+    {
+      "id": "NQ-C29-58",
+      "label": "Cinco bloques de geometría, contexto, tamaño, llegada y topología",
+      "origin": "NEW_BATCH_20_PLUS",
+      "stage": "D1_CLOSED",
+      "all_preregistered_ids": [
+        "T29",
+        "T30",
+        "T31",
+        "T32",
+        "T33",
+        "T34",
+        "T35",
+        "T36",
+        "T37",
+        "T38",
+        "T39",
+        "T40",
+        "T41",
+        "T42",
+        "T43",
+        "T44",
+        "T45",
+        "T46",
+        "T47",
+        "T48",
+        "T49",
+        "T50",
+        "T51",
+        "T52",
+        "T53",
+        "T54",
+        "T55",
+        "T56",
+        "T57",
+        "T58"
+      ],
+      "G0": {
+        "status": "PASS",
+        "source": 140,
+        "eligible": 135,
+        "workflow_run": 38300121097
+      },
+      "D0": {
+        "status": "COMPLETE",
+        "evaluated_ids": [
+          "T29",
+          "T30",
+          "T31",
+          "T32",
+          "T33",
+          "T34",
+          "T35",
+          "T36",
+          "T37",
+          "T38",
+          "T39",
+          "T40",
+          "T41",
+          "T42",
+          "T43",
+          "T44",
+          "T45",
+          "T46",
+          "T47",
+          "T48",
+          "T49",
+          "T50",
+          "T51",
+          "T52",
+          "T53",
+          "T54",
+          "T55",
+          "T56",
+          "T57",
+          "T58"
+        ],
+        "testable_ids": [
+          "T29",
+          "T30",
+          "T31",
+          "T32",
+          "T33",
+          "T34",
+          "T35",
+          "T36",
+          "T37",
+          "T38",
+          "T39",
+          "T40",
+          "T41",
+          "T42",
+          "T43",
+          "T44",
+          "T45",
+          "T46",
+          "T47",
+          "T49",
+          "T52",
+          "T53",
+          "T54",
+          "T55",
+          "T56",
+          "T57",
+          "T58"
+        ],
+        "diverse_ids": [
+          "T29",
+          "T30",
+          "T31",
+          "T33",
+          "T34",
+          "T35",
+          "T36",
+          "T37",
+          "T38",
+          "T39",
+          "T40",
+          "T41",
+          "T42",
+          "T43",
+          "T44",
+          "T45",
+          "T46",
+          "T47",
+          "T49",
+          "T52",
+          "T54",
+          "T55",
+          "T56",
+          "T57",
+          "T58"
+        ],
+        "low_power_ids": [
+          "T48",
+          "T50",
+          "T51"
+        ],
+        "near_duplicate_ids": [
+          "T32",
+          "T53"
+        ],
+        "workflow_run": 38300121097,
+        "report": "research/nq/NQ_T29_T58_30_HYPOTHESES_G0_D0_RESULTS_2026_10_12.md"
+      },
+      "D1": {
+        "status": "COMPLETE",
+        "evaluated_ids": [
+          "T29",
+          "T30",
+          "T31",
+          "T32",
+          "T33",
+          "T34",
+          "T35",
+          "T36",
+          "T37",
+          "T38",
+          "T39",
+          "T40",
+          "T41",
+          "T42",
+          "T43",
+          "T44",
+          "T45",
+          "T46",
+          "T47",
+          "T48",
+          "T49",
+          "T50",
+          "T51",
+          "T52",
+          "T53",
+          "T54",
+          "T55",
+          "T56",
+          "T57",
+          "T58"
+        ],
+        "individual_ci90_positive_ids": [
+          "T29",
+          "T45",
+          "T49"
+        ],
+        "statistical_screen_pass_ids": [],
+        "economic_screen_pass_ids": [],
+        "q_min": 0.212229,
+        "workflow_run": 38300856124,
+        "report": "research/nq/NQ_T29_T58_30_HYPOTHESES_D1_BATCH_RESULTS_2026_10_12.md",
+        "outcomes_class": "PREDICTIVE_ONLY_NOT_TRADE_EXECUTION",
+        "reason": "No member passes family BH q<=0.10; T29/T45/T49 describe future range, not tradable alpha"
+      },
+      "D2": {
+        "status": "NOT_STARTED_NO_ELIGIBLE_SURVIVORS",
+        "assessed_ids": [],
+        "promoted_ids": []
+      }
+    },
+    {
+      "id": "NQ-C20-25",
+      "label": "Seis preguntas contrastables; fase D1 de desplazamiento observacional",
+      "origin": "LEGACY_PRE_BATCH_RULE",
+      "stage": "D1_CLOSED",
+      "all_preregistered_ids": [
+        "T20",
+        "T21",
+        "T22",
+        "T23",
+        "T24",
+        "T25"
+      ],
+      "G0": {
+        "status": "PASS",
+        "source": 140,
+        "eligible": 135,
+        "workflow_run": 38293741380
+      },
+      "D0": {
+        "status": "COMPLETE",
+        "evaluated_ids": [
+          "T20",
+          "T21",
+          "T22",
+          "T23",
+          "T24",
+          "T25"
+        ],
+        "testable_ids": [
+          "T21",
+          "T24",
+          "T25"
+        ],
+        "diverse_ids": [],
+        "low_power_ids": [
+          "T22",
+          "T23"
+        ],
+        "near_duplicate_ids": [],
+        "workflow_run": 38293741380,
+        "report": "research/nq/NQ_T20_T25_EXECUTION_STATUS_QC_RESULTS_2026_10_12.md"
+      },
+      "D1": {
+        "status": "COMPLETE",
+        "evaluated_ids": [
+          "T20",
+          "T21",
+          "T22",
+          "T23",
+          "T24",
+          "T25"
+        ],
+        "individual_ci90_positive_ids": [],
+        "statistical_screen_pass_ids": [],
+        "economic_screen_pass_ids": [],
+        "q_min": 1,
+        "workflow_run": 38296113086,
+        "report": "research/nq/NQ_T20_T25_D1_ATOMIC_TIMESTAMP_MARKOUT_RESULTS_2026_10_12.md",
+        "outcomes_class": "PREDICTIVE_ONLY_NOT_TRADE_EXECUTION",
+        "reason": "Zero statistically supported alpha; standalone economic Stage1 separately blocked by ambiguous Last fills"
+      },
+      "D2": {
+        "status": "NOT_STARTED_NO_ELIGIBLE_SURVIVORS",
+        "assessed_ids": [],
+        "promoted_ids": []
+      }
+    },
+    {
+      "id": "NQ-C26-28",
+      "label": "Chop, tamaño y burstiness",
+      "origin": "LEGACY_PRE_BATCH_RULE",
+      "stage": "D1_CLOSED",
+      "all_preregistered_ids": [
+        "T26",
+        "T27",
+        "T28"
+      ],
+      "G0": {
+        "status": "PASS",
+        "source": 140,
+        "eligible": 135,
+        "workflow_run": 38297611186
+      },
+      "D0": {
+        "status": "COMPLETE",
+        "evaluated_ids": [
+          "T26",
+          "T27",
+          "T28"
+        ],
+        "testable_ids": [
+          "T26"
+        ],
+        "diverse_ids": [],
+        "low_power_ids": [
+          "T27"
+        ],
+        "near_duplicate_ids": [],
+        "workflow_run": 38297611186,
+        "report": "research/nq/NQ_T26_T28_G0_D0_RESULTS_2026_10_12.md"
+      },
+      "D1": {
+        "status": "COMPLETE",
+        "evaluated_ids": [
+          "T26",
+          "T27",
+          "T28"
+        ],
+        "individual_ci90_positive_ids": [],
+        "statistical_screen_pass_ids": [],
+        "economic_screen_pass_ids": [],
+        "q_min": 1,
+        "workflow_run": 38306171742,
+        "report": "research/nq/NQ_T26_T28_D1_OBSERVATIONAL_RESULTS_2026_10_12.md",
+        "outcomes_class": "PREDICTIVE_ONLY_NOT_TRADE_EXECUTION",
+        "reason": "T26 -67.75 ticks opposite sign; T27/28 not estimable"
+      },
+      "D2": {
+        "status": "NOT_STARTED_NO_ELIGIBLE_SURVIVORS",
+        "assessed_ids": [],
+        "promoted_ids": []
+      }
+    },
+    {
+      "id": "NQ-C59-NEXT",
+      "label": "Nueva cohorte en formación: patrones premercado; ampliar con otros mecanismos",
+      "origin": "NEW_BATCH_20_PLUS",
+      "stage": "D0_POOL_FORMING",
+      "all_preregistered_ids": [
+        "T59",
+        "T60"
+      ],
+      "G0": {
+        "status": "PASS",
+        "source": 140,
+        "eligible": 135,
+        "workflow_run": 38306833847
+      },
+      "D0": {
+        "status": "COMPLETE_PARTIAL_COHORT",
+        "evaluated_ids": [
+          "T59",
+          "T60"
+        ],
+        "testable_ids": [
+          "T59"
+        ],
+        "diverse_ids": [
+          "T59"
+        ],
+        "low_power_ids": [
+          "T60"
+        ],
+        "near_duplicate_ids": [],
+        "workflow_run": 38306833847,
+        "report": "research/nq/NQ_T59_T60_NEW_PREMARKET_D0_RESULTS_2026_10_12.md"
+      },
+      "D1": {
+        "status": "LOCKED_WAITING_FOR_20_DIVERSE_D0",
+        "evaluated_ids": [],
+        "individual_ci90_positive_ids": [],
+        "statistical_screen_pass_ids": [],
+        "economic_screen_pass_ids": [],
+        "q_min": null,
+        "workflow_run": null,
+        "report": null,
+        "outcomes_class": "NOT_COMPUTED",
+        "reason": "Only one D0-testable member so far; 20 diverse mechanisms required; no new D1 until batch frozen"
+      },
+      "D2": {
+        "status": "NOT_STARTED_NO_ELIGIBLE_SURVIVORS",
+        "assessed_ids": [],
+        "promoted_ids": []
+      }
+    }
+  ],
+  "pooled_D2": {
+    "statistically_eligible_ids": [],
+    "economically_eligible_ids": [],
+    "volatility_context_library_ids": [
+      "T29",
+      "T45",
+      "T49"
+    ],
+    "d2_batch_ids": [],
+    "status": "EMPTY_BLOCKED_BY_NO_D1_SURVIVORS",
+    "monetary_validated_strategies": 0
+  },
+  "separate_baselines": [
+    {
+      "id": "T05-377",
+      "status": "FROZEN_LEGACY_BENCHMARK_ONLY",
+      "N_trades": 115,
+      "net_stress_usd": 5102.5,
+      "PF_stress": 1.31826,
+      "PF_stress_plus10RT": 1.23717,
+      "qualifies_D1_to_D2": false,
+      "reason": "Exploratory in-sample result fragile to extra costs and timestamp ordering; not a cohort shortcut; no independent OOS"
+    }
+  ],
+  "nonportable_historical_reference_ids": [
+    "H69",
+    "H74",
+    "H77"
+  ],
+  "updated_by": "cohort_funnel_policy_adoption_not_new_market_test"
+}
