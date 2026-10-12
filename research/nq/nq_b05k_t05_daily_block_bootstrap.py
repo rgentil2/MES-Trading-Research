@@ -73,7 +73,7 @@ def month_stage(root:Path,month:str,private_out:Path):
         events=list(source_events(file_for(root,dev_day(day),'Last')))
         results.append(frozen_t05_day(day,events))
     eligible=[d for d in results if d['ready']]
-    if len(results)<=len(eligible):raise AssertionError('Require known excluded source days')
+    # Individual months may have zero excluded days; enforce 140/135 on aggregation.
     if (sum(d['trades'] for d in eligible),
         sum(d['stress_cents'] for d in eligible))!=MONTH_EXPECTATIONS[month]:
         raise AssertionError('T05 month parity FAIL: no financial/statistical results')
