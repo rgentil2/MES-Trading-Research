@@ -20,6 +20,14 @@
 
 **Los 31 nombres D0 viables NO son alfas; las siete medias con IC90 individual positivo NO alcanzaron la corrección BH sobre los 38 miembros**, incluidos T60/T77 no estimables y T71/T81/T82/T83/T84 casi duplicadas. No se cambian side, CASE/CONTROL ni umbrales para rescatar q. [Detalle D0 de los 38 y redundancia](research/nq/NQ_T59_T96_SIX_BLOCK_COHORT_D0_RESULTS_2026_10_12.md) y [scorecard D1 los 38](research/nq/NQ_T59_T96_38_MEMBER_WHOLE_COHORT_D1_RESULTS_2026_10_12.md) contienen TODAS las decisiones. **N_trades=0; USD neto/PF/DD/Δrouter/Holm/OOS/ROI=N/D**: markout VWAP o rango 15m físicos NO son ejecuciones de cuenta.
 
+## Nueva cohorte de contexto 233/377/4181: T97–T132 (12-oct-2026), D0 TERMINADO
+
+[Prerregistro de las 36 hipótesis antes de conteos](research/nq/NQ_T97_T132_SIX_BLOCKS_D0_PREREG_2026_10_12.md) · [36 filas de N CASE/CONTROL/OTHER/NO EVAL](research/nq/NQ_T97_T132_SIX_BLOCKS_D0_RESULTS_2026_10_12.md) · [Action D0 38318189842 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38318189842) · [artifact safe 11777123195](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38318189842/artifacts/11777123195), SHA256 `b6a9eac2a9924dd18f9c9c9664ba0b1ef7529c02fe9cf254c6fbac29cfb677d0`.
+
+**7 DEV 2025-10…2026-04, fuente140/135 READY**, **36 inscritas, 30 TESTABLE, 26 distintas** (Jaccard<0,85), supera gate20. LOW_POWER T110 T127 T128 T129 T132; UNIDENTIFIABLE T125 (135/0), near duplicates T102 T114 T115 T120. **N trades/PnL/IC90/p/q/Holm/PF/DD=N/D** en G0/D0. Familias: micro233, contexto4181, breakouts/barriers, retest/location, actividad/compression, consenso de dos padres; sin nuevos 5s/holdouts.
+
+**D1 de todo el bloque 36 miembros**, [prerregistrado ANTES del outcome y D0](research/nq/NQ_T97_T132_D1_WHOLE_COHORT_PREREG_2026_10_12.md) commit `060c3f03e7c45639a1373e55aaa2bc71023f389d`, [Action 38318511015](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38318511015) iniciada. Primario VWAP markout firmado +300s, IC90 moving block 10.000 L5, BH de **k36**, incluye todas las 36 originales y desfavorables. **No afirmar que D1 pasó hasta inspeccionar artifact final**; aun si alguna cumple, no implica fill ejecutable ni estrategia económica. Datos DEV reutilizados exploratorios.
+
 ## Embudo global obligatorio POR COHORTES (actualización 12-oct-2026)
 
 [Política completa](research/nq/NQ_COHORT_FUNNEL_POLICY_2026_10_12.md) · [Ledger máquina](research/nq/NQ_COHORT_FUNNEL_LEDGER_2026_10_12.json) · **[TABLERO DE CUELLO DE BOTELLA](research/nq/NQ_COHORT_FUNNEL_STATUS_2026_10_12.md)**. En lugar de una estrategia individual T05→D1→D2, ahora **cada fase evalúa el BLOQUE completo** y solo sus supervivientes se agrupan en la bandeja siguiente.
