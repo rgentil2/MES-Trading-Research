@@ -12,10 +12,10 @@ class NQCohortFunnelTest(unittest.TestCase):
     def mutated(self):
         return copy.deepcopy(self.p),copy.deepcopy(self.l)
 
-    def test_active_four_cohort_snapshot(self):
+    def test_active_five_cohort_snapshot(self):
         z=validate(*self.mutated())
         self.assertEqual(z["status"],"FUNNEL_VALIDATED")
-        self.assertEqual(z["new_D0_diverse_candidates"],31)
+        self.assertEqual(z["new_D0_diverse_candidates"],26)
         self.assertEqual(z["new_D0_gap_to_next_D1"],0)
         self.assertEqual(z["D2_batch_size"],0)
 
@@ -72,9 +72,23 @@ class NQCohortFunnelTest(unittest.TestCase):
         l["cohorts"][-1]["all_preregistered_ids"].append("T29")
         with self.assertRaises(ValueError):validate(p,l)
 
+    def test_complete_T97_cannot_drop_any_family_member(self):
+        p,l=self.mutated()
+        last=next(x for x in l["cohorts"] if x["id"]=="NQ-C97-132")
+        last["D1"]["evaluated_ids"].remove("T125")
+        with self.assertRaises(ValueError):
+            validate(p,l)
+
+    def test_no_C97_solo_positive_CI_pass_if_q_too_large(self):
+        p,l=self.mutated()
+        last=next(x for x in l["cohorts"] if x["id"]=="NQ-C97-132")
+        last["D1"]["statistical_screen_pass_ids"]=["T112"]
+        with self.assertRaises(ValueError):
+            validate(p,l)
+
     def test_dashboard_reports_real_stages_not_predicted_profit(self):
         txt=render(*self.mutated())
-        for v in ("31", "T59", "T75", "38", "0", "T05"):
+        for v in ("26", "T97", "T112", "36", "0", "T05"):
             self.assertIn(v,txt)
         self.assertNotIn("validada para fondeo",txt.lower())
 
