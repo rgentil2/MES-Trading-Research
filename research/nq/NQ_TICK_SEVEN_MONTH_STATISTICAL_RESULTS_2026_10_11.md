@@ -19,6 +19,8 @@ Fecha de actualización documental 2026-10-11 Colombia; GitHub Actions **2026-10
 
 *El test de signo unilateral modela 7 signos mensuales como independientes/equiprobables bajo la nula; estos supuestos no se verifican con 7 meses consecutivos y **el p NO es q BH ni evidencia confirmatoria**. Un IC90 positivo mensual de T05 NO permite inferir confianza por trade/semana y está sujeto a búsqueda adaptativa previa. Usamos Student `t(0,95;6)=1,9431802805` y `n=7`; intervalos en USD **por MES**, no USD por trade.
 
+**Advertencia adicional de comparabilidad temporal:** octubre de 2025 comienza el **15 de octubre** en DEV, por lo que no tiene la misma cantidad de sesiones elegibles que meses completos. El IC90 en USD/mes refleja tanto expectativa como **exposición/frecuencia variable**; no normaliza por duración ni equivale a un retorno esperado por mes calendario estándar. El futuro cálculo primario debe usar P&L **por sesión**, incluidos días sin operación.
+
 ## Leave-one-month-out (LOMO) sin rescatar variantes
 
 - **ΔRouter menos T05** permaneció negativo si se excluye cualquiera de los siete meses. Rango de neto de seis meses **[−US$2.895,00, −US$1.442,50]**. No se seleccionó ni eliminó ningún mes: solo sensibilidad.
