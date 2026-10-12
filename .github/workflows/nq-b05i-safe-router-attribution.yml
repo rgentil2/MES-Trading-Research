@@ -1,0 +1,44 @@
+name: NQ B05I attribution of frozen H02 router SAFE ARTIFACT ONLY (no ticks)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-b05i-safe-router-attribution.yml'
+      - 'local_nq_tick_2025_2026/nq_b05i_router_accounting.py'
+      - 'local_nq_tick_2025_2026/test_nq_b05i_router_accounting.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Synthetic accounting tests
+        run: |
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_b05i_router_accounting.py' -v
+      - name: Read ONLY safe artifact from completed H02 run, no market data
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p _existing_safe
+          gh run download 38193895252 --repo rgentil2/MES-Trading-Research --name b05h02-seven-month-safe-reversion-report --dir _existing_safe
+          test -f _existing_safe/summary.json
+      - name: Verify 7-month frozen PnL attribution and publish aggregate-only results
+        run: |
+          python local_nq_tick_2025_2026/nq_b05i_router_accounting.py --source _existing_safe/summary.json --out b05i_safe/summary.json --report b05i_safe/report.md
+          cat b05i_safe/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b05i-safe-router-attribution-existing-aggregate-only
+          path: b05i_safe/
+          if-no-files-found: error
