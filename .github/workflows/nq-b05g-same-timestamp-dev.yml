@@ -1,0 +1,96 @@
+name: NQ B05G frozen T05 sensitivity to equal-timestamp Last print order
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-b05g-same-timestamp-dev.yml'
+      - 'local_nq_tick_2025_2026/nq_b05g_same_timestamp_*.py'
+      - 'local_nq_tick_2025_2026/test_nq_b05g_same_timestamp.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run synthetic B05G tests and prior T05 causal unit regressions BEFORE source access
+        run: |
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_b05g_same_timestamp.py' -v
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_t05_fibonacci_bars.py' -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_b05g_same_timestamp_month.py local_nq_tick_2025_2026/nq_b05g_same_timestamp_aggregate.py
+  months:
+    needs: synthetic
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        month: ['2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04']
+    env:
+      MONTH: ${{ matrix.month }}
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reprocess EXACT existing DEV Last archive and confirm SHA256 (no new market data)
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p _private/arc _private/data
+          gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/arc
+          (cd _private/arc && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          7z x "_private/arc/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+      - name: Run B05G four frozen order scenarios vs original T05 with 2/day risk and historical costs
+        run: |
+          python local_nq_tick_2025_2026/nq_b05g_same_timestamp_month.py --root _private/data --month "$MONTH" --out "b05g_safe/nq_b05g_${MONTH}.json"
+      - name: Remove licensed tick source before published artifact
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b05g-existing-${{ matrix.month }}
+          path: b05g_safe/nq_b05g_*.json
+          if-no-files-found: error
+  aggregate:
+    needs: months
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b05g-existing-*
+          merge-multiple: true
+          path: _month_summary
+      - name: Enforce exact 140/135 sample, 115 T05 original and B05F tie-count; report ALL variants
+        run: |
+          python local_nq_tick_2025_2026/nq_b05g_same_timestamp_aggregate.py --inputs _month_summary --out b05g_final/summary.json --report b05g_final/report.md
+          cat b05g_final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b05g-seven-month-order-sensitivity-safe-report
+          path: b05g_final/
+          if-no-files-found: error
