@@ -20,7 +20,7 @@ def eligible_set():
     # med/long both strictly earlier, coherent upward VWAP.
     a=bar(233,100,94,110,T-9*60*SECOND,T-6*60*SECOND)
     b=bar(233,104,99,115,T-3*60*SECOND,T-2*60*SECOND)
-    c=bar(233,110,102,126,T-60*SECOND,T)
+    c=bar(233,110,102,126,T-40*SECOND,T)
     m0=bar(4181,100,92,110,T-30*60*SECOND,T-20*60*SECOND)
     m1=bar(4181,103,95,113,T-20*60*SECOND,T-10*60*SECOND)
     l0=bar(10946,100,90,120,T-60*60*SECOND,T-45*60*SECOND)
