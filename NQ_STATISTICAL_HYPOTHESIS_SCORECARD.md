@@ -131,20 +131,22 @@ Fuentes verificadas con 140 días fuente/135 DEV elegibles, 7/7 meses y SHA256 d
 
 **Importante:** En el programa T faltan intervalos IC90 inferidos con dependencia temporal, p y q familiares completos, y una muestra de cinco años para esa versión de las estrategias. N de trades no equivale automáticamente a N eventos independientes. **Nunca estimar q desde P&L agregado** ni presentar N/D como aprobación. Los 135 días DEV están reutilizados adaptativamente y los holdouts siguen cerrados.
 
-## T20–T25 bajo metodología adoptada G0→D0→D1→D2 (12-oct-2026)
+## T20–T25 con política G0→D0→D1→D2: QC y D1 predictivo CERRADOS (12-oct-2026)
 
-**Norma vigente:** [política D1 y gates](research/nq/NQ_DISCOVERY_STAGED_GATES_POLICY_2026_10_12.md) / [CI validado 38295393496 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38295393496). **QC técnico standalone completo:** [Action 38293741380 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38293741380), [informe](research/nq/NQ_T20_T25_EXECUTION_STATUS_QC_RESULTS_2026_10_12.md), 140/135/7 meses. T20–T25 etapa1 económica con N trades/P&L/PF/DD/Δrouter **N/D por fills Last ambiguos**. Nuevo [prerregistro de D1 observacional](research/nq/NQ_T20_T25_D1_ATOMIC_TIMESTAMP_MARKOUT_PREREG_2026_10_12.md), Action [38296113086](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38296113086) iniciado. Un markout de VWAP futuro es **predicción descriptiva, NO trade/P&L**.
+**Política activa:** [documento y gates](research/nq/NQ_DISCOVERY_STAGED_GATES_POLICY_2026_10_12.md) / [CI 38295393496 SUCCESS, 8 pruebas](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38295393496). **QC de estados Last** [38293741380 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38293741380), 140/135/7 meses, [informe](research/nq/NQ_T20_T25_EXECUTION_STATUS_QC_RESULTS_2026_10_12.md). **D1 de markout observacional** [38296113086 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38296113086), 8 tests, 7/7 DEV, [artifact 11767833548](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38296113086/artifacts/11767833548), [informe completo](research/nq/NQ_T20_T25_D1_ATOMIC_TIMESTAMP_MARKOUT_RESULTS_2026_10_12.md). **D1 = VWAP de barra E a VWAP de primer grupo completo POST+300s en ticks, T23 rango 15m, NO operaciones ni rentabilidad monetaria**.
 
-| T | Pregunta | N caso/control sesión | G0 QC standalone | D0 viabilidad | N trades fase1 | IC90 económico | p/q BH económico | Holm | PF/DD/Δrouter | D1 predictivo | ¿Estrategia cumple? |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| **T20** | Valor en extremo vs centro | 0/100 | QC OK, 1 control ambiguo | UNIDENTIFIABLE | N/D | N/D | N/D | N/D | N/D | Estudio registrado; 0 casos | **NO** |
-| **T21** | Rechazo extremo vs aceptación | 38/40 | QC OK, 0 casos/1 control ambiguo | TESTABLE (baja potencia) | N/D | N/D | N/D | N/D | N/D | PENDIENTE markout no fill | **NO** |
-| **T22** | Qty/print con avance | 1/113 | QC OK, 1 control ambiguo | LOW_POWER | N/D | N/D | N/D | N/D | N/D | PENDIENTE; caso n=1 | **NO** |
-| **T23** | Desaceleración vs rango futuro | 1/8 | QC OK, no entrada (magnitud) | LOW_POWER | N/A magnitud | N/D | N/D | N/D | N/A magnitud | PENDIENTE rango 15m | **NO** |
-| **T24** | Alternancia de VWAP vs tendencia | 39/50 | QC OK, 0 casos/1 control ambiguo | TESTABLE (baja potencia) | N/D | N/D | N/D | N/D | N/D | PENDIENTE markout no fill | **NO** |
-| **T25** | Divergencia 233/4181 vs alineación | 47/59 | QC OK, 0 casos/1 control ambiguo | TESTABLE (baja potencia) | N/D | N/D | N/D | N/D | N/D | PENDIENTE markout no fill | **NO** |
+| ID | Pregunta | N casos/ctrl (markouts observables) | D0 | D1 caso media ticks | D1 control media ticks | Δ pred. ticks | IC90 L5 Δ ticks | p L5 DESCRIPTIVO | q BH 6 DESCRIPTIVA | Gate D1 predictivo | Trade neto/PF/DD/ΔRouter | ¿Estrategia validada? |
+|---|---|---|---|---:|---:|---:|---|---:|---:|---|---|---|
+| T20 | Valor extremo vs centrado | 0/100 (0/88; 12 ctrl side0) | UNIDENTIFIABLE | N/D | +23,411 | N/D | N/D | N/D | N/D | NOT_ESTIMABLE | N/D por fill Stage1 | **NO** |
+| T21 | Rechazo extremo vs aceptación | 38/40 | TESTABLE | **−34,816** | +12,632 | **−47,448** | [−106,832,+10,708] | 0,9043 | **1,00** | NOT_SUPPORTED_DESCRIPTIVE, IC cruza0 | N/D por fill Stage1 | **NO** |
+| T22 | Qty/print con avance | 1/113 | LOW_POWER | +366,218 | +12,612 | +353,606 (1 caso) | N/D | N/D | N/D | NOT_ESTIMABLE | N/D por fill Stage1 | **NO** |
+| T23 | Desaceleración vs rango futuro | 1/8, rango no trade | LOW_POWER | 452,000 rango | 287,375 rango | −164,625 (control−caso) | N/D | N/D | N/D | NOT_ESTIMABLE | N/A magnitud | **NO** |
+| T24 | Alternancia de VWAP vs continuidad | 39/50 | TESTABLE | +8,676 | +28,310 | **−19,635** | [−91,243,+30,139] | 0,6181 | **1,00** | NOT_SUPPORTED_DESCRIPTIVE, IC cruza0 | N/D por fill Stage1 | **NO** |
+| T25 | Divergencia 233/4181 vs alineación | 47/59 | TESTABLE | +27,663 | +17,007 | **+10,657** | [−23,192,+56,899] | 0,4334 | **1,00** | INCONCLUSIVE | N/D por fill Stage1 | **NO** |
 
-**Cuidado:** un status `SYNTHETIC_FILL_MODEL_ONLY` NO significa fill de broker. El QC por pregunta puede contar el mismo día/operación en más de una familia. IC90/p/q de una futura prueba de markout **en price ticks** deben quedar en tabla D1 separada, NO reemplazar IC90 económico/p/q de trades. La familia fija tiene seis miembros (no elegir solo T21/24/25 al calcular BH). Los períodos sellados no se han abierto.
+**Diferenciación de inferencia obligatoria:** Los IC90, p y q de esta sección se refieren **solo a desplazamiento observacional en TICKS** con bootstrap no circular de 135 días L5 y sensibilidad L3/L10; **no se trasladan a expectativa económica USD, PF, DD ni q de una estrategia ejecutada**. Los tres miembros no estimables permanecen en la familia BH con p=1 **sentinela contable**, pero sus q individuales inferenciales siguen N/D. Ninguna de las tres medidas estimables tiene IC90 favorable completo, todas q=1,00 descriptiva; selección previa adaptativa invalida confirmación. Holm, 3/5 años, OOS y fondeo siguen N/D/bloqueados; no se ha abierto información reservada.
+
+**Decisión:** 0/6 alfa confirmada. D1 T21/T24 con signo puntual adverso (no es inferencia robusta de pérdida porque sus IC cruzan0), T25 positivo pequeño INCONCLUSO y no se promueve; T22 caso único no permite selección de parámetro ni trading. **La fase1 económica original continúa FAIL-CLOSED [38286173182](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38286173182)**. Próximo backlog: D0 de mecanismos NUEVOS con preregistro previo y control observacional, sin nuevas fuentes ni 5s.
 
 ## Regla permanente de reporte
 
