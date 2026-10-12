@@ -16,7 +16,7 @@ from nq_t14_t19_economic_and_magnitude import (
 from nq_b03_aggregate import stitch
 from nq_b05k_t05_daily_block_bootstrap import moving_block_stats,SEED
 
-SCENARIOS=('stress','stress_plus10_fixed_path')
+SCENARIOS=('stress','extra10_fixed_path')
 SAMPLE_MONTHS=7
 DAYS=135
 REPS=10000
