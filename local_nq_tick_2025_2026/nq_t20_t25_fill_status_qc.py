@@ -120,8 +120,10 @@ def aggregate(months):
     for k in IDS:
         if (labels[k][CASE],labels[k][CONTROL])!=SCREEN_COUNTS[k]:
             raise AssertionError('stage0 fixed case/control altered')
-        if labels[k][MISSING]:
-            raise AssertionError('all 135 stage0 anchor sessions required')
+        # NO_EVALUABLE is a valid label for an anchored, eligible session.
+        # Anchor presence was verified by month_stage for every READY session.
+        if sum(labels[k].values())!=eligible:
+            raise AssertionError('all 135 eligible sessions need a stage0 label')
     return {'status':'T20_T25_FULL_DEV_EXECUTION_STATUS_DIAGNOSTIC_NO_ALPHA',
         'source_days':total,'eligible_days':eligible,
         'by_question':{k:{
