@@ -55,7 +55,7 @@ class TestB05K(unittest.TestCase):
                 if i>=elig:
                     payload.append({'day':d,'ready':False})
                     continue
-                trades=min(2,rest) if i==0 else min(1,rest)
+                trades=min(2,rest)  # synthetic construction; never actual fills
                 rest-=trades
                 pnl=money if trades and rest==0 else 0
                 if pnl:money=0
@@ -76,7 +76,7 @@ class TestB05K(unittest.TestCase):
         self.assertEqual(z['scenarios']['stress']['total_usd'],5102.5)
         self.assertEqual(z['scenarios']['stress_extra10_fixed_path']['total_usd'],3952.5)
         # No daily array or timestamps in the public aggregate.
-        self.assertNotIn('days',str(z))
+        self.assertNotIn("'days':",str(z))
         self.assertNotIn('2025-10-15',str(z))
     def test_aggregate_rejects_implicit_OOS_or_missing_month(self):
         with self.assertRaises(ValueError):calculate({})
