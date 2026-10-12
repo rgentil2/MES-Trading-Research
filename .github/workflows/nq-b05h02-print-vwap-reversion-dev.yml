@@ -1,0 +1,96 @@
+name: NQ B05H02 377-print VWAP reversion DEV same existing archived Last only
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-b05h02-print-vwap-reversion-dev.yml'
+      - 'local_nq_tick_2025_2026/nq_b05h02_reversion_*.py'
+      - 'local_nq_tick_2025_2026/test_nq_b05h02_reversion.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test causal H02 and timestamp-atomic print bars before accessing private source
+        run: |
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_b05h_atomic_print_bars.py' -v
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_b05h02_reversion.py' -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_b05h02_reversion_month.py local_nq_tick_2025_2026/nq_b05h02_reversion_aggregate.py
+  months:
+    needs: synthetic
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        month: ['2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04']
+    env:
+      MONTH: ${{ matrix.month }}
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reprocess ONLY preexisting licensed DEV Last, verified SHA256; no new market-data acquisition
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p _private/arc _private/data
+          gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/arc
+          (cd _private/arc && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          7z x "_private/arc/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+      - name: H02 print count ONLY, frozen legacy T05 benchmark and same-account router
+        run: |
+          python local_nq_tick_2025_2026/nq_b05h02_reversion_month.py --root _private/data --month "$MONTH" --out "b05h02_safe/nq_b05h02_${MONTH}.json"
+      - name: Remove private licensed source before output artifact
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b05h02-existing-${{ matrix.month }}
+          path: b05h02_safe/nq_b05h02_*.json
+          if-no-files-found: error
+  aggregate:
+    needs: months
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b05h02-existing-*
+          merge-multiple: true
+          path: _monthly
+      - name: Exact 140/135 DEV and 115 T05 frozen parity; all gates and owner attributions
+        run: |
+          python local_nq_tick_2025_2026/nq_b05h02_reversion_aggregate.py --inputs _monthly --out b05h02_final/summary.json --report b05h02_final/report.md
+          cat b05h02_final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b05h02-seven-month-safe-reversion-report
+          path: b05h02_final/
+          if-no-files-found: error
