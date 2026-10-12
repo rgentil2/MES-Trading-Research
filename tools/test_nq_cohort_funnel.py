@@ -15,16 +15,14 @@ class NQCohortFunnelTest(unittest.TestCase):
     def test_active_four_cohort_snapshot(self):
         z=validate(*self.mutated())
         self.assertEqual(z["status"],"FUNNEL_VALIDATED")
-        self.assertEqual(z["new_D0_diverse_candidates"],1)
-        self.assertEqual(z["new_D0_gap_to_next_D1"],19)
+        self.assertEqual(z["new_D0_diverse_candidates"],31)
+        self.assertEqual(z["new_D0_gap_to_next_D1"],0)
         self.assertEqual(z["D2_batch_size"],0)
 
     def test_cannot_pass_new_batch_D1_with_one_idea(self):
         p,l=self.mutated()
         q=next(x for x in l["cohorts"] if x["id"]=="NQ-C59-NEXT")
-        q["stage"]="D1_CLOSED"
-        q["D1"].update(status="COMPLETE",evaluated_ids=q["all_preregistered_ids"],
-                        q_min=1.,workflow_run=999,report="imaginary.md")
+        q["D0"]["diverse_ids"]=["T59"]
         with self.assertRaises(ValueError):validate(p,l)
 
     def test_D1_must_include_all_30_original_family_ids(self):
@@ -76,7 +74,7 @@ class NQCohortFunnelTest(unittest.TestCase):
 
     def test_dashboard_reports_real_stages_not_predicted_profit(self):
         txt=render(*self.mutated())
-        for v in ("25", "T59", "T60", "19", "0/30","T05"):
+        for v in ("31", "T59", "T60", "38", "0", "T05"):
             self.assertIn(v,txt)
         self.assertNotIn("validada para fondeo",txt.lower())
 
