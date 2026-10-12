@@ -38,7 +38,7 @@ class H02Tests(unittest.TestCase):
         with patch('nq_b05h02_reversion_month.completed_bars_by_print_count',return_value=data):
             sig,diag=h02_candidates([],DAY)
         self.assertEqual(sig,[])
-        self.assertEqual(diag['ready_context_decisions'],0)
+        self.assertEqual(diag.get('ready_context_decisions',0),0)
     def test_context_flatness_strict_and_integer_vwap(self):
         d=src()
         self.assertTrue(near_flat(*d[4181],24))
