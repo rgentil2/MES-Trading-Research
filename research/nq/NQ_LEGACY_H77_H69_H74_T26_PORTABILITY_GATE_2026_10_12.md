@@ -1,0 +1,29 @@
+# NQ — Puente de hipótesis históricas H77/H69/H74 hacia Last DEV y finalización D1 T26
+
+**Fecha:** 2026-10-12, America/Bogota. **Tipo:** auditoría de **PORTABILIDAD DE FUENTE / G0, no D1** de H77, H69 y H74. Se aplica la nueva cadencia de bloques 20+ [política oficial](NQ_DISCOVERY_STAGED_GATES_POLICY_2026_10_12.md) SIN alterar gates ni abrir holdouts. [Scorecard con los resultados originales H](../../NQ_STATISTICAL_HYPOTHESIS_SCORECARD.md). Cualquier cambio de reloj, fuente, ATR, gap o retorno convierte la señal en una hipótesis *nueva* (nueva ID), NO validación de la H histórica.
+
+## Contratos originales comprobados en código fuente
+
+- **H77 (2020–2024, NQ OHLC 1m, MNQ proxy):** [motor original](nq_h73_h78_joint_state_routers.py), `PAIR[77]=('G','ALIGNED','NQ-H09','OPPOSED','NQ-H56')`, `classifications`: `gap=OPEN RTH actual − CLOSE RTH previo`, `pm_body=close 09:30 − open 08:30`, estado G=ALIGNED cuando signos iguales y OPPOSED si contrarios; ruta H09 solo en ALIGNED y H56 solo en OPPOSED, **máximo un trade/día a reloj 09:45**, si padre elegido no emite señal NO hay trade, sin fallback. [H09](NQ_H08_H32_MINUTE_25_PREREG_2026_10_09.md): gap >=0,25×ATR de 14 sesiones RTH completas y drive 09:31–09:45 >=0,15×ATR en dirección gap. [H56](NQ_H53_H58_PREREG_2026_10_10.md): cuerpo premercado 08:30–09:30 >=0,20×ATR y cuerpo RTH inicial 09:31–09:45 >=0,10×ATR en sentido contrario; seguir el cuerpo de apertura.
+- **H69:** [motor original](nq_h67_h72_combined_strategies.py): `H09 OR H56`, prioridad H09 cuando ambos se disparan a 09:45. No es `H09+H56` simultáneos ni suma de P&L de padres; **una sola exposición por sesión**. Su validación exige poder reconstruir ambos padres con el mismo ATR y reloj.
+- **H74:** [motor original](nq_h73_h78_joint_state_routers.py): `PAIR[74]=('V','LOW','NQ-H09','HIGH','NQ-H56')`; régimen con rango RTH completo del **día previo** comparado contra mediana de los **20 días completos anteriores al previo**, mismo contrato y continuidad <=5 días. Estado previo conocido antes de abrir la sesión, luego elegir uno de dos padres, jamás ambos.
+
+## Auditoría G0 de compatibilidad sin comprar ni leer más historia
+
+| ID heredada | Datos originales INDISPENSABLES para **misma hipótesis** | Disponibilidad en NQ Last DEV presente | Gate portabilidad | Decisión |
+|---|---|---|---|---|
+| **H77** | OPEN 09:31, CLOSE anterior 16:00 ET, ATR 14 **RTH completas**; premarket 08:30–09:30; señales H09/H56 09:45 y fill posterior | Last DEV almacenada está acotada **08:00–12:00 ET**; premarket y 09:45 sí, **cierre anterior 16:00 y ATR de RTH completa NO** | **BLOCKED_MISSING_REQUIRED_CONTEXT** | **NO incluir H77 original en D1 T ticks** |
+| **H69** | Padre H09 gap→ATR14 RTH, H56 premarket→ATR14 RTH, router first-qualified prioritario | Last DEV 08:00–12:00 ET; 14 rangos RTH completos de 09:31–16:00 ausentes, cierre anterior ausente | **BLOCKED_MISSING_REQUIRED_CONTEXT** | **NO incluir H69 original en D1 T ticks** |
+| **H74** | Padre H09/H56 y **21 rangos RTH diarios completos previos**, datos mismos contratos/rollover | Last DEV 08:00–12:00 ET; serie RTH completa histórica de 21 sesiones ausente | **BLOCKED_MISSING_REQUIRED_CONTEXT** | **NO incluir H74 original en D1 T ticks** |
+| **T26** | Bar D/E 377 prints, 08:00–12:00 Last, primera E end entre 10:00–10:15; rango +15 min | **SÍ**, G0/D0 18 casos/36 controles sobre 135 días elegibles | **D0 TESTABLE** | D1 separado ya [prerregistrado antes del outcome](NQ_T26_T28_D1_OBSERVATIONAL_PREREG_2026_10_12.md); repetir 7/7 con BH de 3 |
+
+### Lo que NO debe interpretarse como confirmación
+
+- **H77** en cinco años 2020–24 tenía N=140, PF1,632, q_BH6=0,0468 y IC90 neto/operación [5,72,28,60] USD; **NO pasa Gate1 por N<151**, ni Holm confirmatorio. **H69** N=262, PF1,335, q=0,1152>0,10; no pasa. **H74** N132, PF1,438, 5/5 positivos, q=0,1149, tampoco pasa. No reciclaremos esa evidencia seleccionada como nueva prueba independiente en 2026.
+- Sustituir `ATR14 RTH` por rango 08:00–12:00 o `close anterior 16:00` por un precio de 12:00 sería **crear hipótesis nueva**, no recuperar H77/H69. Aparte, el punto de entrada del router era 09:45, distinto de la ancla común a 10:00–10:15 de T26/T29–T58; sumar sus casos a familia BH30 cerrada a posteriori sería estadísticamente improcedente.
+- La falta de contexto no es `D1 FAIL` ni ausencia de una ventaja: es **G0 NO PORTABLE** bajo restricciones actuales. No descargar nueva data ni usar holdouts. Las H permanecen como referencias de **arquitectura** de routers (gap/continuación, reversión premarket, estado previo y no solapar posiciones), reutilizables para hipótesis NUEVAS registradas explícitamente, nunca con el mismo ID ni heredando su q/performance.
+- T26 no implica estrategia direccional: su D1 prueba **rango futuro** y BH familia de tres, no retornos tradeables. Solapamiento del recorrido T26 con T30 requiere contarlo como mecanismo relacionado, no independencia extra.
+
+**Plan prospectivo (sin outcome):** en la siguiente familia de descubrimiento se puede registrar una **H-T59 portabilidad reducida** con gap observable de **09:30 contra VWAP de 08:30–09:30**, normalizado por rango o dispersión de la misma ventana 08:00–09:30, y una **H-T60 reversión de cuerpo de premarket** condicionada a una volatilidad causal observada. **NO equivalen a H09/H56/H77/H69 originales**, no están implementadas ni evaluadas aquí: requerirán prereg, nuevo D0 caso/control y la regla 20+ para nueva cohorte D1. Nunca elegir umbral retrospectivo mediante el resultado de H77 antiguo.
+
+**Regla efectiva:** recuperar ideas previas sin falsificar comparabilidad entre fuentes. Mantener T26 como ÚNICA hipótesis antigua lista para D1 con Last DEV existente. Su reporte deberá incluir N/IC90/q (BH de **tres**, aun cuando T27/T28 no estimables), reconocer sesgo de reutilización DEV y ausencia de fills.
