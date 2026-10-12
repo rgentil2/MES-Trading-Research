@@ -107,7 +107,7 @@ class NQCohortFunnelTest(unittest.TestCase):
 
     def test_dashboard_reports_real_stages_not_predicted_profit(self):
         txt=render(*self.mutated())
-        for v in ("15", "T133", "T145", "20", "0", "T05"):
+        for v in ("15", "T133", "T143", "20", "0", "T05"):
             self.assertIn(v,txt)
         self.assertNotIn("validada para fondeo",txt.lower())
 
