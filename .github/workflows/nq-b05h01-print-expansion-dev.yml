@@ -1,0 +1,96 @@
+name: NQ B05H01 causal 233-print expansion with 4181 and 10946 context (only existing data)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-b05h01-print-expansion-dev.yml'
+      - 'local_nq_tick_2025_2026/nq_b05h01_trade_expansion_*.py'
+      - 'local_nq_tick_2025_2026/test_nq_b05h01_trade_expansion.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run atomic print-bar and H01 order-invariant tests BEFORE private data
+        run: |
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_b05h_atomic_print_bars.py' -v
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_b05h01_trade_expansion.py' -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_b05h01_trade_expansion_month.py local_nq_tick_2025_2026/nq_b05h01_trade_expansion_aggregate.py
+  months:
+    needs: synthetic
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        month: ['2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04']
+    env:
+      MONTH: ${{ matrix.month }}
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reuse EXACT existing private DEV archive, verify SHA256 (NO new historical data)
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p _private/arc _private/data
+          gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/arc
+          (cd _private/arc && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          7z x "_private/arc/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+      - name: Test preregistered H01, frozen legacy T05 and shared router in same risk account
+        run: |
+          python local_nq_tick_2025_2026/nq_b05h01_trade_expansion_month.py --root _private/data --month "$MONTH" --out "b05h01_safe/nq_b05h01_${MONTH}.json"
+      - name: Erase licensed source before any published artifact
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b05h01-existing-${{ matrix.month }}
+          path: b05h01_safe/nq_b05h01_*.json
+          if-no-files-found: error
+  aggregate:
+    needs: months
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b05h01-existing-*
+          merge-multiple: true
+          path: _monthly
+      - name: Require exact 140/135 sample, original 115 T05 parity, all model gates
+        run: |
+          python local_nq_tick_2025_2026/nq_b05h01_trade_expansion_aggregate.py --inputs _monthly --out b05h01_final/summary.json --report b05h01_final/report.md
+          cat b05h01_final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b05h01-seven-month-safe-report
+          path: b05h01_final/
+          if-no-files-found: error
