@@ -1,8 +1,24 @@
 # NQ — Tabla estadística de hipótesis (Gate 1, q-BH e IC90)
 
-**Última revisión: 11 de octubre de 2026; añadido diagnóstico estadístico T de siete meses, ejecutado 12-oct UTC.** Fuente: [Gate exploratorio original](research/es/ES_STAGE_GATES_EXPLORATORY_AMENDMENT_2026_10_09.md), [confirmatorio original](research/es/ES_STAGE_GATES.md), [gobernanza Holm](research/RESEARCH_CONTROLS_POLICY.md). Evaluación automatizada [código](research/nq/nq_gate1_statistical_scorecard.py) · [GitHub Action 38198391656 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38198391656) (6 pruebas PASS; resumen estadístico reproducible).
+**Última revisión: 12 de octubre de 2026; cohorte T59–T96 de 38 hipótesis completó D0 y D1 como BLOQUE, cero estadísticamente promovidas.** Fuente: [Gate exploratorio original](research/es/ES_STAGE_GATES_EXPLORATORY_AMENDMENT_2026_10_09.md), [confirmatorio original](research/es/ES_STAGE_GATES.md), [gobernanza Holm](research/RESEARCH_CONTROLS_POLICY.md). Evaluación automatizada [código](research/nq/nq_gate1_statistical_scorecard.py) · [GitHub Action 38198391656 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38198391656) (6 pruebas PASS; resumen estadístico reproducible).
 
 **Gate 1 prospectivo:** N>150 eventos elegibles independientes; efecto medio neto favorable; intervalo bilateral **IC90** en el lado preregistrado (>0 si la hipótesis es positiva); **q Benjamini–Hochberg ≤0,10 sobre los miembros completos de la familia**; ≥3/5 años positivos. Todo obligatorio. Holm con α_k=0,05/[k(k+1)] es confirmación separada, no reemplaza q ni las reservas OOS. Este Gate 1 es exploratorio: PASS no permitiría fondeo. Los preregistros antiguos más estrictos permanecen intactos.
+
+## T59–T96 — 38 hipótesis en BLOQUE, D0 y D1 CERRADOS (12-oct-2026)
+
+**[Tabla completa con las 38 filas de N, efecto Δ, IC90 L5, p, qBH38 y decisión](research/nq/NQ_T59_T96_38_MEMBER_WHOLE_COHORT_D1_RESULTS_2026_10_12.md)**, [Action D1 38313582820 COMPLETED SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38313582820) y [artifact seguro 11776430223](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38313582820/artifacts/11776430223), SHA256 `f4253ceacfad3707fa43185f6e1935ce00794b9eced6f266c16069c73f968e3c`. [Prerregistro anterior a resultados](research/nq/NQ_T59_T96_COHORT_38_D1_PREREG_2026_10_12.md). **D0** [Action 38313046875 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38313046875): 38 registradas, **36 TESTABLE y 31 diversas**, 2 LOW_POWER (T60/T77). **D1** 38/38 medidas, **qBH38 mínima 0,239376>0,10**, 22 inconclusas, 14 no respaldadas por efecto desfavorable, 2 no estimables, **0/38 PASAN BH**; bandeja D2 económica=0, sin estrategia validada.
+
+| ID observado favorable individualmente | Pregunta / bloque | N CASE/CTRL | Δ observacional ticks | IC90 L5 (ticks) | p L5 EXP | **q BH38** | Gate D1 |
+|---|---|---:|---:|---|---:|---:|---|
+| T65 | Cambio del valor negociado entre mitades de PM | 79/56 | +53,224 | [+10,99,+96,31] | 0,0202 | 0,2470 | **NO** |
+| T75 | Pendiente causal B→A en barras377 anteriores | 66/69 | +57,201 | [+26,23,+95,23] | 0,0063 | **0,2394** | **NO** |
+| T84 | Diferencia de VWAP temprano/tardío por prints E | 94/41 | +65,727 | [+18,81,+116,30] | 0,0148 | 0,2470 | **NO**, casi duplicado de T88 en CASE |
+| T88 | Valor temprano/tardío de grupos timestamp en E | 96/39 | +65,449 | [+16,77,+120,53] | 0,0260 | 0,2470 | **NO** |
+| T93 | Precio atómico al cierre de E frente POC E | 77/57 | +41,005 | [+8,66,+81,75] | 0,0493 | 0,3496 | **NO** |
+| T94 | Precio atómico al cierre de E frente medio rango E | 82/53 | +46,388 | [+11,63,+93,99] | 0,0552 | 0,3496 | **NO** |
+| T95 | Precio atómico al cierre de E frente medio rango D | 112/22 | +50,283 | [+0,38,+114,02] | 0,1032 | 0,4902 | **NO** |
+
+**Los 31 nombres D0 viables NO son alfas; las siete medias con IC90 individual positivo NO alcanzaron la corrección BH sobre los 38 miembros**, incluidos T60/T77 no estimables y T71/T81/T82/T83/T84 casi duplicadas. No se cambian side, CASE/CONTROL ni umbrales para rescatar q. [Detalle D0 de los 38 y redundancia](research/nq/NQ_T59_T96_SIX_BLOCK_COHORT_D0_RESULTS_2026_10_12.md) y [scorecard D1 los 38](research/nq/NQ_T59_T96_38_MEMBER_WHOLE_COHORT_D1_RESULTS_2026_10_12.md) contienen TODAS las decisiones. **N_trades=0; USD neto/PF/DD/Δrouter/Holm/OOS/ROI=N/D**: markout VWAP o rango 15m físicos NO son ejecuciones de cuenta.
 
 ## Embudo global obligatorio POR COHORTES (actualización 12-oct-2026)
 
@@ -13,7 +29,7 @@
 | T29–T58 | 30 | 27 | **25** | 30 | **0** (q mínima0,2122>0,10; indicadores de rango no operativos) | D1 CERRADO |
 | T20–T25 | 6 | 3 | No medida bajo nueva regla histórica | 6 | **0** | D1 CERRADO LEGACY |
 | T26–T28 | 3 | 1 | No medida bajo nueva regla histórica | 3 | **0** (T26 signo contrario, T27/T28 no estimables) | D1 CERRADO LEGACY |
-| **T59–T60 (semilla cohorte NUEVA)** | 2 | **1** (T59 45/42) | **1/20** | **0** | **0** | **FORMACIÓN D0**; T60 71/6 LOW_POWER |
+| **T59–T96 (cohorte NUEVA cerrada)** | **38** | **36** | **31** | **38** | **0**, BH38 q mínima0,2394 | **D1 CERRADO**; T60/T77 LOW_POWER |
 
 **Estados por hipótesis permanecen en las tablas originales siguientes**, con N, IC90, q, PF, DD etc., y se muestran N/D cuando la etapa NO midió esas variables. No sumar q/PF de H históricos, no asignar USD a markout/rango futuro. D1 se ejecuta únicamente en lote de 20+ distintas; D2 agrupa mecanismo ejecutables aprobados en D1 bajo un solo router, nunca un resultado retrospectivo aislado. T05 congelada como benchmark, no aprobada para fondeo.
 
