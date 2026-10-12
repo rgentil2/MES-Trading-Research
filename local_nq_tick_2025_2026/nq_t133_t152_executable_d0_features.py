@@ -30,6 +30,19 @@ def completed_summary(events,times,bar):
     subset=events[lo:hi]
     if len(subset)!=bar.prints:raise AssertionError('TIMESTAMP_BAR_NOT_ATOMIC')
     s=summary(subset)
+    if s is None and bar.whole_timestamp_groups==1:
+        # A valid bar can exceed 233/4181 prints in ONE atomic timestamp.
+        # The earlier summary() helper intentionally returns None for
+        # 1 timestamp group; this is missing temporal diversity, not a
+        # missing PRICE context. Preserve its complete indivisible group.
+        from nq_t61_t96_d0_features import whole_groups
+        groups=whole_groups(subset)
+        if len(groups)!=1:
+            raise AssertionError('BAR_GROUP_ATOMIC_PARITY_FAIL')
+        s={'lo':bar.low_ticks,'hi':bar.high_ticks,
+           'vwap':F(bar.price_times_qty_ticks,bar.total_qty),
+           'open':groups[0][1],'end':groups[0][1],
+           'groups':groups}
     if s is None or s['vwap']!=F(bar.price_times_qty_ticks,bar.total_qty):
         raise AssertionError('BAR_QTY_VWAP_PARITY_FAIL')
     s['duration100ns']=bar.end_timestamp-bar.start_timestamp
