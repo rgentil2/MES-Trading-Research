@@ -47,6 +47,25 @@ class TwentyCompletePlans(unittest.TestCase):
         self.assertEqual(plan_stop('B_PULLBACK_CONTINUATION',-1,e,micro,None),F(125))
         self.assertEqual(plan_stop('C_FALSE_BREAK_REVERSAL',-1,e,micro,ref),F(127))
         self.assertEqual(plan_stop('D_REGIME_RISK_ROUTER',1,e,micro,None),F(99))
+    def test_one_atomic_timestamp_can_fill_entire_233_without_loss(self):
+        from nq_b05h_atomic_print_bars import completed_bars_by_print_count
+        from nq_t133_t152_executable_d0_features import completed_summary
+        tm=et_edge(DAY,10,3)
+        rows=[(tm,100000+i%9,2) for i in range(240)]
+        bar=completed_bars_by_print_count(rows,DAY,(233,))[233][0]
+        self.assertEqual(bar.whole_timestamp_groups,1)
+        s=completed_summary(rows,[tm]*len(rows),bar)
+        self.assertEqual(s['duration100ns'],0)
+        self.assertEqual(s['vwap'],F(bar.price_times_qty_ticks,bar.total_qty))
+        self.assertEqual(s['open'],s['end'])
+    def test_one_group_zero_duration_never_divides_by_zero(self):
+        from nq_t133_t152_executable_d0_features import completed_summary
+        from nq_b05h_atomic_print_bars import completed_bars_by_print_count
+        tm=et_edge(DAY,10,1)
+        rows=[(tm,100009,1) for _ in range(240)]
+        bar=completed_bars_by_print_count(rows,DAY,(233,))[233][0]
+        self.assertEqual(completed_summary(rows,[tm]*240,bar)['duration100ns'],0)
+
     def test_sealed_month_rejected_prior_to_io(self):
         with self.assertRaises(ValueError):
             month_stage(Path('/never-used'), '2026-09',self.r)
