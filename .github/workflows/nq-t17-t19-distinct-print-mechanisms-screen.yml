@@ -1,0 +1,93 @@
+name: NQ T17-T19 new auction/intensity/path questions - EXISTING DEV signal screen
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t17-t19-distinct-print-mechanisms-screen.yml'
+      - 'local_nq_tick_2025_2026/nq_t17_t19_signal_*.py'
+      - 'local_nq_tick_2025_2026/test_nq_t17_t19_signal_feasibility.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Six synthetic tests on distinct magnitude/auction questions BEFORE source access
+        run: |
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_t17_t19_signal_feasibility.py' -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_t17_t19_signal_feasibility.py local_nq_tick_2025_2026/nq_t17_t19_signal_screen_aggregate.py
+  months:
+    needs: synthetic
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        month: ['2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04']
+    env:
+      MONTH: ${{ matrix.month }}
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reuse ONLY seven NQ DEV Last monthly releases ALREADY stored, check SHA256
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p _private/arc _private/data
+          gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/arc
+          (cd _private/arc && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          7z x "_private/arc/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+      - name: Count new opportunities on 377 print Last without returns or fills
+        run: |
+          python local_nq_tick_2025_2026/nq_t17_t19_signal_feasibility.py --root _private/data --month "$MONTH" --out "safe/t17_t19_${MONTH}.json"
+      - name: Erase private existing Last source
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: t17-t19-screen-${{ matrix.month }}
+          path: safe/t17_t19_*.json
+          if-no-files-found: error
+  aggregate:
+    needs: months
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: t17-t19-screen-*
+          merge-multiple: true
+          path: _monthly
+      - name: Seven-month counts, NO alpha stats or incorrect trade claims
+        run: |
+          python local_nq_tick_2025_2026/nq_t17_t19_signal_screen_aggregate.py --inputs _monthly --out final/summary.json --report final/report.md
+          cat final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: t17-t19-seven-month-safe-opportunity-screen
+          path: final/
+          if-no-files-found: error
