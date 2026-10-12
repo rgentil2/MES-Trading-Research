@@ -4,6 +4,19 @@
 
 **Gate 1 prospectivo:** N>150 eventos elegibles independientes; efecto medio neto favorable; intervalo bilateral **IC90** en el lado preregistrado (>0 si la hipótesis es positiva); **q Benjamini–Hochberg ≤0,10 sobre los miembros completos de la familia**; ≥3/5 años positivos. Todo obligatorio. Holm con α_k=0,05/[k(k+1)] es confirmación separada, no reemplaza q ni las reservas OOS. Este Gate 1 es exploratorio: PASS no permitiría fondeo. Los preregistros antiguos más estrictos permanecen intactos.
 
+## Embudo global obligatorio POR COHORTES (actualización 12-oct-2026)
+
+[Política completa](research/nq/NQ_COHORT_FUNNEL_POLICY_2026_10_12.md) · [Ledger máquina](research/nq/NQ_COHORT_FUNNEL_LEDGER_2026_10_12.json) · **[TABLERO DE CUELLO DE BOTELLA](research/nq/NQ_COHORT_FUNNEL_STATUS_2026_10_12.md)**. En lugar de una estrategia individual T05→D1→D2, ahora **cada fase evalúa el BLOQUE completo** y solo sus supervivientes se agrupan en la bandeja siguiente.
+
+| Cohorte | Número original | D0 TESTABLE | D0 diversas | D1 analizadas | Calificadas por familia/ejecución para D2 | Etapa |
+|---|---:|---:|---:|---:|---:|---|
+| T29–T58 | 30 | 27 | **25** | 30 | **0** (q mínima0,2122>0,10; indicadores de rango no operativos) | D1 CERRADO |
+| T20–T25 | 6 | 3 | No medida bajo nueva regla histórica | 6 | **0** | D1 CERRADO LEGACY |
+| T26–T28 | 3 | 1 | No medida bajo nueva regla histórica | 3 | **0** (T26 signo contrario, T27/T28 no estimables) | D1 CERRADO LEGACY |
+| **T59–T60 (semilla cohorte NUEVA)** | 2 | **1** (T59 45/42) | **1/20** | **0** | **0** | **FORMACIÓN D0**; T60 71/6 LOW_POWER |
+
+**Estados por hipótesis permanecen en las tablas originales siguientes**, con N, IC90, q, PF, DD etc., y se muestran N/D cuando la etapa NO midió esas variables. No sumar q/PF de H históricos, no asignar USD a markout/rango futuro. D1 se ejecuta únicamente en lote de 20+ distintas; D2 agrupa mecanismo ejecutables aprobados en D1 bajo un solo router, nunca un resultado retrospectivo aislado. T05 congelada como benchmark, no aprobada para fondeo.
+
 ## H67–H78: MNQ simulado con datos NQ minuto 2020–2024 (NO ticks T)
 
 | Hipótesis | Pregunta | N | Promedio neto/trade USD | IC90 USD/trade | q BH | Años + | PF | P&L USD | ¿Gate 1? |
