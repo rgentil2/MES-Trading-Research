@@ -20,6 +20,14 @@
 
 **Los 31 nombres D0 viables NO son alfas; las siete medias con IC90 individual positivo NO alcanzaron la corrección BH sobre los 38 miembros**, incluidos T60/T77 no estimables y T71/T81/T82/T83/T84 casi duplicadas. No se cambian side, CASE/CONTROL ni umbrales para rescatar q. [Detalle D0 de los 38 y redundancia](research/nq/NQ_T59_T96_SIX_BLOCK_COHORT_D0_RESULTS_2026_10_12.md) y [scorecard D1 los 38](research/nq/NQ_T59_T96_38_MEMBER_WHOLE_COHORT_D1_RESULTS_2026_10_12.md) contienen TODAS las decisiones. **N_trades=0; USD neto/PF/DD/Δrouter/Holm/OOS/ROI=N/D**: markout VWAP o rango 15m físicos NO son ejecuciones de cuenta.
 
+## REGLA NUEVA PARA TODAS LAS SIGUIENTES PRUEBAS T133–T152 (12-oct-2026)
+
+**El usuario aprobó un cambio de metodología:** no basta con intervalos de `markout` o predicción de rango; desde la cohorte T133–T152 las preguntas definen estrategias **completas** (activación, dirección, parada, objetivo, horizonte, costes y ruta de ejecución) con cuatro mecanismos en bloque: ruptura/retest, continuación/pullback, falsa ruptura/reversión y filtro régimen/riesgo. [Enmienda de pruebas económica/estadística vinculante](research/nq/NQ_EXECUTABLE_STRATEGY_COHORT_POLICY_2026_10_12.md). 
+
+**Tabla de salida estándar obligatoria:** `ID | bloque | pregunta | long/short | trigger | entrada teórica | SL | TP | timeout | N_CASE | N_CONTROL | N_OTHER | N_MISSING | N_active_days/weeks/months | TESTABLE | Jaccard | N_trades hipótesis | instrumento | costes/slippage | neto e IC90 L3/L5/L10 | p/q BH familia completa | Holm | PF/DD | DeltaRouter | estados G0/D0/D1/D2 | por qué PASS/FAIL/N/D`. D0 no utiliza futuro, por tanto columnas de trades/costes realizados/neto/IC90/p/q/PF/DD en D0 siempre **N/D**, no cero inventado. Las fechas oct–dic 2025 / ene–abr 2026 son **diagnóstico y validación cronológica interna exploratoria**, NO nuevo OOS debido a reutilización previa.
+
+**Puertas sin excepciones:** caso y control≥15, shortlist≥20 TESTABLE distintas Jaccard CASE<0,85 para nueva D1; BH/Holm según jerarquía anterior y universo original congelado. No relajar umbrales para que exactamente 20 'pasen', ni reinterpretar Last como fill o beneficio en cuenta fondeada. Baselines previos T05 congelado y 104 D1 de cohortes grandes con 0 supervivientes familiares. D2 de **cartera agrupada**, no de hipótesis única.
+
 ## T97–T132 — 36 hipótesis en SEIS BLOQUES, D0/D1 CERRADOS (12-oct-2026)
 
 **D0** [Action 38318189842 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38318189842): 7 DEV SHA256 140/135, **36 registradas→30 TESTABLE→26 diversas (gate20 PASS)**, [tabla de casos y controles de los 36](research/nq/NQ_T97_T132_SIX_BLOCKS_D0_RESULTS_2026_10_12.md), [conteos congelados](research/nq/NQ_T97_T132_D0_FROZEN_COUNTS_2026_10_12.json). T110/T127/T128/T129/T132 LOW_POWER, T125 135/0 UNIDENTIFIABLE; T102/T114/T115/T120 cerca de duplicados CASE.
