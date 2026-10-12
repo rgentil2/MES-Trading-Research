@@ -134,7 +134,7 @@ def aggregate(months):
         raise AssertionError('T05 FROZEN global parity fail')
     if table[FIRST[2]]['N_trades']!=0:raise AssertionError('T16 prereg 0 signals changed')
     for model in (BASE,*DIRECTIONAL):
-        for label,sname in SCENARIOS:
+        for label in SCENARIOS:
             arr=daily_cache[model]['stress' if label=='stress' else 'extra']
             table[model]['bootstrap'][label]={
                str(L):moving_block_stats(arr,L,seed=20261012+L+len(model),reps=REPS)
