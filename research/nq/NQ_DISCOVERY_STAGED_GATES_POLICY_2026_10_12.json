@@ -279,5 +279,19 @@
       "expected_source_sessions": 140,
       "expected_eligible_sessions": 135
     }
+  },
+  "cohort_funnel_reference": {
+    "adopted_on": "2026-10-12",
+    "policy_id": "NQ-COHORT-FUNNEL-V1",
+    "source_document": "research/nq/NQ_COHORT_FUNNEL_POLICY_2026_10_12.md",
+    "machine_policy": "research/nq/NQ_COHORT_FUNNEL_POLICY_2026_10_12.json",
+    "cohort_ledger": "research/nq/NQ_COHORT_FUNNEL_LEDGER_2026_10_12.json",
+    "stage_dashboard": "research/nq/NQ_COHORT_FUNNEL_STATUS_2026_10_12.md",
+    "transition_unit": "BATCH_ONLY_NO_INDIVIDUAL_HYPOTHESIS_RUNS",
+    "D0_to_D1_requires_20_distinct_viable": true,
+    "D1_measures_all_original_members": true,
+    "D2_collects_only_economically_executable_survivors": true,
+    "prior_gates_unchanged": true,
+    "holdouts_opened": false
   }
 }
