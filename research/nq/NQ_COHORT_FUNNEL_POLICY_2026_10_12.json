@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "policy_id": "NQ-COHORT-FUNNEL-V1",
+  "effective_date": "2026-10-12",
+  "status": "ACTIVE_USER_DIRECTED",
+  "scope": "PROSPECTIVE_BATCHED_RESEARCH_ROUTING",
+  "extends_policy": "NQ-DISCOVERY-STAGED-GATES-V1",
+  "description": "A hypothesis is never treated as the research workflow; a cohort is the unit of progression through G0-D0-D1-D2-confirmation.",
+  "stages": [
+    "IDEAS",
+    "G0",
+    "D0",
+    "D1",
+    "D2",
+    "CONFIRMATION"
+  ],
+  "stage_rules": {
+    "IDEAS": {
+      "unit": "registered_family",
+      "entry": "distinct causal mechanisms with preregistration BEFORE D0 counts; include negative controls",
+      "exit": "whole original family moves to G0"
+    },
+    "G0": {
+      "unit": "whole_family",
+      "entry": "7 existing DEV months only with QC and timestamp indivisibility",
+      "exit": "whole registered family moves into D0; unsafe or nonportable mechanisms go blocked, not silently substituted"
+    },
+    "D0": {
+      "unit": "whole_family",
+      "entry": "measure all CASE/CONTROL/OTHER/MISSING without future outcomes",
+      "testable_min_case": 15,
+      "testable_min_control": 15,
+      "diversity_case_jaccard_below": 0.85,
+      "minimum_diverse_testable_for_new_D1_cohort": 20,
+      "exit": "freeze shortlist and the ENTIRE original statistical family; D1 is executed ONCE for all registered members, not one-by-one",
+      "if_insufficient": "retain all prior rules/IDs, register new mechanism blocks for NEXT cohort; do not combine post-hoc multiple testing families"
+    },
+    "D1": {
+      "unit": "whole_frozen_family",
+      "entry": "registered signs/endpoints, 10k noncircular moving block L5/3/10, complete BH family and all outcomes",
+      "outcome_tracks": [
+        "DIRECTIONAL_PREDICTIVE",
+        "VOLATILITY_CONTEXT",
+        "ECONOMIC_ROUTER"
+      ],
+      "statistical_screen": "positive preregistered sign, 90pct CI lower >0 and exploratory BH q<=0.10 over original complete family, all three MUST be met; this is NOT confirmation",
+      "economic_screen": "if actual fills and costs are identifiable: net expectation after stress >0, paired net portfolio increment >0 and preregistered robustness; if ambiguous block rather than invent",
+      "exit": "evaluate every D1 member together and label survivors by separate tracks; non-directional context NEVER becomes trading strategy just for positive range",
+      "if_zero": "close D1 cohort, do NOT force D2 nor reoptimize thresholds"
+    },
+    "D2": {
+      "unit": "Pooled_survivors_from_completed_D1_cohorts",
+      "minimum_nonredundant_survivors_to_start_economic_batch": 2,
+      "entry": "do not deepen ONE lucky hypothesis: pool at least two distinct causal mechanisms with actual executable directional/economic path; other lone survivors remain parked",
+      "require": "one chronological account/router, stress costs, PF, DD, overlap and capacity; no lookahead or fictitious Last fills",
+      "exit": "joint D2 report and risk gate for ALL pooled survivors",
+      "if_blocked": "flag FAILED_EXECUTION/HOLD_FOR_BATCH rather than claim profitability"
+    },
+    "CONFIRMATION": {
+      "unit": "locked_executable_portfolio",
+      "entry": "separate explicit OOS authorization, locked rules and Gate1/Holm/annual robustness",
+      "exit": "only after independently confirmed execution and funding constraints, never automatically"
+    }
+  },
+  "permanent_invariants": {
+    "no_new_market_data": true,
+    "no_new_5_second_signals": true,
+    "holdouts_remain_sealed": true,
+    "legacy_holm_gate1_unchanged": true,
+    "legacy_t05_frozen_comparator": true,
+    "no_auto_promotion_from_price_range": true,
+    "no_sign_flip_after_outcomes": true,
+    "no_threshold_tuning_to_make_n": true,
+    "adaptively_reused_DEV_not_confirmatory": true,
+    "do_not_merge_closed_BH_families_after_outcomes": true,
+    "retain_failed_cases_in_family": true,
+    "stage_counts_must_reference_run_and_result": true
+  },
+  "dashboard_path": "research/nq/NQ_COHORT_FUNNEL_STATUS_2026_10_12.md",
+  "ledger_path": "research/nq/NQ_COHORT_FUNNEL_LEDGER_2026_10_12.json",
+  "transition_unit": "BATCH_ONLY_NO_INDIVIDUAL_HYPOTHESIS_RUNS",
+  "previous_completed_batches_are_not_retroactively_qualified": true
+}
