@@ -1,0 +1,72 @@
+name: NQ T29-T58 D1 Thirty Predicted Ranges and Markouts - NO FILLS - DEV
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t29-t58-30-d1-batch-dev.yml'
+      - 'local_nq_tick_2025_2026/nq_t29_t58_d1_batch.py'
+      - 'local_nq_tick_2025_2026/test_nq_t29_t58_d1_batch.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check full 30 member D1 prereg and no-data synthetic safeguards
+        run: |
+          set -euo pipefail
+          test -s research/nq/NQ_T29_T58_30_HYPOTHESES_D1_BATCH_PREREG_2026_10_12.md
+          test -s research/nq/NQ_T29_T58_30_HYPOTHESES_G0_D0_FROZEN_2026_10_12.json
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_t29_t58_d1_batch.py -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_t29_t58_d1_batch.py
+  dev-only:
+    needs: synthetic
+    runs-on: ubuntu-latest
+    timeout-minutes: 110
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Process ONLY previously-stored seven protected Last DEV releases, SHA256 each
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p _private/derived
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          for MONTH in 2025-10 2025-11 2025-12 2026-01 2026-02 2026-03 2026-04; do
+            mkdir -p _private/arc _private/data
+            gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/arc
+            (cd _private/arc && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+            7z x "_private/arc/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+            python local_nq_tick_2025_2026/nq_t29_t58_d1_batch.py --root _private/data --month "$MONTH" --out "_private/derived/t29_t58_d1_${MONTH}.json"
+            rm -rf _private/arc _private/data
+          done
+      - name: Full frozen 30-member BH family; 10000 noncircular block bootstrap L3 L5 L10
+        run: |
+          set -euo pipefail
+          python local_nq_tick_2025_2026/nq_t29_t58_d1_batch.py --inputs _private/derived --out final/summary.json --report final/report.md
+          cat final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Destroy all proprietary Last and session markouts even on failure
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-t29-t58-all-30-d1-predictive-only-safe
+          path: final/
+          if-no-files-found: error
