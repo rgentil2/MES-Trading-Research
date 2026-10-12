@@ -5,8 +5,8 @@
 | Cohorte | D0: registradas → testables → diversas | D1: medidas → selección familiar | D2: calificadas | Estado |
 |---|---:|---:|---:|---|
 | NQ-C29-58 | 30 → 27 → 25 | 30 → 0 | 0 | D1 cerrado (sin calificadas) |
-| NQ-C20-25 | 6 → 3 → 0 | 6 → 0 | 0 | D1 cerrado (sin calificadas) |
-| NQ-C26-28 | 3 → 1 → 0 | 3 → 0 | 0 | D1 cerrado (sin calificadas) |
+| NQ-C20-25 | 6 → 3 → N/D (legacy) | 6 → 0 | 0 | D1 cerrado (sin calificadas) |
+| NQ-C26-28 | 3 → 1 → N/D (legacy) | 3 → 0 | 0 | D1 cerrado (sin calificadas) |
 | NQ-C59-NEXT | 2 → 1 → 1 | 0 → 0 | 0 | **ESPERA:** completar bloque D0 |
 
 ## Cuello de botella actual
