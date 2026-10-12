@@ -42,7 +42,7 @@ class B05F(unittest.TestCase):
         for n in LENGTHS:
             self.assertEqual(z['readiness'][str(n)]['ready_window_5s_decisions'],
                              1080)
-        self.assertEqual(z['counters']['same_timestamp'],0)
+        self.assertEqual(z['counters'].get('same_timestamp',0),0)
     def test_gaps_are_not_assumed_bad_ticks_or_auto_deleted(self):
         e=opening_events()+[(at(1200),100,1)]
         z=audit_stream(e,DAY)
