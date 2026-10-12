@@ -26,6 +26,7 @@ FEATURES=(
 'micro_pm_consensus','micro_rth_consensus','micro_macro_consensus',
 'macro_pm_consensus','macro_rth_consensus','micro_prior377_consensus')
 N=36
+LABELS=(CASE,CONTROL,OTHER,MISSING)
 
 def _bar_summary(e,ts,b):
     lo=bisect_left(ts,b.start_timestamp)
