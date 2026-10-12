@@ -166,8 +166,10 @@ def render(policy,ledger):
                  set(s["economic_screen_pass_ids"]))
         state=("**ESPERA:** completar bloque D0" if b["stage"]=="D0_POOL_FORMING"
                else "D1 cerrado (sin calificadas)")
+        diverse=(str(len(d["diverse_ids"])) if b["origin"]=="NEW_BATCH_20_PLUS"
+                 else "N/D (legacy)")
         lines.append(f"| {b['id']} | {len(b['all_preregistered_ids'])} → "
-          f"{len(d['testable_ids'])} → {len(d['diverse_ids'])} "
+          f"{len(d['testable_ids'])} → {diverse} "
           f"| {scored} → {surv} | {len(b['D2']['promoted_ids'])} | {state} |")
     lines.extend(["",
       "## Cuello de botella actual",
