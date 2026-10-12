@@ -63,7 +63,7 @@ def month_stage(root,month,out):
     for day in sorted(month_days(root,month)):
         dev_day(day)
         source+=1
-        events=list(source_events(file_for(root,day,'Last')))
+        events=list(source_events(file_for(root,dev_day(day),'Last')))
         ready,_,_=frozen_t05(events,day)
         qc[ready]+=1
         if ready!='READY':continue
