@@ -69,8 +69,8 @@ def month_stage(root,month):
     if month not in MONTHS:raise ValueError('SEALED_MONTH_BEFORE_IO')
     counts={k:Counter() for k in IDS};qc=Counter();source=0;both=0
     for day in sorted(month_days(root,month)):
-        day=dev_day(day);source+=1
-        events=list(source_events(file_for(root,day,'Last')))
+        d=dev_day(day);source+=1
+        events=list(source_events(file_for(root,d,'Last')))
         status,_,_=frozen_t05(events,day)
         qc[status]+=1
         if status!='READY':continue
