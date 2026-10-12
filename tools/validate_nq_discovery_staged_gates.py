@@ -124,6 +124,27 @@ def check_policy(data: dict) -> dict:
                  "holdouts_opened","live_trading_authorized"):
         require(batch.get(flag) is False, "batch governance unsafe: " + flag)
 
+    # 2026-10-12 explicit user request: WHOLE COHORT is the unit.
+    funnel = data.get("cohort_funnel_reference", {})
+    require(funnel.get("adopted_on")=="2026-10-12"
+            and funnel.get("policy_id")=="NQ-COHORT-FUNNEL-V1"
+            and funnel.get("transition_unit")=="BATCH_ONLY_NO_INDIVIDUAL_HYPOTHESIS_RUNS",
+            "cohort funnel cannot be bypassed")
+    for flag in ("D0_to_D1_requires_20_distinct_viable",
+                 "D1_measures_all_original_members",
+                 "D2_collects_only_economically_executable_survivors",
+                 "prior_gates_unchanged"):
+        require(funnel.get(flag) is True, "missing cohort funnel gate "+flag)
+    require(funnel.get("holdouts_opened") is False,
+            "funnel cannot open holdouts")
+    require(funnel.get("machine_policy") ==
+            "research/nq/NQ_COHORT_FUNNEL_POLICY_2026_10_12.json"
+            and funnel.get("cohort_ledger") ==
+            "research/nq/NQ_COHORT_FUNNEL_LEDGER_2026_10_12.json"
+            and funnel.get("stage_dashboard") ==
+            "research/nq/NQ_COHORT_FUNNEL_STATUS_2026_10_12.md",
+            "funnel source of truth changed")
+
     legacy = data.get("legacy_controls", {})
     g = legacy.get("gate1_new_prospective", {})
     frozen = legacy.get("older_frozen_when_applicable", {})
