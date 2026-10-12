@@ -160,6 +160,45 @@ Fuentes verificadas con 140 días fuente/135 DEV elegibles, 7/7 meses y SHA256 d
 
 **Regla:** son recuentos por **sesión clasificada**, no 18, 6 o 3 trades ni eventos independientes; el gate exploratorio histórico `N>150`, IC90, q BH≤0,10, 3/5 años no es evaluable/realizable con un día por sesión de estos siete meses. Ningún PF, retorno neto, IC90, p/q o DD de D1 puede atribuirse antes de correr el análisis. T26 es **hipótesis de magnitud no direccional**, sin permiso de convertir rango en beneficios. Conservamos los tres miembros en la familia, incluso sin control; no ajustar umbrales de T27/T28 para rescatarlos.
 
+## T29–T58 — Cinco bloques de 30 hipótesis: 25 diversificadas desde D0, D1 en proceso (12-oct-2026)
+
+**Prerregistro previo a medir:** [30 preguntas y reglas congeladas](research/nq/NQ_T29_T58_30_HYPOTHESES_G0_D0_PREREG_2026_10_12.md), commit del contrato `3e40f154`. **G0/D0 comprobado** [Action 38300121097 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38300121097), 10 tests, 7/7, fuente 140/135/135, [informe por 30 miembros](research/nq/NQ_T29_T58_30_HYPOTHESES_G0_D0_RESULTS_2026_10_12.md), [artifact 11769168793](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38300121097/artifacts/11769168793): **27 TESTABLE, 3 LOW_POWER, 25 máscaras suficientemente distintas** para la shortlist; T32/T53 redundantes con T29 por Jaccard, no excluidos de BH. [D1 predictivo k30 prerregistrado](research/nq/NQ_T29_T58_30_HYPOTHESES_D1_BATCH_PREREG_2026_10_12.md) y [Action 38300856124](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38300856124) EN EJECUCIÓN; **no publicar IC90/p/q hasta verificar outcomes y artifacts**.
+
+| Hipótesis | Bloque | N casos/controles | Gate D0 | En 25 diversas | N trades / N_eff | Efecto / IC90 | p/q BH | Holm / años | P&L/PF/DD/Δrouter | Gate1 o dinero PASS |
+|---|---|---:|---|---|---|---|---|---|---|---|
+| T29 | B1 | 80/31 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T30 | B1 | 44/72 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T31 | B1 | 65/65 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T32 | B1 | 85/40 | TESTABLE | NO | N/D | N/D | N/D | N/D | N/D | NO |
+| T33 | B1 | 72/59 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T34 | B1 | 46/67 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T35 | B2 | 45/60 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T36 | B2 | 66/64 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T37 | B2 | 68/62 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T38 | B2 | 61/68 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T39 | B2 | 62/30 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T40 | B2 | 31/36 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T41 | B3 | 15/17 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T42 | B3 | 45/42 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T43 | B3 | 60/40 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T44 | B3 | 79/51 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T45 | B3 | 79/39 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T46 | B3 | 48/39 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T47 | B4 | 28/100 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T48 | B4 | 89/14 | LOW_POWER | NO | N/D | N/D | N/D | N/D | N/D | NO |
+| T49 | B4 | 101/23 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T50 | B4 | 14/93 | LOW_POWER | NO | N/D | N/D | N/D | N/D | N/D | NO |
+| T51 | B4 | 13/84 | LOW_POWER | NO | N/D | N/D | N/D | N/D | N/D | NO |
+| T52 | B4 | 67/46 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T53 | B5 | 80/32 | TESTABLE | NO | N/D | N/D | N/D | N/D | N/D | NO |
+| T54 | B5 | 50/44 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T55 | B5 | 69/55 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T56 | B5 | 60/64 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T57 | B5 | 53/27 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+| T58 | B5 | 58/58 | TESTABLE | SÍ | N/D | N/D | N/D | N/D | N/D | NO |
+
+**Lectura obligatoria:** N son sesiones CASE/CONTROL, NO trades ni N independiente; los resultados de D0 no son pruebas de rendimiento. D1 únicamente mide **rango futuro 15m o markout VWAP firmado +300s**, sin precio ejecutable, sin costos/fills ni beneficio. Todos los miembros permanecen en el BH k=30, incluso cinco fuera de la shortlist diversificada. [Política G0-D0-D1-D2](research/nq/NQ_DISCOVERY_STAGED_GATES_POLICY_2026_10_12.md): Holm confirmatoria, OOS T/H, DD flotante, ROI anual y gates de cartera siguen intactos y no evaluables. **No adquirir datos/5s nuevos, no retocar reglas ni abrir holdouts**.
+
 ## Regla permanente de reporte
 
 Cada nueva hipótesis debe figurar en esta tabla con **ID, pregunta falsable, familia, N eventos independientes y N trades, efecto y costes, IC90 y método, p unilateral y q BH, resultado Holm confirmatorio separado, años/regímenes, PF, DD, frecuencia, P&L incremental en router único, fuente/Action y PASS/FAIL/NO EVALUABLE por condición**. Registrar antes de outcome la familia completa y dirección. La unidad estadística día/semana prevalece sobre la cantidad de prints, y las métricas faltantes son N/D, no inventadas. Históricos H anteriores conservan sus reglas originales, nuevas T siguen por barras de transacciones y **no por 5 segundos**. Sin adquirir nueva data ni abrir periodos reservados.
