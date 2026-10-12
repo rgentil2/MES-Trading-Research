@@ -1,0 +1,99 @@
+name: NQ T59-T60 Two New Legacy Inspired Premarket Mechanisms - D0 only
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t59-t60-d0-premarket-dev.yml'
+      - 'local_nq_tick_2025_2026/nq_t59_t60_d0_premarket.py'
+      - 'local_nq_tick_2025_2026/test_nq_t59_t60_d0_premarket.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check preregistration and synthetic test for prior RTH non-equivalence
+        run: |
+          set -euo pipefail
+          test -s research/nq/NQ_T59_T60_LEGACY_MECHANISM_ADAPTATION_D0_PREREG_2026_10_12.md
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_t59_t60_d0_premarket.py -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_t59_t60_d0_premarket.py
+  months:
+    needs: synthetic
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      max-parallel: 4
+      fail-fast: false
+      matrix:
+        month: ['2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04']
+    env:
+      MONTH: ${{ matrix.month }}
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reuse ONLY existing 7 NQ Last DEV release archives + sha256
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p _private/arc _private/data
+          gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/arc
+          (cd _private/arc && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          7z x "_private/arc/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+      - name: Classify two 09:45 premarket CASE/CONTROL without reading future outcomes
+        run: |
+          set -euo pipefail
+          python local_nq_tick_2025_2026/nq_t59_t60_d0_premarket.py --root _private/data --month "$MONTH" --out "safe/d0_${MONTH}.json"
+      - name: Delete licensed Last even after failure
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: t59-t60-safe-month-${{ matrix.month }}
+          path: safe/d0_*.json
+          if-no-files-found: error
+  aggregate:
+    needs: months
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: t59-t60-safe-month-*
+          merge-multiple: true
+          path: _monthly
+      - name: Reconcile exactly 7 and 140/135; D1 remains locked
+        run: |
+          set -euo pipefail
+          python local_nq_tick_2025_2026/nq_t59_t60_d0_premarket.py --inputs _monthly --out final/summary.json --report final/report.md
+          cat final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-t59-t60-new-h-inspired-D0-safe
+          path: final/
+          if-no-files-found: error
