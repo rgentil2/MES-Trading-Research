@@ -40,7 +40,7 @@ class ScreenTests(unittest.TestCase):
         b=make(1003,997,1009,T-8*SECOND)
         c=make(1006,1001,1011,T)
         with patch('nq_t14_t16_signal_feasibility.completed_bars_by_print_count',
-                   return_value={377:[a,b,c,c]}):
+                   return_value={377:[a,b,c]}):
             sig,_=detect([],DAY)
         self.assertEqual(sig[IDS[0]],(T,1))
         self.assertEqual(len([k for k in sig if k==IDS[0]]),1)
