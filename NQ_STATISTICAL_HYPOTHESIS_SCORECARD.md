@@ -55,6 +55,21 @@
 
 **El contraste principal aquí es de MEDIA USD/SESIÓN con ceros**, no de USD/mes ni USD/trade. No inventar N efectivo ni años 3/5. El programa histórico H y Holm original se conservan; el resto del panel de T sigue con IC90/q N/D hasta ejecutar el análisis correspondiente con fuente y reglas congeladas.
 
+## T20–T25 — ETAPA 0 CONTROLADA COMPLETADA 2026-10-12 (SEIS PREGUNTAS, NO P&L)
+
+[Prerregistro previo a datos](research/nq/NQ_T20_T25_FIXED_ANCHOR_CONTROLLED_STAGE0_PREREG_2026_10_12.md) · [Resultado T20–T25 real de 7 meses](research/nq/NQ_T20_T25_CONTROLLED_STAGE0_RESULTS_2026_10_12.md) · [Action 38284276320 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38284276320), 9 tests sintéticos PASS, **140 fuente, 135 elegibles y 135 anclas idénticas**. Los seis contrastes comparten la primera barra 377 acabada de 10:00 a 10:15 ET, caso/control definidos ANTES de resultados, no se eligió primer evento posterior rentable. Los números **NO son trades ni N independientes; NO se midió respuesta económica o predictiva**.
+
+| ID | Pregunta falsable (familia T20–25) | N casos | N controles | N eventos independientes | N trades | Efecto neto/PF/DD/Δ router | IC90 | p unilateral | q BH | Holm | 3/5 años | Gate1 | Estado |
+|---|---|---:|---:|---|---|---|---|---|---|---|---|---|---|---|
+| **T20** | ¿VWAP extremo en barra predice continuidad vs VWAP centrado? | **0** | 100 | N/D, 0 casos | N/D | N/D | N/D | N/D | N/D | N/D | N/D | FAIL viabilidad, sin caso | **NO IDENTIFICABLE** |
+| **T21** | ¿Rechazo del máximo/mínimo anterior predice reversión vs aceptación? | **38** | 40 | N/D, hasta 38 días de caso | N/D | N/D | N/D | N/D | N/D | N/D | N/D | INFERENCIA N/D; muestra <151 | **CONTROL VIABLE; NO ALFA** |
+| **T22** | ¿Alza de qty/print con avance supera qty/print estable? | **1** | 113 | N/D, 1 día caso | N/D | N/D | N/D | N/D | N/D | N/D | N/D | MUESTRA CASO INSUFICIENTE | **NO ALFA** |
+| **T23** | ¿Desaceleración predice menor rango a +15min vs cadencia estable? | **1** | 8 | N/D, 1 día caso | No direccional | N/D | N/D | N/D | N/D | N/D | N/D | MUESTRA INSUFICIENTE | **SOLO MAGNITUD; NO ALFA** |
+| **T24** | ¿Alternancia de signos VWAP aventaja a continuidad? | **39** | 50 | N/D, hasta 39 días de caso | N/D | N/D | N/D | N/D | N/D | N/D | N/D | INFERENCIA N/D; muestra <151 | **CONTROL VIABLE; NO ALFA** |
+| **T25** | ¿Desacuerdo 233/4181 predice reanudación de tendencia vs acuerdo? | **47** | 59 | N/D, hasta 47 días de caso | N/D | N/D | N/D | N/D | N/D | N/D | N/D | INFERENCIA N/D; muestra <151 | **CONTROL VIABLE; NO ALFA** |
+
+**No hay razón para calcular q/Holm todavía:** un control presente NO da el p de un contraste de outcomes; tampoco una cuenta de 135 sesiones garantiza N independiente >150. Todos los campos sin datos reales figuran N/D y ningún gate estadístico/económico PASS. Próximo bloque formal: prerregistro económico/predictivo de toda la familia sin alterar parámetros post-screen, con riesgos compartidos, multiprueba y holdouts cerrados.
+
 ## T14–T19 — MEDICIÓN ECONÓMICA Y PREDICTIVA COMPLETA 2026-10-12, SEIS PREGUNTAS
 
 **[INFORME COMPLETO: T14–T19](research/nq/NQ_T14_T19_SIX_HYPOTHESES_ECONOMIC_RESULTS_2026_10_12.md)** · [**GitHub Actions 38279226193 COMPLETED SUCCESS**](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38279226193), 7 tests PASS, fuente **140/135** DEV, T05 congelada **115/+US$5102,50 PF1,31826** paridad exacta. Datos Last de los siete meses ya adquiridos, sin 5s en señales nuevas ni OOS. **Fase económica T14/T15/T16/T18 ya calculada; NO confundir este panel con la FASE 0 de señales más abajo.**
@@ -75,7 +90,7 @@
 
 En T17/T19 se midió el rango real de los 15min siguientes a cada primera señal, pero **no se demuestra predictibilidad incremental** al no existir controles y tampoco hay lado, fills, PF o P&L. No convertir amplitud de mercado en rentabilidad.
 
-**Decisión:** seis preguntas han recibido su primera medición completa o el dictamen formal de inidentificabilidad; ninguna supera Gate económico/estadístico. Seguir con **nuevas hipótesis T20–T25 basadas en mecanismos/contrafactuales independientes**, no volver a optimizar T05 ni filtros de T14/T15/T18. [Reporte fuente auditable](research/nq/NQ_T14_T19_SIX_HYPOTHESES_ECONOMIC_RESULTS_2026_10_12.md).
+**Decisión histórica T14–T19:** seis preguntas han recibido su primera medición completa o el dictamen formal de inidentificabilidad; ninguna supera Gate económico/estadístico. Se continuó con **T20–T25, cuya etapa 0 ya concluyó (tabla superior)**, no volver a optimizar T05 ni filtros de T14/T15/T18. [Reporte fuente auditable](research/nq/NQ_T14_T19_SIX_HYPOTHESES_ECONOMIC_RESULTS_2026_10_12.md).
 
 ## REGISTRO FASE 0 ANTERIOR del programa T14–T19 — seis preguntas genuinamente distintas, ambos lotes FASE 0 COMPLETADOS (12-oct-2026)
 
@@ -94,7 +109,7 @@ El usuario decidió **cambiar de objetivo: dejar de sobreoptimizar T05** y pasar
 
 Fuentes verificadas con 140 días fuente/135 DEV elegibles, 7/7 meses y SHA256 de historial ya almacenado: [T14–T16 informe](research/nq/NQ_T14_T16_SIGNAL_SCREEN_RESULTS_2026_10_12.md) · [Action 38265573879 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38265573879), [T17–T19 informe](research/nq/NQ_T17_T19_SIGNAL_SCREEN_RESULTS_2026_10_12.md) · [Action 38266818415 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38266818415). 6+6 pruebas sintéticas PASS; sin historia nueva ni periodos sellados.
 
-**SIGUIENTE FASE:** preregistro [económico T14–T16](research/nq/NQ_T14_T16_ECONOMIC_FIRST_PASS_PREREG_2026_10_12.md) YA creado, **NO EJECUTADO**: analizar las tres alternativas sin reoptimizar sus señales, stop/TP y costes fijos y su incremento en un solo router con T05 congelada. Se debe incluir T16 sin señales y corregir multiplicidad familiar sin escoger solo “ganadoras”. En paralelo T17/T19 requieren objetivo sobre **amplitud futura**, no falsa dirección; T18 económica en lote separado si se preregistra. **No retomar B05L/T05 retuning.**
+**NOTA HISTÓRICA YA SUPERADA (2026-10-12):** preregistro [económico T14–T16](research/nq/NQ_T14_T16_ECONOMIC_FIRST_PASS_PREREG_2026_10_12.md) YA creado, **NO EJECUTADO**: analizar las tres alternativas sin reoptimizar sus señales, stop/TP y costes fijos y su incremento en un solo router con T05 congelada. Se debe incluir T16 sin señales y corregir multiplicidad familiar sin escoger solo “ganadoras”. En paralelo T17/T19 requieren objetivo sobre **amplitud futura**, no falsa dirección; T18 económica en lote separado si se preregistra. **No retomar B05L/T05 retuning.**
 
 ## T recientes: NQ Last con 7 meses DEV y estadísticas faltantes
 
