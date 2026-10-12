@@ -42,7 +42,7 @@
 1. **Terminar el QC ya autorizado** de T20–T25, cuyo estado debía verificarse después de corregir una validación errónea de `NO_EVALUABLE`; no retroconvertir QC en P&L. Guardar run/artifact y N de estados por miembro.
 2. El **Stage1 T20–T25 congelado** sigue BLOQUEADO por ambigüedad de ejecución del router. El QC standalone **no** sustituye ese resultado ni permite reejecutar con parámetros favorables. Si un diagnóstico adicional sin retornos puede aislar causas, prerregistrarlo. No abrir reservas para salvarlo.
 3. La siguiente comparación D1 que se elija debe tener **mecanismo y endpoint distintos de simples variaciones T05/B05L**, preregistro **antes de outcomes**, caso/control observables y costo/router de una cuenta; primero screen predictivo/económico económico **sin convertir markouts en fills** si falta información de ejecución. Investigar grupos enteros, no solo el de mayor N.
-4. **Presupuesto de pruebas:** hacer lotes pequeños (ideal 2–3 mecanismos distintos por lote, registrado prospectivamente); detener familias con efecto adverso neto o contrafactual inconcluso, sin reajustes ad hoc. Mantener hipótesis rechazadas en biblioteca para combinaciones explícitamente prerregistradas —sin llamarlas validadas.
+4. **Enmienda ADITIVA de CADENCIA del usuario (12-oct-2026):** ya no progresar secuencialmente una o dos hipótesis; **prerregistrar y ejecutar G0/D0 de suficientes bloques para reunir al menos 20 candidatas TESTABLE y diversificadas ANTES de un nuevo D1 conjunto**. No relajar G0/estadística, no reinterpretar descartes como PASS económico ni generar 20 variantes ad hoc del mismo mecanismo. [Reglas precisas en sección 6](#6-gate-aditivo-de-cadencia-20-candidatas-d0-antes-de-d1-12-oct-2026).
 5. **Validación y uso real siguen cerrados** hasta gates confirmatorios, reproducibilidad y condiciones verificadas de la cuenta de fondeo. Se puede acelerar la **selección de candidatos**, no fabricar evidencia independiente.
 
 ## 5. Controles de gobernanza para nuevas ejecuciones
@@ -50,3 +50,19 @@
 - Cada run futuro declara `policy_id`, `hypothesis_family_id`, prereg SHA, code SHA, familia completa, roles de dataset, `G0/D0/D1/D2`, propósito (screen/diagnóstico/outcome), decisiones y flags de acceso a reservas. El chequeo de gobierno histórico `tools/research_governance.py` sigue exigible para familias sujetas a ese contrato; este documento **no reemplaza preflight/freeze ni el ledger de Holm**.
 - No considerar `Actions SUCCESS` una ventaja estadística: separa **correctitud técnica** de **rendimiento**.
 - Al cerrar cada bloque: informe agregado seguro + actualización del [maestro](../../NQ_PROJECT_MASTER.md) y nueva entrada append-only al [registro](../../NQ_RESEARCH_LOG.md), tabla de hipótesis con `N/IC90/q/Holm/net/PF/DD/Δrouter` o `N/D` justificado.
+
+## 6. GATE ADITIVO DE CADENCIA: 20+ candidatas D0 ANTES de D1 (12-oct-2026)
+
+**Origen:** instrucción posterior del usuario sobre cómo priorizar el descubrimiento; sin alterar `G0`, `D0`, `D1`, `D2`, Gate1 histórico, Holm, OOS ni metas económicas del documento original. Este **gate de amplitud** es requisito de **secuenciación para nuevas familias**, NO una condición de significancia o rentabilidad.
+
+| Prueba de cadencia | Regla operativa y resultado | Si no cumple |
+|---|---|---|
+| **Cantidad prerregistrada** | Formular varios BLOQUES de mecanismos con caso, control, atributos y umbrales congelados **ANTES** de observar máscaras de D0 | Registrar preguntas faltantes antes de ejecutar |
+| **D0 testable** | Por miembro `N_CASE>=15`, `N_CONTROL>=15` sesiones elegibles, categorías íntegras y G0 OK; corte solo de **viabilidad**, no potencia/IC90 | `LOW_POWER` o `UNIDENTIFIABLE`; conservar en familia |
+| **Diversidad de shortlist** | Mascaras CASE no idénticas y [Jaccard >=0,85] alerta de alta redundancia. Shortlist determinista equilibrada por bloques, excluir de inventario de amplitud si solapa >=0,85 con una ya incluida, **sin excluir de multiplicidad** | Más bloques realmente distintos, nunca retunar umbrales |
+| **Gate hacia D1** | **>=20** candidatas TESTABLE y sin redundancia excesiva, con reportes 7/7 meses DEV e IDs; después **nuevo preregistro de endpoints, signos, familia BH completa, costos si trades y dependencias** ANTES del primer futuro | **D1 BLOQUEADO** para nueva cohorte; no abrir OOS ni fabricar N |
+| **D1 estadístico** | B=10k bloques no circulares L5 y L3/L10, IC90 y q BH de **familia completa**, incluyendo los descartes D0 (con sentinel explícito para no evaluables); DEV reutilizada siempre exploratoria | NO se declara confirmación, ROI o permiso fondeo |
+
+**Aplicación verificada de esta política de cadencia:** 30 hipótesis [T29–T58 registradas primero](NQ_T29_T58_30_HYPOTHESES_G0_D0_PREREG_2026_10_12.md), [Action D0 38300121097 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38300121097): **27 TESTABLE y 25 candidatas diversas** con 140 fuente/135 elegibles/135 anclas, 7 meses DEV y 10 pruebas. [Resultado completo](NQ_T29_T58_30_HYPOTHESES_G0_D0_RESULTS_2026_10_12.md). Por haber cumplido 20+, [D1 completo k=30 preregistrado antes de outcomes](NQ_T29_T58_30_HYPOTHESES_D1_BATCH_PREREG_2026_10_12.md) y [Action 38300856124](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38300856124) lanzada, SIN afirmar beneficio ejecutable. T26–T28 D1 anterior permanece congelado y en espera.
+
+**Nunca usar un umbral de N15 ni 25 señales de 135 sesiones como N=25 observaciones independientes o pase a Gate1.** Para D1 de estas 30 se miden solo futuros físicos (rango15min / markout VWAP+300s): una asociación observacional con IC no se transforma en P&L.
