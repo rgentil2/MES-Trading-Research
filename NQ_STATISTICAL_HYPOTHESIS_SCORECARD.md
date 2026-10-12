@@ -160,6 +160,17 @@ Fuentes verificadas con 140 días fuente/135 DEV elegibles, 7/7 meses y SHA256 d
 
 **Importante:** Los IC negativos del rango de T26 son contrarios a la dirección POSITIVA prerregistrada. No invertir signo ahora para anunciar un sistema ganador ni convertir rango físico en USD. **0/3** cumplen BH familiar ≤0,10, todo DEV reutilizado => inferencia solo descriptiva, no independencia ni Holm. T26 no se suma a T30 como mecanismo diferente. Para recuperar H77/H69/H74 históricos, [G0 original no portable con Last 08–12](research/nq/NQ_LEGACY_H77_H69_H74_T26_PORTABILITY_GATE_2026_10_12.md); sus nuevas variantes T59/T60 conservan IDs distintos y solo D0.
 
+## T59–T60 — NUEVAS hipótesis de premercado inspiradas en H77/H69 (NO REPRODUCCIONES), D0 CERRADO 12-oct-2026
+
+[Prerregistro ex ante](research/nq/NQ_T59_T60_LEGACY_MECHANISM_ADAPTATION_D0_PREREG_2026_10_12.md), [Action 38306833847 COMPLETED SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38306833847), 8 tests, 7/7 meses DEV, 140 fuente/135 READY; [informe](research/nq/NQ_T59_T60_NEW_PREMARKET_D0_RESULTS_2026_10_12.md); [artifact 11773042751](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38306833847/artifacts/11773042751), digest `75c467dd21291e4f0bfe2dd63ac9eedc27d6ed3c78557533d2ffb367c8ea60c4`. H77/H69/H74 originales `NOT_PORTABLE` con Last 08–12: [auditoría](research/nq/NQ_LEGACY_H77_H69_H74_T26_PORTABILITY_GATE_2026_10_12.md).
+
+| Hipótesis nueva / pregunta | N CASE | N CONTROL | D0 | N trades y N efectivo | Delta futuro/IC90 | p / BH q / Holm | P&L/PF/DD/DeltaRouter | ¿Cumple gate? |
+|---|---:|---:|---|---|---|---|---|---|
+| **T59** ¿oposición cuerpo PM vs primer15 RTH frente a alineación? | **45** | **42** | **TESTABLE** por frecuencia de grupos | N/D | N/D **SIN OUTCOMES** | N/D | N/D | **NO, D1 BLOQUEADO hasta 20+ nueva cohorte** |
+| **T60** ¿dislocación apertura RTH frente a VWAP PM alineada/opuesta a PM body? | **71** | **6** | **LOW_POWER** | N/D | N/D **SIN OUTCOMES** | N/D | N/D | **NO, y no ajustar umbrales** |
+
+N son sesiones categorizadas, NO trades. `N_eff`, IC90 de ventaja, q-BH monetaria y 3/5 años NO se evaluaron. No sumar H77/H69 q y PF históricos a estos nuevos patrones; ni abrir holdouts ni comprar datos. La nueva familia tiene solo 1 TESTABLE, no supera por sí misma el requisito de **20 candidatas distintas D0** para lanzar nueva D1.
+
 ## T29–T58 — cinco bloques, 30 hipótesis, D0 y D1 VERIFICADOS 12-oct-2026
 
 [Política de **>=20 candidatas D0 diversificadas**](research/nq/NQ_DISCOVERY_STAGED_GATES_POLICY_2026_10_12.md), sección 6. **G0/D0** [Action 38300121097 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38300121097), [informe](research/nq/NQ_T29_T58_30_HYPOTHESES_G0_D0_RESULTS_2026_10_12.md): 30 registradas antes de screen, 27 TESTABLE, 25 shortlist diversa, 7 meses 140/135/135. **D1** [Action 38300856124 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38300856124), [informe de 30 efectos, IC y q](research/nq/NQ_T29_T58_30_HYPOTHESES_D1_BATCH_RESULTS_2026_10_12.md) y [artifact 11770745392](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38300856124/artifacts/11770745392) digest `sha256:710d19b99c383f22c43ba7de923ce91a83479269857326a5ca1a98fffedbd989`. D1 7 meses, bootstrap no circular por 135 sesiones B10000 L5 y sensibilidad L3/10; **B1/B3/B4/B5 rango futuro15min, B2 markout VWAP firmado+300s, TICKS NO P&L**.
