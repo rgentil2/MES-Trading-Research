@@ -52,7 +52,7 @@ class B05F(unittest.TestCase):
     def test_invalid_timestamp_and_qty_fail_closed(self):
         e=opening_events()
         with self.assertRaisesRegex(ValueError,'decreasing'):
-            audit_stream(e+[e[-1]],DAY)
+            audit_stream(e+[e[-2]],DAY)
         with self.assertRaisesRegex(ValueError,'quantity'):
             audit_stream(e+[(at(1200),300,0)],DAY)
         with self.assertRaisesRegex(ValueError,'out of ET session'):
