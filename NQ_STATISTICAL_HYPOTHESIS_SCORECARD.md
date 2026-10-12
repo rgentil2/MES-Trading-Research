@@ -148,6 +148,18 @@ Fuentes verificadas con 140 días fuente/135 DEV elegibles, 7/7 meses y SHA256 d
 
 **Decisión:** 0/6 alfa confirmada. D1 T21/T24 con signo puntual adverso (no es inferencia robusta de pérdida porque sus IC cruzan0), T25 positivo pequeño INCONCLUSO y no se promueve; T22 caso único no permite selección de parámetro ni trading. **La fase1 económica original continúa FAIL-CLOSED [38286173182](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38286173182)**. Próximo backlog: D0 de mecanismos NUEVOS con preregistro previo y control observacional, sin nuevas fuentes ni 5s.
 
+## T26–T28 — lote nuevo G0/D0 ejecutado, D1 solo prerregistrado (12-oct-2026)
+
+**Fuente:** [Prerregistro inicial antes de clasificar](research/nq/NQ_T26_T28_G0_D0_NEW_MECHANISMS_PREREG_2026_10_12.md), [Action 38297611186 COMPLETED SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38297611186), 10 tests sintéticos PASS, siete meses 140 fuente/135 READY/135 anclas, [artifact 11769260262](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38297611186/artifacts/11769260262), [informe exacto](research/nq/NQ_T26_T28_G0_D0_RESULTS_2026_10_12.md). Sin nueva historia, sin 5s nuevos, sin periodos sellados ni futura rentabilidad. [D1 predictivo PRERREGISTRADO, pero NO EJECUTADO](research/nq/NQ_T26_T28_D1_OBSERVATIONAL_PREREG_2026_10_12.md).
+
+| ID / pregunta | Familia | N CASE | N CONTROL | N trades / N efectivo | G0 / D0 | N/IC90 de efecto | p / BH q / Holm | Años positivos | P&L/neto/expectativa | PF / DD / Δrouter | ¿Cumple Gate1 o rentabilidad? |
+|---|---|---:|---:|---|---|---|---|---|---|---|---|
+| **T26** ¿chop interno predice rango +15min? | T26–T28 | **18** | **36** | N/D / N/D | QC PASS / **TESTABLE, baja muestra** | N/D sin outcomes | N/D | N/D | N/D | N/D | **NO**, D1 pendiente |
+| **T27** ¿prima de precio por qty vs simple predice continuación? | T26–T28 | **6** | **65** | N/D / N/D | QC PASS / **LOW_POWER** | N/D sin outcomes | N/D | N/D | N/D | N/D | **NO** |
+| **T28** ¿burstiness de tiempo predice rango? | T26–T28 | **3** | **0** | N/D / N/D | QC PASS / **UNIDENTIFIABLE** | N/D sin outcomes | N/D | N/D | N/D | N/D | **NO** |
+
+**Regla:** son recuentos por **sesión clasificada**, no 18, 6 o 3 trades ni eventos independientes; el gate exploratorio histórico `N>150`, IC90, q BH≤0,10, 3/5 años no es evaluable/realizable con un día por sesión de estos siete meses. Ningún PF, retorno neto, IC90, p/q o DD de D1 puede atribuirse antes de correr el análisis. T26 es **hipótesis de magnitud no direccional**, sin permiso de convertir rango en beneficios. Conservamos los tres miembros en la familia, incluso sin control; no ajustar umbrales de T27/T28 para rescatarlos.
+
 ## Regla permanente de reporte
 
 Cada nueva hipótesis debe figurar en esta tabla con **ID, pregunta falsable, familia, N eventos independientes y N trades, efecto y costes, IC90 y método, p unilateral y q BH, resultado Holm confirmatorio separado, años/regímenes, PF, DD, frecuencia, P&L incremental en router único, fuente/Action y PASS/FAIL/NO EVALUABLE por condición**. Registrar antes de outcome la familia completa y dirección. La unidad estadística día/semana prevalece sobre la cantidad de prints, y las métricas faltantes son N/D, no inventadas. Históricos H anteriores conservan sus reglas originales, nuevas T siguen por barras de transacciones y **no por 5 segundos**. Sin adquirir nueva data ni abrir periodos reservados.
