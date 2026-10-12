@@ -1,0 +1,32 @@
+# B05H-02 — PRERREGISTRO: retorno a VWAP multiescala tras desviación y giro en 377 PRINTS
+
+Fecha: 2026-10-11 Colombia. **CONGELAR ANTES DE REVISAR P&L H02**. Una sola familia de hipótesis H02, **económicamente distinta** de H01 (continuación tras expansión 233) y T05 (reversión de ruptura fallida de apertura). Ninguna variante post-resultados para rescatar P&L.
+
+## Universo y evidencia
+
+**Exclusivamente** 7 releases privados NQ Tick_Last DEV preexistentes octubre 2025–abril 2026, source=140 días, T05-ready=135 días, mismos checksums. NO adquirir/descargar historia NUEVA, no proveedores, Replay, quotes L2 ni periodos T mayo–septiembre 2026 o programa H sellado. Los releases preexistentes pueden moverse temporalmente al runner, verificarse SHA256 y borrarse antes de publicar resumen. No compartir filas/ticks/trades/precios.
+
+**No usar velas 5 segundos ni minutos para señales H02**. Las barras Last son por **umbral mínimo de 377 prints**, contexto 4181/10946 prints, con cada grupo de timestamp idéntico **indivisible**. Todas las decisiones usan grupos terminados y estadísticas invariantes (high/low/VWAP racional por qty); nunca cierre arbitrario de print empatado. Hora ET solo calendario/ventana/noise, no construcción de señal.
+
+## Hipótesis mecanística congelada (H02_COUNT_BAR_MEAN_REVERSION)
+
+Durante contexto multiescala aproximadamente lateral, una desviación fuerte del **VWAP corto** respecto al VWAP medio de 4181 prints puede agotarse y empezar a revertir. Tomar como señal de **reversión a valor** el giro del VWAP de una barra de 377 prints completa, no impulso de continuación. La condición no usa ruptura/OR de T05 ni aceleración de H01:
+
+- Decisión solamente **10:00 ≤ T < 11:15 ET**, en cierre de barra corta `C` de ≥377 prints. Una sola oportunidad H02 por sesión de desarrollo (`MAX_H02_SIGNALS_PER_DAY=1`); no permitir posterior optimización de horario o umbrales. No entrada dentro del grupo timestamp `T`; elegibilidad de ejecución estrictamente **timestamp posterior** a T y 1 ms después de señal, como modelo previo.
+- Se requieren las barras completas `B` (377 prints inmediatamente anterior), `C` actual, y las dos barras previas cerradas `M0,M1` (4181) y `L0,L1` (10946) con end_timestamp **estrictamente anterior** a T. `T-end(M1)≤40min` y `T-end(L1)≤60min`. Sin lookahead ni rellenar contextos.
+- Lateralidad (independiente del lado) de contexto: **abs(VWAP(M1)-VWAP(M0)) ≤ 24 ticks precio** y **abs(VWAP(L1)-VWAP(L0)) ≤ 36 ticks precio**, calculadas por productos enteros exactos; estos límites se congelan antes de resultados.
+- **Long:** VWAP(B) está **al menos 12 ticks precio debajo** de VWAP(M1); VWAP(C) sube **al menos 3 ticks precio** respecto a B, pero aún está **al menos 4 ticks precio debajo** de VWAP(M1). Confirmar estructura `low(C) ≥ low(B)+2 ticks` y `range(C) ≤ 48 ticks`. **Short simétrico:** B está ≥12 por arriba de M1, C cae ≥3 vs B y aún ≥4 por arriba de M1; `high(C) ≤ high(B)-2 ticks`; `range(C)≤48`. Señales simultáneas LONG/SHORT no permitidas (hard fail).
+- **No usar target 'fill al VWAP'**: VWAP es observación, no precio de ejecución. No aumentar la frecuencia después de resultados. Sin bandas temporales de 5s.
+- Una señal/día puede competir con T05 en cuenta conjunta, máximo dos trades/día, no overlap, stop nuevas entradas tras P&L diario cerrado ≤−$600. Si coinciden en el mismo timestamp, prioridad fija T05; si H02 aparece primero, puede ocupar 1 de 2 slots, **no reservarle un slot ex post**.
+- **Riesgo H02:** NQ 1 contrato, stop **32 ticks precio** (8 puntos), take profit **48 ticks** (1.5R), timeout 300s, ejecución sintética Last en primera marca elegible con política de peor precio, 1ms de latencia, coste base 1 tick adverso/lado + USD5 RT, estrés 2 ticks adversos/lado + USD7.50 RT, extra contable +USD10 por trade sobre misma ruta congelada. Para T05 conservan stop T04 16–48 ticks y TP2R. No adaptar riesgo entre variantes para mejorar resultado.
+- **Ambigüedad irreversible de ejecución:** si primer timestamp Last elegible toca stop potencial dentro de mismo timestamp de entrada, o queda exposición sin salida, detener **fail closed**, no asumir stop/TP ni excluir la operación; registrar que H02 NO PRODUJO P&L VÁLIDO DE 7 MESES. No cambiar SL, TP ni condiciones de señal después de observar ambigüedad. La robustez de la señal ante ordenar mismos timestamps no garantiza fills broker, true aggressor, L2 ni secuencia entre flujos.
+
+## Comparadores y gates predefinidos
+
+Modelos **T05_ONLY** (reglas/tiempos históricos congelados, puede internamente requerir 5s SOLO como baseline heredado), **H02_ONLY** y **T05_PRIORITY_SHARED_ROUTER**. H02 genera todas sus señales *exclusivamente* con barras 377/4181/10946 prints, no usa T05 ni bars5 para decidir o filtrar. Igual muestra 140/135 preexistente; dias sin opening range completo quedan fuera en los tres por comparabilidad (H02 en sí no usa OR). Paridad T05 estricta: 115 trades, +$6220 baseline, +$5102.50 stress, PF stress1.31826 y Last-DD stress1797.50, extra +$3952.50 y DD1887.50. Fallar paridad **bloquea** el resultado.
+
+Resumen público 7 meses (y los 7 mensuales, incluyendo negativos) de H02 y router: señales, operaciones, net USD, PF, Last-DD cronológico, posición compartida, T05 conservadas y H02 atribuidas. **Gates sin excepción:** NQ un solo router, delta de P&L vs T05 bajo estrés +USD10/RT fijo **>0**; router PF estrés ≥1.25 y PF estrés+USD10 ≥1.25; Last-DD estrés **<USD2000** solo referencia histórica NO verificada de firma de fondeo; H02 ejecuta >0 trades con net stress atribuido >0, retiene al menos **104/115** T05, router 5 trades/mes en cada mes. Un FAIL = `DO_NOT_PROMOTE`. Tres programas pasados y gran número de hipótesis → dev está adaptativamente contaminado; aunque gates pasen no OOS ni aptitud fondeo.
+
+Primero tests sintéticos de temporalidad/invariancia/no lectura sellados; luego Actions de siete releases existentes con safe aggregates, cero timestamps y trades individuales. Mantener prueba H01 fallida y sus 4 sesiones con `ENTRY_TIMESTAMP_BARRIER_AMBIGUOUS`; H02 NO es reetiquetar H01 ni resolver esas operaciones retrospectivamente.
+
+**Nota sobre falsación:** si H02 da cero oportunidades o resulta imposible por filtros, documentar ese resultado: no aflojar 12/3/4/24/36, no sustituir 377 por 233 por resultado. Una idea de reversal compatible con rango requiere un experimento nuevo independiente para explorar otras formulaciones.
