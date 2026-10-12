@@ -2,6 +2,10 @@
 
 **Vigencia:** 12-oct-2026. **Decisión explícita:** dejar de trabajar hipótesis aisladas y avanzar BLOQUES completos por G0, D0, D1 y D2. Enmienda prospectiva ADITIVA a [política original](NQ_DISCOVERY_STAGED_GATES_POLICY_2026_10_12.md): NO cambia Gate1/Holm, requisitos económicos ni permisos sobre datos. La unidad operativa es **COHORTE**, nunca T05 o T59 individual. [Contrato JSON](NQ_COHORT_FUNNEL_POLICY_2026_10_12.json) · [ledger](NQ_COHORT_FUNNEL_LEDGER_2026_10_12.json) · [tablero](NQ_COHORT_FUNNEL_STATUS_2026_10_12.md).
 
+## 2026-10-12 — ENMIENDA APROBADA PARA NUEVOS BLOQUES DE ESTRATEGIAS
+
+**Desde T133–T152 el objetivo obligatorio pasa a estrategias completas**, no solo asociar atributos al movimiento futuro. [Reglas de ejecución, riesgo, doble período cronológico DEV y reporte](NQ_EXECUTABLE_STRATEGY_COHORT_POLICY_2026_10_12.md). No se altera la secuencia de gates ni BH/ Holm, ni se abre OOS. Un trigger G0/D0 **no** demuestra un fill; Last no tiene suficiente microestructura para confirmar orden limitada. Cohorte T133–T152: **20 entradas originales** en cuatro familias; si no hay 20 TESTABLE independientes, D1 se mantiene bloqueada y nuevas preguntas requieren ID y nuevo prerregistro, sin tuning oportunista.
+
 ## Pasar bloques completos, no una hipótesis por vez
 
 | Fase | Protocolo por bloque | Salida al cuello de botella |
