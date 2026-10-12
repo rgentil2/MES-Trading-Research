@@ -55,7 +55,29 @@
 
 **El contraste principal aquí es de MEDIA USD/SESIÓN con ceros**, no de USD/mes ni USD/trade. No inventar N efectivo ni años 3/5. El programa histórico H y Holm original se conservan; el resto del panel de T sigue con IC90/q N/D hasta ejecutar el análisis correspondiente con fuente y reglas congeladas.
 
-## NUEVO programa T14–T19 — seis preguntas genuinamente distintas, ambos lotes FASE 0 COMPLETADOS (12-oct-2026)
+## T14–T19 — MEDICIÓN ECONÓMICA Y PREDICTIVA COMPLETA 2026-10-12, SEIS PREGUNTAS
+
+**[INFORME COMPLETO: T14–T19](research/nq/NQ_T14_T19_SIX_HYPOTHESES_ECONOMIC_RESULTS_2026_10_12.md)** · [**GitHub Actions 38279226193 COMPLETED SUCCESS**](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38279226193), 7 tests PASS, fuente **140/135** DEV, T05 congelada **115/+US$5102,50 PF1,31826** paridad exacta. Datos Last de los siete meses ya adquiridos, sin 5s en señales nuevas ni OOS. **Fase económica T14/T15/T16/T18 ya calculada; NO confundir este panel con la FASE 0 de señales más abajo.**
+
+| Hipótesis | Pregunta | N trades | Neto estrés US$ | PF estrés | DD Last US$ | Neto con +$10 RT US$ | IC90 bootstrap L5 USD/sesión extra$10 | q BH descriptivo familia 4 | Δ router vs T05 +$10RT US$ | ¿Cumple? |
+|---|---|---:|---:|---:|---:|---:|---|---:|---:|---|
+| **T14** | ¿Persistencia suave anticipa continuación? | 115 | **−4192,50** | 0,6903 | 5862,50 | **−5342,50** | [−65,63,−14,31] | 1,00 | **−6222,50** | **NO** |
+| **T15** | ¿Aceptación de precio redondo anticipa continuación? | 133 | **−3437,50** | 0,7710 | 3797,50 | **−4767,50** | [−57,59,−7,02] | 1,00 | **−5962,50** | **NO** |
+| **T16** | ¿Esfuerzo qty/print sin desplazamiento anticipa giro? | 0 | 0 | N/D | 0 | 0 | N/D | 1,00 por convención | 0 | **NO SEÑALES** |
+| **T18** | ¿La subasta preapertura anticipa continuidad? | 98 | **−1050** | 0,8990 | 3630 | **−2030** | [−36,76,+4,91] | 1,00 | **−5032,50** | **NO** |
+
+**q BH=1.00 es solo DIAGNÓSTICO postselección**, no q confirmatorio: cuatro miembros T14/T15/T16/T18 conservados y p bootstrap centrado sobre retornos diarios 135 sesiones, 10k bloques móviles 5/3/10. Holm confirmatoria/OOS=**N/D**. La DD referencia $2000 es ilustrativa y no contrato real de fondeo. Las tres señales activas fallaron neto, PF 1,25, DD e incremento positivo; **no retocar reglas para rescatarlas**. Contrafactual router en una sola cuenta: T05+T14 **−$290** estrés, T05+T15 **+$110**, T05+T18 **+$720**, TODOS debajo T05 sola +$5102,50; no sumar standalone.
+
+| Hipótesis NO DIRECCIONAL | Pregunta | N días con evento | Movimiento posterior 15m | Diferencia vs grupo sin evento | ¿Cumple ventaja estadística/económica? |
+|---|---|---:|---|---|---|
+| **T17** | ¿Más actividad sin rango anticipa amplitud posterior? | 135/135 | Rango medio **421,74 ticks** | N/D: 0 sesiones sin evento | **NO IDENTIFICABLE** |
+| **T19** | ¿Recorrido ineficiente anticipa amplitud posterior? | 135/135 | Rango medio **446,50 ticks** | N/D: 0 sesiones sin evento | **NO IDENTIFICABLE** |
+
+En T17/T19 se midió el rango real de los 15min siguientes a cada primera señal, pero **no se demuestra predictibilidad incremental** al no existir controles y tampoco hay lado, fills, PF o P&L. No convertir amplitud de mercado en rentabilidad.
+
+**Decisión:** seis preguntas han recibido su primera medición completa o el dictamen formal de inidentificabilidad; ninguna supera Gate económico/estadístico. Seguir con **nuevas hipótesis T20–T25 basadas en mecanismos/contrafactuales independientes**, no volver a optimizar T05 ni filtros de T14/T15/T18. [Reporte fuente auditable](research/nq/NQ_T14_T19_SIX_HYPOTHESES_ECONOMIC_RESULTS_2026_10_12.md).
+
+## REGISTRO FASE 0 ANTERIOR del programa T14–T19 — seis preguntas genuinamente distintas, ambos lotes FASE 0 COMPLETADOS (12-oct-2026)
 
 El usuario decidió **cambiar de objetivo: dejar de sobreoptimizar T05** y pasar a múltiples preguntas causales. [Registro de seis mecanismos T14–T19](research/nq/NQ_T14_T19_NEW_MECHANISMS_REGISTER_2026_10_12.md) · [prerregistro de T17–T19](research/nq/NQ_T17_T19_STAGE0_RULES_2026_10_12.md), antes de las respectivas mediciones; los cinco segundos quedan reservados únicamente a benchmark antiguo T05, nunca al disparador de estas hipótesis.
 
