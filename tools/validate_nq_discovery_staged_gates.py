@@ -103,6 +103,27 @@ def check_policy(data: dict) -> dict:
             and infer.get("yearly_positive_years_required_for_initial_D1") is None,
             "historical gate mistakenly imposed on T-D1")
 
+    # Prospective user-requested research CADENCE gate. This is not Gate1.
+    batch = data.get("batch_discovery_gate", {})
+    require(batch.get("adopted_on") == "2026-10-12"
+            and batch.get("scope") == "PROSPECTIVE_NEW_BATCHES_ONLY"
+            and batch.get("policy_type") == "ADDITIVE_RESEARCH_CADENCE_NOT_PROFIT_GATE",
+            "batch cadence provenance or scope changed")
+    require(batch.get("minimum_diverse_d0_candidates_before_new_D1") == 20
+            and batch.get("minimum_CASE_sessions_for_TESTABLE") == 15
+            and batch.get("minimum_CONTROL_sessions_for_TESTABLE") == 15
+            and batch.get("case_jaccard_near_duplicate_at_or_above") == 0.85,
+            "batch minimum or diversity preconditions changed")
+    for flag in ("preregister_hypotheses_and_thresholds_before_D0",
+                 "freeze_new_D1_endpoints_before_outcomes",
+                 "diversified_shortlist_must_exclude_near_duplicates",
+                 "all_original_family_members_remain_in_D1_BH",
+                 "original_Gate1_Holm_unchanged"):
+        require(batch.get(flag) is True, "batch governance missing: " + flag)
+    for flag in ("adaptive_DEV_pq_confirmatory","allow_retuning_if_below_20",
+                 "holdouts_opened","live_trading_authorized"):
+        require(batch.get(flag) is False, "batch governance unsafe: " + flag)
+
     legacy = data.get("legacy_controls", {})
     g = legacy.get("gate1_new_prospective", {})
     frozen = legacy.get("older_frozen_when_applicable", {})
