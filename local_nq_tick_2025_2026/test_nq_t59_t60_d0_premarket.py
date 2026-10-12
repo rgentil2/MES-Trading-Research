@@ -1,10 +1,9 @@
 import unittest
-from datetime import date
 from pathlib import Path
 from nq_b05h01_trade_expansion_month import et_edge
 from nq_t59_t60_d0_premarket import IDS,CASE,CONTROL,OTHER,MISSING,classify,segment_stats,month_stage,aggregate
 
-DAY=date(2025,10,1)
+DAY='2025-10-15'
 def rows(pre=(100,120),regular=(130,115)):
     a,b,c,d=[et_edge(DAY,h,m) for h,m in ((8,30),(9,29),(9,30),(9,44))]
     return [(a,pre[0],1),(a,pre[0],2),(b,pre[1],1),
