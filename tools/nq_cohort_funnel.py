@@ -113,8 +113,8 @@ def validate(policy,ledger):
     require(set(pool["statistically_eligible_ids"])==stat_survivors
             and set(pool["economically_eligible_ids"])==econ_survivors,
             "D2 promotion queue does not reconcile with D1")
-    require(set(pool["d2_batch_ids"]) <= stat_survivors | econ_survivors,
-            "unqualified member promoted to economic batch")
+    require(set(pool["d2_batch_ids"]) <= econ_survivors,
+            "non-economic predictive markout cannot enter execution D2")
     require(not pool["d2_batch_ids"]
             or len(pool["d2_batch_ids"]) >= 2,
             "no one-at-a-time D2")
