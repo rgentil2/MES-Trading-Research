@@ -70,6 +70,10 @@
 
 **No hay razón para calcular q/Holm todavía:** un control presente NO da el p de un contraste de outcomes; tampoco una cuenta de 135 sesiones garantiza N independiente >150. Todos los campos sin datos reales figuran N/D y ningún gate estadístico/económico PASS. Próximo bloque formal: prerregistro económico/predictivo de toda la familia sin alterar parámetros post-screen, con riesgos compartidos, multiprueba y holdouts cerrados.
 
+## T20–T25 — FASE1 INTENTO REAL FALLIDO (NO RESULTADO ECONÓMICO)
+
+**[Action 38286173182 FAILURE](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38286173182)**: 20/20 tests sintéticos PASS; ejecuciones de mercado DEV 2025oct–dic terminaron con paridad T05, pero en enero 2026 el motor Last devolvió una condición de **ejecución ambigua/no resuelta**, activando `T20_T25_AMBIGUOUS_EXECUTION_FAIL_CLOSED`. **No agregado de los siete meses, NO fill aceptado selectivamente, NO resultado de ventaja ni pérdida válido**. [Reporte de bloqueo y traceback](research/nq/NQ_T20_T25_STAGE1_FAILED_AMBIGUOUS_EXECUTION_2026_10_12.md). Por tanto, T20–T25 conservan los N caso/control de fase0, pero **N trades, expectativa, PF, DD, IC90 de retornos, p/q BH, Holm, incremento router y Gate1 = N/D/NO EVALUABLE** para toda la familia. El fallo es de **identificación de ejecuciones**, no una medición negativa de la rentabilidad. No retocar entradas/SL/TP/ventanas para rescatar el resultado. Próximo trabajo: diagnóstico técnico de estados de fill sin P&L, si procede, manteniendo H/T OOS cerrados.
+
 ## T14–T19 — MEDICIÓN ECONÓMICA Y PREDICTIVA COMPLETA 2026-10-12, SEIS PREGUNTAS
 
 **[INFORME COMPLETO: T14–T19](research/nq/NQ_T14_T19_SIX_HYPOTHESES_ECONOMIC_RESULTS_2026_10_12.md)** · [**GitHub Actions 38279226193 COMPLETED SUCCESS**](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38279226193), 7 tests PASS, fuente **140/135** DEV, T05 congelada **115/+US$5102,50 PF1,31826** paridad exacta. Datos Last de los siete meses ya adquiridos, sin 5s en señales nuevas ni OOS. **Fase económica T14/T15/T16/T18 ya calculada; NO confundir este panel con la FASE 0 de señales más abajo.**
