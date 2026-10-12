@@ -20,6 +20,8 @@ Con `m=7` meses completos y retorno neto USD por mes de cada modelo/compartido b
 5. Evaluar el **incremento EMPAREJADO** del router vs T05 por MES, no restar intervalos no emparejados de dos estrategias. Posible que ambos modelos tengan retorno total positivo pero incremento negativo: solo mejora el modelo si el incremento es positivo bajo el mismo presupuesto.
 6. **Control de cobertura:** exigir siete meses EXACTOS / fuente 140 / elegibles 135 / paridad T05 115 operaciones y USD5102,50 estrés / H02 75 operaciones −USD1427,50 / router 166 operaciones +USD2195 / delta −USD2907,50. Inconsistencia => ABORT.
 
+**Duración desigual de los meses:** octubre-2025 empieza el 15, mientras los meses siguientes abarcan calendarios completos; incluso con siete netos mensuales, distintas cantidades de sesiones/operaciones cambian la exposición. El IC de USD/mes mezcla frecuencia y expectativa. La versión definitiva debe analizar **USD por sesión elegible con ceros** y un bloque semanal sobre las 135 sesiones, no extrapolar el intervalo mensual a un mes típico uniforme.
+
 **No reportar q BH ni Holm como computados:** los tests mensuales son diagnósticos a posteriori sobre estrategias ya seleccionadas y no se estableció la familia completa para ese endpoint de selección. Es matemáticamente incorrecto llamar `q` al p mensual, aplicar BH sobre tres estrategias post hoc o recalificar T05 como confirmada. En la tabla escribir `q = NO EVALUABLE`.
 
 ## 3. Escala B — estándar recomendado para futuras familias T, antes de leer resultados
