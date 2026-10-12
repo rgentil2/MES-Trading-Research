@@ -20,6 +20,22 @@
 
 **Los 31 nombres D0 viables NO son alfas; las siete medias con IC90 individual positivo NO alcanzaron la corrección BH sobre los 38 miembros**, incluidos T60/T77 no estimables y T71/T81/T82/T83/T84 casi duplicadas. No se cambian side, CASE/CONTROL ni umbrales para rescatar q. [Detalle D0 de los 38 y redundancia](research/nq/NQ_T59_T96_SIX_BLOCK_COHORT_D0_RESULTS_2026_10_12.md) y [scorecard D1 los 38](research/nq/NQ_T59_T96_38_MEMBER_WHOLE_COHORT_D1_RESULTS_2026_10_12.md) contienen TODAS las decisiones. **N_trades=0; USD neto/PF/DD/Δrouter/Holm/OOS/ROI=N/D**: markout VWAP o rango 15m físicos NO son ejecuciones de cuenta.
 
+## T133–T152 — Primer lote de ESTRATEGIAS COMPLETAS: D0 FINAL, D1 NO AUTORIZADA
+
+**[Prerregistro de las 20 estrategias](research/nq/NQ_T133_T152_EXECUTABLE_D0_PREREG_2026_10_12.md)**, [política de pruebas económicas](research/nq/NQ_EXECUTABLE_STRATEGY_COHORT_POLICY_2026_10_12.md), [Action D0 FINAL 38324292967 COMPLETED SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38324292967), [artifact SAFE 11779419992](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38324292967/artifacts/11779419992). [**Tabla definitiva de 20 hipótesis, N y cada pregunta**](research/nq/NQ_T133_T152_FOUR_COMPLETE_STRATEGIES_BLOCKS_D0_RESULTS_2026_10_12.md), [JSON de conteos congelados](research/nq/NQ_T133_T152_D0_COUNTS_FROZEN_2026_10_12.json).
+
+| Bloque | IDs | TESTABLE y distintas | LOW_POWER | D1 / economía |
+|---|---|---:|---|---|
+| Ruptura de niveles | T133–T137 | **4** | T134 | **NO EVALUADA** |
+| Pullback VWAP | T138–T142 | **3** | T138, T139 | **NO EVALUADA** |
+| Falsa ruptura y reversión | T143–T147 | **3** | T143, T144 | **NO EVALUADA** |
+| Régimen de ejecución | T148–T152 | **5** | Ninguna | **NO EVALUADA** |
+| **TOTAL** | **20** | **15** | **5** | **D1 BLOQUEADA** (requiere ≥20) |
+
+**140 fuente/135 elegibles, oct2025–abr2026**; diversidad Jaccard CASE<0,85 (0 duplicadas entre testables). Prueba cronológica interna: 53 READY oct–dic 2025, 82 READY ene–abr 2026; **NO OOS independiente**. Cinco LOW_POWER por N_CASE<15; ninguna recuperación de datos futuros se utilizó. **N_trades (efectivos o simulados), PF, DD, P&L, p/q, IC90, Holm, ROI y ΔRouter=N/D**. No confundir CASE con operación ejecutada.
+
+**Auditoría:** resultado 13/20 de Action 38323990208 era PRELIMINAR por dos referencias T146/T147 no enlazadas; reparadas solo lecturas existentes, Action final 38324292967 da **15/20**, no se retocaron condiciones, stops ni TP. D1 de familia económica no registrada/ejecutada ni autorizada al faltar cinco candidatas viables. Siguiente cohorte debe plantear **nuevos mecanismos distintos**, no optimizar las cinco bajas N.
+
 ## REGLA NUEVA PARA TODAS LAS SIGUIENTES PRUEBAS T133–T152 (12-oct-2026)
 
 **El usuario aprobó un cambio de metodología:** no basta con intervalos de `markout` o predicción de rango; desde la cohorte T133–T152 las preguntas definen estrategias **completas** (activación, dirección, parada, objetivo, horizonte, costes y ruta de ejecución) con cuatro mecanismos en bloque: ruptura/retest, continuación/pullback, falsa ruptura/reversión y filtro régimen/riesgo. [Enmienda de pruebas económica/estadística vinculante](research/nq/NQ_EXECUTABLE_STRATEGY_COHORT_POLICY_2026_10_12.md). 
