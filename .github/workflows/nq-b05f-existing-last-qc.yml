@@ -4,6 +4,8 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/nq-b05f-existing-last-qc.yml'
+      - 'local_nq_tick_2025_2026/nq_b05f_existing_last_qc.py'
+      - 'local_nq_tick_2025_2026/test_nq_b05f_existing_last_qc.py'
   workflow_dispatch:
 permissions:
   contents: read
