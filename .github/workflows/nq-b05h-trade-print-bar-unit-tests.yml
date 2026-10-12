@@ -1,0 +1,31 @@
+name: NQ B05H tick-count bars only - synthetic tests (NO 5s bars / NO market data)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-b05h-trade-print-bar-unit-tests.yml'
+      - 'local_nq_tick_2025_2026/nq_b05h_atomic_print_bars.py'
+      - 'local_nq_tick_2025_2026/test_nq_b05h_atomic_print_bars.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Synthetic unit tests with NO GitHub secrets and NO private tick archive
+        run: |
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_b05h_atomic_print_bars.py' -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_b05h_atomic_print_bars.py
+      - name: Record engineering result (no strategies, PnL, historical files)
+        run: |
+          echo "B05H tick-count atomic bars synthetic PASS. No fixed 5s signal bars. No market data accessed." >> "$GITHUB_STEP_SUMMARY"
