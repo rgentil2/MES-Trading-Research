@@ -139,12 +139,25 @@ def validate(policy,ledger):
             and not latest["D1"]["statistical_screen_pass_ids"],
             "audited existing main batch was rewritten")
     seed=next(x for x in cohorts if x["id"]=="NQ-C59-NEXT")
-    require(seed["D0"]["testable_ids"]==["T59"]
-            and seed["D0"]["low_power_ids"]==["T60"],
-            "preregistered next pool rewritten")
+    require(seed["all_preregistered_ids"] == ["T59","T60"] +
+            [f"T{i}" for i in range(61,97)]
+            and len(seed["D0"]["testable_ids"]) == 36
+            and len(seed["D0"]["diverse_ids"]) == 31
+            and seed["D0"]["low_power_ids"] == ["T60","T77"]
+            and seed["D0"]["near_duplicate_ids"] ==
+                ["T71","T81","T82","T83","T84"]
+            and seed["D0"]["workflow_run"] == 38313046875
+            and seed["D1"]["status"] == "COMPLETE"
+            and len(seed["D1"]["evaluated_ids"]) == 38
+            and seed["D1"]["workflow_run"] == 38313582820
+            and .239 < seed["D1"]["q_min"] < .240
+            and len(seed["D1"]["individual_ci90_positive_ids"]) == 7
+            and not seed["D1"]["statistical_screen_pass_ids"]
+            and not seed["D1"]["economic_screen_pass_ids"],
+            "completed 38-member cohort or its D1 no-pass audit rewritten")
     return {"status":"FUNNEL_VALIDATED","cohorts":len(cohorts),
             "new_D0_diverse_candidates":len(seed["D0"]["diverse_ids"]),
-            "new_D0_gap_to_next_D1":20-len(seed["D0"]["diverse_ids"]),
+            "new_D0_gap_to_next_D1":max(0,20-len(seed["D0"]["diverse_ids"])),
             "D1_statistical_survivors":len(stat_survivors),
             "D1_economic_survivors":len(econ_survivors),
             "D2_batch_size":len(pool["d2_batch_ids"]),
@@ -172,41 +185,44 @@ def render(policy,ledger):
           f"{len(d['testable_ids'])} → {diverse} "
           f"| {scored} → {surv} | {len(b['D2']['promoted_ids'])} | {state} |")
     lines.extend(["",
-      "## Cuello de botella actual",
+      "## Cuello de botella actual (cohortes concluidas)",
       "",
-      f"- **Candidatas viables y diversas acumuladas en NUEVA cohorte:** "
-      f"**{a['new_D0_diverse_candidates']} / 20**. Faltan **{a['new_D0_gap_to_next_D1']}**; "
-      "T59 viable (45 CASE/42 CONTROL), T60 LOW_POWER (71/6).",
-      "- **T29–T58 ya cerró D1:** 30 medidas; T29/T45/T49 tienen IC90 individuales "
-      "de RANGO futuro favorable, pero q-BH mínima 0,212229; **0/30 pasan filtro**. "
-      "Los tres quedan como variables contextuales NO monetarias, NO entrada D2.",
-      "- **T26–T28:** D1 cerrada, T26 signo contrario; T27/28 no estimables. "
-      "**T20–T25:** D1 predictiva cerrada, economía no ejecutable por fills ambiguos.",
-      f"- **Bandeja D2:** **{a['D2_batch_size']}** candidatas agrupadas de "
-      "mínimo 2 mecanismos distintos; **vacía** hasta superar D1 y comprobar "
-      "ruta de ejecución. No saltar desde D0 a riesgo/fondeo.",
+      "- **Cohorte nueva C59–T96 COMPLETADA:** **38 registradas → 36 viables D0 "
+      "→ 31 diversas D0 → 38 D1 evaluadas → 0 calificadas por BH38**. "
+      "D0 supera 20 (31/20), pero **q BH38 mínima 0,239376 >0,10**. "
+      "Siete IC90 individuales favorables (T65/T75/T84/T88/T93/T94/T95) "
+      "NO superaron la corrección familiar; 22 inconclusas, 14 con signo "
+      "desfavorable, 2 no estimables.",
+      "- **Cohorte T29–T58:** 30 D1 evaluadas, 25 viables diversas en D0 "
+      "y 0 supervivientes q BH30≤0,10; q mínima 0,212229. "
+      "T29/T45/T49 solo predicción de rango futuro, NO trades.",
+      "- **Cohortes históricas T20–T25 y T26–T28:** D1 cerradas sin "
+      "supervivientes; la simulación monetaria con Last ambigua no se da "
+      "por validada.",
+      f"- **Bandeja D2:** **{a['D2_batch_size']}** mecanismos "
+      "económicamente ejecutables; **VACÍA**. Ninguna hipótesis se "
+      "profundizará por su resultado individual favorable.",
       "",
-      "## Próximo trabajo (no repetir señales individuales)",
+      "## Próximo trabajo (sin sobreajuste retrospectivo)",
       "",
-      "1. **Solo cohorte siguiente D0:** prerregistrar nuevos bloques de preguntas "
-      "verdaderamente distintas que se añadan al inventario T59; jamás relajar "
-      "ratios T59/T60 por N observado.",
-      "2. Cuando existan ≥20 D0 TESTABLE distintas, congelar y ejecutar D1 "
-      "de la familia NUEVA COMPLETA, con endpoints y denominador BH establecidos "
-      "antes de ver retorno. Evaluar TODOS los miembros y documentar descartar/fallar.",
-      "3. Agrupar en bandeja POST-D1 sobrevivientes de TODAS las cohortes; "
-      "esperar grupo ejecutable plural para D2 con UNA cuenta, costos/riesgo y "
-      "DeltaRouter neto. Confirmación/OOS solo bajo autorización independiente.",
+      "1. Abrir una **cohorte distinta** de ideas causales deducidas de "
+      "fallos y aciertos de bloques completos, no retunear T05/T75/T84 "
+      "ni invertir los signos al ver el resultado.",
+      "2. Primero registrar varias familias nuevas, después D0 con "
+      "≥20 candidatas viables/diversas; ejecutar D1 en bloque con "
+      "toda la familia y BH completo.",
+      "3. Cuando D1 deje varias rutas DIRECCIONALES y ejecutables con "
+      "costes netos, juntarlas en una bandeja D2 de UNA cuenta; hasta "
+      "entonces no inventar fills/ROI ni abrir OOS.",
       "",
       "**T05-377:** benchmark histórico congelado, NO integrante de cohorte "
       "D2, ni prueba de renta fondeable. H69/H74/H77 no portables con Last "
       "08–12 sin cierre RTH del día previo ni ATR de sesión completa.",
       "",
-      "**Evidencia D0/D1:** [T29–T58 D0]"
-      "(NQ_T29_T58_30_HYPOTHESES_G0_D0_RESULTS_2026_10_12.md) · "
+      "**Fuentes:** [T59–T96 D0](NQ_T59_T96_SIX_BLOCK_COHORT_D0_RESULTS_2026_10_12.md) · "
+      "[T59–T96 D1](NQ_T59_T96_38_MEMBER_WHOLE_COHORT_D1_RESULTS_2026_10_12.md) · "
       "[T29–T58 D1](NQ_T29_T58_30_HYPOTHESES_D1_BATCH_RESULTS_2026_10_12.md) · "
-      "[T26–T28 D1](NQ_T26_T28_D1_OBSERVATIONAL_RESULTS_2026_10_12.md) · "
-      "[T59–T60 D0](NQ_T59_T60_NEW_PREMARKET_D0_RESULTS_2026_10_12.md).",
+      "[T26–T28 D1](NQ_T26_T28_D1_OBSERVATIONAL_RESULTS_2026_10_12.md).",
       "",
       "Esta fotografía se genera SOLO desde el ledger agregado; no abre "
       "ni recuenta datos de mercado, no ejecuta trades ni abre holdouts.",
