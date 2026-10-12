@@ -1,0 +1,68 @@
+name: NQ T14-T19 measure SIX questions: four economic + two magnitude, 135 DEV ONLY
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t14-t19-six-questions-first-economic-and-magnitude.yml'
+      - 'local_nq_tick_2025_2026/nq_t14_t19_economic_*.py'
+      - 'local_nq_tick_2025_2026/test_nq_t14_t19_economic.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026:research/nq
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Synthetic seven unit tests and syntax compile BEFORE reading source
+        run: |
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_t14_t19_economic.py' -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_t14_t19_economic_and_magnitude.py local_nq_tick_2025_2026/nq_t14_t19_economic_aggregate.py
+  six-mechanisms:
+    needs: synthetic
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026:research/nq
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source only previously stored DEV Last archives, SHA256, exact seven months
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p _private/derived
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          for MONTH in 2025-10 2025-11 2025-12 2026-01 2026-02 2026-03 2026-04; do
+            mkdir -p _private/arc _private/data
+            gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/arc
+            (cd _private/arc && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+            7z x "_private/arc/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+            python local_nq_tick_2025_2026/nq_t14_t19_economic_and_magnitude.py --root _private/data --month "$MONTH" --private-out "_private/derived/t14_t19_${MONTH}.json"
+            rm -rf _private/arc _private/data
+          done
+      - name: Fail closed before publication unless 140/135 T05 exact benchmark and six evaluations reconcile
+        run: |
+          python local_nq_tick_2025_2026/nq_t14_t19_economic_aggregate.py --private _private/derived --out t14_t19_public/summary.json --report t14_t19_public/report.md
+          cat t14_t19_public/report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Destroy licensed raw and private daily outcomes even after failed run
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-t14-t19-six-questions-economic-magnitude-aggregates-safe
+          path: t14_t19_public/
+          if-no-files-found: error
