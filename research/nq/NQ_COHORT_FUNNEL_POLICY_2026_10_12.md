@@ -35,3 +35,9 @@
 - **Siguiente acción obligatoria:** ampliar **la cohorte nueva que contiene T59** con mecanismos genuinamente diferentes hasta 20+ D0 viables/diversos, congelar D1 familiar, evaluar todo el lote junto; después agrupar supervivientes en D2. No reoptimizar T59 ni T05 para inflar el embudo.
 
 Fuente de verdad para nuevo trabajo: [tablero de cohortes](NQ_COHORT_FUNNEL_STATUS_2026_10_12.md), complementado por [maestro](../../NQ_PROJECT_MASTER.md), [scorecard](../../NQ_STATISTICAL_HYPOTHESIS_SCORECARD.md) y [log](../../NQ_RESEARCH_LOG.md).
+
+## 6. Ampliación REAL de la cohorte C59 a 38 miembros (12-oct-2026)
+
+Se aplicó esta política sin profundizar T59 individualmente. [Prerregistro seis bloques T61–T96](NQ_T61_T96_SIX_BLOCK_D0_PREREG_2026_10_12.md) + T59/T60 ya congeladas → **38 preguntas** con reloj causal y CASE/CONTROL declarados, 7 meses DEV; [Action 38313046875 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38313046875) de G0/D0: **140/135/135, 36 TESTABLE y 31 distintas** después de Jaccard≥0,85; T60/T77 LOW_POWER, T71/T81/T82/T83/T84 duplicadas para amplitud aunque permanecerán en D1 BH38. [Informe y 38 conteos](NQ_T59_T96_SIX_BLOCK_COHORT_D0_RESULTS_2026_10_12.md), [corte de conteos D0](NQ_T59_T96_COHORT_D0_COUNTS_FROZEN_2026_10_12.json).
+
+**Por primera vez una nueva cohorte entera cruza el cuello D0→D1** con 31/20 candidatas diferentes; se congeló [D1 estadístico sobre LOS 38](NQ_T59_T96_COHORT_38_D1_PREREG_2026_10_12.md), futuro VWAP firmado +300s excepto T60 rango15m, bootstrap por sesiones y BH k=38 (incluidas no viables), con Action [38313582820](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38313582820). No autoriza D2 ni ningún retorno monetario; se mantiene q de DEV adaptativa EXPLORATORIA y la prohibición de fills ficticios. El ledger/tablero deberá actualizarse a la cohorte de 38 al cerrar D1, sin alterar el bloque histórico T29–T58.
