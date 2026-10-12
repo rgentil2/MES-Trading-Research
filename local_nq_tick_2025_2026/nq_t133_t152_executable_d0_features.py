@@ -113,7 +113,10 @@ def classify_day(events,day,registry,include_structure=False):
     }
     result={};debug={}
     for member in registry['members']:
-        name=member['feature'];family=member['block'];ref=refs.get(member['reference'])
+        name=member['feature'];family=member['block']
+        if member['reference'] not in refs:
+            raise AssertionError('FROZEN_FEATURE_REFERENCE_KEY_NOT_IMPLEMENTED')
+        ref=refs[member['reference']]
         order_side=side
         if ref is None:
             result[member['id']]=MISSING
