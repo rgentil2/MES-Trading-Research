@@ -2,6 +2,10 @@
 
 **ID:** `NQ-DISCOVERY-STAGED-GATES-V1` · **Fecha de adopción:** 2026-10-12 (America/Bogota) · **Vigencia:** PROSPECTIVA para bloques nuevos y diagnósticos aún pendientes; **no retroactiva**. **Aprobada por el usuario** tras auditoría previa de gates. **Fuente máquina:** [NQ_DISCOVERY_STAGED_GATES_POLICY_2026_10_12.json](NQ_DISCOVERY_STAGED_GATES_POLICY_2026_10_12.json). **Motivo y diagnóstico:** [NQ_FAST_DISCOVERY_GATES_AUDIT_2026_10_12.md](NQ_FAST_DISCOVERY_GATES_AUDIT_2026_10_12.md).
 
+## 2026-10-12 — CAMBIO EN EL TIPO DE HIPÓTESIS T: RUTAS DE EJECUCIÓN
+
+Enmienda prospectiva autorizada por el usuario: [nueva política de cohortes con reglas completas de operación](NQ_EXECUTABLE_STRATEGY_COHORT_POLICY_2026_10_12.md). Para T133–T152 se registran entrada, stop, objetivo, timeout, costes, riesgo y potencial de ejecución ANTES de resultados, en cuatro familias de estrategias. Se conservan G0/D0/D1/D2 y restricción ≥20 diferentes para D1. Corte oct–dic 2025 versus ene–abr 2026 es **estabilidad cronológica interna, no OOS** porque esas fechas ya fueron investigadas. No abrir OOS, no nuevos datos, no 5s, no pérdidas/gastos inventados. Resultado de D0 no autoriza dinero ni D1 si el bloque no alcanza 20 TESTABLE diversas.
+
 ## 0. Precedencia, alcance y restricciones innegociables
 
 1. **Esta política es ADITIVA, no una enmienda de los gates congelados.** Permanecen `research/es/ES_STAGE_GATES.md`, `research/es/ES_STAGE_GATES_EXPLORATORY_AMENDMENT_2026_10_09.md`, `research/RESEARCH_CONTROLS_POLICY.md`, `research/nq/NQ_TICK_SEVEN_MONTH_STATISTICAL_POLICY_2026_10_11.md`, la [política económica NQ/ETF](NQ_PORTFOLIO_ECONOMIC_GATE_2026_10_10.md), presupuestos Holm, preregistros individuales y decisiones anteriores. Si un experimento tiene exigencia anterior más estricta, **rige la exigencia ya congelada**; no se reetiqueta retrospectivamente.
