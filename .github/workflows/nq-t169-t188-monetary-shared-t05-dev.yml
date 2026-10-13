@@ -1,0 +1,95 @@
+name: NQ T169-T188 monetary 20 hypotheses versus frozen T05 - existing DEV only
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t169-t188-monetary-shared-t05-dev.yml'
+      - 'local_nq_tick_2025_2026/nq_t169_t188_monetary_*.py'
+      - 'local_nq_tick_2025_2026/test_nq_t169_t188_monetary.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile and run tests BEFORE any licensed data
+        run: |
+          python -m compileall -q local_nq_tick_2025_2026/nq_t169_t188_monetary_month.py local_nq_tick_2025_2026/nq_t169_t188_monetary_aggregate.py
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_t169_t188_monetary.py' -v
+  months:
+    needs: synthetic
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        month: ['2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04']
+    env:
+      MONTH: ${{ matrix.month }}
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify stored private DEV Last archive via SHA256 - NO new data
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p _private/arc _private/data
+          gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/arc
+          (cd _private/arc && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          7z x "_private/arc/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+      - name: Twenty fixed hypotheses and individual T05 shared-account routers
+        run: |
+          python local_nq_tick_2025_2026/nq_t169_t188_monetary_month.py --root _private/data --month "$MONTH" --out "monetary_safe/nq_t169_t188_${MONTH}.json"
+      - name: Purge market data before artifact
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-t169-t188-safe-${{ matrix.month }}
+          path: monetary_safe/nq_t169_t188_*.json
+          if-no-files-found: error
+  aggregate:
+    needs: months
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: nq-t169-t188-safe-*
+          merge-multiple: true
+          path: _monthly
+      - name: Enforce 140/135 T05 parity and publish monetary safe aggregate only
+        run: |
+          python local_nq_tick_2025_2026/nq_t169_t188_monetary_aggregate.py --inputs _monthly --out monetary_final/summary.json --report monetary_final/report.md
+          cat monetary_final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-t169-t188-monetary-safe-20-hypotheses
+          path: monetary_final/
+          if-no-files-found: error
