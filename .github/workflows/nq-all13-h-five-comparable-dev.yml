@@ -1,0 +1,36 @@
+name: NQ ALL13 five H alternative routers Pareto same MNQ proxy DEV
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-all13-h-five-comparable-dev.yml'
+      - 'research/nq/nq_all13_h5_comparable_options.py'
+      - 'research/nq/test_nq_all13_h5_comparable_options.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  compare-frozen-five-H-alternative-policies:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: .:research/nq
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Read only previously published 2020-2024 H aggregate reports and test
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/nq -p test_nq_all13_h5_comparable_options.py -v
+          mkdir -p final
+          python research/nq/nq_all13_h5_comparable_options.py --out final/summary.json --report final/report.md
+          cat final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-all13-h-five-choices-comparable-mnq-only
+          path: final/
+          if-no-files-found: error
