@@ -9,22 +9,17 @@
 | NQ-C26-28 | 3 → 1 → N/D (legacy) | 3 → 0 | 0 | D1 cerrado (sin calificadas) |
 | NQ-C59-NEXT | 38 → 36 → 31 | 38 → 0 | 0 | D1 cerrado (sin calificadas) |
 | NQ-C97-132 | 36 → 30 → 26 | 36 → 0 | 0 | D1 cerrado (sin calificadas) |
-| NQ-C133-152 | 20 → 15 → 15 | 0 → 0 | 0 | **ESPERA:** completar bloque D0 |
+| NQ-C133-168 | 36 → 29 → 27 | 0 → 0 | 0 | **D1 en ejecución (SIN RESULTADOS AÚN)** |
 
-## Estado actual: T133–T152 — estrategias completas D0, D1 BLOQUEADA
+## Estado del NUEVO EMBUDO ECONÓMICO de 36 miembros T133–T168
 
-- **Nueva cohorte de cuatro familias operativas:** 20 originales (ruptura, pullback, barrida/reversión y régimen), con entrada teórica, stop físico y objetivo R, horizonte y riesgo prefijados. **D0: 20→15 TESTABLE→15 diversas**; gate mínimo **20 NO cumplido**, faltan **5 nuevas estrategias distintivas y viables**. LOW_POWER: T134/T138/T139/T143/T144. Sin near duplicates.
-- **No D1 T133–T152:** ningún outcome futuro, IC90, p/q BH, N operaciones realmente ejecutadas, coste, PF/DD ni P&L. Son **N/D**, nunca rellenar como cero, positivo o aprobado.
-- **Corte cronológico interno:** 53 READY oct–dic 2025 y 82 ene–abr 2026, ambos YA explorados; no equivale a OOS independiente.
-- **T97–T132 D1 cerrada:** 36 miembros, 30 D0 testables, 26 diversas, q BH36 mínima 0,264, **0 supervivientes**.
-- **T59–T96 D1 cerrada:** 38 miembros, q BH38 mínima 0,239376, 0 supervivientes; **T29–T58** 30 D1 con qmin0,212229 y 0.
-- **T20–T25/T26–T28 históricas:** D1 cerradas, sin estrategia monetariamente validada.
-- **Bandeja económica D2:** 0 candidatas; vacía. T05 sigue baseline congelado, no promocionar.
+- **Ocho bloques de estrategias completas**, 20 T133–T152 originales INMUTABLES +16 T153–T168 prerregistradas. **D0: 36 registradas → 29 TESTABLE → 27 diversas**; **gate D1 de >=20 CUMPLIDO**. Auditoría de las 20 etiquetas originales reproducida exactamente; seven DEV 140/135.
+- **Siete bajas N:** T134/T138/T139/T143/T144/T153/T154. Duplicados de CASE: T150≈T158 (Jaccard 1,0), T164≈T163 (0,951456). Se conservaron los 36 ID para la familia estadística D1.
+- **D1 económica experimental:** protocolo prospectivo de market PROXY adverso, stop-first ante timestamps simultáneos, 2 ticks entrada y salida, fees hipotéticas NQ/MNQ, estrés 1,5x y +US$10 RT, 10k bootstrap BH36. El motor D1 no verifica llenados reales de bróker.
+- **Estado actual D1:** RUNNING_FULL36_ECONOMIC_PROXY_UNVERIFIED ([Action 38326216082]) sin resultados monetarios declarados antes de revisión. La cola D2 permanece vacía hasta verificaciones económicas y OOS.
+- **Cortes cronológicos DEV:** oct–dic2025 53 READY, ene–abr2026 82 READY; periodos previamente explorados y NO OOS nuevo. Nunca abrir mayo–septiembre 2026.
+- **Cohortes históricas T29–T58/T59–T96/T97–T132:** 104 D1 físicas/observacionales en bloques, 0 superaron BH de sus familias. T05 se mantiene baseline congelado.
 
-## Siguiente acción metodológicamente válida
+**Fuentes:** [D0 36 completos](NQ_T133_T168_FULL36_EXECUTABLE_D0_RESULTS_2026_10_12.md) · [Costos/ejecución D1 prereg](NQ_T133_T168_36_MEMBER_ECONOMIC_D1_PREREG_2026_10_12.md) · [Código de pruebas](../../local_nq_tick_2025_2026/nq_t133_t168_economic_d1_batch.py).
 
-Prerregistrar otro **BLOQUE DE MECANISMOS EJECUTABLES DIFERENTES** con nuevos IDs, sin retocar T134/T138/T139/T143/T144 para inflar N. Cuando el inventario acumule >=20 TESTABLE y diversas, prerregistrar D1 ECONÓMICA de la **familia completa ORIGINAL** con comisiones, slippage, manejo adverso de fills, coste y cortes cronológicos, ANTES de cualquier resultado.
-
-**Fuentes:** [T133–T152 D0 CORREGIDO](NQ_T133_T152_FOUR_COMPLETE_STRATEGIES_BLOCKS_D0_RESULTS_2026_10_12.md) · [T133–T152 prereg](NQ_T133_T152_EXECUTABLE_D0_PREREG_2026_10_12.md) · [Política económica de cohortes](NQ_EXECUTABLE_STRATEGY_COHORT_POLICY_2026_10_12.md) · [T97–T132 D1](NQ_T97_T132_36_MEMBER_D1_RESULTS_2026_10_12.md).
-
-Estado generado desde ledger **seguro**; no abre mercado licenciado ni lee ningún dato futuro.
+Esta fotografía solo lee ledger agregado; no consulta mercado ni trade-by-trade privado.
