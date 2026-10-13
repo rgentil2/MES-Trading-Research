@@ -1,0 +1,339 @@
+{
+  "id": "NQ-T189-T208-MONEY-ONLY-ATOMIC233-V1",
+  "registered": "2026-10-13",
+  "date_et": "America/New_York",
+  "motivation": "independent microtransaction duration, qty, auction acceptance and streak hypotheses to complement frozen T05, rather than retuning T186",
+  "status": "PREREG_BEFORE_ANY_COHORT_OUTCOMES",
+  "source_months": [
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04"
+  ],
+  "expected_source_days": 140,
+  "expected_ready_days": 135,
+  "source": "existing NQ DEV Tick Last releases with SHA256",
+  "sealed_holdouts": "T 2026-05 through 2026-09 and H 2025-2026 historical holdouts",
+  "blocks": [
+    {
+      "block": "A",
+      "name": "ACTIVITY_TEMPO",
+      "window_et": [
+        "09:30",
+        "09:45"
+      ],
+      "ids": [
+        "T189",
+        "T190",
+        "T191",
+        "T192",
+        "T193"
+      ]
+    },
+    {
+      "block": "B",
+      "name": "MICRO_AUCTION_LEVELS",
+      "window_et": [
+        "09:50",
+        "10:10"
+      ],
+      "ids": [
+        "T194",
+        "T195",
+        "T196",
+        "T197",
+        "T198"
+      ]
+    },
+    {
+      "block": "C",
+      "name": "VOLUME_PRICE_EFFICIENCY",
+      "window_et": [
+        "10:25",
+        "10:45"
+      ],
+      "ids": [
+        "T199",
+        "T200",
+        "T201",
+        "T202",
+        "T203"
+      ]
+    },
+    {
+      "block": "D",
+      "name": "MICRO_SEQUENCES",
+      "window_et": [
+        "11:00",
+        "11:20"
+      ],
+      "ids": [
+        "T204",
+        "T205",
+        "T206",
+        "T207",
+        "T208"
+      ]
+    }
+  ],
+  "members": [
+    {
+      "id": "T189",
+      "code": "A_FAST_BREAK",
+      "block": "A",
+      "window_et": [
+        "09:30",
+        "09:45"
+      ],
+      "question": "Duración de E233 ≤2/3 de D233, rango E≥16 ticks y desplazamiento VWAP E−D≥4; seguir desplazamiento"
+    },
+    {
+      "id": "T190",
+      "code": "A_SLOW_REVERSAL",
+      "block": "A",
+      "window_et": [
+        "09:30",
+        "09:45"
+      ],
+      "question": "Duración E233≥2×D233 y movimiento D−C≥4 ticks; tomar contrasentido del movimiento D−C"
+    },
+    {
+      "id": "T191",
+      "code": "A_VOLUME_SURGE",
+      "block": "A",
+      "window_et": [
+        "09:30",
+        "09:45"
+      ],
+      "question": "Cantidad total E233≥2×D233 y |VWAP E−D|≥4; continuar"
+    },
+    {
+      "id": "T192",
+      "code": "A_VOLUME_DROP_TURN",
+      "block": "A",
+      "window_et": [
+        "09:30",
+        "09:45"
+      ],
+      "question": "Cantidad E233≤1/2 D233, |VWAP D−C|≥4 y E−D opuesto a D−C ≥2 ticks; seguir giro"
+    },
+    {
+      "id": "T193",
+      "code": "A_CLUSTER_FADE",
+      "block": "A",
+      "window_et": [
+        "09:30",
+        "09:45"
+      ],
+      "question": "Grupos timestamp íntegros E233/prints≤0,65, rango E≥20 y |VWAP E−D|≥4; revertir"
+    },
+    {
+      "id": "T194",
+      "code": "B_ACCEPT_UP",
+      "block": "B",
+      "window_et": [
+        "09:50",
+        "10:10"
+      ],
+      "question": "VWAP E233≥máximo high de las dos 233 anteriores +2 ticks; largo"
+    },
+    {
+      "id": "T195",
+      "code": "B_ACCEPT_DOWN",
+      "block": "B",
+      "window_et": [
+        "09:50",
+        "10:10"
+      ],
+      "question": "VWAP E233≤mínimo low de las dos 233 anteriores −2 ticks; corto"
+    },
+    {
+      "id": "T196",
+      "code": "B_SWEEP_HIGH",
+      "block": "B",
+      "window_et": [
+        "09:50",
+        "10:10"
+      ],
+      "question": "High E233≥máximo high de 2 previas+4 y VWAP E por debajo de ese máximo; corto"
+    },
+    {
+      "id": "T197",
+      "code": "B_SWEEP_LOW",
+      "block": "B",
+      "window_et": [
+        "09:50",
+        "10:10"
+      ],
+      "question": "Low E233≤mínimo low de 2 previas−4 y VWAP E por encima del mínimo; largo"
+    },
+    {
+      "id": "T198",
+      "code": "B_BALANCE_RELEASE",
+      "block": "B",
+      "window_et": [
+        "09:50",
+        "10:10"
+      ],
+      "question": "Rangos D233 y C233≤12, rango E≥20 y |VWAP E−D|≥4; seguir quiebre"
+    },
+    {
+      "id": "T199",
+      "code": "C_ABSORPTION_PROXY",
+      "block": "C",
+      "window_et": [
+        "10:25",
+        "10:45"
+      ],
+      "question": "Volumen E233≥1,5×D233, |E−D VWAP|≤2 y |D−C VWAP|≥4; revertir dirección D−C, proxy Last NO absorción real"
+    },
+    {
+      "id": "T200",
+      "code": "C_THIN_DRIFT",
+      "block": "C",
+      "window_et": [
+        "10:25",
+        "10:45"
+      ],
+      "question": "Volumen E233≤0,7×D233 y |VWAP E−D|≥6; seguir desplazamiento E−D"
+    },
+    {
+      "id": "T201",
+      "code": "C_EXPANSION_CONFIRM",
+      "block": "C",
+      "window_et": [
+        "10:25",
+        "10:45"
+      ],
+      "question": "Rango E233≥2×D233, volumen E≥1,2×D, |VWAP E−D|≥4; continuar"
+    },
+    {
+      "id": "T202",
+      "code": "C_HIGH_VOLUME_NARROW",
+      "block": "C",
+      "window_et": [
+        "10:25",
+        "10:45"
+      ],
+      "question": "Rango E233≤0,5×D233, volumen E≥D, |VWAP D−C|≥4; revertir D−C"
+    },
+    {
+      "id": "T203",
+      "code": "C_EFFICIENT_VOLUME",
+      "block": "C",
+      "window_et": [
+        "10:25",
+        "10:45"
+      ],
+      "question": "Volumen E233≥2×D233, rango E≤rango D, |VWAP E−D|≥3; continuar"
+    },
+    {
+      "id": "T204",
+      "code": "D_ASCENDING_EXPANSION",
+      "block": "D",
+      "window_et": [
+        "11:00",
+        "11:20"
+      ],
+      "question": "VWAP C<D<E por ≥2 ticks cada paso, rangos C<D<E estrictos; largo"
+    },
+    {
+      "id": "T205",
+      "code": "D_DESCENDING_EXPANSION",
+      "block": "D",
+      "window_et": [
+        "11:00",
+        "11:20"
+      ],
+      "question": "VWAP C>D>E por ≥2 ticks cada paso, rangos C<D<E estrictos; corto"
+    },
+    {
+      "id": "T206",
+      "code": "D_ALTERNATION",
+      "block": "D",
+      "window_et": [
+        "11:00",
+        "11:20"
+      ],
+      "question": "VWAP E−D opuesto a D−C, |E−D|≥5, |D−C|≥2, rango E<rango D; seguir giro E−D"
+    },
+    {
+      "id": "T207",
+      "code": "D_DECELERATION",
+      "block": "D",
+      "window_et": [
+        "11:00",
+        "11:20"
+      ],
+      "question": "Duración E≥1,5×D y D≥1,5×C, rango E≤12, |VWAP D−C|≥4; revertir D−C"
+    },
+    {
+      "id": "T208",
+      "code": "D_BURST_WITHOUT_PROGRESS",
+      "block": "D",
+      "window_et": [
+        "11:00",
+        "11:20"
+      ],
+      "question": "Duración E≤1/2 D, cantidad E≥1,5×D, |E−D|≤2, |D−C|≥4; revertir D−C"
+    }
+  ],
+  "selection": "FIRST_COMPLETE_ATOMIC_233_PRINT_BAR_CLOSING_INSIDE_BLOCK_TIME_WINDOW; prior bars C and D strictly earlier; if no trigger do not scan later bars",
+  "timestamp_atomic": "whole identical timestamp groups preserved, no arbitrary Last final print or true aggressor inference",
+  "new_signals_use_five_seconds": false,
+  "reference_T05": "T05_377 unchanged legacy five-second signal benchmark only",
+  "new_strategy_execution": {
+    "instrument": "NQ",
+    "contracts": 1,
+    "stop_ticks": 24,
+    "take_profit_ticks": 48,
+    "max_holding_seconds": 300,
+    "entry_policy": "existing T04/H01 Last trade execution stress, 1ms latency and 2 adverse ticks each side, fee scenario 7.50 USD RT",
+    "max_signal_per_day_per_candidate": 1
+  },
+  "shared_router": {
+    "max_trades_per_day": 2,
+    "max_one_open_trade": true,
+    "closed_daily_loss_stop_usd": -600,
+    "priority": "chronological signal time, T05 wins exact timestamp tie",
+    "no_pnl_based_fallback": true
+  },
+  "economic_comparison": {
+    "primary": "shared router +$10/RT net minus frozen T05 +$10/RT net",
+    "stress_multiple": "pre-existing T04 H01 1.5x fee+2tick each side",
+    "extra_fee_usd_per_rt": 10,
+    "reported": [
+      "signals",
+      "N standalone",
+      "standalone net stress",
+      "N shared router",
+      "router new fills",
+      "T05 trades retained",
+      "router net stress",
+      "router delta net +$10",
+      "router PF stress",
+      "router PF +$10",
+      "router Last envelope DD stress",
+      "monthly trade counts and model net",
+      "unresolved-exposure censor counts"
+    ],
+    "full_exploratory_pass_requires": {
+      "delta_router_plus10_gt_usd": 0,
+      "router_pf_stress_at_least": 1.25,
+      "router_pf_plus10_at_least": 1.25,
+      "router_LastDD_stress_at_most_USD_reference_not_funding": 2000,
+      "T05_trades_retained_at_least": 104,
+      "router_trades_per_month_at_least": 5,
+      "new_component_executed": true
+    },
+    "p_q_IC90_screen_not_applied": true,
+    "independent_alpha_claim_allowed": false
+  },
+  "fail_closed": "Any Last exposure unresolved for ANY standalone or router: candidate N/D all seven months, no substitution of PnL=0; if T05 unresolved fail whole cohort",
+  "no_private_events_or_trade_days_artifacts": true,
+  "formal_D1_D2_unchanged": true,
+  "no_retuning_after_results": true
+}
