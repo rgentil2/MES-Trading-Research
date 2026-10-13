@@ -1,0 +1,41 @@
+name: NQ ALL13 complete subset-topology and risk-Pareto gate
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-all13-subset-topology-dev.yml'
+      - 'research/nq/nq_all13_subset_search.py'
+      - 'research/nq/test_nq_all13_subset_search.py'
+      - 'research/nq/NQ_ALL13_PORTFOLIO_SEARCH_PREREG_2026_10_13.json'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  enumerate-all-13-before-exhaustive-economic-search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: research/nq
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Synthetic fail-closed and full-13 topology tests
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/nq -p test_nq_all13_subset_search.py -v
+          python -m compileall -q research/nq/nq_all13_subset_search.py
+      - name: Enumerate all 8191 masks, no unlicensed or sealed data
+        run: |
+          set -euo pipefail
+          mkdir -p final
+          python research/nq/nq_all13_subset_search.py --out final/summary.json --report final/report.md
+          cat final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-all13-subsets-feasibility-safe-only
+          path: final/
+          if-no-files-found: error
