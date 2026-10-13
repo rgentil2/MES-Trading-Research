@@ -3,7 +3,7 @@
   "ledger_id": "NQ-COHORT-FUNNEL-LEDGER-V1",
   "policy_id": "NQ-COHORT-FUNNEL-V1",
   "effective_on": "2026-10-12",
-  "snapshot_as_of": "2026-10-12 C133-T168 full36 D0 completed 29 testable 27 distinct, economic D1 action in progress",
+  "snapshot_as_of": "2026-10-12 after eight-block strategy cohort T133-T168 FULL D0 and FULL economic D1 COMPLETE; no confirmed alpha",
   "data_role": "DEV_ONLY_AGGREGATES_NO_RAW_OUTCOMES",
   "holdouts_opened": false,
   "new_data_acquired": false,
@@ -806,7 +806,7 @@
       "id": "NQ-C133-168",
       "label": "Ocho bloques de 36 estrategias completas: T133–T152 originales congeladas y 16 adicionales T153–T168",
       "origin": "NEW_BATCH_20_PLUS",
-      "stage": "D0_COMPLETE_D1_RUNNING",
+      "stage": "D1_CLOSED",
       "all_preregistered_ids": [
         "T133",
         "T134",
@@ -968,19 +968,56 @@
         "report": "research/nq/NQ_T133_T168_FULL36_EXECUTABLE_D0_RESULTS_2026_10_12.md"
       },
       "D1": {
-        "status": "RUNNING_FULL36_ECONOMIC_PROXY_UNVERIFIED",
-        "evaluated_ids": [],
+        "status": "COMPLETE",
+        "evaluated_ids": [
+          "T133",
+          "T134",
+          "T135",
+          "T136",
+          "T137",
+          "T138",
+          "T139",
+          "T140",
+          "T141",
+          "T142",
+          "T143",
+          "T144",
+          "T145",
+          "T146",
+          "T147",
+          "T148",
+          "T149",
+          "T150",
+          "T151",
+          "T152",
+          "T153",
+          "T154",
+          "T155",
+          "T156",
+          "T157",
+          "T158",
+          "T159",
+          "T160",
+          "T161",
+          "T162",
+          "T163",
+          "T164",
+          "T165",
+          "T166",
+          "T167",
+          "T168"
+        ],
         "individual_ci90_positive_ids": [],
         "statistical_screen_pass_ids": [],
         "economic_screen_pass_ids": [],
-        "q_min": null,
+        "q_min": 1,
         "workflow_run": 38326216082,
-        "report": "research/nq/NQ_T133_T168_36_MEMBER_ECONOMIC_D1_PREREG_2026_10_12.md",
-        "outcomes_class": "NOT_YET_FINAL_VERIFIED",
-        "reason": "D0 cleared 27 distinct; all 36 family economic D1 initiated with prereg market-model Last and pessimistic stop ordering. No claim of PNL until Action complete."
+        "report": "research/nq/NQ_T133_T168_ECONOMIC_D1_FULL36_RESULTS_2026_10_12.md",
+        "outcomes_class": "NET_USD_UNVERIFIED_LAST_EXECUTION_PROXY_NOT_BROKER_FILL",
+        "reason": "All36 completed 140/135; conservative market proxy plus frictions, BH qmin=1, 26 negative net, 5 inconclusive, 5 under15 modelled entries; no positive individual L5 CI, 0 D1 pass. Fills unverified."
       },
       "D2": {
-        "status": "NOT_STARTED_NO_CONFIRMED_EXECUTABLE_SURVIVORS",
+        "status": "NOT_STARTED_ZERO_ELIGIBLE_EXECUTABLE_STRATEGIES",
         "assessed_ids": [],
         "promoted_ids": []
       },
@@ -1002,7 +1039,7 @@
       "T49"
     ],
     "d2_batch_ids": [],
-    "status": "THREE_LARGE_HISTORICAL_D1_COHORTS_NO_ALPHA; LATEST_ECONOMIC_D1_RUNNING_UNVERIFIED",
+    "status": "ALL_CURRENT_D1_COHORTS_CLOSED_ZERO_EXECUTABLE_SURVIVORS; NO_HOLDOUTS_OPENED",
     "monetary_validated_strategies": 0
   },
   "separate_baselines": [
@@ -1022,5 +1059,5 @@
     "H74",
     "H77"
   ],
-  "updated_by": "D0 full36 Action 38325498797; D1 economic proxy Action 38326216082, results NOT YET INSPECTED"
+  "updated_by": "D0 Action 38325498797 (29/27), D1 Action 38326216082 (qmin1, no pass), safe artifact 11781138134"
 }
