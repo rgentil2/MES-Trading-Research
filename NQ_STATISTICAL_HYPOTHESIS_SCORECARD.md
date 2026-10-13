@@ -35,6 +35,21 @@
 
 **La población contiene 36 reglas correlacionadas; sumarlas para reclamar PnL de una única cuenta sería metodológicamente inválido.** DEV ya explorada = estadística EXPLORATORIA, no prueba confirmatoria. Sin comisiones reales, bid/ask fiable, prioridad ni fills broker, el proxy no demuestra ganancia comercial. Próxima prioridad: decidir si merece la pena adquirir o verificar evidencia de ejecución independiente ANTES de reiniciar otro ciclo de señales; no reoptimizar T134/T145/T147.
 
+## D2 SHADOW / EJERCICIO ECONÓMICO DE CARTERAS T133–T168 (SIN PASO OFICIAL)
+
+[**Action 38335007318 SUCCESS**](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38335007318) y [**segunda auditoría de agregados 38335648618 SUCCESS**](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38335648618) permitieron evaluar **6 escenarios de UNA posición diaria por cuenta US$50K simulada** bajo la fricción base y estresada de D1. **Los resultados de las 36 estrategias D1 se reprodujeron exactamente**; periodos Last DEV son los mismos. [Informe SHADOW D2 completo](research/nq/NQ_T133_T168_SHADOW_D2_SIX_PORTFOLIOS_RESULTS_2026_10_12.md) · [prerregistro de selección](research/nq/NQ_T133_T168_SHADOW_D2_PORTFOLIO_PREREG_2026_10_12.md) · [artifact SAFE 11785105339](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38335007318/artifacts/11785105339).
+
+| Cartera SHADOW | N trades modelo | Neto USD modelo | PF modelo | DD cerrado USD | Neto estrés1,5× | Neto +$10RT | ¿Riesgo DD2k cerrado ilustrativo? |
+|---|---:|---:|---:|---:|---:|---:|---|
+| 36 prioridad fija | 132 | −1.063 | 0,895 | 2.947 | −2.226,75 | −2.383 | **Breach** |
+| 36 rotación | 133 | −1.840,62 | 0,826 | 3.379,62 | −3.016,38 | −3.170,62 | **Breach** |
+| 27 rotación | 132 | −2.164,38 | 0,795 | 3.454,12 | −3.328,12 | −3.484,38 | **Breach** |
+| 10 positivas D1 **POSTHOC** | 118 | +774,50 | 1,098 | 1.536,75 | −200,75 | −405,50 | No DD2k, pero DD>$1.500 alerta |
+| 5 positivas N≥15 **POSTHOC** | 118 | +683,12 | 1,086 | 1.536,75 | −292,12 | −496,88 | No DD2k, pero DD>$1.500 alerta |
+| T147 sola **POSTHOC** | 20 | +642,25 | 1,499 | 567 | +433 | +442,25 | No DD2k; frecuencia 2,86/mes, Q4 negativo |
+
+**Nota metodológica obligatoria:** TODAS las ganancias son SIMULADAS con Last y costos de broker NO verificados, nunca fondos operados. Tres carteras POSTHOC usan como selección el propio resultado D1 in-sample, causando sobreajuste grave. DD del ejercicio es solo equity al cierre, NO máximos de pérdidas intradía/firma. **D1 formal 0, D2 formal 0 y OOS sellado**. ROI simple 7 meses, no rendimiento anual VOO/QQQM.
+
 ## SENSIBILIDAD PEDIDA: T133–T168 QUITANDO q-BH E IC90, MANTENIENDO ECONOMÍA COMPLETA
 
 [GitHub Action 38333406107 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38333406107) analizó solamente [agregados SAFE originales](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38326216082/artifacts/11781138134), sin market data o futuros nuevos. [**Informe económico definitivo de las 36 y sus gates**](research/nq/NQ_T133_T168_ECONOMIC_GATES_WITHOUT_Q_OR_IC90_2026_10_12.md) · [script](tools/nq_t133_t168_economic_no_q_ci_audit.py) · [artifact SAFE 11783168846 con tabla de los 36](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38333406107/artifacts/11783168846). **36 estrategias →10 positivas MODELO→5 positivas con N≥15→1 con PF≥1,25→0 que cumplan TODOS los económicos sin IC90/q.** Se mantienen costo base, estrés1,5×, estrés+$10RT, PF≥1,25, máximo DD$1500, estabilidad de ambos períodos, concentración mensual<40%, N y esperanza neta. No alterar requisitos por razones de significación estadística.
