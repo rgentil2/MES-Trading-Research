@@ -864,3 +864,12 @@ Copiar esta estructura **al final del archivo** cuando cierre un bloque, y actua
 - **Reportes:** [tablero de 13 y nuevos 5 completos](research/nq/NQ_13_H_T_D1_SHADOW_ECONOMIC_SCORECARD_2026_10_13.md) y [criba D2 de las 13](research/nq/NQ_13_H_T_D2_COHORT_READINESS_RESULTS_2026_10_13.md). H son 2 padres+3 routers 2020–24 1m, no se pueden sumar a T2025–26 Last ni dividir automáticamente NQ/MNQ. T05+T147 sin engine de exposición reconciliado; T05+T186 antiguo FAIL.
 - **Gates tras D2 screening:** D1 FORMAL 0 autorizadas en cohorte T209–228, D2 FORMAL NO AUTORIZADA, DD/PF de cartera de 13=N/D. No alterar q, PF, N, riesgo, OOS ni generar otra ronda de filtros para salvar T215/T224. No acciones reales de fondeo US$50k.
 - **Siguiente:** pasar a [bloque D de ingeniería NinjaTrader SIM parity](research/nq/NQ_NINJATRADER_SIM_PARITY_GATE_BEFORE_50K_2026_10_13.md) o nueva familia mecanística con evidencia realmente distinta; no confundir portabilidad con capacidad de ganar dinero.
+
+
+### 2026-10-13 — [NUEVO LOTE 9 / D2 SOMBRA] T224 incluida + ocho anteriores
+
+- **Cambio de usuario:** cartera evaluativa activa de nueve IDs: T05,T147,T186,H09,H56,H69,H74,H77,T224. T210,T212,T215,T217 salen SOLO del lote activo, sin borrar documentación ni resultados. Ninguna nueva aprobación D1 formal.
+- **Prerregistro antes de medir conjuntamente:** [D2 de nueve y experimento T05+T224](research/nq/NQ_NINE_D2_T05_T224_SHARED_ACCOUNT_SHADOW_PREREG_2026_10_13.md). Protege plazo 7 meses DEV, 140/135, paridad T05 115/+5102,50 estrés y T224 106/+1256 BASE, costos mixtos declarados y ejecución 1 cuenta compartida, máx2 operaciones/día, prioridad cronológica, STOP diario −600, fail-closed si entrada timestamp ambigua.
+- **Evidencia de implementación:** [motor](local_nq_tick_2025_2026/nq_nine_d2_t05_t224_shadow.py), [tests](local_nq_tick_2025_2026/test_nq_nine_d2_t05_t224_shadow.py), [workflow](.github/workflows/nq-nine-d2-t05-t224-shared-account-shadow.yml), [Action 38429799987](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38429799987) **RUNNING** al registrar esta entrada; no confundir pipeline iniciado con backtest positivo.
+- **Otras siete de nueve en D2:** T147 sin reconstrucción temporal conjunta y T186 router ya falló; H09/H56/H69/H74/H77 de 2020–24 minuto no comparten calendario DEV con T Last oct25–abr26, H router redundantes.
+- **Holdouts H 2025/26 y T mayo–sept2026 intactos**; no datos nuevos ni compra de fondeo. Formal D2 se mantiene bloqueada hasta prueba de calidad y rentabilidad de mecanismos genuinos.
