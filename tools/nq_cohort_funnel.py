@@ -229,6 +229,7 @@ def render(policy,ledger):
         lines.append(f"| {b['id']} | {len(b['all_preregistered_ids'])} → "
           f"{len(d['testable_ids'])} → {diverse} "
           f"| {scored} → {surv} | {len(b['D2']['promoted_ids'])} | {state} |")
+    strategy=next(b for b in ledger["cohorts"] if b["id"]=="NQ-C133-168")
     lines.extend(["",
       "## Estado del NUEVO EMBUDO ECONÓMICO de 36 miembros T133–T168",
       "",
