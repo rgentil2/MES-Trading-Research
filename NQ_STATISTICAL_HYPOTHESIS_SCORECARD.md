@@ -35,6 +35,19 @@
 
 **La población contiene 36 reglas correlacionadas; sumarlas para reclamar PnL de una única cuenta sería metodológicamente inválido.** DEV ya explorada = estadística EXPLORATORIA, no prueba confirmatoria. Sin comisiones reales, bid/ask fiable, prioridad ni fills broker, el proxy no demuestra ganancia comercial. Próxima prioridad: decidir si merece la pena adquirir o verificar evidencia de ejecución independiente ANTES de reiniciar otro ciclo de señales; no reoptimizar T134/T145/T147.
 
+## SENSIBILIDAD PEDIDA: T133–T168 QUITANDO q-BH E IC90, MANTENIENDO ECONOMÍA COMPLETA
+
+[GitHub Action 38333406107 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38333406107) analizó solamente [agregados SAFE originales](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38326216082/artifacts/11781138134), sin market data o futuros nuevos. [**Informe económico definitivo de las 36 y sus gates**](research/nq/NQ_T133_T168_ECONOMIC_GATES_WITHOUT_Q_OR_IC90_2026_10_12.md) · [script](tools/nq_t133_t168_economic_no_q_ci_audit.py) · [artifact SAFE 11783168846 con tabla de los 36](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38333406107/artifacts/11783168846). **36 estrategias →10 positivas MODELO→5 positivas con N≥15→1 con PF≥1,25→0 que cumplan TODOS los económicos sin IC90/q.** Se mantienen costo base, estrés1,5×, estrés+$10RT, PF≥1,25, máximo DD$1500, estabilidad de ambos períodos, concentración mensual<40%, N y esperanza neta. No alterar requisitos por razones de significación estadística.
+
+| Estrategia más cercana | N proxy | Neto modelo USD | PF | Estrés1,5× | Estrés +$10RT | Qué falla fuera de IC90/q |
+|---|---:|---:|---:|---:|---:|---|
+| **T147** | 20 | +642,25 | 1,499 | +433,00 | +442,25 | **Q4 2025 −$567**, mientras ene–abr2026 +$1.209,25 |
+| **T145** | 51 | +788,00 | 1,238 | +278,50 | +278,00 | PF<1,25 y mes positivo dominante45,4%>40% |
+| T133 | 52 | +606,75 | 1,178 | +198,00 | +86,75 | PF<1,25, ene–abr2026−$117,50 y concentración64,1% |
+| T134 | 14 | +846,50 | 2,153 | +760,50 | +706,50 | N<15 y concentración55,4%; D0 baja potencia |
+
+**Nota de interpretación:** Last sólo modeló fills/fees, no los comprobó en el broker. Dos tramos previamente explorados NO son OOS. **Cero superan el filtro económico sin q/IC90; cero D1 estadístico y cero D2.** Este análisis es sensibilidad post hoc, no validación ni estrategia nueva.
+
 ## CIERRE ACTUAL: T133–T168 D1 ECONÓMICA, LOS 36 MIEMBROS SIN APROBACIÓN
 
 **[D1 GitHub Action 38326216082 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38326216082)**, [artifact SAFE 11781138134](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38326216082/artifacts/11781138134), SHA256 `aa587d6edfc5f3ec19dcda527ba4452fda15828c59d6477198121f481acb67af`; 7 DEV oct2025–abr2026, 140 fuente/135 READY, 36 D0 máscaras confirmadas. **36 D1 evaluadas en un bloque; 26 NOT_SUPPORTED_NET, 5 INCONCLUSIVE_OR_GATE_FAIL, 5 NOT_ESTIMABLE (<15 trades proxy), 0 PASS**, q-BH36 mínima **1,00**, 0 IC90 L5 positivos enteros. No D2, D2 queue 0. [Resultado de todas las 36 con trades proxy, neto USD simulado, PF/DD, IC90 L5 y qBH36](research/nq/NQ_T133_T168_FULL36_ECONOMIC_D1_RESULTS_2026_10_12.md) · [resumen canónico](research/nq/NQ_T133_T168_ECONOMIC_D1_FULL36_RESULTS_2026_10_12.md) · [prerregistro k36 prospectivo](research/nq/NQ_T133_T168_36_MEMBER_ECONOMIC_D1_PREREG_2026_10_12.md).
