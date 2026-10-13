@@ -1,0 +1,67 @@
+name: NQ T133-T168 D2 SHADOW 50K One Position DEV - NOT OFFICIAL D2
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t133-t168-d2-shadow-one-position-50k-dev.yml'
+      - 'local_nq_tick_2025_2026/nq_t133_t168_d2_shadow_portfolio.py'
+      - 'local_nq_tick_2025_2026/test_nq_t133_t168_d2_shadow_portfolio.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  full-dev-private-single-account-shadow-d2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 115
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Audit prospective 5 routers and no D2 OFFICIAL upgrade
+        run: |
+          set -euo pipefail
+          test -s research/nq/NQ_T133_T168_D2_SHADOW_PORTFOLIO_PREREG_2026_10_12.md
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_t133_t168_d2_shadow_portfolio.py -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_t133_t168_d2_shadow_portfolio.py
+      - name: Fetch original 36-member D1 SAFE aggregates for full reconciliation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p _private/d1safe
+          gh run download 38326216082 --repo rgentil2/MES-Trading-Research --name nq-t133-t168-economic-D1-modelled-unverified-36-safe-aggregates --dir _private/d1safe
+          test -s _private/d1safe/summary.json
+      - name: Reuse only SEVEN SHA256 verified existing licensed Last DEV months, NO OOS
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p _private/out
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          for MONTH in 2025-10 2025-11 2025-12 2026-01 2026-02 2026-03 2026-04; do
+            mkdir -p _private/arc _private/data
+            gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/arc
+            (cd _private/arc && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+            7z x "_private/arc/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+            python local_nq_tick_2025_2026/nq_t133_t168_d2_shadow_portfolio.py --root _private/data --month "$MONTH" --out "_private/out/d2shadow_${MONTH}.json"
+            rm -rf _private/arc _private/data
+          done
+      - name: Verify exact historical D1 36 trade N and PnL plus full D0 frozen categories BEFORE portfolio results
+        run: |
+          set -euo pipefail
+          python local_nq_tick_2025_2026/nq_t133_t168_d2_shadow_portfolio.py --inputs _private/out --original-d1 _private/d1safe/summary.json --out final/summary.json --report final/report.md
+          cat final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Purge raw licensed Last AND all per-day strategy/portfolio decisions ALWAYS
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-t133-t168-D2-SHADOW-five-routers-50k-safe-aggregates
+          path: final/
+          if-no-files-found: error
