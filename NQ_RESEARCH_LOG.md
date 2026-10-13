@@ -843,3 +843,12 @@ Copiar esta estructura **al final del archivo** cuando cierre un bloque, y actua
 - **Dictamen congelado del agregador:** `D0_COHORT_INSUFFICIENT_DISTINCT_TESTABLE_NO_D1` y requisito >=20 TESTABLE distintas FALLA. D1 de cohorte nueva **NO AUTORIZADA**, D2 formal=0; PnL, PF, DD, p, q, IC90=N/D porque D0 no lee ganancias. T224 N106 no prueba ventaja monetaria; CASE es activación no trade.
 - **Corrección:** no comprar más historia, no abrir OOS, no variar umbrales ni crear clones T229–T248. Cohorte T-C cerrada, hallazgos negativos retenidos.
 - **Siguiente trabajo:** Bloque D `NinjaTrader SIM/Python parity` como diagnóstico de ejecución y construcción de interfaz a señales/órdenes congeladas; [gate ya documentado](research/nq/NQ_NINJATRADER_SIM_PARITY_GATE_BEFORE_50K_2026_10_13.md). No declarar NinjaTrader ejecutado ni trading fondeado; cuenta $50K sigue futuro.
+
+
+### 2026-10-13 — [PUENTE 13 H/T | SHADOW ECON 5/20] Registro previo y corrección técnica
+
+- **User request:** cinco nuevas T210/T212/T215/T217/T224 requieren primer dinero; otras ocho tienen resultados económicos y necesitan comparativa por cohorte hacia D sucesivas. Regla de no sobreoptimizar permanece.
+- **Prerregistro congelado previo a salida económica**: [puente 13](research/nq/NQ_13_H_T_EXPLORATORY_ECONOMIC_BRIDGE_PREREG_2026_10_13.md) sin autorización formal D1 por D0=5/20. BH20 incluido aunque solo cinco entren a nuevo sim; Q por familias H no se recalcula ni se mezclan ventanas históricas.
+- **Código/pruebas:** [motor económico cinco T](local_nq_tick_2025_2026/nq_t210_t224_five_economic_shadow.py), [tests](local_nq_tick_2025_2026/test_nq_t210_t224_five_economic_shadow.py), [workflow](.github/workflows/nq-t210-t224-selected-five-economic-shadow.yml). Sintéticas 8 PASS.
+- **Incidencia:** [Action 38426116624 FAILED](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38426116624) por date vs str en validación sesión; abortó con limpieza de _private, sin resultado PnL. Corrección atómica conservando cadena ISO y toda la hipótesis/ejecución congelada; [nueva Action 38426344458](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38426344458) **RUNNING** al registrar. No cambiar costos/umbrales por resultado.
+- **Pendiente:** obtener D1 SHADOW segura con N, USD, PF/DD CLOSED, bootstrap IC90 qBH20, bloqueo por ambigüedad; complementar matriz 13 y D2 factibilidad. 2025/26 H y T mayo–sep26 sellados; sin nueva data.
