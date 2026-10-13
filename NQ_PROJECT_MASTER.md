@@ -10,6 +10,10 @@
 
 ## 2026-10-13 — BLOQUE T-C: 20 HIPÓTESIS NUEVAS T209–T228 PRERREGISTRADAS; G0/D0 CORRIENDO
 
+**Puerta de ingeniería NinjaTrader SIM documentada sin despliegue:** [especificación de paridad Python↔NinjaTrader](research/nq/NQ_NINJATRADER_SIM_PARITY_GATE_BEFORE_50K_2026_10_13.md), chequeo de contar filas Last vs volumen, grupos timestamp atómicos, cierres 233/377/4181/10946, signos, stops y fills; NO declarar portabilidad o fondeo antes de ejecutar prueba de paridad. Este paso es independiente de elegir 'la ganadora' del T-C.
+
+
+
 **Seguimos sin sobreoptimizar T05/T147/H69.** Se registró una cohorte completa de **20 preguntas distintas en cuatro familias**: `A T209–T213` eficiencia/trayectoria del precio, `B T214–T218` volumen por nivel/POC, `C T219–T223` tamaño de print y agrupación, `D T224–T228` permanencia temporal y valor macro. [Prerregistro explicativo](research/nq/NQ_T209_T228_20_STRUCTURAL_D0_PREREG_2026_10_13.md) y [definiciones exactas congeladas JSON v2](research/nq/NQ_T209_T228_20_STRUCTURAL_D0_PREREG_2026_10_13.json), antes de observar nuevos resultados; no se proponen veinte variantes paramétricas de una sola estrategia. **No se descargó nuevo historial ni se abrió OOS; solo meses Last DEV existentes.**
 
 **Código de 20 IDs:** [motor G0/D0](local_nq_tick_2025_2026/nq_t209_t228_structural_d0.py), [8 pruebas sintéticas](local_nq_tick_2025_2026/test_nq_t209_t228_structural_d0.py), [workflow](.github/workflows/nq-t209-t228-20-structural-G0-D0-dev.yml). **[GitHub Action 38418969389](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38418969389): G0 (8 pruebas) SUCCESS, proceso DEV 7 meses EN CURSO** al publicar este registro, **D0 aún sin resultado agregado final**. Se exige 140 fuente/135 READY, N CASE/CONTROL/OTHER/NOT_EVALUABLE para cada uno, Jaccard <0,85, ≥15 CASE y ≥15 CONTROL y ≥20 distintos testables antes de siquiera prerregistrar D1; no reducir gates ni inventar beneficios. **D1 formal = 0, D2 formal = 0**, ningún nuevo PF/DD/PnL hasta etapa autorizada. Tras recibir resultados D0, documentar los 20 miembros y rotar hacia NinjaTrader SIM/metodología de ejecución, NO retocar esta familia para hacerla pasar.
