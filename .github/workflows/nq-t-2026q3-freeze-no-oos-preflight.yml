@@ -1,0 +1,42 @@
+name: NQ T pseudo-forward 2026Q3 FREEZE no market data preflight
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t-2026q3-freeze-no-oos-preflight.yml'
+      - 'research/nq/nq_t_2026q3_freeze_preflight.py'
+      - 'research/nq/test_nq_t_2026q3_freeze_preflight.py'
+      - 'research/nq/NQ_T_2026Q3_PSEUDOFORWARD_FINAL_FREEZE_V1.json'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  freeze-preflight-no-license-secrets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Static prereg and isolation tests without importing market engines
+        run: |
+          set -euo pipefail
+          python -m unittest research.nq.test_nq_t_2026q3_freeze_preflight -v
+      - name: Make static dependency SHA256 inventory; NEVER access ticks or releases
+        run: |
+          set -euo pipefail
+          mkdir -p final
+          python research/nq/nq_t_2026q3_freeze_preflight.py --output final/source_inventory.json --summary final/report.md
+          cat final/report.md >> "$GITHUB_STEP_SUMMARY"
+          printf '\ncommit_sha=%s\n' "$GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"
+          test ! -d _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-t-2026q3-frozen-source-no-market-safe
+          path: final/
+          if-no-files-found: error
