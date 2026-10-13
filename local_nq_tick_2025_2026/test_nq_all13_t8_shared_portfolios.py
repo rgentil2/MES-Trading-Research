@@ -34,7 +34,7 @@ class EightTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,"SEALED"):
                 month_stage(None,"2026-06",load_registry(),registry())
     def test_stop_first_and_next_timestamp(self):
-        groups=[(101,105,108),(102,91,141)]
+        groups=[(101,105,108),(102,89,141)]
         z=model_one(groups,1,F(90),1.5,15,100,True)
         self.assertEqual(z["status"],"MODELLED_EXECUTION_UNVERIFIED")
         self.assertEqual(z["exit_reason"],"STOP_FIRST")
@@ -68,7 +68,7 @@ class EightTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"UNRESOLVED"):
             account_day(it,("T147",))
     def test_closed_dd_and_monthly_stats(self):
-        self.assertEqual(dd_daily([50,-100,30,-120]),140.)
+        self.assertEqual(dd_daily([50,-100,30,-120]),190.)
         days=[]
         for i in range(7):
             it={x:[] for x in T}
