@@ -223,6 +223,7 @@ def render(policy,ledger):
         surv=len(set(s["statistical_screen_pass_ids"]) |
                  set(s["economic_screen_pass_ids"]))
         state=("**ESPERA:** completar bloque D0" if b["stage"]=="D0_POOL_FORMING"
+               else "**D1 en ejecución (SIN RESULTADOS AÚN)**" if b["stage"]=="D0_COMPLETE_D1_RUNNING"
                else "D1 cerrado (sin calificadas)")
         diverse=(str(len(d["diverse_ids"])) if b["origin"]=="NEW_BATCH_20_PLUS"
                  else "N/D (legacy)")
