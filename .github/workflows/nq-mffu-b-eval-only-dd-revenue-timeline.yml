@@ -1,0 +1,65 @@
+name: NQ MFFU B 50K evaluation drawdown and revenue timeline DEV only
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-mffu-b-eval-only-dd-revenue-timeline.yml'
+      - 'local_nq_tick_2025_2026/nq_mffu_b_evaluation_revenue_timeline.py'
+      - 'local_nq_tick_2025_2026/test_nq_mffu_b_evaluation_revenue_timeline.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nq-mffu-b-dd-revenue-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  frozen-private-dev-seven-month-last-safety-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      PYTHONPATH: .:local_nq_tick_2025_2026:research/nq
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify prereg and unit tests before licensed source access
+        run: |
+          set -euo pipefail
+          test -s research/nq/NQ_MFFU_50K_B_EQUITY_TIMELINE_DIAGNOSTIC_PREREG_2026_10_13.md
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_mffu_b_evaluation_revenue_timeline.py' -v
+          python -m unittest discover -s local_nq_tick_2025_2026 -p 'test_nq_top2_mffu_eod_float_replay.py' -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_mffu_b_evaluation_revenue_timeline.py
+      - name: Reconstruct identical seven DEV month private intents and worst Last envelope
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "${GH_TOKEN:-}"
+          mkdir -p _private/arc _private/data _private/months
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          for MONTH in 2025-10 2025-11 2025-12 2026-01 2026-02 2026-03 2026-04; do
+            python -c 'from nq_t209_t228_structural_d0 import month_guard; import sys;month_guard(sys.argv[1])' "$MONTH"
+            gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/arc
+            (cd _private/arc && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+            7z x "_private/arc/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+            python local_nq_tick_2025_2026/nq_top2_mffu_eod_float_replay.py --month "$MONTH" --root _private/data --out "_private/months/mffu_top2_${MONTH}.json"
+            rm -rf _private/arc _private/data
+            mkdir -p _private/arc _private/data
+          done
+      - name: Fail closed if old 35-session validation or $8052.35 B parity changes; safe monthly output only
+        run: |
+          set -euo pipefail
+          mkdir -p final
+          python local_nq_tick_2025_2026/nq_mffu_b_evaluation_revenue_timeline.py --inputs _private/months --out final/summary.json --report final/report.md
+          cat final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Purge every licensed Last source and private session ledger ALWAYS
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-mffu-b-50k-eval-only-risk-monthly-revenue-safe
+          path: final/
+          if-no-files-found: error
