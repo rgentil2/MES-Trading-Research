@@ -52,7 +52,7 @@ class EconomicBridgeTests(unittest.TestCase):
         a=bootstrap([0.]*135,"T210",5)
         self.assertEqual(a["CI90"],[0.,0.])
         self.assertEqual(a["B"],10000)
-        with self.assertRaisesRegex(ValueError,"135"):
+        with self.assertRaisesRegex(ValueError,"FULL_READY"):
             bootstrap([1.],"T210",5)
 
     def test_drawdown_is_closed_only(self):
