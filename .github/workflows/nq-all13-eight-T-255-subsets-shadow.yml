@@ -1,0 +1,66 @@
+name: NQ ALL13 eight T full 255 subsets shared-account DEV only
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-all13-eight-T-255-subsets-shadow.yml'
+      - 'local_nq_tick_2025_2026/nq_all13_t8_shared_portfolios.py'
+      - 'local_nq_tick_2025_2026/test_nq_all13_t8_shared_portfolios.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nq-all13-T255-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  entire-T8-cohort-one-account-subsets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      PYTHONPATH: .:local_nq_tick_2025_2026:research/nq
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Frozen all 13 manifest and synthetic safety tests BEFORE market access
+        run: |
+          set -euo pipefail
+          test -s research/nq/NQ_ALL13_PORTFOLIO_SEARCH_PREREG_2026_10_13.json
+          test -s research/nq/NQ_ALL13_PORTFOLIO_SEARCH_PREREG_2026_10_13.md
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_all13_t8_shared_portfolios.py -v
+          python -m unittest discover -s research/nq -p test_nq_all13_subset_search.py -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_all13_t8_shared_portfolios.py
+      - name: Reuse prior licensed DEV Oct2025-Apr2026 Last files ONLY with original checksums
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "${GH_TOKEN:-}"
+          mkdir -p _private/archives _private/data _private/ledger
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          for MONTH in 2025-10 2025-11 2025-12 2026-01 2026-02 2026-03 2026-04; do
+            python -c 'from nq_t209_t228_structural_d0 import month_guard; import sys;month_guard(sys.argv[1])' "$MONTH"
+            gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/archives
+            (cd _private/archives && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+            7z x "_private/archives/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+            python local_nq_tick_2025_2026/nq_all13_t8_shared_portfolios.py --month "$MONTH" --root _private/data --out "_private/ledger/t8_${MONTH}.json"
+            rm -rf _private/archives _private/data
+            mkdir -p _private/archives _private/data
+          done
+      - name: Enforce 140-135 + exact eight parent N and net parity BEFORE computing 255 portfolios
+        run: |
+          set -euo pipefail
+          mkdir -p final
+          python local_nq_tick_2025_2026/nq_all13_t8_shared_portfolios.py --inputs _private/ledger --out final/summary.json --report final/report.md
+          cat final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Always remove licensed Last and per-day/position data
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-all13-255-T-portfolios-aggregates-only
+          path: final/
+          if-no-files-found: error
