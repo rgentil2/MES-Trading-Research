@@ -23,9 +23,9 @@ from nq_t08_risk_audit import Envelope
 from nq_b05_t11_month import counter
 
 ROOT=Path(__file__).resolve().parents[1]
-POLICY=ROOT/'research/nq/NQ_T169_T188_MONETARY_BLOCKS_PREREG_2026_10_13.json'
-WINDOWS={'A':((9,10),(9,25)), 'B':((9,30),(9,40)),
-         'C':((10,20),(10,40)), 'D':((11,10),(11,35))}
+POLICY=ROOT/'research/nq/NQ_T169_T188_MONETARY_BLOCKS_PREREG_V2_2026_10_13.json'
+WINDOWS={'A':((9,40),(10,0)), 'B':((9,30),(9,40)),
+         'C':((10,20),(10,40)), 'D':((11,10),(11,30))}
 CODES={
  'T169':'A_PRE_TREND','T170':'A_PRE_EXHAUST',
  'T171':'A_PRE_COMPRESSION','T172':'A_PRE_BREAK','T173':'A_PRE_SWEEP',
@@ -43,7 +43,7 @@ MODEL_IDS=[BASE]+[name for i in IDS for name in (i+'_ONLY',i+'_PLUS_T05')]
 def load_frozen():
     x=json.loads(POLICY.read_text(encoding='utf8'))
     ms=x['members']
-    if (x['prereg_id']!='NQ-T169-T188-MONETARY-BLOCKS-V1'
+    if (x['prereg_id']!='NQ-T169-T188-MONETARY-BLOCKS-V2-COMPATIBILITY'
         or [m['id'] for m in ms]!=list(IDS)
         or any(m['code']!=CODES[m['id']] for m in ms)
         or tuple(x['source_months'])!=MONTHS
