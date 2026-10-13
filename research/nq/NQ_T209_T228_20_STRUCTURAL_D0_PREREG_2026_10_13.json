@@ -1,7 +1,7 @@
 {
   "prereg_id": "NQ-T209-T228-20-DIVERSE-STRUCTURAL-G0-D0-V1",
   "registered": "2026-10-13",
-  "version": 1,
+  "version": 2,
   "status": "FROZEN_BEFORE_DEV_OUTCOMES",
   "source": "ALREADY_OWNED_NQ_LAST_DEV_ONLY",
   "months": [
@@ -511,5 +511,28 @@
   "no_OOS": true,
   "no_broker_fill_claim": true,
   "previous_ids_last": 208,
-  "posthoc_selection_prohibited": true
+  "posthoc_selection_prohibited": true,
+  "trigger_definitions": {
+    "T209": "A: g>=4 grupos atómicos; |último VWAP-grupo−primer VWAP-grupo|>=8 ticks, eficiencia 5*|neto|>=3*Σ|cambios grupo|. Side=sign(neto).",
+    "T210": "A: Σ|cambios grupo|>=3*(highE−lowE), |neto|<=rangoE/4, |últimoVWAPgrupo−vwapE|>=4. Side=−sign(último−VWAP).",
+    "T211": "A: g>=8; medio=floor(g/2); |VWAPgrupo[medio]−VWAPgrupo[0]|<=3, |VWAPgrupo[-1]−VWAPgrupo[medio]|>=8. Side=sign(segundo tramo).",
+    "T212": "A: al menos 6 cambios de signo entre incrementos sucesivos no cero de VWAP-grupo, |último−vwapE|>=5. Side=−sign(último−VWAP).",
+    "T213": "A: salto máximo abs(Δ VWAP-grupo)>=12; desde precio justo DESPUÉS de primer salto máximo a último VWAP-grupo retroceso contra signo del salto >=6. Side=−sign(salto).",
+    "T214": "B: cantidad en tercio superior de rangoE >=65% de qtyE y último>mid+2 => LONG; tercio inferior>=65% y último<mid−2 => SHORT; ningún lado o dos=CONTROL.",
+    "T215": "B: POC E y D por cantidad, empate POC promedio de niveles empatados; |POC_E−POC_D|>=6, cuerpoE (último-grupo menos primero-grupo) de signo opuesto y magnitud>=4. Side=sign(POC_E−POC_D).",
+    "T216": "B: qty agregada en tres niveles de precio más negociados >=50% qtyE, |último-grupo−POC_E|>=8. Side=sign(POC_E−último-grupo).",
+    "T217": "B: qty tercio superior>=35% y último<mid−4 => SHORT; qty tercio inferior>=35% y último>mid+4 => LONG; ambigüedad=CONTROL.",
+    "T218": "B: nivel entero ocupado más próximo al último VWAP-grupo (empates elegir precio menor) qty de nivel <= qtyE/(4*niveles_únicos), |último-grupo−POC_D|>=8. Side=sign(último-grupo−POC_D).",
+    "T219": "C: prints grandes qty>=4 y pequeños qty<=2; ambos >=10; |VWAP_grandes−VWAP_pequeños|>=5. Side=sign(VWAP_grandes−VWAP_pequeños).",
+    "T220": "C: tamaño promedio de print E (qtyE/nprintsE) >=1.5× tamaño D; |último-grupo−primero-grupo|>=6. Side=sign(cuerpo E).",
+    "T221": "C: >=10 prints grandes qty>=4; cuerpo E |último−primero|>=6, diferencia VWAP_grandes−último >=6 ticks y signo OPUESTO al cuerpo. Side=sign(VWAP_grandes−último).",
+    "T222": "C: qty en primera mitad cronológica de grupos >=2× qty segunda mitad; desplazamiento del VWAP-grupo en segunda mitad>=6 ticks. Side=−sign(desplazamiento segundo tramo).",
+    "T223": "C: al menos 50% de grupos tienen >=3 prints cada uno, rango E<=18 ticks, |último-grupo−VWAP_E|>=4. Side=−sign(último−VWAP).",
+    "T224": "D: barra macro 4181 estrictamente ANTERIOR a finE; tiempo entre grupos consecutivos (pesado por intervalos) >=70% sobre macro VWAP o >=70% bajo; último grupo>=4 ticks mismo lado. Side=lado dominante.",
+    "T225": "D: mismo macro 4181; número de cruces de VWAP macro entre grupos atómicos consecutivos >=4; |último-grupo−macroVWAP|>=6. Side=−sign(último−macroVWAP).",
+    "T226": "D: macro 10946 estrictamente anterior a finE; primerVWAPgrupo y último grupo quedan en lados opuestos de POC10946 separados por >=4 y >=6 ticks, respectivamente. Side=sign(último−POC10946).",
+    "T227": "D: mediana intervalo timestamp grupo E >=1.5× mediana intervalo de D (ambas >0), Σ|Δpx-grupo E|>=2*rangoE y |último−vwapE|>=4. Side=−sign(último−VWAP).",
+    "T228": "D: eficiencia de ruta E <=0.25, eficiencia D >=0.65, |netoD|>=8, último E ubicado a >=3 ticks respecto último D en dirección OPUESTA al neto D. Side=−sign(netoD)."
+  },
+  "registrations_note": "v2 mejora precisión de definiciones ANTES de ejecutar G0/D0, sin outcomes consultados. IDs, ventanas, stop/TP inalterados."
 }
