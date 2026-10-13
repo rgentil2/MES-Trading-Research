@@ -15,8 +15,8 @@ class NQCohortFunnelTest(unittest.TestCase):
     def test_active_six_cohort_snapshot(self):
         z=validate(*self.mutated())
         self.assertEqual(z["status"],"FUNNEL_VALIDATED")
-        self.assertEqual(z["new_D0_diverse_candidates"],15)
-        self.assertEqual(z["new_D0_gap_to_next_D1"],5)
+        self.assertEqual(z["new_D0_diverse_candidates"],27)
+        self.assertEqual(z["new_D0_gap_to_next_D1"],0)
         self.assertEqual(z["D2_batch_size"],0)
 
     def test_cannot_pass_new_batch_D1_with_one_idea(self):
@@ -86,9 +86,9 @@ class NQCohortFunnelTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate(p,l)
 
-    def test_new_complete_strategy_cohort_D1_is_locked_at_15(self):
+    def test_new_complete_strategy_cohort_D1_cannot_forge_completion(self):
         p,l=self.mutated()
-        b=next(x for x in l["cohorts"] if x["id"]=="NQ-C133-152")
+        b=next(x for x in l["cohorts"] if x["id"]=="NQ-C133-168")
         b["D1"]["status"]="COMPLETE"
         b["D1"]["evaluated_ids"]=b["all_preregistered_ids"]
         b["D1"]["workflow_run"]=999
@@ -100,14 +100,14 @@ class NQCohortFunnelTest(unittest.TestCase):
 
     def test_no_false_risk_eligible_on_T138_low_power(self):
         p,l=self.mutated()
-        b=next(x for x in l["cohorts"] if x["id"]=="NQ-C133-152")
+        b=next(x for x in l["cohorts"] if x["id"]=="NQ-C133-168")
         b["D0"]["diverse_ids"].append("T138")
         with self.assertRaises(ValueError):
             validate(p,l)
 
     def test_dashboard_reports_real_stages_not_predicted_profit(self):
         txt=render(*self.mutated())
-        for v in ("15", "T133", "T143", "20", "0", "T05"):
+        for v in ("27", "T133", "T153", "36", "0", "T05"):
             self.assertIn(v,txt)
         self.assertNotIn("validada para fondeo",txt.lower())
 
