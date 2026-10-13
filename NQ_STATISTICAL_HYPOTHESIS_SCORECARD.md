@@ -20,6 +20,21 @@
 
 **Los 31 nombres D0 viables NO son alfas; las siete medias con IC90 individual positivo NO alcanzaron la corrección BH sobre los 38 miembros**, incluidos T60/T77 no estimables y T71/T81/T82/T83/T84 casi duplicadas. No se cambian side, CASE/CONTROL ni umbrales para rescatar q. [Detalle D0 de los 38 y redundancia](research/nq/NQ_T59_T96_SIX_BLOCK_COHORT_D0_RESULTS_2026_10_12.md) y [scorecard D1 los 38](research/nq/NQ_T59_T96_38_MEMBER_WHOLE_COHORT_D1_RESULTS_2026_10_12.md) contienen TODAS las decisiones. **N_trades=0; USD neto/PF/DD/Δrouter/Holm/OOS/ROI=N/D**: markout VWAP o rango 15m físicos NO son ejecuciones de cuenta.
 
+## CIERRE D1 DE 36 ESTRATEGIAS ECONÓMICAS T133–T168 — qBH36=1,0, CERO APROBADAS (12-oct-2026)
+
+[**Tabla y decisión completa D1**](research/nq/NQ_T133_T168_ECONOMIC_D1_FULL36_RESULTS_2026_10_12.md) · [Action 38326216082 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38326216082) · [artefacto agregado de 36 ID 11781138134](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38326216082/artifacts/11781138134), SHA256 `aa587d6edfc5f3ec19dcda527ba4452fda15828c59d6477198121f481acb67af`. Universo original **k36** prerregistrado ANTES de leer PnL, 140 sesiones/135 READY. Costes nominales y fricción de entrada/salida adversa **SUPUESTOS**, fills NO verificables.
+
+**Resultados por clase:** 26 netos PROXY negativos, cinco positivos pero `INCONCLUSIVE_OR_GATE_FAIL` (T133/T135/T137/T145/T147), cinco `NOT_ESTIMABLE_LOW_PROXY_FREQUENCY` (T134/T138/T139/T143/T144), cero aprobadas. **q BH36 mínima=1,000, 0 IC90 L5 del PnL diario con límite inferior >0**. **D1 CERRADO SIN ALFA; D2=0; ROI real/Markout ejecutable/Holm y OOS confirmatorio=N/D**. No declarar rentable T134 con 14 operaciones proxy.
+
+| ID | N trades proxy | PnL modelo base USD | PF modelo | Corte Oct–Dic | Corte Ene–Abr | D1 |
+|---|---:|---:|---:|---:|---:|---|
+| T133 | 52 | +606,75 | 1,178 | +724,25 | −117,50 | **FAIL**, q1, CI L5 incluye cero |
+| T145 | 51 | +788,00 | 1,238 | +317,63 | +470,38 | **FAIL**, PF menor 1,25, q1, CI L5 incluye cero |
+| T147 | 20 | +642,25 | 1,499 | −567,00 | +1209,25 | **FAIL**, inestable, q1, CI L5 incluye cero |
+| T134 | 14 | +846,50 | 2,153 | +642,25 | +204,25 | **N/D** (<15 trades, sin p/q inferenciales) |
+
+**La población contiene 36 reglas correlacionadas; sumarlas para reclamar PnL de una única cuenta sería metodológicamente inválido.** DEV ya explorada = estadística EXPLORATORIA, no prueba confirmatoria. Sin comisiones reales, bid/ask fiable, prioridad ni fills broker, el proxy no demuestra ganancia comercial. Próxima prioridad: decidir si merece la pena adquirir o verificar evidencia de ejecución independiente ANTES de reiniciar otro ciclo de señales; no reoptimizar T134/T145/T147.
+
 ## T133–T168 — RESULTADO D0 DEL BLOQUE AMPLIADO DE ESTRATEGIAS ECONÓMICAS
 
 **[Action D0 38325498797 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38325498797): 36 estrategias preregistradas, 29 TESTABLE y 27 distintas**, 140 fuente/135 READY DEV, semilla T133–152 reproducida EXACTA antes de medir cualquier outcome, [36 filas de clasificación](research/nq/NQ_T133_T168_FULL36_EXECUTABLE_D0_RESULTS_2026_10_12.md), [conteos congelados JSON](research/nq/NQ_T133_T168_36_MEMBER_D0_FROZEN_COUNTS_2026_10_12.json), [artifact 11780607582](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38325498797/artifacts/11780607582). LOW_POWER T134 T138 T139 T143 T144 T153 T154; near duplicate CASE T150/T158 (1,0), T164/T163 (0,951456). **Gate D1 ≥20 CUMPLIDO**, pero D0 aún no mide PF/DD/costos/PNL o IC90, p/q; todos N/D en esta fase.
