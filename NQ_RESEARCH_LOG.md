@@ -815,3 +815,14 @@ Copiar esta estructura **al final del archivo** cuando cierre un bloque, y actua
 - **Rotación ya completada H-B:** [revisión documental H09/H56/H69/H74/H77](research/nq/NQ_H_BLOCK_H09_H56_H69_H74_H77_REVIEW_2026_10_13.md) sin nuevo PnL. Dos padres H09/H56, routers superpuestos; H77 −$319,14 y H74 −$1.046,60 en beneficio total contra H69 misma cuenta MNQ 2020–24. H69 queda benchmark, no alpha aprobado; no filtros adicionales al selector.
 - **Gates y resguardos:** D1 formal0, D2 formal0, OOS H 2025/26 y T mayo–sept2026 sellados; solo archivo DEV existente, ni nuevas compras ni cuentas de fondeo, ningún broker fill probado.
 - **Siguiente paso T-C:** diseñar bloque completo de mecanismos realmente distintos y deduplicar antes de probarlos, sin generar otro ajuste T05/H69. Prototipo NinjaTrader SIM solo para reglas congeladas, no validación de trading real.
+
+
+### 2026-10-13 — [T209–T228 G0/D0] Veinte mecanismos nuevos, prerregistrados antes de outputs
+
+- **Objetivo/preguntas:** no sobreoptimizar antiguos ganadores; veinte señales distintas en cuatro familias (trayectoria, perfil cantidad-precio, tamaño de print, persistencia temporal), una primera E377 completa por ventana.
+- **Registro ex ante:** [reglas exhaustivas JSON v2 congeladas](research/nq/NQ_T209_T228_20_STRUCTURAL_D0_PREREG_2026_10_13.json) y [metodología](research/nq/NQ_T209_T228_20_STRUCTURAL_D0_PREREG_2026_10_13.md); los umbrales completos fueron guardados antes de cualquier procesamiento económico/G0 D0 de mercado. No optimización posterior.
+- **Universo y permisos:** solo los siete meses Last DEV 2025oct–2026abr existentes, 140 fuente/135 READY esperados; H OOS 2025–26 y T mayo–sep 2026 sellados. Sin adquisición de nuevo historial.
+- **Artefactos de código:** [motor](local_nq_tick_2025_2026/nq_t209_t228_structural_d0.py), [tests](local_nq_tick_2025_2026/test_nq_t209_t228_structural_d0.py), [GitHub workflow](.github/workflows/nq-t209-t228-20-structural-G0-D0-dev.yml).
+- **Action [38418969389](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38418969389):** 8 tests sintéticos SUCCESS; procesamiento completo de siete meses **EN CURSO** al registrar esta entrada, sin resultado agregado publicado. Actualizar con una nueva entrada al concluir, sin sustituir esta línea.
+- **Gates:** CASE y CONTROL >=15; CASE Jaccard <.85; para abrir D1 nueva familia, >=20 testables diversos. D0 NO lee retorno futuro; PnL/PF/DD=N/D; D1 formal0/D2 formal0. No salvar CASE insuficientes.
+- **Siguiente:** cerrar G0/D0 y documentar tabla de 20 resultados si el job termina SUCCESS; rotar fase a ejecución y NinjaTrader SIM de reglas ya congeladas, sin barrer más umbrales retrospectivamente.
