@@ -1,0 +1,158 @@
+{
+  "freeze_protocol_id": "NQ-T-2026Q3-PSEUDOFORWARD-FREEZE-V1",
+  "recorded_date": "2026-10-13",
+  "objective": "ONE historical OOS test before considering purchase of a MyFundedFutures $50k Rapid EOD evaluation; no mandatory live Sim101 stage",
+  "research_method": "EX_ANTE_OOS_TWO_SELECTED_PORTFOLIOS_PLUS_FROZEN_BENCHMARK",
+  "not_yet_authorized_to_unseal": true,
+  "state": "PREPARED_PENDING_SHA256_AND_PREFLIGHT",
+  "source_fingerprint_sha256": null,
+  "source_fingerprint_method": "SHA256 of each full source file and its relative path sorted, then SHA256 canonical join; record in immutable manifest after synthetic CI",
+  "source_entrypoints": [
+    "local_nq_tick_2025_2026/nq_top2_mffu_eod_float_replay.py",
+    "local_nq_tick_2025_2026/nq_all13_t8_shared_portfolios.py"
+  ],
+  "explicit_config_files": [
+    "research/nq/NQ_T169_T188_MONETARY_BLOCKS_PREREG_V2_2026_10_13.json",
+    "research/nq/NQ_T133_T152_EXECUTABLE_D0_PREREG_2026_10_12.json",
+    "research/nq/NQ_T209_T228_20_STRUCTURAL_D0_PREREG_2026_10_13.json",
+    "research/nq/NQ_ALL13_PORTFOLIO_SEARCH_PREREG_2026_10_13.json",
+    "research/nq/NQ_13_H_T_EXPLORATORY_ECONOMIC_BRIDGE_PREREG_2026_10_13.md",
+    "research/nq/NQ_TOP2_MFFU_50K_EOD_FLOATING_REPLAY_PREREG_2026_10_13.md"
+  ],
+  "temporal_roles": {
+    "seen_development": {
+      "months": [
+        "2025-10",
+        "2025-11",
+        "2025-12",
+        "2026-01",
+        "2026-02",
+        "2026-03",
+        "2026-04"
+      ],
+      "purpose": "EXISTING_RESEARCH_ONLY"
+    },
+    "internal_reserved": {
+      "start": "2026-05-01",
+      "end": "2026-06-30",
+      "role": "OPTIONAL_INTERNAL_ONLY_NOT_CONFIRMATORY",
+      "not_read": true
+    },
+    "single_final_holdout": {
+      "start": "2026-07-01",
+      "end": "2026-09-30",
+      "timezone": "America/New_York",
+      "role": "PSEUDO_FORWARD_OOS",
+      "not_read": true,
+      "one_shot": true
+    },
+    "unrelated_H_holdouts": {
+      "years": [
+        "2025",
+        "2026"
+      ],
+      "must_remain_sealed": true
+    }
+  },
+  "candles_or_tick_type": "existing licensed NQ Last, atomic groups by identical timestamp for new models, original legacy T05 unchanged",
+  "frozen_portfolios": {
+    "A": {
+      "members": [
+        "T05-377",
+        "T215"
+      ],
+      "stage": "FINALISTS_NOT_APPROVED"
+    },
+    "B": {
+      "members": [
+        "T05-377",
+        "T186",
+        "T215"
+      ],
+      "stage": "FINALISTS_NOT_APPROVED"
+    },
+    "benchmark": {
+      "members": [
+        "T05-377"
+      ],
+      "stage": "REFERENCE_ONLY"
+    }
+  },
+  "single_account": {
+    "max_open_positions": 1,
+    "max_new_trades_per_day": 2,
+    "strategy_daily_closed_stop_usd": -600,
+    "conflict_priority": "T05-377, T147, T186, T210, T212, T215, T217, T224 (from frozen original ORDER)",
+    "include_days_without_trades": true,
+    "no_after_the_fact_month_exclusions": true,
+    "no_after_the_fact_variant_selection": true,
+    "contract_sizing": "Original 1 NQ or 1 MNQ selected by each frozen model; no retrospective size changes",
+    "fees_mffu_rt_usd": {
+      "NQ": 4.68,
+      "MNQ": 1.9
+    },
+    "slippage": "Frozen per-model assumed 2 adverse ticks per side; include adversarial costs x1.5 and extra $10/round-trip without double-charging original fees"
+  },
+  "official_challenge_assumptions_at_registration": {
+    "plan": "Rapid EOD 50K",
+    "target_usd": 3000,
+    "max_loss_usd": 2000,
+    "evaluation_min_trading_days": 4,
+    "evaluation_daily_profit_consistency_fraction": 0.3,
+    "no_daily_loss_limit": true,
+    "max_minis": 3,
+    "max_micros": 30,
+    "funded_profit_reset_to_zero": true,
+    "funded_buffer_usd": 2100,
+    "profit_split_trader_fraction": 0.9,
+    "official_terms_recheck_before_purchase": true
+  },
+  "mandatory_final_report": [
+    "date coverage & QC, rollover and timezone",
+    "all THREE policies with zero-trade days and parents attribution",
+    "number trades/month, active weeks, frequency",
+    "base net and expectancy/trade, profit factor",
+    "stress net with x1.5 cost and extra $10 RT",
+    "drawdown closed EOD and conservative adverse Last path",
+    "rolling EOD floor crossing risk in evaluation and funded reset phase",
+    "monthly stability across July August September",
+    "delta A-vs-benchmark and B-vs-A on identical sessions with matched friction",
+    "bootstrap paired days IC90 and sample uncertainty with tiny holdout warning",
+    "NQ/MNQ sizes, ambiguous same-timestamp cases, known Bid/Ask unknowns",
+    "news/inactivity unknowns, all negative outcomes and no retro exclusions",
+    "GO/NO_GO/BLOCKED status and exact reason"
+  ],
+  "decision_gates": {
+    "hard_no_go_if": [
+      "missing or invalid source quality, sessions/rollover",
+      "any OOS peek prior to final freeze",
+      "source SHA mismatch or runtime code different",
+      "execution ambiguity or missing entry/exit timestamps that prevents defensible risk measurement",
+      "any modeled evaluation/funded EOD floor breach under conservative Last bound",
+      "nonpositive profit under stress x1.5 or +$10RT",
+      "PF under cost stress below 1.25",
+      "no modeled benefit relative to benchmark on same days and friction",
+      "inability to apply contemporaneous funded rules (mark eligibility NOT_ESTIMABLE instead of claiming GO)"
+    ],
+    "further_evidence_required_before_go": [
+      "risk-adjusted expectancy per trade and net/DD, PF, N and frequency",
+      "positive or explain negative monthly contributions without cherry picking",
+      "T215 incremental attribution and uncertainty, especially few OOS trades",
+      "margins to $2000 floor and limitation of last-only marks",
+      "consistency >=4 days, <=30% daily concentration",
+      "review latest MFFU news, inactivity and implementation details before payment"
+    ],
+    "minimum_portfolio_trade_frequency_target_per_month": 5,
+    "statistical_evidence": "report IC90 bootstrap days, p and uncertainty; 3-month holdout cannot by itself prove annual CAGR or independent robustness after 255 adaptive choices",
+    "winner_selection_rule": "Compare both frozen candidates and T05 benchmark; do NOT pick the better one and then treat it as its own clean OOS; both are predeclared and require post-selection caution",
+    "if_both_fail": "NO_GO; record holdout consumed, do not reoptimize on Jul-Sep or move calendar",
+    "if_some_pass": "CONDITIONAL_GO_FOR_PAID_EVALUATION_REVIEW_ONLY_AFTER_EXECUTION_SAFETY_CHECKS; no mandatory extended Sim101 stage"
+  },
+  "access_control": {
+    "preflight_must_not_open_prices_or_trades": true,
+    "only_metadata_for_holdout_coverage_prior_to_single_open": true,
+    "unseal_requires_source_lock_success_and_explicit_final_one_shot_run": true,
+    "no_holdout_outputs_in_public_repository": true,
+    "no_new_downloads": true
+  }
+}
