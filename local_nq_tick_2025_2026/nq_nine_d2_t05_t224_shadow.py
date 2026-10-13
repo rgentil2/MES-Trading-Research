@@ -283,7 +283,7 @@ def aggregate(allmonths):
     st=stats_trade(b_stress);st["DD_closed_usd"]=dd_closed(stress)
     if a["N"]!=t05n or abs(a["net_usd"]-t05net)>.01:
         raise AssertionError("T05_STANDALONE_ROUTER_PARITY")
-    if abs(b["net_usd"]-sum(owners[o]*0 for o in [] )-round(sum(combo),2))>.01:
+    if abs(b["net_usd"]-round(sum(combo),2))>.01:
         raise AssertionError("SHARED_ACCOUNT_NOT_BALANCED")
     return {
         "stage":"NINE_D2_SHADOW_T05_T224_MIXED_PARENT_COST_NOT_FORMAL",
