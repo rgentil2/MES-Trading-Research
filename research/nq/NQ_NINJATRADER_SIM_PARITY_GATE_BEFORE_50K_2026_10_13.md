@@ -1,5 +1,7 @@
 # Paso D — Puerta técnica de Python a NinjaTrader SIM (NO fondeo) · 2026-10-13
 
+> **ENMIENDA POSTERIOR APROBADA POR EL USUARIO (13-oct-2026):** este documento queda como especificación **opcional de paridad técnica** y guía de implementación, pero **NO establece una fase prolongada NinjaTrader SIM/Sim101 obligatoria** entre el pseudo-forward histórico sellado y una evaluación pagada MFFU $50K. Nuevo flujo prioritario: freeze de A/B y benchmark con implementación verificable sobre DEV → única apertura pseudo-forward T julio–septiembre 2026 y dictamen GO/NO-GO → si GO, preparación mínima de órdenes/stops/OCO y posibilidad de empezar directamente evaluación de fondeo. Esta enmienda NO significa abrir el holdout, prometer fills ni eliminar pruebas básicas de seguridad. [Decisión con precedencia en el documento maestro](../../NQ_PROJECT_MASTER.md).
+
 **Propósito:** impedir que una señal rentable en backtest Python se transforme en una estrategia diferente al portarla a NinjaTrader. Documento de ingeniería y control de errores; **ningún NinjaScript entregado ni SIM ejecutado aún**. El proyecto en prioridad sigue investigación por bloques completos, sin abrir OOS ni comprar data nueva.
 
 ## Momento correcto para entrar a NinjaTrader
