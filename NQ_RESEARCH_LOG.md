@@ -793,3 +793,13 @@ Copiar esta estructura **al final del archivo** cuando cierre un bloque, y actua
 - **Observaciones:** H69/H74/H77 reciclan H09/H56; T05 estrés+USD10 RT PF1,23717 y sensibilidad DD Last hasta2.462,50; T05+T186 PF extra10 1,20198 y DD2.130 falla; T147 standalone N20, no hay router válido T05+T147. Riesgo 50K/ilustrativo $2.000 no equivale a trailing flotante real.
 - **Estado:** PREPARACIÓN METODOLÓGICA, NO D1/D2 PASSED. No OOS, no nueva optimización, no cuenta fondeada.
 - **Siguiente:** auditoría factibilidad de riesgo/ejecución con evidencia existente; eventual prerregistro compartido T05+T147 *solo si la armonización es físicamente defendible*.
+
+
+### 2026-10-13 — [AUDITORÍA T05/T147/T186] Costes, secuencia Last y requisito motor compartido
+
+- **Objetivo:** interpretar 1NQ T05 y dos complementos T147/T186 antes de estudiar cuenta 50K o cartera.
+- **Fuente/prerregistro:** solo resultados ya publicados B03/B05G/B05K/T133–168/T169–188, sin nueva prueba, nuevo alpha ni parámetros.
+- **Acción completada:** [informe de auditoría documental](research/nq/NQ_T05_T147_T186_RISK_FEASIBILITY_AUDIT_2026_10_13.md), referenciado en maestro.
+- **Hallazgos:** T05 115/+5102,50 PF1,31826/DD Last1797,50 estrés; recargo $10RT +3952,50 PF1,23717; reordenación timestamp igual DD estrés2462,50 y +$10RT DD2612,50; bootstrap con recargo incluye 0. T147 20/+642,25 base/DD cerrado567 y sin router T05+T147. T186 standalone -970; delta router +280 con extra10 pero PF1,20198 y DD2130 FALLA.
+- **Estado:** DIAGNÓSTICO DOCUMENTAL COMPLETO, NO GATE APROBADO; cero nuevas operaciones simuladas, H/T OOS sellados intactos y ningún nuevo archivo de mercado.
+- **Siguiente:** auditar factibilidad de motor único timestamp/ejecución/SL/TP/riesgo de T05+T147 ANTES de prerregistrar o calcular PnL compartido; retener T186 como contraejemplo.
