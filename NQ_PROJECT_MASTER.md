@@ -2,11 +2,19 @@
 
 > **LEE ESTE DOCUMENTO PRIMERO AL INICIAR CUALQUIER CONVERSACIÓN SOBRE NQ.**
 >
-> **Última revisión documental:** 2026-10-12 (America/Bogota).
+> **Última revisión documental:** 2026-10-13 (America/Bogota).
 > **Alcance activo:** EXCLUSIVAMENTE NQ/MNQ. MES/ES queda en pausa por decisión del usuario.
 > **Estado general:** investigación retrospectiva exploratoria; **NINGUNA ESTRATEGIA NI CARTERA ESTÁ VALIDADA PARA OPERAR O COMPRAR FONDEO**.
 > **Fuente de verdad:** este archivo para reglas/objetivos/decisiones; [NQ_RESEARCH_LOG.md](NQ_RESEARCH_LOG.md) para el historial cronológico; prerregistros, código, artefactos y GitHub Actions para los resultados reproducibles.
 > **Mantenimiento obligatorio:** al finalizar CADA bloque de investigación, actualizar aquí el estado/backlog y **añadir** una entrada al registro histórico antes de dar el trabajo por cerrado. No borrar experimentos fallidos ni sustituir resultados antiguos sin un registro de corrección y su motivo.
+
+## ESTADO ACTUAL 13-OCT-2026 — INVESTIGACIÓN MONETARIA T169–T188 CERRADA
+
+**Orden vigente después del mandato del usuario:** no continuar automáticamente antiguo backlog estadístico; buscar mecanismos nuevos de *rentabilidad neta incremental en un router de cuenta compartida con T05*, sin usar q/IC90 como filtro exploratorio. **Estudio V3 20 hipótesis agrupadas en A/B/C/D COMPLETADO** por [Action 38350552598 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38350552598), [SAFE 11790253664](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38350552598/artifacts/11790253664), [reporte total](research/nq/NQ_T169_T188_MONETARY_V3_20_RESULTS_2026_10_13.md). 7/7 meses DEV, 140/135, T05 115 operaciones y neto estrés +US$5.102,50 / estrés+$10 RT +US$3.952,50 intactos. **19 estrategias evaluables, 1 NO ESTIMABLE T176, 16 deltas monetarios negativos, 2 deltas cero, 1 delta positivo T186; 0/20 PASAN el gate de economía compartida**. Bloques A 0/5, B 0/5 (una N/D), C 0/5, D 0/5.
+
+**T186 NO PASA:** mejora +US$780 router estrés / +US$280 con +US$10 RT extra, pero PF con extra10 **1,20198<1,25** y DD Last estrés **US$2.130>US$2.000** de referencia (NO broker). No promover por positividad aislada. T184/T188 ganan standalone bajo estrés, pero su aporte conjunto estrés+$10 RT es negativo. **Ninguna estrategia lista para fondeo**. Formal D1 T133–168 y D2 siguen 0 aprobados; q/IC90 pospuestos SOLO exploratoriamente; sin nueva data, sin 5s nuevas, sin holdouts mayo–septiembre ni H. Se documentaron [V1 fallo horario](research/nq/NQ_T169_T188_MONETARY_BLOCKS_V2_EXECUTION_COMPATIBILITY_2026_10_13.md), [V2 fallo exposición Last y enmienda conservadora V3](research/nq/NQ_T169_T188_V3_FAIL_CLOSED_AMBIGUOUS_EXPOSURE_2026_10_13.md).
+
+**Siguiente prioridad propuesta, NO ejecutada:** antes de seguir generando más señales arbitrarias sobre el mismo DEV sobreexplorado, diseñar una nueva familia monetaria con un mecanismo diferente del VWAP/impulso de 377 (por ejemplo interacción con T05 condicionada causalmente, pero sin seleccionar días ex post), y un ensayo de *costos/ejecución verificables* usando exclusivamente Last/Bid/Ask existentes. Crear y congelar política económica de entrada/stop/TP/router antes de volver a evaluar; mantener OOS cerrado hasta consentimiento/gate. No interpretar esto como promesa de ventaja estadística.
 
 ## BLOQUE MONETARIO D T184–T188 — COMPLETADO V3 13-OCT-2026, 0/5 PASS; T186 NO PROMOVER
 
