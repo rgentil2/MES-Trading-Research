@@ -79,7 +79,7 @@ class TestMFFUTop2(unittest.TestCase):
         times=[r[0] for r in rows]
         z=last_adverse_envelope(rows,times,x,1,1002)
         self.assertAlmostEqual(z["worst_rel_usd"],-4.90)
-        self.assertAlmostEqual(z["best_rel_usd"],-2.90)
+        self.assertAlmostEqual(z["best_rel_usd"],0.00)  # Includes initial flat equity mark
         self.assertTrue(z["observed_whole_timestamp_bound"])
 
     def test_eval_pass_requires_4_days_consistency(self):
