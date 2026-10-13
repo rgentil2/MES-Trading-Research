@@ -24,7 +24,7 @@ class MonetaryBatch(unittest.TestCase):
     def test_cluster_and_volume(self):
         self.assertEqual(choose('A_CLUSTER_FADE',bar(110,30,100,20,100),bar(100),bar(90)),-1)
         self.assertEqual(choose('A_VOLUME_SURGE',bar(110,12,200),bar(100,12,100),bar(95)) ,1)
-        self.assertEqual(choose('A_VOLUME_DROP_TURN',bar(95,12,40),bar(100,12,100),bar(110)), -1)
+        self.assertEqual(choose('A_VOLUME_DROP_TURN',bar(95,12,40),bar(100,12,100),bar(90)), -1)
 
     def test_micro_accept_and_sweep(self):
         self.assertEqual(choose('B_ACCEPT_UP',bar(120,8),bar(100,10),bar(104,10)),1)
