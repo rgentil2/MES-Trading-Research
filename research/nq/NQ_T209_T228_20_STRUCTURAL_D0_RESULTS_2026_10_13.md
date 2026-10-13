@@ -5,10 +5,10 @@
 ## Resultado agregado verificado
 
 - 20 hipótesis T209–T228 completas en cuatro bloques.
-- **5 testables y 5 distintas** (CASÉ≥15, CONTROL≥15, colisiones Jaccard CASE <0,85 según agregador): **T210, T212, T215, T217, T224**.
+- **5 testables y 5 distintas** (CASE≥15, CONTROL≥15, colisiones Jaccard CASE <0,85 según agregador): **T210, T212, T215, T217, T224**.
 - **15 insuficientes:** fallan conteo CASE/CONTROL o cobertura necesaria. No atribuir una probabilidad ni PnL a esas reglas.
 - G0/D0 oficial: `D0_COHORT_INSUFFICIENT_DISTINCT_TESTABLE_NO_D1`. **No supera las 20 testables distintas exigidas para nueva D1**, por lo que NO se evaluó dinero, PF, drawdown, IC90 ni q. Formal D1/D2 permanecen vacías.
-- CASÉ por bloque (solo conteos de clasificaciones, **no operaciones**): A=85, B=77, C=3, D=123. Las activaciones de diferentes hipótesis pueden coincidir dentro de una sesión; no se suman como trades independientes.
+- CASE por bloque (solo conteos de clasificaciones, **no operaciones**): A=85, B=77, C=3, D=123. Las activaciones de diferentes hipótesis pueden coincidir dentro de una sesión; no se suman como trades independientes.
 
 ## Las 20 preguntas y N CASE en las 135 sesiones READY
 
