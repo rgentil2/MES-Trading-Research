@@ -168,7 +168,7 @@ def run_month(root,month):
     stats={name:{'c':counter(),'extra':counter(),
           'owners':defaultdict(counter),'extra_owners':defaultdict(counter),
           'opps':0,'overlap':0,'capacity':0,'reject':0} for name in MODEL_IDS}
-    qc=Counter();signal_counts=Counter()
+    qc=Counter();signal_counts=Counter();censored=set()
     for day in days:
         events=list(source_events(file_for(root,dev_day(day),'Last')))
         status,old_bars,t05=frozen_t05(events,day)
@@ -185,9 +185,18 @@ def run_month(root,month):
             route,_=shared_router(t05,[(z[0],z[1])] if z else [])
             sets[k+'_PLUS_T05']=route
         for key,signals in sets.items():
+            if key in censored:continue
             z=stats[key];z['opps']+=len(signals)
-            attrs,more,skips=trace(day,events,old_bars,signals,STRESS,
-                 envelopes[key],extras[key])
+            try:
+                attrs,more,skips=trace(day,events,old_bars,signals,STRESS,
+                     envelopes[key],extras[key])
+            except ValueError as exc:
+                if str(exc)!='B05H UNRESOLVED SYNTHETIC EXPOSURE FAIL CLOSED':
+                    raise
+                if key==BASE:
+                    raise ValueError('T05_FROZEN_BASELINE_UNRESOLVED_FAIL_WHOLE_MONTH') from exc
+                censored.add(key)
+                continue
             for owner,c in attrs.items():
                 z['c'].update(c);z['owners'][owner].update(c)
             for owner,c in more.items():
@@ -200,6 +209,13 @@ def run_month(root,month):
     if not ready:raise AssertionError('NO_READY_DEV_SESSIONS')
     models={}
     for name,z in stats.items():
+        if name in censored:
+            # Model is not counted as zero or profitable; discard its entire
+            # partial 1-month vector. Requiring all 7 months makes N/D global.
+            models[name]={STRESS:{'status':'NOT_ESTIMABLE_UNRESOLVED_EXECUTION',
+                  'trades':None,'net_usd':None,
+                  'stress_extra_10usd_fixed_path':None}}
+            continue
         c=z['c'];extra=z['extra']
         if (extra['trades']!=c['trades'] or
              extra['net_cents']!=c['net_cents']-1000*c['trades']):
@@ -231,6 +247,8 @@ def run_month(root,month):
     return {'month':month,'status':'T169_T188_DEV_MONEY_EXPLORATORY_UNVERIFIED',
        'source_days':source,'eligible_days':ready,
        'models':models,'signal_counts':dict(signal_counts),
+       'n_censored_models':len(censored),
+       'censored_model_keys':sorted(censored),
        'holdouts_opened':False,'new_history_acquired':False,
        'new_signal_5second_bars':False,'licensed_data_exported':False,
        'broker_fills_verified':False}
@@ -249,4 +267,5 @@ if __name__=='__main__':
        'month':a.month,'source':result['source_days'],
        'ready':result['eligible_days'],
        'signals':result['signal_counts'],
+       'n_censored_models':result['n_censored_models'],
        'holdouts_opened':False,'licensed_data_exported':False},sort_keys=True))
