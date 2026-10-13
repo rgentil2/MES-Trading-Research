@@ -803,3 +803,15 @@ Copiar esta estructura **al final del archivo** cuando cierre un bloque, y actua
 - **Hallazgos:** T05 115/+5102,50 PF1,31826/DD Last1797,50 estrés; recargo $10RT +3952,50 PF1,23717; reordenación timestamp igual DD estrés2462,50 y +$10RT DD2612,50; bootstrap con recargo incluye 0. T147 20/+642,25 base/DD cerrado567 y sin router T05+T147. T186 standalone -970; delta router +280 con extra10 pero PF1,20198 y DD2130 FALLA.
 - **Estado:** DIAGNÓSTICO DOCUMENTAL COMPLETO, NO GATE APROBADO; cero nuevas operaciones simuladas, H/T OOS sellados intactos y ningún nuevo archivo de mercado.
 - **Siguiente:** auditar factibilidad de motor único timestamp/ejecución/SL/TP/riesgo de T05+T147 ANTES de prerregistrar o calcular PnL compartido; retener T186 como contraejemplo.
+
+
+### 2026-10-13 — [G0 T05/T147 REPRODUCCIÓN REAL COMPLETADA / ROTACIÓN H-B]
+
+- **Mandato:** el usuario exige evitar sobreanalizar hipótesis y conjuntos; aplicar [política de rotación en bloques](research/nq/NQ_RESEARCH_ROTATION_BATCH_POLICY_2026_10_13.md), no tuning ni reoptimización de un único modelo tras observar dinero.
+- **Prerregistro de G0 anterior al resultado:** [T05+T147 preflight](research/nq/NQ_T05_T147_SHARED_ROUTER_G0_PREFLIGHT_PREREG_2026_10_13.md) creado antes del job.
+- **Ejecución probada:** [GitHub Action 38415595454 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38415595454), seis tests sintéticos PASS previos a descargar archivos Last DEV ya existentes; 7 meses con checksum válido, 140 días fuente/135 READY; artefacto SAFE 11824631763 ZIP SHA256 f58a19d767b8f27d1a3a7978c0d976fbefb93bff91056de508aea94e16b00c78; eliminación de datos licenciados tras el run.
+- **Resultados VERIFICADOS:** T05 N115 +$5.102,50 neto estrés, cero días abortados; T147 21 CASE con 20 trade proxies +$642,25 BASE, 1 rechazo al riesgo en entrada, 17 NQ/3 MNQ, 0 entradas tocando stop en el grupo de timestamp, 12 días con señales de ambas familias. [Reporte completo](research/nq/NQ_T05_T147_G0_PREFLIGHT_RESULTS_2026_10_13.md).
+- **Dictamen:** `G0_PARENT_PARITY_OK_EXPOSURE_REPLAY_REQUIRED`; G0 paridad PASS, **router monetario aún no medido**, sin capacidad de sumar ganancias ni probar DD/PF conjunto. Falta reconstruir entry/exit timestamp de T147 y ejecución homogénea NQ/MNQ antes de diseño único shadow. Sin sobreoptimizar T05/T147.
+- **Rotación ya completada H-B:** [revisión documental H09/H56/H69/H74/H77](research/nq/NQ_H_BLOCK_H09_H56_H69_H74_H77_REVIEW_2026_10_13.md) sin nuevo PnL. Dos padres H09/H56, routers superpuestos; H77 −$319,14 y H74 −$1.046,60 en beneficio total contra H69 misma cuenta MNQ 2020–24. H69 queda benchmark, no alpha aprobado; no filtros adicionales al selector.
+- **Gates y resguardos:** D1 formal0, D2 formal0, OOS H 2025/26 y T mayo–sept2026 sellados; solo archivo DEV existente, ni nuevas compras ni cuentas de fondeo, ningún broker fill probado.
+- **Siguiente paso T-C:** diseñar bloque completo de mecanismos realmente distintos y deduplicar antes de probarlos, sin generar otro ajuste T05/H69. Prototipo NinjaTrader SIM solo para reglas congeladas, no validación de trading real.
