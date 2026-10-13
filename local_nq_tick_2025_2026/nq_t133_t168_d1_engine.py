@@ -88,12 +88,12 @@ def first_future_groups(events,anchor,timeout_minutes):
     i=bisect_right(times,anchor)
     end=anchor+int(timeout_minutes)*60*10_000_000
     j=bisect_right(times,end)
-    if i>=j:return []
-    return [ (ts,min(x[1] for x in items),max(x[1] for x in items))
+    if i>=j:return ([],j<len(events))
+    return ([ (ts,min(x[1] for x in items),max(x[1] for x in items))
       for ts,itr in groupby(events[i:j],lambda z:z[0])
-      for items in [list(itr)] ]
+      for items in [list(itr)] ],j<len(events))
 
-def model_one(groups,side,stop,target_R,timeout,anchor):
+def model_one(groups,side,stop,target_R,timeout,anchor,has_horizon_coverage):
     """Worst group prints at ENTRY; adverse slip; adversarial group exits.
 
     Signal must be CASE and risk-qualified by D0. Recheck actual model risk.
@@ -129,7 +129,7 @@ def model_one(groups,side,stop,target_R,timeout,anchor):
                 break
     if exit_ref is None:
         last=groups[-1]
-        if last[0] < anchor+int(timeout)*60*10_000_000:
+        if not has_horizon_coverage:
             return {'status':'HORIZON_NOT_FULLY_OBSERVED'}
         exit_ref=F(last[1]) if side>0 else F(last[2])
         reason='TIME_EXIT_ADVERSE_GROUP'
@@ -176,6 +176,7 @@ def day_sim(events,day,old,new):
         if not target or not timeout:raise AssertionError('NO_TP_OR_TIME_FOR_CASE')
         if timeout not in cache:
             cache[timeout]=first_future_groups(events,ctx['anchor'],timeout)
-        result=model_one(cache[timeout],side,stop,target,timeout,ctx['anchor'])
+        future,coverage=cache[timeout]
+        result=model_one(future,side,stop,target,timeout,ctx['anchor'],coverage)
         output[k]={'group':label,**result}
     return output
