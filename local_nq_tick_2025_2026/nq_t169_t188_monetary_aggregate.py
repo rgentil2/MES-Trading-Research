@@ -21,14 +21,19 @@ def aggregate(months):
             or z['licensed_data_exported'] is not False
             or z['broker_fills_verified'] is not False
             or set(z['models'])!=set(MODEL_IDS)
-            or z['source_days']<z['eligible_days']):
+            or z['source_days']<z['eligible_days']
+            or z['n_censored_models']!=len(z['censored_model_keys'])
+            or set(z['censored_model_keys'])-set(MODEL_IDS)
+            or BASE in z['censored_model_keys']):
             raise ValueError('UNSAFE_OR_INCOMPLETE_MONTH_'+m)
     sources=sum(months[m]['source_days'] for m in MONTHS)
     ready=sum(months[m]['eligible_days'] for m in MONTHS)
     if (sources,ready)!=(140,135):raise AssertionError('T05_SOURCE_PARITY')
+    censored={name for name in MODEL_IDS if any(
+        name in months[m]['censored_model_keys'] for m in MONTHS)}
     totals={name:{STRESS:group(months,name,STRESS),
              EXTRA:group(months,name,STRESS,extra=True)}
-             for name in MODEL_IDS}
+             for name in MODEL_IDS if name not in censored}
     ref=totals[BASE][STRESS]; extra_ref=totals[BASE][EXTRA]
     if (ref['trades'],ref['net_usd'],ref['last_envelope_dd_usd'])!=(115,5102.5,1797.5):
         raise AssertionError('T05_STRESS_EXACT_PARITY')
@@ -36,6 +41,23 @@ def aggregate(months):
         raise AssertionError('T05_EXTRA10_EXACT_PARITY')
     results={}
     for k in IDS:
+        if k+'_ONLY' in censored or k+'_PLUS_T05' in censored:
+            results[k]={
+              'block':'A' if int(k[1:])<=173 else 'B' if int(k[1:])<=178
+                      else 'C' if int(k[1:])<=183 else 'D',
+              'question':next(t['question'] for t in policy['members'] if t['id']==k),
+              'signal_days':sum(months[m]['signal_counts'].get(k+'_SIGNAL',0) for m in MONTHS),
+              'standalone_trades':None,'standalone_net_stress_usd':None,
+              'standalone_net_extra10_usd':None,'router_trades':None,
+              'router_net_stress_usd':None,'router_net_extra10_usd':None,
+              'router_pf_stress':None,'router_pf_extra10':None,
+              'router_last_dd_stress':None,'router_last_dd_extra10':None,
+              'added_executed':None,'added_attributed_net':None,
+              't05_retained':None,'delta_stress':None,'delta_extra10':None,
+              'monthly_router_n':None,'monthly_router_pnl':None,
+              'economic_gates':None,
+              'decision':'NOT_ESTIMABLE_UNRESOLVED_EXECUTION'}
+            continue
         s=totals[k+'_ONLY'][STRESS]; sx=totals[k+'_ONLY'][EXTRA]
         r=totals[k+'_PLUS_T05'][STRESS]; rx=totals[k+'_PLUS_T05'][EXTRA]
         owners=r['owner_attribution']
@@ -79,7 +101,11 @@ def aggregate(months):
                       if all(gates.values()) else 'FAIL_MONETARY_NO_PROMOTION')}
     return {'stage':'T169_T188_FOUR_BLOCKS_ECONOMIC_SHADOW_DEV_ONLY',
       'source_days':sources,'ready_days':ready,
-      'hypotheses':len(results),'models_simulated':len(MODEL_IDS),
+      'hypotheses':len(results),'models_attempted':len(MODEL_IDS),
+      'models_fully_estimable':len(totals),
+      'models_censored_nonreconstructable':sorted(censored),
+      'candidate_not_estimable_ids':[k for k,z in results.items()
+                           if z['decision'].startswith('NOT_ESTIMABLE')],
       'baseline':{'trades':115,'net_stress_usd':5102.5,'net_extra10_usd':3952.5,
           'pf_stress':ref['pf'],'pf_extra10':extra_ref['pf'],
           'last_dd_stress':1797.5,'last_dd_extra10':1887.5},
@@ -128,6 +154,7 @@ if __name__=='__main__':
     a.report.write_text(render(z))
     print('T169_T188_SAFE='+json.dumps({'ready':z['ready_days'],
       'pass_ids':z['passed_exploratory_ids'],
+      'not_estimable_ids':z['candidate_not_estimable_ids'],
       'deltas':{k:{'n':v['standalone_trades'],'delta_extra10':v['delta_extra10'],
          'pf_extra10':v['router_pf_extra10'],'dd':v['router_last_dd_stress'],
          'decision':v['decision']} for k,v in z['results'].items()},
