@@ -28,7 +28,7 @@ class EconomicProxy36(unittest.TestCase):
         self.assertEqual(model_one([],1,95,1.5,15,0,True)['status'],'NO_NEXT_GROUP')
     def test_adverse_stop_first_on_simultaneous_target_stop(self):
         G=[(10,100,100),(20,80,150),(30,80,180)]
-        z=model_one(G,1,95,1.5,15,0,True)
+        z=model_one(G,1,93,1.5,15,0,True)
         self.assertIn(z['exit_reason'],('STOP_FIRST','STOP'))
         self.assertLess(z['net_usd'],0)
         self.assertFalse(z['broker_fills_verified'] if 'broker_fills_verified' in z else False)
@@ -38,16 +38,16 @@ class EconomicProxy36(unittest.TestCase):
         self.assertEqual(z['exit_reason'],'AMBIGUOUS_ENTRY_GROUP_STOP_FIRST')
         self.assertLess(z['net_usd'],0)
     def test_gap_adverse_execution_slippage(self):
-        z=model_one([(10,100,100),(20,95,99)],1,95,1.5,15,0,True)
+        z=model_one([(10,100,100),(20,95,99)],1,93,1.5,15,0,True)
         self.assertEqual(z['status'],'MODELLED_EXECUTION_UNVERIFIED')
         self.assertLess(z['net_usd'],z['gross_usd'])
         self.assertLess(z['stress_1_5x_usd'],z['net_usd'])
         self.assertEqual(round(z['net_usd']-z['stress_plus_10_rt_usd'],5),10)
     def test_time_exit_requires_full_future_coverage(self):
         G=[(10,100,100),(15,100,105)]
-        self.assertEqual(model_one(G,1,95,1.5,15,0,False)['status'],
+        self.assertEqual(model_one(G,1,93,1.5,15,0,False)['status'],
                          'HORIZON_NOT_FULLY_OBSERVED')
-        self.assertEqual(model_one(G,1,95,1.5,15,0,True)['exit_reason'],
+        self.assertEqual(model_one(G,1,93,1.5,15,0,True)['exit_reason'],
                          'TIME_EXIT_ADVERSE_GROUP')
     def test_135_days_for_inference(self):
         with self.assertRaises(ValueError):boot_mean([1.]*10,'T153',5)
