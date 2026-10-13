@@ -781,3 +781,15 @@ Copiar esta estructura **al final del archivo** cuando cierre un bloque, y actua
 - **TOP 5 DESCRIPTIVO, NO para operar:** T05 115 trades 7m 1NQ neto estrés +5102,50 / +3952,50 extra10; H09 173 trades 5 años 1NQ configuración central bracket neto ≈+18874 PF1,369 DD cerrado8122; H69 1MNQ 262 +2704,44 PF1,335 DD890,64; H77 1MNQ 140 +2385,30 PF1,632 DD584,54; H74 1MNQ 132 +1657,84 PF1,438 DD444,10. Diferentes instrumentos/ventanas, NO comparar suma ni tratar resultados como un solo risk-account. Cuatro H comparten padres H09/H56; no hay 5 ventajas independientes.
 - Contraste requerido: H77 y H74 no incrementan PnL sobre H69 en mismo calendario/contrato, T147 positivo pero solo20 trades y Q4 negativo, T186 delta +280 USD pese a PF y DD fallidos; H02/H36/H44 markout 30min sin bracket completo, otros T D1 observacionales con PnL N/D. Evaluación económica nominal 50K de H69/H77/H74 <1.1% CAGR contra objetivo ≥15%, sin ETF alineado ni payouts reales.
 - **Decisión:** ranking informativo posterior a resultados, cero PASSES confirmatorios, ninguna nueva promoción D1/D2, sin OOS o nuevas descargas. Si se requieren 5 complementarias realmente independientes, todavía NO existen cinco probadas. La siguiente investigación debe eliminar falta de paridad costo/periodo/ejecución antes de hacer un router unificado con T05; no inventar transferencias de NQ a MNQ ni abrir 2025/26 H o mayo–sept T sin autorización.
+
+
+### 2026-10-13 — [DECISIÓN 50K FUTURA / PRIORIDAD 8 H-T] Investigación y estrategias antes de cuenta
+
+- **Objetivo:** atender preferencia del usuario de elegir posteriormente una evaluación US$50K más económica, sin adelantar compra; continuar con hipótesis/estrategias, no con selección comercial de planes.
+- **Decisión previa:** mantener objetivos, puertas de selección, 50K como referencia de riesgo futuro; NO usar operaciones artificiales para justificar cumplimiento de inactividad ni convertirla en estrategia.
+- **Universo:** únicamente resultados H01–H78 DEV NQ minuto 2020–24 y T01–T208 DEV Last oct2025–abr2026 ya publicados. 2025/26 H y mayo–sept2026 T siguen sellados. Sin descarga.
+- **Acción completada:** memorando de dependencias y backlog [ocho hipótesis y 50K futura](research/nq/NQ_50K_RESEARCH_PRIORITY_EIGHT_HYPOTHESES_2026_10_13.md); sección correlativa en [maestro](NQ_PROJECT_MASTER.md).
+- **Pruebas ejecutadas:** ninguna nueva; decisión documental y priorización, sin repetir valores como validación de ejecución.
+- **Observaciones:** H69/H74/H77 reciclan H09/H56; T05 estrés+USD10 RT PF1,23717 y sensibilidad DD Last hasta2.462,50; T05+T186 PF extra10 1,20198 y DD2.130 falla; T147 standalone N20, no hay router válido T05+T147. Riesgo 50K/ilustrativo $2.000 no equivale a trailing flotante real.
+- **Estado:** PREPARACIÓN METODOLÓGICA, NO D1/D2 PASSED. No OOS, no nueva optimización, no cuenta fondeada.
+- **Siguiente:** auditoría factibilidad de riesgo/ejecución con evidencia existente; eventual prerregistro compartido T05+T147 *solo si la armonización es físicamente defendible*.
