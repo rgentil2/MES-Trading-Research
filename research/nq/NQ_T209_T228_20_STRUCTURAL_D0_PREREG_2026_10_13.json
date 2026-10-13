@@ -1,0 +1,515 @@
+{
+  "prereg_id": "NQ-T209-T228-20-DIVERSE-STRUCTURAL-G0-D0-V1",
+  "registered": "2026-10-13",
+  "version": 1,
+  "status": "FROZEN_BEFORE_DEV_OUTCOMES",
+  "source": "ALREADY_OWNED_NQ_LAST_DEV_ONLY",
+  "months": [
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04"
+  ],
+  "source_sessions": 140,
+  "eligible_sessions": 135,
+  "source_time_et": [
+    "08:00",
+    "12:00"
+  ],
+  "holdouts_sealed": [
+    "T 2026-05 through 2026-09",
+    "H 2025-2026"
+  ],
+  "blocked_new_five_second_signals": true,
+  "atomic_timestamp_groups_required": true,
+  "account_reference_usd": 50000,
+  "blocks": [
+    {
+      "block": "A",
+      "name": "PATH_EFFICIENCY",
+      "window_et": [
+        "09:40",
+        "10:00"
+      ],
+      "description": "trayectoria del precio dentro de grupos atómicos 377, no simple pendiente VWAP",
+      "ids": [
+        "T209",
+        "T210",
+        "T211",
+        "T212",
+        "T213"
+      ]
+    },
+    {
+      "block": "B",
+      "name": "PRICE_VOLUME_PROFILE",
+      "window_et": [
+        "10:00",
+        "10:15"
+      ],
+      "description": "distribución de cantidad por niveles de precio, no solo VWAP/alto/bajo",
+      "ids": [
+        "T214",
+        "T215",
+        "T216",
+        "T217",
+        "T218"
+      ]
+    },
+    {
+      "block": "C",
+      "name": "PRINT_SIZE_SEGMENTATION",
+      "window_et": [
+        "10:20",
+        "10:40"
+      ],
+      "description": "tamaño real de print, su ubicación y secuencia temporal, no dirección agresora",
+      "ids": [
+        "T219",
+        "T220",
+        "T221",
+        "T222",
+        "T223"
+      ]
+    },
+    {
+      "block": "D",
+      "name": "MARKET_ACCEPTANCE_TIME",
+      "window_et": [
+        "10:45",
+        "11:05"
+      ],
+      "description": "tiempo en precio, cambios de régimen intrabar, interacción con contexto 4181/10946",
+      "ids": [
+        "T224",
+        "T225",
+        "T226",
+        "T227",
+        "T228"
+      ]
+    }
+  ],
+  "members": [
+    {
+      "id": "T209",
+      "block": "A",
+      "mechanism": "PATH_EFFICIENCY",
+      "window_et": [
+        "09:40",
+        "10:00"
+      ],
+      "question": "¿Cuando el precio recorre una ruta muy eficiente hacia un extremo, continúa en esa dirección?",
+      "feature": "efficiency_continuation",
+      "behavior": "follow",
+      "entry": "NEXT_WHOLE_TIMESTAMP_AFTER_COMPLETED_E377_END",
+      "stop": "OUTSIDE_CURRENT_E377_HIGH_LOW_BY_2_TICKS",
+      "take_profit_R": 1.5,
+      "timeout_minutes": 15,
+      "max_trades_per_day": 1,
+      "nominal_risk_cap_usd": 250,
+      "future_outcomes_in_D0": false
+    },
+    {
+      "id": "T210",
+      "block": "A",
+      "mechanism": "PATH_EFFICIENCY",
+      "window_et": [
+        "09:40",
+        "10:00"
+      ],
+      "question": "¿Una trayectoria con mucha rotación y poco desplazamiento termina revirtiendo hacia valor?",
+      "feature": "churn_fade",
+      "behavior": "fade",
+      "entry": "NEXT_WHOLE_TIMESTAMP_AFTER_COMPLETED_E377_END",
+      "stop": "OUTSIDE_CURRENT_E377_HIGH_LOW_BY_2_TICKS",
+      "take_profit_R": 1.5,
+      "timeout_minutes": 15,
+      "max_trades_per_day": 1,
+      "nominal_risk_cap_usd": 250,
+      "future_outcomes_in_D0": false
+    },
+    {
+      "id": "T211",
+      "block": "A",
+      "mechanism": "PATH_EFFICIENCY",
+      "window_et": [
+        "09:40",
+        "10:00"
+      ],
+      "question": "¿Una aceleración concentrada al final de la barra anticipa continuación?",
+      "feature": "late_acceleration",
+      "behavior": "follow",
+      "entry": "NEXT_WHOLE_TIMESTAMP_AFTER_COMPLETED_E377_END",
+      "stop": "OUTSIDE_CURRENT_E377_HIGH_LOW_BY_2_TICKS",
+      "take_profit_R": 1.5,
+      "timeout_minutes": 15,
+      "max_trades_per_day": 1,
+      "nominal_risk_cap_usd": 250,
+      "future_outcomes_in_D0": false
+    },
+    {
+      "id": "T212",
+      "block": "A",
+      "mechanism": "PATH_EFFICIENCY",
+      "window_et": [
+        "09:40",
+        "10:00"
+      ],
+      "question": "¿Una alternancia repetida de impulsos alrededor del precio medio anticipa reversión?",
+      "feature": "alternation_fade",
+      "behavior": "fade",
+      "entry": "NEXT_WHOLE_TIMESTAMP_AFTER_COMPLETED_E377_END",
+      "stop": "OUTSIDE_CURRENT_E377_HIGH_LOW_BY_2_TICKS",
+      "take_profit_R": 1.5,
+      "timeout_minutes": 15,
+      "max_trades_per_day": 1,
+      "nominal_risk_cap_usd": 250,
+      "future_outcomes_in_D0": false
+    },
+    {
+      "id": "T213",
+      "block": "A",
+      "mechanism": "PATH_EFFICIENCY",
+      "window_et": [
+        "09:40",
+        "10:00"
+      ],
+      "question": "¿Un salto grande entre grupos seguido de rechazo del salto anticipa reversión?",
+      "feature": "jump_rejection",
+      "behavior": "fade",
+      "entry": "NEXT_WHOLE_TIMESTAMP_AFTER_COMPLETED_E377_END",
+      "stop": "OUTSIDE_CURRENT_E377_HIGH_LOW_BY_2_TICKS",
+      "take_profit_R": 1.5,
+      "timeout_minutes": 15,
+      "max_trades_per_day": 1,
+      "nominal_risk_cap_usd": 250,
+      "future_outcomes_in_D0": false
+    },
+    {
+      "id": "T214",
+      "block": "B",
+      "mechanism": "PRICE_VOLUME_PROFILE",
+      "window_et": [
+        "10:00",
+        "10:15"
+      ],
+      "question": "¿La acumulación dominante de volumen en el tercio alto o bajo de la barra anticipa continuidad?",
+      "feature": "volume_zone_acceptance",
+      "behavior": "follow",
+      "entry": "NEXT_WHOLE_TIMESTAMP_AFTER_COMPLETED_E377_END",
+      "stop": "OUTSIDE_CURRENT_E377_HIGH_LOW_BY_2_TICKS",
+      "take_profit_R": 1.5,
+      "timeout_minutes": 15,
+      "max_trades_per_day": 1,
+      "nominal_risk_cap_usd": 250,
+      "future_outcomes_in_D0": false
+    },
+    {
+      "id": "T215",
+      "block": "B",
+      "mechanism": "PRICE_VOLUME_PROFILE",
+      "window_et": [
+        "10:00",
+        "10:15"
+      ],
+      "question": "¿La migración del POC contradicha por el cuerpo actual anticipa movimiento hacia el nuevo POC?",
+      "feature": "poc_body_divergence",
+      "behavior": "follow",
+      "entry": "NEXT_WHOLE_TIMESTAMP_AFTER_COMPLETED_E377_END",
+      "stop": "OUTSIDE_CURRENT_E377_HIGH_LOW_BY_2_TICKS",
+      "take_profit_R": 1.5,
+      "timeout_minutes": 15,
+      "max_trades_per_day": 1,
+      "nominal_risk_cap_usd": 250,
+      "future_outcomes_in_D0": false
+    },
+    {
+      "id": "T216",
+      "block": "B",
+      "mechanism": "PRICE_VOLUME_PROFILE",
+      "window_et": [
+        "10:00",
+        "10:15"
+      ],
+      "question": "¿La concentración del volumen en pocos niveles atrae una reversión hacia el POC?",
+      "feature": "concentrated_poc_pull",
+      "behavior": "fade",
+      "entry": "NEXT_WHOLE_TIMESTAMP_AFTER_COMPLETED_E377_END",
+      "stop": "OUTSIDE_CURRENT_E377_HIGH_LOW_BY_2_TICKS",
+      "take_profit_R": 1.5,
+      "timeout_minutes": 15,
+      "max_trades_per_day": 1,
+      "nominal_risk_cap_usd": 250,
+      "future_outcomes_in_D0": false
+    },
+    {
+      "id": "T217",
+      "block": "B",
+      "mechanism": "PRICE_VOLUME_PROFILE",
+      "window_et": [
+        "10:00",
+        "10:15"
+      ],
+      "question": "¿La aceptación de volumen en un extremo seguida de cierre en el lado contrario señala rechazo?",
+      "feature": "volume_edge_rejection",
+      "behavior": "fade",
+      "entry": "NEXT_WHOLE_TIMESTAMP_AFTER_COMPLETED_E377_END",
+      "stop": "OUTSIDE_CURRENT_E377_HIGH_LOW_BY_2_TICKS",
+      "take_profit_R": 1.5,
+      "timeout_minutes": 15,
+      "max_trades_per_day": 1,
+      "nominal_risk_cap_usd": 250,
+      "future_outcomes_in_D0": false
+    },
+    {
+      "id": "T218",
+      "block": "B",
+      "mechanism": "PRICE_VOLUME_PROFILE",
+      "window_et": [
+        "10:00",
+        "10:15"
+      ],
+      "question": "¿El cierre en un nivel de bajo volumen relativo tras desplazarse del POC anterior facilita continuación?",
+      "feature": "low_volume_node_escape",
+      "behavior": "follow",
+      "entry": "NEXT_WHOLE_TIMESTAMP_AFTER_COMPLETED_E377_END",
+      "stop": "OUTSIDE_CURRENT_E377_HIGH_LOW_BY_2_TICKS",
+      "take_profit_R": 1.5,
+      "timeout_minutes": 15,
+      "max_trades_per_day": 1,
+      "nominal_risk_cap_usd": 250,
+      "future_outcomes_in_D0": false
+    },
+    {
+      "id": "T219",
+      "block": "C",
+      "mechanism": "PRINT_SIZE_SEGMENTATION",
+      "window_et": [
+        "10:20",
+        "10:40"
+      ],
+      "question": "¿Un VWAP distinto en prints grandes frente a pequeños anticipa movimiento hacia el precio de los grandes?",
+      "feature": "large_small_price_premium",
+      "behavior": "follow",
+      "entry": "NEXT_WHOLE_TIMESTAMP_AFTER_COMPLETED_E377_END",
+      "stop": "OUTSIDE_CURRENT_E377_HIGH_LOW_BY_2_TICKS",
+      "take_profit_R": 1.5,
+      "timeout_minutes": 15,
+      "max_trades_per_day": 1,
+      "nominal_risk_cap_usd": 250,
+      "future_outcomes_in_D0": false
+    },
+    {
+      "id": "T220",
+      "block": "C",
+      "mechanism": "PRINT_SIZE_SEGMENTATION",
+      "window_et": [
+        "10:20",
+        "10:40"
+      ],
+      "question": "¿Un aumento del tamaño promedio negociado respecto a la barra anterior acompaña continuación del movimiento?",
+      "feature": "avg_size_expansion",
+      "behavior": "follow",
+      "entry": "NEXT_WHOLE_TIMESTAMP_AFTER_COMPLETED_E377_END",
+      "stop": "OUTSIDE_CURRENT_E377_HIGH_LOW_BY_2_TICKS",
+      "take_profit_R": 1.5,
+      "timeout_minutes": 15,
+      "max_trades_per_day": 1,
+      "nominal_risk_cap_usd": 250,
+      "future_outcomes_in_D0": false
+    },
+    {
+      "id": "T221",
+      "block": "C",
+      "mechanism": "PRINT_SIZE_SEGMENTATION",
+      "window_et": [
+        "10:20",
+        "10:40"
+      ],
+      "question": "¿Una divergencia entre grandes prints y el cuerpo del precio anticipa reversión del cuerpo?",
+      "feature": "big_print_body_divergence",
+      "behavior": "fade",
+      "entry": "NEXT_WHOLE_TIMESTAMP_AFTER_COMPLETED_E377_END",
+      "stop": "OUTSIDE_CURRENT_E377_HIGH_LOW_BY_2_TICKS",
+      "take_profit_R": 1.5,
+      "timeout_minutes": 15,
+      "max_trades_per_day": 1,
+      "nominal_risk_cap_usd": 250,
+      "future_outcomes_in_D0": false
+    },
+    {
+      "id": "T222",
+      "block": "C",
+      "mechanism": "PRINT_SIZE_SEGMENTATION",
+      "window_et": [
+        "10:20",
+        "10:40"
+      ],
+      "question": "¿La concentración del volumen al inicio de la barra seguida de desplazamiento tardío anticipa reversión?",
+      "feature": "front_loaded_qty_reversal",
+      "behavior": "fade",
+      "entry": "NEXT_WHOLE_TIMESTAMP_AFTER_COMPLETED_E377_END",
+      "stop": "OUTSIDE_CURRENT_E377_HIGH_LOW_BY_2_TICKS",
+      "take_profit_R": 1.5,
+      "timeout_minutes": 15,
+      "max_trades_per_day": 1,
+      "nominal_risk_cap_usd": 250,
+      "future_outcomes_in_D0": false
+    },
+    {
+      "id": "T223",
+      "block": "C",
+      "mechanism": "PRINT_SIZE_SEGMENTATION",
+      "window_et": [
+        "10:20",
+        "10:40"
+      ],
+      "question": "¿Una barra dominada por grupos de muchos prints y movimiento estrecho anticipa salida contraria al cierre?",
+      "feature": "batching_compression_fade",
+      "behavior": "fade",
+      "entry": "NEXT_WHOLE_TIMESTAMP_AFTER_COMPLETED_E377_END",
+      "stop": "OUTSIDE_CURRENT_E377_HIGH_LOW_BY_2_TICKS",
+      "take_profit_R": 1.5,
+      "timeout_minutes": 15,
+      "max_trades_per_day": 1,
+      "nominal_risk_cap_usd": 250,
+      "future_outcomes_in_D0": false
+    },
+    {
+      "id": "T224",
+      "block": "D",
+      "mechanism": "MARKET_ACCEPTANCE_TIME",
+      "window_et": [
+        "10:45",
+        "11:05"
+      ],
+      "question": "¿La permanencia temporal mayoritaria al mismo lado del VWAP 4181 confirma continuación?",
+      "feature": "time_dwell_macro_acceptance",
+      "behavior": "follow",
+      "entry": "NEXT_WHOLE_TIMESTAMP_AFTER_COMPLETED_E377_END",
+      "stop": "OUTSIDE_CURRENT_E377_HIGH_LOW_BY_2_TICKS",
+      "take_profit_R": 1.5,
+      "timeout_minutes": 15,
+      "max_trades_per_day": 1,
+      "nominal_risk_cap_usd": 250,
+      "future_outcomes_in_D0": false
+    },
+    {
+      "id": "T225",
+      "block": "D",
+      "mechanism": "MARKET_ACCEPTANCE_TIME",
+      "window_et": [
+        "10:45",
+        "11:05"
+      ],
+      "question": "¿Cruzar repetidamente el VWAP 4181 antes de alejarse anticipa reversión hacia ese valor?",
+      "feature": "macro_vwap_crossings_revert",
+      "behavior": "fade",
+      "entry": "NEXT_WHOLE_TIMESTAMP_AFTER_COMPLETED_E377_END",
+      "stop": "OUTSIDE_CURRENT_E377_HIGH_LOW_BY_2_TICKS",
+      "take_profit_R": 1.5,
+      "timeout_minutes": 15,
+      "max_trades_per_day": 1,
+      "nominal_risk_cap_usd": 250,
+      "future_outcomes_in_D0": false
+    },
+    {
+      "id": "T226",
+      "block": "D",
+      "mechanism": "MARKET_ACCEPTANCE_TIME",
+      "window_et": [
+        "10:45",
+        "11:05"
+      ],
+      "question": "¿El cierre cruza el POC de 10946 tras pasar buena parte de la barra al otro lado y continúa?",
+      "feature": "long_poc_transit",
+      "behavior": "follow",
+      "entry": "NEXT_WHOLE_TIMESTAMP_AFTER_COMPLETED_E377_END",
+      "stop": "OUTSIDE_CURRENT_E377_HIGH_LOW_BY_2_TICKS",
+      "take_profit_R": 1.5,
+      "timeout_minutes": 15,
+      "max_trades_per_day": 1,
+      "nominal_risk_cap_usd": 250,
+      "future_outcomes_in_D0": false
+    },
+    {
+      "id": "T227",
+      "block": "D",
+      "mechanism": "MARKET_ACCEPTANCE_TIME",
+      "window_et": [
+        "10:45",
+        "11:05"
+      ],
+      "question": "¿Aumento de saltos temporales entre grupos unido a una barra sin dirección anticipa reversión?",
+      "feature": "temporal_gaps_rotation",
+      "behavior": "fade",
+      "entry": "NEXT_WHOLE_TIMESTAMP_AFTER_COMPLETED_E377_END",
+      "stop": "OUTSIDE_CURRENT_E377_HIGH_LOW_BY_2_TICKS",
+      "take_profit_R": 1.5,
+      "timeout_minutes": 15,
+      "max_trades_per_day": 1,
+      "nominal_risk_cap_usd": 250,
+      "future_outcomes_in_D0": false
+    },
+    {
+      "id": "T228",
+      "block": "D",
+      "mechanism": "MARKET_ACCEPTANCE_TIME",
+      "window_et": [
+        "10:45",
+        "11:05"
+      ],
+      "question": "¿Un cambio brusco de eficiencia de trayectoria respecto a la barra 377 anterior anuncia giro?",
+      "feature": "efficiency_regime_switch",
+      "behavior": "fade",
+      "entry": "NEXT_WHOLE_TIMESTAMP_AFTER_COMPLETED_E377_END",
+      "stop": "OUTSIDE_CURRENT_E377_HIGH_LOW_BY_2_TICKS",
+      "take_profit_R": 1.5,
+      "timeout_minutes": 15,
+      "max_trades_per_day": 1,
+      "nominal_risk_cap_usd": 250,
+      "future_outcomes_in_D0": false
+    }
+  ],
+  "signal_policy": {
+    "one_first_complete_E377_in_window": true,
+    "decision_time": "ONLY_AFTER_ALL_PRINTS_IN_COMPLETED_BAR_AND_WHOLE_TIMESTAMP",
+    "eligible_risk_ticks_min": 8,
+    "eligible_risk_ticks_max": 400,
+    "nominal_trade_risk_usd": 250,
+    "contract": "1_NQ_if_risk_ticks_times_5_le_250_else_1_MNQ_if_risk_ticks_times_0p5_le_250",
+    "stop_padding_ticks": 2,
+    "TP_R": 1.5,
+    "max_holding_minutes": 15,
+    "one_position_at_a_time": true,
+    "max_two_new_trades_account_day": true,
+    "no_new_entry_if_closed_daily_loss_at_or_below_usd": -600
+  },
+  "D0": {
+    "case_min": 15,
+    "control_min": 15,
+    "jaccard_near_duplicate": 0.85,
+    "min_diverse_testable_for_D1": 20,
+    "report_all_members": true,
+    "no_future_outcome_reads": true,
+    "no_PNL": true,
+    "no_PF": true,
+    "no_drawdown": true,
+    "do_not_relax_cutoffs": true,
+    "low_power_fails_without_replacement": true
+  },
+  "status_gates": {
+    "G0": "NOT_RUN",
+    "D0": "NOT_RUN",
+    "D1": "NOT_AUTHORIZED",
+    "D2": "NOT_AUTHORIZED"
+  },
+  "no_new_data": true,
+  "no_OOS": true,
+  "no_broker_fill_claim": true,
+  "previous_ids_last": 208,
+  "posthoc_selection_prohibited": true
+}
