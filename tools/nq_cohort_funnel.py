@@ -206,6 +206,24 @@ def validate(policy,ledger):
             and len(strategy["D1"]["statistical_screen_pass_ids"])==0
             and len(strategy["D1"]["economic_screen_pass_ids"])==0,
             "36 member full strategy original plus prospective 16 D0/D1 zero-alpha was rewritten")
+    shadow=strategy.get("shadow_D2",{})
+    portfolios=shadow.get("six_portfolios",[])
+    require(shadow.get("status")=="COMPLETED_POSTHOC_EDUCATIONAL_ONLY_NO_PROMOTION"
+            and shadow.get("action_run")==38335007318
+            and shadow.get("review_action_run")==38335648618
+            and shadow.get("same_D1_36_reproduced_exactly") is True
+            and shadow.get("official_D2_promoted_count")==0
+            and shadow.get("holdouts_opened") is False
+            and len(portfolios)==6
+            and [z["id"] for z in portfolios]==[
+              "ALL36_ID_PRIORITY","ALL36_CALENDAR_ROTATION",
+              "DIVERSE27_CALENDAR_ROTATION","POSITIVE10_ID_PRIORITY_POSTHOC",
+              "POSITIVE5_N15_ID_PRIORITY_POSTHOC","T147_ONLY_POSTHOC"]
+            and [round(z["net_usd"],2) for z in portfolios]==
+                [-1063.0,-1840.62,-2164.38,774.50,683.12,642.25]
+            and strategy["D2"]["promoted_ids"]==[]
+            and strategy["D2"]["status"]=="NOT_STARTED_NO_ELIGIBLE_SURVIVORS",
+            "SHADOW educational result must not be used to forge formal D2 approval")
     return {"status":"FUNNEL_VALIDATED","cohorts":len(cohorts),
             "new_D0_diverse_candidates":len(strategy["D0"]["diverse_ids"]),
             "new_D0_gap_to_next_D1":max(0,20-len(strategy["D0"]["diverse_ids"])),
@@ -265,6 +283,31 @@ def render(policy,ledger):
       "- **Cohortes observacionales anteriores T29–T58/T59–T96/T97–T132:** "
       "104 estudios D1 en bloques y ninguna sobrevivió BH familiar; "
       "T05 solo baseline legacy congelado.",
+      "",
+      "## D2 SHADOW — ejercicio solicitado, NO aprobación D2 oficial",
+      "",
+      "- **Action SHADOW 38335007318 SUCCESS**: seis carteras independientes, "
+      "una sola señal por día/cuenta, 135 DEV. Reproducción exacta de "
+      "36 D1 en N/neto y costes estresados. Auditoría SAFE 38335648618.",
+      "- **Tres carteras sin selección por ganancias** perdieron: "
+      "36 prioridad −$1.063 PF0,895 DD$2.947; "
+      "36 rotación −$1.840,62 PF0,826 DD$3.379,62; "
+      "27 diversas −$2.164,38 PF0,795 DD$3.454,12. "
+      "Todas rebasan DD cerrado $2.000 ilustrativo.",
+      "- **Ganadoras RETROSPECTIVAS**: top10 +$774,50 y top5 "
+      "+$683,12 (PF1,098 y 1,086), pero los dos escenarios "
+      "de costes ESTRESADOS resultan NEGATIVOS. "
+      "Elegidas tras mirar la MISMA DEV: sobreajuste.",
+      "- **T147 sola RETROSPECTIVA**: +$642,25 PF1,499, "
+      "estrés positivo, pero Q4 2025 −$567 y solo20 trades "
+      "(2,86 al mes). No aprobada como cartera de fondeo.",
+      "- **D2 FORMAL=0** y 0 fills reales. "
+      "Las cifras son proxies Last con fees asumidas, "
+      "DD de equity cerrada NO trailing intradía real.",
+      "",
+      "**[Informe SHADOW D2 de seis carteras](NQ_T133_T168_SHADOW_D2_SIX_PORTFOLIOS_RESULTS_2026_10_12.md)** · "
+      "[Action original](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38335007318) · "
+      "[Auditoría SAFE](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38335648618).",
       "",
       "**Próxima prioridad:** en lugar de incrementar miles de "
       "contrastes en las mismas 135 DEV, examinar si se puede "
