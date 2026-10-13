@@ -50,6 +50,15 @@ class FullThirteen(unittest.TestCase):
            {"ID":"C","net_plus10":250,"DD_plus10_closed":125,
              "expectancy_R":.1,"net_DD_plus10":2}]
         self.assertEqual({z["ID"] for z in pareto(x)},{"A","C"})
+    def test_pareto_portfolios_have_member_tuples_without_id(self):
+        x=[{"members":("T05-377",),"net_plus10":500,"DD_plus10_closed":200,
+            "expectancy_R":.4,"net_DD_plus10":2.5},
+           {"members":("T224",),"net_plus10":300,"DD_plus10_closed":150,
+            "expectancy_R":.2,"net_DD_plus10":2.0}]
+        z=pareto(x)
+        self.assertEqual(len(z),2)
+        self.assertEqual(z[0]["members"],("T05-377",))
+
     def test_malformed_mask_fails(self):
         with self.assertRaisesRegex(ValueError,"INVALID"):
             classify_subset(("T05-377","UNKNOWN"))
