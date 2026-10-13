@@ -161,32 +161,23 @@ def choose_candidates(summaries):
 
 def markdown(z):
     s=z["coverage"]
-    return ("# Universo completo de trece: auditoría de combinaciones
-
-"
-            "**8191 subconjuntos enumerados; ningún resultado global artificial.**
-
-"
-            "| Clase de subconjunto | Cantidad | Estado |
-"
-            "|---|---:|---|
-"
-            f"| H+T juntos | {s['CROSS_SAMPLE_NO_JOINT_EQUITY']} | No estimable: calendarios disjuntos |
-"
-            f"| Solo H: alternativas únicas | {s['H_EXCLUSIVE_PARENT_OR_ROUTER_ALTERNATIVE']} | Comparar solo 2020–2024 minuto |
-"
-            f"| Solo H: padres/routers duplicados | {s['H_PARENT_ROUTER_DUPLICATION_OR_EQUIVALENT']} | No contar alpha doble |
-"
-            f"| Solo T | {s['T_SAME_CALENDAR_NEEDS_EIGHT_PARENT_EXPOSURE_LEDGER']} | Falta motor de ocho padres antes de optimizar |
-
-"
-            "La búsqueda estructural incluye las 13, pero no acredita que ninguna "
-            "combinación sea rentable. Hay que reconstruir trayectorias de los "
-            "ocho T y cinco opciones H en muestras compatibles, sin abrir OOS.
-"
-            "Se prohibe elegir de las 255 T por mejor PnL sin advertir selección "
-            "adaptativa y sin medición DD flotante y ejecución realista.
-")
+    lines=[
+        "# Universo completo de trece: auditoría de combinaciones",
+        "",
+        "**8191 subconjuntos enumerados; ningún resultado global artificial.**",
+        "",
+        "| Clase de subconjunto | Cantidad | Estado |",
+        "|---|---:|---|",
+        f"| H+T juntos | {s['CROSS_SAMPLE_NO_JOINT_EQUITY']} | No estimable: calendarios disjuntos |",
+        f"| Solo H: alternativas únicas | {s['H_EXCLUSIVE_PARENT_OR_ROUTER_ALTERNATIVE']} | Comparar solo 2020–2024 minuto |",
+        f"| Solo H: padres/routers duplicados | {s['H_PARENT_ROUTER_DUPLICATION_OR_EQUIVALENT']} | No contar alpha doble |",
+        f"| Solo T | {s['T_SAME_CALENDAR_NEEDS_EIGHT_PARENT_EXPOSURE_LEDGER']} | Requiere motor de ocho padres |",
+        "",
+        "La búsqueda estructural incluye las 13, sin acreditar aún una cartera rentable.",
+        "H+T no dispone de equity compartida. Ningún OOS abierto.",
+        "255 alternativas T crean sesgo por búsqueda retrospectiva.",
+    ]
+    return "\n".join(lines)+"\n"
 
 if __name__=="__main__":
     parser=argparse.ArgumentParser()
