@@ -11,6 +11,14 @@
 | NQ-C97-132 | 36 → 30 → 26 | 36 → 0 | 0 | D1 cerrado (sin calificadas) |
 | NQ-C133-168 | 36 → 29 → 27 | 36 → 0 | 0 | D1 cerrado (sin calificadas) |
 
+## 2026-10-13 — COHORTE ACTIVA DE NUEVE EN D2 SOMBRA (NO PROMOCIÓN FORMAL)
+
+| Cohorte / conjunto | Participantes | D1 | Ejercicio D2 por calendario | Estado |
+|---|---:|---|---|---|
+| **NQ-NINE-H/T-2026-10-13** | **9** = 5 H + 4 T (T05,T147,T186,T224) | 0 promoción D1 formal (T224 falla PF/q y D0 amplitud 5/20) | [Action 38429799987 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38429799987): **T05+T224 1 cuenta** N194 neto mixto+$6.849,25, PF1,3255, DD CLOSED1.641 vs T05 sola N115+$5.102,50. **Extra+$10RT PF1,2223 falla**. H 2020–24 y T Last2025–26 no se suman; T147 necesita timeline, T186 FAIL previo. | **SHADOW D2 COMPLETADO, D2 FORMAL BLOQUEADO** |
+
+**Fuentes:** [registro original de nueve](NQ_NINE_D2_FULL_COHORT_ROSTER_2026_10_13.md) · [prerregistro ex ante del D2 sombra](NQ_NINE_D2_T05_T224_SHARED_ACCOUNT_SHADOW_PREREG_2026_10_13.md) · [reporte verificado](NQ_NINE_D2_T05_T224_SINGLE_ACCOUNT_SHADOW_RESULTS_2026_10_13.md) · [artifact seguro](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38429799987/artifacts/11829834428). No cartera de nueve realmente operada, no Bid/Ask ni DD flotante, 50K no adquirida, holdouts cerrados. T210/T212/T215/T217 fuera del conjunto **activo** pero preservadas en archivo.
+
 ## Estado del NUEVO EMBUDO ECONÓMICO de 36 miembros T133–T168 — D1 CERRADA
 
 - **Ocho bloques de estrategias completas**, 20 originales T133–T152 INMUTABLES +16 nuevas T153–T168 registradas antes D0. **D0 36→29 TESTABLE→27 diversas**, supera gate20; semilla original CASE/CONTROL reproducida EXACTA.
