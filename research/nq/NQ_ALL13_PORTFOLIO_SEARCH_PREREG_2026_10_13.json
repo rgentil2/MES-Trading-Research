@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "registered_date": "2026-10-13",
+  "design_id": "NQ-ALL13-SUBSET-D2-SHADOW-V1",
+  "user_objective": "Find best feasible subset among all 13 by cost-stressed net profit divided by maximum comparable drawdown, and efficiency per trade; never restrict candidates to T05+T224",
+  "stage": "PREREGISTERED_ALL13_NO_NEW_PORTFOLIO_RESULTS",
+  "source_boundary": {
+    "H": {
+      "models": [
+        "H09",
+        "H56",
+        "H69",
+        "H74",
+        "H77"
+      ],
+      "data": "NQ 1m DEV 2020-2024",
+      "holdouts": [
+        "2025",
+        "2026"
+      ],
+      "source_contract": "NQ signal / some MNQ proxy"
+    },
+    "T": {
+      "models": [
+        "T05-377",
+        "T147",
+        "T186",
+        "T210",
+        "T212",
+        "T215",
+        "T217",
+        "T224"
+      ],
+      "data": "NQ Last DEV 2025-10 through 2026-04",
+      "holdouts": [
+        "2026-05",
+        "2026-06",
+        "2026-07",
+        "2026-08",
+        "2026-09"
+      ],
+      "source_contract": "NQ and MNQ mixed, model-specific Last proxy"
+    },
+    "same_day_H_T_cross_group_exposure": false,
+    "allow_cross_group_combined_pnl": false,
+    "no_new_data": true,
+    "no_holdout_reads": true
+  },
+  "family_constraints": {
+    "H_independent_hypotheses": [
+      "H09",
+      "H56"
+    ],
+    "H_derived_routers": [
+      "H69",
+      "H74",
+      "H77"
+    ],
+    "H_router_is_not_additive_alpha": true,
+    "H_valid_alternative_architectures": [
+      "H09",
+      "H56",
+      "H69",
+      "H74",
+      "H77"
+    ],
+    "H09_plus_H56_same_day_one_position_only": true,
+    "H09_plus_H56_predeclared_router_reference": "H69",
+    "H_any_multi_router_combo_invalid": true,
+    "T_models_all_eight_must_be_attempted_for_temporal_parity": true,
+    "T_no_pre_exclusions_based_on_negative_PNL": true,
+    "T_allow_subsets_without_return_reoptimizing_features": true
+  },
+  "enumeration": {
+    "number_raw_nonempty_subsets": 8191,
+    "H_only_raw": 31,
+    "T_only_raw": 255,
+    "H_T_mixed_raw": 7905,
+    "H_compatible_portfolio_choices": 5,
+    "T_any_nonempty_subset_count": 255,
+    "mixed_joint_sharpe_dd_not_estimable_without_matched_calendar": true
+  },
+  "shared_execution": {
+    "max_concurrent_positions": 1,
+    "max_new_entries_per_day": 2,
+    "closed_day_stop_usd": -600,
+    "equal_timestamp_signal_priority": "FROZEN_ID_ORDER_T05_T147_T186_T210_T212_T215_T217_T224",
+    "entry_order": "CAUSAL_DECISION_TIMESTAMP; actual fill strictly later",
+    "no_lookahead": true,
+    "reject_ambiguous_entry_groups": true,
+    "model_parent_parity_required": true,
+    "T05_original_stress_1NQ_preserved": true,
+    "T147_original_D1_mixed_NQ_MNQ_preserved": true,
+    "T186_original_stress_1NQ_preserved": true,
+    "T_new_D1_original_base_NQ_MNQ_preserved": true,
+    "cost_mixing_requires_EXPLORATORY_label": true,
+    "broker_fills_verified": false
+  },
+  "selection_policy": {
+    "objective": "PARETO_WORST_COST_NET_TO_COMPARABLE_DD_AND_NET_R_PER_TRADE",
+    "require_net_positive_base_and_1p5_and_plus10": true,
+    "PF_cost_stressed_min": 1.25,
+    "DD_closed_usd_limit_exploratory": 1500,
+    "DD_floating_and_trailing_require_separate_execution_model": true,
+    "T_min_trades_7months": 35,
+    "T_min_positive_months": 4,
+    "H_min_trades_2020_2024": 150,
+    "H_min_positive_years": 4,
+    "max_share_of_total_positive_profit_per_month": 0.4,
+    "remove_dominated_candidates_before_ranking": true,
+    "tie_breakers": [
+      "LOWER_STRESSED_DRAWNDOWN",
+      "HIGHER_NET_R_PER_TRADE",
+      "MORE_TRADES"
+    ],
+    "internal_dev_month_holdout_diagnostic_only": true,
+    "selected_subset_is_exploratory_not_OOS": true,
+    "look_elsewhere_255_T_comparisons_acknowledged": true,
+    "do_not_optimize_stop_takeprofit_window_size_or_cost_after_pnl": true
+  },
+  "required_artifacts": [
+    "H cohort comparative options with matched H-risk fields",
+    "T full eight standalone parity + one-account 255-subset replay or explicit NOT_ESTIMABLE per subset",
+    "coverage mask of 8191 raw subsets by viability",
+    "within-dataset Pareto candidates and sensitivity, never a 13-combined curve",
+    "NQ_PROJECT_MASTER.md",
+    "NQ_RESEARCH_LOG.md"
+  ],
+  "status": {
+    "H_exhaustive_subset_ledger": "NOT_RUN",
+    "T_all_eight_exposure_ledger": "NOT_RUN",
+    "T_255_portfolios": "NOT_RUN",
+    "H_T_combined_equity": "UNIDENTIFIABLE_WITH_SEALED_DATA",
+    "D2_formal": "BLOCKED",
+    "funded_account": "NOT_OPENED"
+  }
+}
