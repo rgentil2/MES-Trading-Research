@@ -1,0 +1,43 @@
+name: NQ T133-T168 Economic Only No Q No CI SAFE Audit
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t133-t168-economic-no-q-no-ci-safe-audit.yml'
+      - 'tools/nq_t133_t168_economic_no_q_ci_audit.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-safe-aggregates-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Retrieve the EXISTING SAFE aggregate artifact, not licensed Last or daily trades
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh run download 38326216082 --repo rgentil2/MES-Trading-Research --name nq-t133-t168-economic-D1-modelled-unverified-36-safe-aggregates --dir _safe
+          test -s _safe/summary.json
+          test -s _safe/report.md
+      - name: Remove ONLY q-BH and CI90, evaluate all original economic and risk gates
+        run: |
+          set -euo pipefail
+          python tools/nq_t133_t168_economic_no_q_ci_audit.py --input _safe/summary.json --out final/analysis.json --report final/report.md
+          cat final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Remove source archive aggregates
+        if: always()
+        run: rm -rf _safe
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-t133-t168-economic-no-q-no-ci-all-36-safe-audit
+          path: final/
+          if-no-files-found: error
