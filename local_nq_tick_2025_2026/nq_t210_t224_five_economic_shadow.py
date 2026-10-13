@@ -52,7 +52,7 @@ def month_study(root,month,reg):
         dev_day(d)  # validate scope, retain original ISO string for frozen engines
         day=d
         source+=1
-        events=list(source_events(file_for(root,day,"Last")))
+        events=list(source_events(file_for(root,dev_day(day),"Last")))
         ready,_,_=frozen_t05(events,day)
         qc[ready]+=1
         if ready!="READY":
