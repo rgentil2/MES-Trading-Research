@@ -27,7 +27,7 @@ from sim_nq_last_execution_skeleton import Signal,simulate_single_trade
 from nq_t133_t168_d1_engine import first_future_groups,model_one
 from nq_b05h_atomic_print_bars import completed_bars_by_print_count
 from nq_t209_t228_structural_d0 import registry as new_registry,stats,bar_subset,regime_signal,month_guard,CASE
-from nq_all13_t8_shared_portfolios import extract_session,account_day,ORDER,T,MODELLED
+from nq_all13_t8_shared_portfolios import extract_session,account_day,ORDER,T,MODELED as MODELLED
 from nq_t133_t152_executable_d0_batch import load_registry as old_registry
 
 MASKS={
