@@ -1,0 +1,401 @@
+{
+  "schema_version": 1,
+  "cohort_id": "NQ-C133-168",
+  "first_original_prereg": "NQ-T133-T152-EXECUTABLE-STRATEGIES-D0-V1",
+  "additional_prereg_id": "NQ-T153-T168-FOUR-INDEPENDENT-STRATEGY-BLOCKS-D0-V1",
+  "frozen_after_complete_action": 38325498797,
+  "artifact_id": 11780607582,
+  "artifact_digest": "sha256:6dcf7b4943538c0236334bc39b5f673d484ac2abca84c487959c65c6547ab0f9",
+  "seed_source_action": 38324292967,
+  "seed_20_masks_identical": true,
+  "family_size": 36,
+  "all_ids": [
+    "T133",
+    "T134",
+    "T135",
+    "T136",
+    "T137",
+    "T138",
+    "T139",
+    "T140",
+    "T141",
+    "T142",
+    "T143",
+    "T144",
+    "T145",
+    "T146",
+    "T147",
+    "T148",
+    "T149",
+    "T150",
+    "T151",
+    "T152",
+    "T153",
+    "T154",
+    "T155",
+    "T156",
+    "T157",
+    "T158",
+    "T159",
+    "T160",
+    "T161",
+    "T162",
+    "T163",
+    "T164",
+    "T165",
+    "T166",
+    "T167",
+    "T168"
+  ],
+  "source": 140,
+  "eligible": 135,
+  "case_control_other_missing": {
+    "T133": {
+      "CASE": 52,
+      "CONTROL": 77,
+      "OTHER": 6,
+      "NOT_EVALUABLE": 0
+    },
+    "T134": {
+      "CASE": 14,
+      "CONTROL": 121,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T135": {
+      "CASE": 56,
+      "CONTROL": 79,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T136": {
+      "CASE": 36,
+      "CONTROL": 99,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T137": {
+      "CASE": 38,
+      "CONTROL": 96,
+      "OTHER": 1,
+      "NOT_EVALUABLE": 0
+    },
+    "T138": {
+      "CASE": 5,
+      "CONTROL": 130,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T139": {
+      "CASE": 3,
+      "CONTROL": 132,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T140": {
+      "CASE": 61,
+      "CONTROL": 70,
+      "OTHER": 4,
+      "NOT_EVALUABLE": 0
+    },
+    "T141": {
+      "CASE": 73,
+      "CONTROL": 59,
+      "OTHER": 3,
+      "NOT_EVALUABLE": 0
+    },
+    "T142": {
+      "CASE": 17,
+      "CONTROL": 116,
+      "OTHER": 2,
+      "NOT_EVALUABLE": 0
+    },
+    "T143": {
+      "CASE": 9,
+      "CONTROL": 126,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T144": {
+      "CASE": 5,
+      "CONTROL": 130,
+      "OTHER": 0,
+      "NOT_EVALUABLE": 0
+    },
+    "T145": {
+      "CASE": 51,
+      "CONTROL": 69,
+      "OTHER": 15,
+      "NOT_EVALUABLE": 0
+    },
+    "T146": {
+      "CASE": 32,
+      "CONTROL": 100,
+      "OTHER": 3,
+      "NOT_EVALUABLE": 0
+    },
+    "T147": {
+      "CASE": 21,
+      "CONTROL": 113,
+      "OTHER": 1,
+      "NOT_EVALUABLE": 0
+    },
+    "T148": {
+      "CASE": 102,
+      "CONTROL": 20,
+      "OTHER": 13,
+      "NOT_EVALUABLE": 0
+    },
+    "T149": {
+      "CASE": 58,
+      "CONTROL": 64,
+      "OTHER": 11,
+      "NOT_EVALUABLE": 2
+    },
+    "T150": {
+      "CASE": 72,
+      "CONTROL": 53,
+      "OTHER": 10,
+      "NOT_EVALUABLE": 0
+    },
+    "T151": {
+      "CASE": 93,
+      "CONTROL": 28,
+      "OTHER": 14,
+      "NOT_EVALUABLE": 0
+    },
+    "T152": {
+      "CASE": 29,
+      "CONTROL": 96,
+      "OTHER": 10,
+      "NOT_EVALUABLE": 0
+    },
+    "T153": {
+      "CASE": 90,
+      "CONTROL": 7,
+      "OTHER": 38,
+      "NOT_EVALUABLE": 0
+    },
+    "T154": {
+      "CASE": 91,
+      "CONTROL": 8,
+      "OTHER": 36,
+      "NOT_EVALUABLE": 0
+    },
+    "T155": {
+      "CASE": 37,
+      "CONTROL": 65,
+      "OTHER": 33,
+      "NOT_EVALUABLE": 0
+    },
+    "T156": {
+      "CASE": 76,
+      "CONTROL": 24,
+      "OTHER": 35,
+      "NOT_EVALUABLE": 0
+    },
+    "T157": {
+      "CASE": 62,
+      "CONTROL": 63,
+      "OTHER": 10,
+      "NOT_EVALUABLE": 0
+    },
+    "T158": {
+      "CASE": 72,
+      "CONTROL": 53,
+      "OTHER": 10,
+      "NOT_EVALUABLE": 0
+    },
+    "T159": {
+      "CASE": 72,
+      "CONTROL": 46,
+      "OTHER": 17,
+      "NOT_EVALUABLE": 0
+    },
+    "T160": {
+      "CASE": 63,
+      "CONTROL": 60,
+      "OTHER": 12,
+      "NOT_EVALUABLE": 0
+    },
+    "T161": {
+      "CASE": 80,
+      "CONTROL": 45,
+      "OTHER": 10,
+      "NOT_EVALUABLE": 0
+    },
+    "T162": {
+      "CASE": 79,
+      "CONTROL": 47,
+      "OTHER": 9,
+      "NOT_EVALUABLE": 0
+    },
+    "T163": {
+      "CASE": 102,
+      "CONTROL": 23,
+      "OTHER": 10,
+      "NOT_EVALUABLE": 0
+    },
+    "T164": {
+      "CASE": 99,
+      "CONTROL": 30,
+      "OTHER": 6,
+      "NOT_EVALUABLE": 0
+    },
+    "T165": {
+      "CASE": 62,
+      "CONTROL": 62,
+      "OTHER": 11,
+      "NOT_EVALUABLE": 0
+    },
+    "T166": {
+      "CASE": 65,
+      "CONTROL": 61,
+      "OTHER": 9,
+      "NOT_EVALUABLE": 0
+    },
+    "T167": {
+      "CASE": 43,
+      "CONTROL": 82,
+      "OTHER": 10,
+      "NOT_EVALUABLE": 0
+    },
+    "T168": {
+      "CASE": 93,
+      "CONTROL": 39,
+      "OTHER": 3,
+      "NOT_EVALUABLE": 0
+    }
+  },
+  "D0_testable_ids": [
+    "T133",
+    "T135",
+    "T136",
+    "T137",
+    "T140",
+    "T141",
+    "T142",
+    "T145",
+    "T146",
+    "T147",
+    "T148",
+    "T149",
+    "T150",
+    "T151",
+    "T152",
+    "T155",
+    "T156",
+    "T157",
+    "T158",
+    "T159",
+    "T160",
+    "T161",
+    "T162",
+    "T163",
+    "T164",
+    "T165",
+    "T166",
+    "T167",
+    "T168"
+  ],
+  "D0_diverse_ids": [
+    "T133",
+    "T140",
+    "T145",
+    "T148",
+    "T155",
+    "T157",
+    "T161",
+    "T165",
+    "T135",
+    "T141",
+    "T146",
+    "T149",
+    "T156",
+    "T158",
+    "T162",
+    "T166",
+    "T136",
+    "T142",
+    "T147",
+    "T159",
+    "T163",
+    "T167",
+    "T137",
+    "T151",
+    "T160",
+    "T168",
+    "T152"
+  ],
+  "D0_testable_count": 29,
+  "D0_diverse_count": 27,
+  "D0_low_power_ids": [
+    "T134",
+    "T138",
+    "T139",
+    "T143",
+    "T144",
+    "T153",
+    "T154"
+  ],
+  "D0_near_duplicates": {
+    "T150": {
+      "of": "T158",
+      "case_jaccard": 1
+    },
+    "T164": {
+      "of": "T163",
+      "case_jaccard": 0.951456
+    }
+  },
+  "D1_20_gate": true,
+  "D1_executed": false,
+  "D1_economic_prereg_created_before_any_future_outcomes": true,
+  "actual_broker_fills_verified": false,
+  "holdouts_opened": false,
+  "new_data_acquired": false,
+  "future_outcomes_read": false,
+  "PNL": null,
+  "PF": null,
+  "DD": null,
+  "IC90": null,
+  "p": null,
+  "q": null,
+  "periods": [
+    {
+      "month": "2025-10",
+      "ready": 13,
+      "phase": "DIAGNOSTIC"
+    },
+    {
+      "month": "2025-11",
+      "ready": 19,
+      "phase": "DIAGNOSTIC"
+    },
+    {
+      "month": "2025-12",
+      "ready": 21,
+      "phase": "DIAGNOSTIC"
+    },
+    {
+      "month": "2026-01",
+      "ready": 21,
+      "phase": "CHRONO_INTERNAL_NOT_OOS"
+    },
+    {
+      "month": "2026-02",
+      "ready": 20,
+      "phase": "CHRONO_INTERNAL_NOT_OOS"
+    },
+    {
+      "month": "2026-03",
+      "ready": 21,
+      "phase": "CHRONO_INTERNAL_NOT_OOS"
+    },
+    {
+      "month": "2026-04",
+      "ready": 20,
+      "phase": "CHRONO_INTERNAL_NOT_OOS"
+    }
+  ]
+}
