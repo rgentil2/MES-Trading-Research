@@ -1,0 +1,60 @@
+name: NQ T133-T168 36 Strategy Economic PROXY D1 DEV - Unverified Fill
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t133-t168-36-strategies-economic-D1-dev.yml'
+      - 'local_nq_tick_2025_2026/nq_t133_t168_d1_engine.py'
+      - 'local_nq_tick_2025_2026/nq_t133_t168_economic_d1_batch.py'
+      - 'local_nq_tick_2025_2026/test_nq_t133_t168_economic_d1.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  full-36-family-in-one-protected-runner:
+    runs-on: ubuntu-latest
+    timeout-minutes: 115
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Hard stop unless 36 original prereg, D0 exactly 29 TESTABLE and 27 distinct, all synthetic tests
+        run: |
+          set -euo pipefail
+          test -s research/nq/NQ_T133_T168_36_MEMBER_ECONOMIC_D1_PREREG_2026_10_12.md
+          test -s research/nq/NQ_T133_T168_36_MEMBER_D0_FROZEN_COUNTS_2026_10_12.json
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_t133_t168_economic_d1.py -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_t133_t168_economic_d1_batch.py local_nq_tick_2025_2026/nq_t133_t168_d1_engine.py
+      - name: Use ONLY seven preexisting checksum verified licensed Last DEV files; daily/trade vectors STAY PRIVATE
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p _private/out
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          for MONTH in 2025-10 2025-11 2025-12 2026-01 2026-02 2026-03 2026-04; do
+            mkdir -p _private/arc _private/data
+            gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/arc
+            (cd _private/arc && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+            7z x "_private/arc/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+            python local_nq_tick_2025_2026/nq_t133_t168_economic_d1_batch.py --root _private/data --month "$MONTH" --out "_private/out/t133_t168_d1_${MONTH}.json"
+            rm -rf _private/arc _private/data
+          done
+      - name: Reconcile all 36 D0 frozen masks and aggregate conservative portfolio-free economic proxy
+        run: |
+          set -euo pipefail
+          python local_nq_tick_2025_2026/nq_t133_t168_economic_d1_batch.py --inputs _private/out --out final/summary.json --report final/report.md
+          cat final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Erase licensed Last and ALL per-session trade vectors ALWAYS
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-t133-t168-economic-D1-modelled-unverified-36-safe-aggregates
+          path: final/
+          if-no-files-found: error
