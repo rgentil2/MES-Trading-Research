@@ -720,3 +720,9 @@ Copiar esta estructura **al final del archivo** cuando cierre un bloque, y actua
 - [Action 38350552598 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38350552598); [artifact safe 11790253664](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38350552598/artifacts/11790253664), [tabla 20](research/nq/NQ_T169_T188_MONETARY_V3_20_RESULTS_2026_10_13.md). Siete meses 140/135, T05 estrés 115/+US$5102,50/+US$3952,50 extra10; holdouts intactos, sin nueva data, sin fills reales.
 - Horario B 09:30–09:40 ET. Delta **router menos T05 con estrés+$10 RT**: T174 N115 −US$4192,50; T175 N72 −US$3905; **T176 N/D** (29 señales causales, standalone y router con exposición no resoluble Last, **no** asignar PnL parcial); T177 N66 −US$2875 incluso con standalone +US$335; T178 N40 −US$2312,50. **0/5 PASS; 4 fallan económicamente, 1 NO ESTIMABLE**, sin ajustar parámetros ni seleccionar periodos.
 - Censura V3 es reparación posterior a seis jobs V2, ya registrada, sin validación estadística ni OOS. D1 formal 0, D2 formal vacía.
+
+### 2026-10-13 — T179–T183 BLOQUE C CERRADO V3: cuatro pérdidas incrementales, un inactivo
+
+- [Action V3 38350552598 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38350552598), [artifact 11790253664](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38350552598/artifacts/11790253664), [tabla original 20 V3](research/nq/NQ_T169_T188_MONETARY_V3_20_RESULTS_2026_10_13.md); 7/7 DEV 140/135 y T05 115 intactos. Ventana C 10:20–10:40 ET.
+- T179 N solo96: delta router estrés+$10 RT −US$6477,50; T180 N16: −US$640; T181 N30: −US$3620; T182 N18: −US$445; T183 N0 señales: delta US$0, sin aporte. Todos FAIL monetarios, **0/5 PASS**. Los resultados son Last modelo, no broker fills, sin per-trade output público.
+- No ajustar gatillos a las operaciones positivas, no sumar ganancias alternativas, no emplear OOS mayo–sept 2026/H. D1/D2 formales no cambiaron.
