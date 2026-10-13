@@ -76,7 +76,8 @@ def validate(policy,ledger):
         require(not set(d0["diverse_ids"]) & set(d0["near_duplicate_ids"]),
                 "near-duplicate counted as independent")
         require(d0["workflow_run"] and d0["report"], "missing reproducible D0 proof")
-        require(d1["status"] in ("COMPLETE","LOCKED_WAITING_FOR_20_DIVERSE_D0"),
+        require(d1["status"] in ("COMPLETE","LOCKED_WAITING_FOR_20_DIVERSE_D0",
+                                  "RUNNING_FULL36_ECONOMIC_PROXY_UNVERIFIED"),
                 "unknown D1 state")
         if d1["status"]=="COMPLETE":
             require(b["stage"]=="D1_CLOSED"
@@ -97,6 +98,15 @@ def validate(policy,ledger):
                         "BH q>0.10 cohort cannot claim statistical PASS")
             stat_survivors.update(d1["statistical_screen_pass_ids"])
             econ_survivors.update(d1["economic_screen_pass_ids"])
+        elif d1["status"]=="RUNNING_FULL36_ECONOMIC_PROXY_UNVERIFIED":
+            require(b["stage"]=="D0_COMPLETE_D1_RUNNING"
+                    and len(d0["diverse_ids"])>=20
+                    and len(d1["evaluated_ids"])==0
+                    and d1["workflow_run"] is not None
+                    and d1["q_min"] is None
+                    and not d1["statistical_screen_pass_ids"]
+                    and not d1["economic_screen_pass_ids"],
+                    "running D1 cannot claim results or bypass 20+ D0 gate")
         else:
             require(b["stage"]=="D0_POOL_FORMING"
                     and len(d0["diverse_ids"])<20
@@ -129,7 +139,7 @@ def validate(policy,ledger):
     require(set(ledger["nonportable_historical_reference_ids"]) ==
             {"H69","H74","H77"}, "historical incompatible refs cannot be revived")
     require({b["id"] for b in cohorts} ==
-            {"NQ-C29-58","NQ-C20-25","NQ-C26-28","NQ-C59-NEXT","NQ-C97-132","NQ-C133-152"},
+            {"NQ-C29-58","NQ-C20-25","NQ-C26-28","NQ-C59-NEXT","NQ-C97-132","NQ-C133-168"},
             "unexpected cohort roster; version ledger before adding one")
     latest=next(x for x in cohorts if x["id"]=="NQ-C29-58")
     require(len(latest["all_preregistered_ids"])==30
@@ -174,23 +184,22 @@ def validate(policy,ledger):
             and not current["D1"]["statistical_screen_pass_ids"]
             and not current["D1"]["economic_screen_pass_ids"],
             "new T97–T132 cohort 36→30→26→36→0 was altered")
-    strategy=next(x for x in cohorts if x["id"]=="NQ-C133-152")
-    require(strategy["all_preregistered_ids"]==[f"T{i}" for i in range(133,153)]
+    strategy=next(x for x in cohorts if x["id"]=="NQ-C133-168")
+    require(strategy["all_preregistered_ids"]==[f"T{i}" for i in range(133,169)]
             and strategy["origin"]=="NEW_BATCH_20_PLUS"
-            and strategy["stage"]=="D0_POOL_FORMING"
-            and len(strategy["D0"]["testable_ids"])==15
-            and len(strategy["D0"]["diverse_ids"])==15
+            and strategy["stage"] in ("D0_COMPLETE_D1_RUNNING","D1_CLOSED")
+            and len(strategy["D0"]["testable_ids"])==29
+            and len(strategy["D0"]["diverse_ids"])==27
             and set(strategy["D0"]["low_power_ids"])==
-                {"T134","T138","T139","T143","T144"}
-            and not strategy["D0"]["near_duplicate_ids"]
-            and strategy["D0"]["workflow_run"]==38324292967
-            and strategy["D1"]["status"]=="LOCKED_WAITING_FOR_20_DIVERSE_D0"
-            and strategy["D1"]["evaluated_ids"]==[]
-            and strategy["D1"]["workflow_run"] is None
-            and strategy["D1"]["q_min"] is None
-            and not strategy["D1"]["statistical_screen_pass_ids"]
-            and not strategy["D1"]["economic_screen_pass_ids"],
-            "latest complete strategy cohort D0 20→15 and locked D1 tampered")
+                {"T134","T138","T139","T143","T144","T153","T154"}
+            and set(strategy["D0"]["near_duplicate_ids"])==
+                {"T150","T164"}
+            and strategy["D0"]["workflow_run"]==38325498797
+            and strategy["original_20_frozen_seed"]["source_action"]==38324292967
+            and strategy["original_20_frozen_seed"]["seed_20_masks_reproduced_exactly"] is True
+            and len(strategy["D1"]["statistical_screen_pass_ids"])==0
+            and len(strategy["D1"]["economic_screen_pass_ids"])==0,
+            "36 member full strategy original plus prospective 16 D0 is rewritten")
     return {"status":"FUNNEL_VALIDATED","cohorts":len(cohorts),
             "new_D0_diverse_candidates":len(strategy["D0"]["diverse_ids"]),
             "new_D0_gap_to_next_D1":max(0,20-len(strategy["D0"]["diverse_ids"])),
@@ -221,44 +230,39 @@ def render(policy,ledger):
           f"{len(d['testable_ids'])} → {diverse} "
           f"| {scored} → {surv} | {len(b['D2']['promoted_ids'])} | {state} |")
     lines.extend(["",
-      "## Estado actual: T133–T152 — estrategias completas D0, D1 BLOQUEADA",
+      "## Estado del NUEVO EMBUDO ECONÓMICO de 36 miembros T133–T168",
       "",
-      "- **Nueva cohorte de cuatro familias operativas:** 20 originales "
-      "(ruptura, pullback, barrida/reversión y régimen), con entrada "
-      "teórica, stop físico y objetivo R, horizonte y riesgo prefijados. "
-      "**D0: 20→15 TESTABLE→15 diversas**; gate mínimo **20 NO cumplido**, "
-      "faltan **5 nuevas estrategias distintivas y viables**. "
-      "LOW_POWER: T134/T138/T139/T143/T144. Sin near duplicates.",
-      "- **No D1 T133–T152:** ningún outcome futuro, IC90, "
-      "p/q BH, N operaciones realmente ejecutadas, coste, PF/DD ni P&L. "
-      "Son **N/D**, nunca rellenar como cero, positivo o aprobado.",
-      "- **Corte cronológico interno:** 53 READY oct–dic 2025 y 82 "
-      "ene–abr 2026, ambos YA explorados; no equivale a OOS independiente.",
-      "- **T97–T132 D1 cerrada:** 36 miembros, 30 D0 testables, 26 "
-      "diversas, q BH36 mínima 0,264, **0 supervivientes**.",
-      "- **T59–T96 D1 cerrada:** 38 miembros, q BH38 mínima 0,239376, "
-      "0 supervivientes; **T29–T58** 30 D1 con qmin0,212229 y 0.",
-      "- **T20–T25/T26–T28 históricas:** D1 cerradas, sin "
-      "estrategia monetariamente validada.",
-      f"- **Bandeja económica D2:** {a['D2_batch_size']} candidatas; "
-      "vacía. T05 sigue baseline congelado, no promocionar.",
+      "- **Ocho bloques de estrategias completas**, 20 T133–T152 "
+      "originales INMUTABLES +16 T153–T168 prerregistradas. "
+      "**D0: 36 registradas → 29 TESTABLE → 27 diversas**; "
+      "**gate D1 de >=20 CUMPLIDO**. Auditoría de las 20 etiquetas "
+      "originales reproducida exactamente; seven DEV 140/135.",
+      "- **Siete bajas N:** T134/T138/T139/T143/T144/T153/T154. "
+      "Duplicados de CASE: T150≈T158 (Jaccard 1,0), "
+      "T164≈T163 (0,951456). Se conservaron los 36 ID "
+      "para la familia estadística D1.",
+      "- **D1 económica experimental:** protocolo prospectivo de "
+      "market PROXY adverso, stop-first ante timestamps simultáneos, "
+      "2 ticks entrada y salida, fees hipotéticas NQ/MNQ, "
+      "estrés 1,5x y +US$10 RT, 10k bootstrap BH36. "
+      "El motor D1 no verifica llenados reales de bróker.",
+      f"- **Estado actual D1:** {strategy['D1']['status']} "
+      f"([Action {strategy['D1']['workflow_run']}]) "
+      "sin resultados monetarios declarados antes de revisión. "
+      "La cola D2 permanece vacía hasta verificaciones económicas y OOS.",
+      "- **Cortes cronológicos DEV:** oct–dic2025 53 READY, "
+      "ene–abr2026 82 READY; periodos previamente explorados "
+      "y NO OOS nuevo. Nunca abrir mayo–septiembre 2026.",
+      "- **Cohortes históricas T29–T58/T59–T96/T97–T132:** "
+      "104 D1 físicas/observacionales en bloques, 0 superaron BH "
+      "de sus familias. T05 se mantiene baseline congelado.",
       "",
-      "## Siguiente acción metodológicamente válida",
+      "**Fuentes:** [D0 36 completos](NQ_T133_T168_FULL36_EXECUTABLE_D0_RESULTS_2026_10_12.md) · "
+      "[Costos/ejecución D1 prereg](NQ_T133_T168_36_MEMBER_ECONOMIC_D1_PREREG_2026_10_12.md) · "
+      "[Código de pruebas](../../local_nq_tick_2025_2026/nq_t133_t168_economic_d1_batch.py).",
       "",
-      "Prerregistrar otro **BLOQUE DE MECANISMOS EJECUTABLES DIFERENTES** "
-      "con nuevos IDs, sin retocar T134/T138/T139/T143/T144 para inflar N. "
-      "Cuando el inventario acumule >=20 TESTABLE y diversas, "
-      "prerregistrar D1 ECONÓMICA de la **familia completa ORIGINAL** "
-      "con comisiones, slippage, manejo adverso de fills, coste "
-      "y cortes cronológicos, ANTES de cualquier resultado.",
-      "",
-      "**Fuentes:** [T133–T152 D0 CORREGIDO](NQ_T133_T152_FOUR_COMPLETE_STRATEGIES_BLOCKS_D0_RESULTS_2026_10_12.md) · "
-      "[T133–T152 prereg](NQ_T133_T152_EXECUTABLE_D0_PREREG_2026_10_12.md) · "
-      "[Política económica de cohortes](NQ_EXECUTABLE_STRATEGY_COHORT_POLICY_2026_10_12.md) · "
-      "[T97–T132 D1](NQ_T97_T132_36_MEMBER_D1_RESULTS_2026_10_12.md).",
-      "",
-      "Estado generado desde ledger **seguro**; no abre "
-      "mercado licenciado ni lee ningún dato futuro.",
+      "Esta fotografía solo lee ledger agregado; no consulta mercado "
+      "ni trade-by-trade privado.",
       ""])
     return "\n".join(lines)
 
