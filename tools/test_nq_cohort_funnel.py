@@ -90,7 +90,7 @@ class NQCohortFunnelTest(unittest.TestCase):
         p,l=self.mutated()
         b=next(x for x in l["cohorts"] if x["id"]=="NQ-C133-168")
         b["D1"]["status"]="COMPLETE"
-        b["D1"]["evaluated_ids"]=b["all_preregistered_ids"]
+        b["D1"]["evaluated_ids"]=b["all_preregistered_ids"][:-1]  # forge 35/36, illegal
         b["D1"]["workflow_run"]=999
         b["D1"]["report"]="pretend.md"
         b["D1"]["q_min"]=.01
