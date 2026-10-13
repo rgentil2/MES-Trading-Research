@@ -1,0 +1,64 @@
+name: NQ NINE D2 SHADOW T05 T224 single-account joint reconciliation
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-nine-d2-t05-t224-shared-account-shadow.yml'
+      - 'local_nq_tick_2025_2026/nq_nine_d2_t05_t224_shadow.py'
+      - 'local_nq_tick_2025_2026/test_nq_nine_d2_t05_t224_shadow.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nq-nine-d2-t05-t224-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  prereg-nine-d2-shadow-existing-seven-months-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 115
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Synthetic tests and prereg check BEFORE any licensed Last
+        run: |
+          set -euo pipefail
+          test -s research/nq/NQ_NINE_D2_T05_T224_SHARED_ACCOUNT_SHADOW_PREREG_2026_10_13.md
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_nine_d2_t05_t224_shadow.py -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_nine_d2_t05_t224_shadow.py
+      - name: Seven already available months with checksum integrity only
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "${GH_TOKEN:-}"
+          mkdir -p _private/archives _private/source _private/results
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          for MONTH in 2025-10 2025-11 2025-12 2026-01 2026-02 2026-03 2026-04; do
+            python -c 'from nq_t209_t228_structural_d0 import month_guard; import sys; month_guard(sys.argv[1])' "$MONTH"
+            gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/archives
+            (cd _private/archives && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+            7z x "_private/archives/NQ_${MONTH}_Last.7z.001" -y -o_private/source >/dev/null
+            python local_nq_tick_2025_2026/nq_nine_d2_t05_t224_shadow.py --month "$MONTH" --root _private/source --out "_private/results/d2_nine_${MONTH}.json"
+            rm -rf _private/archives _private/source
+            mkdir -p _private/archives _private/source
+          done
+      - name: Strict T05 and T224 parent parity and nine-slot D2 aggregate
+        run: |
+          set -euo pipefail
+          mkdir -p final
+          python local_nq_tick_2025_2026/nq_nine_d2_t05_t224_shadow.py --inputs _private/results --out final/summary.json --report final/report.md
+          cat final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Delete all private daily economic vectors and Last records ALWAYS
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-nine-d2-t05-t224-shadow-safe-aggregate-only
+          path: final/
+          if-no-files-found: error
