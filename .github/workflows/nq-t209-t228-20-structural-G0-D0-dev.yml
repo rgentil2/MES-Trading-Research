@@ -1,0 +1,65 @@
+name: NQ T209-T228 twenty distinct structural hypotheses G0 D0 DEV only
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t209-t228-20-structural-G0-D0-dev.yml'
+      - 'local_nq_tick_2025_2026/nq_t209_t228_structural_d0.py'
+      - 'local_nq_tick_2025_2026/test_nq_t209_t228_structural_d0.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nq-t209-t228-g0-d0-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  full-twenty-family-first-g0-then-d0:
+    runs-on: ubuntu-latest
+    timeout-minutes: 110
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Before market access - frozen prereg, 20 IDs, eight synthetic tests
+        run: |
+          set -euo pipefail
+          test -s research/nq/NQ_T209_T228_20_STRUCTURAL_D0_PREREG_2026_10_13.md
+          test -s research/nq/NQ_T209_T228_20_STRUCTURAL_D0_PREREG_2026_10_13.json
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_t209_t228_structural_d0.py -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_t209_t228_structural_d0.py
+      - name: Existing licensed seven-month DEV Last only - no new sources
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "${GH_TOKEN:-}"
+          mkdir -p _private/archives _private/source _private/outputs
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          for MONTH in 2025-10 2025-11 2025-12 2026-01 2026-02 2026-03 2026-04; do
+            python -c 'from nq_t209_t228_structural_d0 import month_guard; import sys; month_guard(sys.argv[1])' "$MONTH"
+            gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/archives
+            (cd _private/archives && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+            7z x "_private/archives/NQ_${MONTH}_Last.7z.001" -y -o_private/source >/dev/null
+            python local_nq_tick_2025_2026/nq_t209_t228_structural_d0.py --month "$MONTH" --root _private/source --out "_private/outputs/t209_t228_d0_${MONTH}.json"
+            rm -rf _private/archives _private/source
+            mkdir -p _private/archives _private/source
+          done
+      - name: Reconcile 140 source and 135 READY and all twenty frozen rows - no PnL
+        run: |
+          set -euo pipefail
+          mkdir -p final
+          python local_nq_tick_2025_2026/nq_t209_t228_structural_d0.py --inputs _private/outputs --out final/summary.json --report final/report.md
+          cat final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Always erase licensed ticks and individual session outputs
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-t209-t228-g0-d0-twenty-rows-safe-aggregates
+          path: final/
+          if-no-files-found: error
