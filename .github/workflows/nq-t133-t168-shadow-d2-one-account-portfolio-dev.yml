@@ -49,7 +49,7 @@ jobs:
           for MONTH in 2025-10 2025-11 2025-12 2026-01 2026-02 2026-03 2026-04; do
             gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/arc
             (cd _private/arc && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
-            7z x "_private/arc/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+            7z x "_private/arc/NQ_${MONTH}_Last.7z.001" -y "-o_private/data/$MONTH" >/dev/null
             rm -rf _private/arc/*
           done
       - name: Shadow D2 post-hoc, one trade per account/day, 36-fold D1 exact parity hard gate
