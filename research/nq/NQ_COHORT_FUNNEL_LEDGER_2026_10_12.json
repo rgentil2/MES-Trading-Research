@@ -3,7 +3,7 @@
   "ledger_id": "NQ-COHORT-FUNNEL-LEDGER-V1",
   "policy_id": "NQ-COHORT-FUNNEL-V1",
   "effective_on": "2026-10-12",
-  "snapshot_as_of": "2026-10-12 after eight-block strategy cohort T133-T168 FULL D0 and FULL economic D1 COMPLETE; no confirmed alpha",
+  "snapshot_as_of": "2026-10-12 D1 36 no pass D2 formally empty; user-authorized 6-SHADOW-D2 portfolio exercise completed without promotion",
   "data_role": "DEV_ONLY_AGGREGATES_NO_RAW_OUTCOMES",
   "holdouts_opened": false,
   "new_data_acquired": false,
@@ -1027,6 +1027,57 @@
         "diverse_count": 15,
         "report": "research/nq/NQ_T133_T152_FOUR_COMPLETE_STRATEGIES_BLOCKS_D0_RESULTS_2026_10_12.md",
         "seed_20_masks_reproduced_exactly": true
+      },
+      "shadow_D2": {
+        "status": "COMPLETED_POSTHOC_EDUCATIONAL_ONLY_NO_PROMOTION",
+        "action_run": 38335007318,
+        "review_action_run": 38335648618,
+        "source_safe_artifact_id": 11785105339,
+        "review_safe_artifact_id": 11784731314,
+        "report": "research/nq/NQ_T133_T168_SHADOW_D2_SIX_PORTFOLIOS_RESULTS_2026_10_12.md",
+        "six_portfolios": [
+          {
+            "id": "ALL36_ID_PRIORITY",
+            "net_usd": -1063,
+            "model_PF": 0.895,
+            "max_closed_dd_usd": 2947
+          },
+          {
+            "id": "ALL36_CALENDAR_ROTATION",
+            "net_usd": -1840.62,
+            "model_PF": 0.826,
+            "max_closed_dd_usd": 3379.62
+          },
+          {
+            "id": "DIVERSE27_CALENDAR_ROTATION",
+            "net_usd": -2164.38,
+            "model_PF": 0.7948,
+            "max_closed_dd_usd": 3454.12
+          },
+          {
+            "id": "POSITIVE10_ID_PRIORITY_POSTHOC",
+            "net_usd": 774.5,
+            "model_PF": 1.0977,
+            "max_closed_dd_usd": 1536.75
+          },
+          {
+            "id": "POSITIVE5_N15_ID_PRIORITY_POSTHOC",
+            "net_usd": 683.12,
+            "model_PF": 1.0857,
+            "max_closed_dd_usd": 1536.75
+          },
+          {
+            "id": "T147_ONLY_POSTHOC",
+            "net_usd": 642.25,
+            "model_PF": 1.4992,
+            "max_closed_dd_usd": 567
+          }
+        ],
+        "same_D1_36_reproduced_exactly": true,
+        "source_7_DEV_135_ready": true,
+        "all_results_modelled_Last_unverified_broker_fills": true,
+        "official_D2_promoted_count": 0,
+        "holdouts_opened": false
       }
     }
   ],
@@ -1059,5 +1110,5 @@
     "H74",
     "H77"
   ],
-  "updated_by": "D0 Action 38325498797 (29/27), D1 Action 38326216082 (qmin1, no pass), safe artifact 11781138134"
+  "updated_by": "SHADOW D2 Action 38335007318 SUCCESS and safe-review 38335648618 SUCCESS, D1 full36 parity exact; official D2 no candidates"
 }
