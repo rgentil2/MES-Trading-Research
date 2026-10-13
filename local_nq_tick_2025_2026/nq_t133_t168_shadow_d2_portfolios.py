@@ -240,10 +240,13 @@ def run(root,original,prereg):
     old,new=old_registry(),load_new()
     qc=Counter();source=0;records=[]
     for month in MONTHS:
-        for day in sorted(month_days(root,month)):
+        # The existing month_days reader intentionally fails closed on mixed
+        # contract/month folders. Preserve this separation for all 7 DEV files.
+        month_root=root/month
+        for day in sorted(month_days(month_root,month)):
             d=dev_day(day)
             source+=1
-            events=list(source_events(file_for(root,d,'Last')))
+            events=list(source_events(file_for(month_root,d,'Last')))
             status,_,_=frozen_t05(events,day)
             qc[status]+=1
             if status!='READY':continue
