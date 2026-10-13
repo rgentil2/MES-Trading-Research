@@ -1,4 +1,5 @@
 name: NQ ALL13 eight T full 255 subsets shared-account DEV only
+# Syntax preflight rerun after topology fix; no parameter adjustments
 on:
   push:
     branches: [main]
