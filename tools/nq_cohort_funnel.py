@@ -222,7 +222,7 @@ def validate(policy,ledger):
             and [round(z["net_usd"],2) for z in portfolios]==
                 [-1063.0,-1840.62,-2164.38,774.50,683.12,642.25]
             and strategy["D2"]["promoted_ids"]==[]
-            and strategy["D2"]["status"]=="NOT_STARTED_NO_ELIGIBLE_SURVIVORS",
+            and strategy["D2"]["status"]=="NOT_STARTED_ZERO_ELIGIBLE_EXECUTABLE_STRATEGIES",
             "SHADOW educational result must not be used to forge formal D2 approval")
     return {"status":"FUNNEL_VALIDATED","cohorts":len(cohorts),
             "new_D0_diverse_candidates":len(strategy["D0"]["diverse_ids"]),
