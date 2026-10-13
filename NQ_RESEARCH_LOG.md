@@ -833,3 +833,13 @@ Copiar esta estructura **al final del archivo** cuando cierre un bloque, y actua
 - Se registró [paso D Python→NinjaTrader SIM](research/nq/NQ_NINJATRADER_SIM_PARITY_GATE_BEFORE_50K_2026_10_13.md) con restricciones de microestructura, diferencia Last/tick bars, grupos iguales timestamp, gestión OCO, stops y costos, paridad sobre muestra DEV, sin abrir OOS.
 - **No se ha ejecutado NinjaTrader ni NinjaScript** y ninguna candidata de T209–T228 ha pasado D0 todavía. No se altera gate de riesgo/fondeo.
 - Orden vigente: terminar la evaluación cohorte T209–T228, rotar a ingeniería de portabilidad para una especificación congelada, NO optimizar artificialmente señales de alto resultado histórico.
+
+
+### 2026-10-13 — [T209–T228 G0/D0 FINAL SUCCESS] 5/20 distintas, D1 bloqueada, sin nuevas pruebas económicas
+
+- **Prerregistro/versión:** JSON de 20 condiciones causalmente congeladas y cuatro bloques antes de G0/D0: [registro](research/nq/NQ_T209_T228_20_STRUCTURAL_D0_PREREG_2026_10_13.json). 8 pruebas sintéticas PASS antes de acceder a mercado.
+- **Action [38418969389 COMPLETED SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38418969389)**, 7 meses ya licenciados Last oct2025–abr2026 hash SHA256 OK; 140 fuente/135 READY; private data borrada. [Artifact seguro 11825342604](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38418969389/artifacts/11825342604), ZIP SHA256 `4d8cc9ee2f69c728305c8c0207f438708baae1724cc73e42456d1860d10671d6`.
+- **Reporte integral 20 filas:** [NQ_T209_T228_20_STRUCTURAL_D0_RESULTS_2026_10_13.md](research/nq/NQ_T209_T228_20_STRUCTURAL_D0_RESULTS_2026_10_13.md). Testables y distintas T210 CASE18, T212 CASE50, T215 CASE16, T217 CASE46, T224 CASE106; **5/20**. Otras 15 fallan el criterio inicial de potencia o control, nada fue optimizado para 'rescatar' la cohorte.
+- **Dictamen congelado del agregador:** `D0_COHORT_INSUFFICIENT_DISTINCT_TESTABLE_NO_D1` y requisito >=20 TESTABLE distintas FALLA. D1 de cohorte nueva **NO AUTORIZADA**, D2 formal=0; PnL, PF, DD, p, q, IC90=N/D porque D0 no lee ganancias. T224 N106 no prueba ventaja monetaria; CASE es activación no trade.
+- **Corrección:** no comprar más historia, no abrir OOS, no variar umbrales ni crear clones T229–T248. Cohorte T-C cerrada, hallazgos negativos retenidos.
+- **Siguiente trabajo:** Bloque D `NinjaTrader SIM/Python parity` como diagnóstico de ejecución y construcción de interfaz a señales/órdenes congeladas; [gate ya documentado](research/nq/NQ_NINJATRADER_SIM_PARITY_GATE_BEFORE_50K_2026_10_13.md). No declarar NinjaTrader ejecutado ni trading fondeado; cuenta $50K sigue futuro.
