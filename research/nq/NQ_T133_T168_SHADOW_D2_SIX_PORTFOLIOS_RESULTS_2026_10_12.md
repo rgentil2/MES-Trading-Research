@@ -1,0 +1,36 @@
+# NQ — D2 SHADOW: seis carteras sobre las 36 estrategias T133–T168 (ejercicio educativo, NO PROMOCIÓN)
+
+**Resultado verificado:** [Action principal 38335007318 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38335007318), [artefacto SAFE 11785105339](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38335007318/artifacts/11785105339), SHA256 `cb7820a86f2b34b1de65d4244cc34a28712ad6f27bfa0fe2eb0171100229b31d`. **[Auditoría secundaria SAFE 38335648618 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38335648618)**, [artefacto detalles 11784731314](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38335648618/artifacts/11784731314), SHA256 `35dcf07da310b228393cebd08938245cc13d70ec3996cd1dfa86f8dac9148ed6`. Se verificó paridad **EXACTA con los 36 miembros de D1** en N trades, P&L y los dos escenarios de costos, y CASE/CONTROL originales, antes de construir carteras. [Prerregistro original del SHADOW D2](NQ_T133_T168_SHADOW_D2_PORTFOLIO_PREREG_2026_10_12.md) y [JSON](NQ_T133_T168_SHADOW_D2_PORTFOLIO_PREREG_2026_10_12.json), commit `6994116acbc2a77470c543026ef893e6e39f6907`.
+
+**AVISO ESENCIAL:** El usuario autorizó **pasar D2 como EJERCICIO** pese a **0/36 candidatas que superaran D1**. Se trata de **carteras hipotéticas, retrospectivas, sobre la misma DEV previamente explorada**; ninguna con fills de bróker verificables. **D1 formal = 0 aprobadas, D2 formal = 0 entradas.** No abrir mayo–septiembre 2026, no comprar información adicional, no operar esta cartera real o fondeada.
+
+## Resultado del ejercicio completo: una cuenta $50.000 USD por escenario, máximo una operación/día
+
+| Escenario de cartera | N estrategias | N operaciones proxy | Promedio trades/mes | Neto simulado USD | PF | DD cerrado USD | Estrés costos ×1,5 | Costos +US$10RT | Q4 2025 | Ene–Abr 2026 | DD cerrado >2.000 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| 36 reglas, prioridad fija por ID | 36 | 132 | 18,86 | **−1.063,00** | 0,895 | 2.947,00 | −2.226,75 | −2.383,00 | +218,25 | −1.281,25 | **SÍ** |
+| 36 reglas, rotación de calendario | 36 | 133 | 19,00 | **−1.840,62** | 0,826 | 3.379,62 | −3.016,38 | −3.170,62 | −132,75 | −1.707,88 | **SÍ** |
+| 27 D0 distintas, rotación de calendario | 27 | 132 | 18,86 | **−2.164,38** | 0,795 | 3.454,12 | −3.328,12 | −3.484,38 | +40,50 | −2.204,87 | **SÍ** |
+| 10 netas positivas de D1, **elegidas POST HOC** | 10 | 118 | 16,86 | **+774,50** | 1,098 | 1.536,75 | **−200,75** | **−405,50** | +942,62 | −168,13 | NO |
+| 5 netas positivas con N≥15, **POST HOC** | 5 | 118 | 16,86 | **+683,12** | 1,086 | 1.536,75 | **−292,12** | **−496,88** | +888,25 | −205,13 | NO |
+| T147 únicamente, **elegida POST HOC** | 1 | 20 | 2,86 | **+642,25** | 1,499 | 567,00 | +433,00 | +442,25 | **−567,00** | +1.209,25 | NO |
+
+**Rentabilidad total respecto de US$50.000 durante los siete meses, NO anualizada:** −2,126%; −3,681%; −4,329%; +1,549%; +1,366%; +1,285%, respectivamente. **Ninguna de las seis carteras alcanzó la meta ilustrativa de US$3.000** sobre la equity cerrada. No se registraron días con PnL simulado inferior a −US$500; sin embargo, eso NO modela correctamente límites *intradía* de fondeo. Las seis procesaron **140 sesiones fuente/135 elegibles**, sin necesidad de reoptimizar parámetros. Las cinco primeras activan aproximadamente 17–19 operaciones por mes, la T147 unas 2,86 operaciones/mes (por debajo del objetivo deseable ≥5/mes). La T147 estuvo activa en **13 semanas**; las otras cinco en **29 semanas** según las estadísticas agregadas.
+
+## Qué revela (y qué NO demuestra)
+
+1. **Carteras sin selección retrospectiva de beneficio:** las tres (36 ID/36 rotación/27 D0 distintas) pierden en el simulador, PF<1 y DD de equity cerrada >US$2.000 ilustrativos. Sus costos adicionales empeoran las pérdidas. Hacer más operaciones o mezclar más señales no ha creado una ventaja.
+2. **Carteras seleccionadas por haber ganado D1:** las de 10 y 5 componentes muestran rentabilidad BASE positiva, pero **sucumben a ambos modelos de costos adversos**. Además, ambas pierden en enero–abril 2026 pese a quedar positivas durante todo el período, PF<1,25, DD>US$1.500 de alerta y dependencia del tramo inicial. Escoger los miembros tras ver sus ganancias **produce selección con información del mismo set** y no permite afirmar edge.
+3. **T147 sola:** PF1,499 y gana incluso bajo estrés, con DD cerrado simulado US$567, pero **perdió US$567 en Q4-2025**, ganó US$1.209,25 después y solo produjo 20 trades/7 meses. Fue elegida retrospectivamente; no es OOS independiente ni llena 5 trades/mes deseables.
+4. **Riesgo ficticio y límites de ejecución:** el umbral cerrado de DD US$2.000 se rebasa en las tres carteras universales. No es equivalente al *trailing drawdown intradía* de ninguna firma específica; faltan reglas de fondeo exactas, Bid/Ask, spread, prioridad de órdenes, liquidez, fills de NinjaTrader o broker y costes RT reales.
+5. **Contraste de ETF 12–15% anual:** los ROI del ejercicio cubren solo siete meses y no son equivalentes a una comparación anual ni ajustada al riesgo con VOO/QQQM. Ninguna ganó siquiera la meta ilustrativa US$3.000 (6% del capital) durante esta muestra, por lo que no inferimos que se haya superado el objetivo de rendimiento/riesgo.
+
+## Metodología y controles
+
+Seis carteras **independientes**, jamás seis posiciones simultáneas en una cuenta. Cada una escoge el primer `CASE` a cierre E377 de [10:00,10:15) ET según ID fijo o rotación causal de calendario. Una vez seleccionada la hipótesis, **si no resulta ejecutable según el simulador NO se rescata una segunda señal del mismo día** (evita lookahead). Entrada/proxy y stop/TP reutilizaron exactamente el motor D1: peor Last siguiente grupo timestamp atómico, 2 ticks adversos por lado, stop-first si timestamp intragrupo ambiguo, $4 NQ RT/$1,50 MNQ RT **SUPUESTOS**, una unidad con riesgo nominal ≤US$250, TP/horizonte originales; stress fricción1,5× y coste adicional+$10 RT. Estadísticas de equity cerrada, NO equity intradía ni órdenes reales.
+
+**Auditoría del error técnico:** [primera Action 38334905096 FAILURE](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38334905096) mezcló los meses físicos en un directorio, contrario al lector `month_days()`. Se arregló **solo estructura mes-directorio sin modificar estrategia ni método**; Action definitiva 38335007318 SUCCESS. [Segundo informe revisado automáticamente con solo JSON SAFE](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38335648618). Todos los raw Last y diarios quedaron efímeros en la ejecución protegida y no forman parte de ningún artefacto.
+
+## Decisión de gobierno
+
+**Resultado SHADOW D2**: **3 carteras universales en pérdidas, 2 carteras de selección sesgada base-positivas pero no robustas a costos, 1 estrategia individual sesgada (T147) positiva bajo costos pero inestable y de frecuencia limitada**. No promover ninguno de los seis escenarios a D2 oficial, no abrir OOS sellados ni fondear. Próximo paso útil: auditar comisión/spread/fill, y diagnosticar diferencias Q4/2025 vs ene–abr2026 **sin retocar a posteriori** antes de otra investigación económica con fuentes independientes.
