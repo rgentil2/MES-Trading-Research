@@ -121,7 +121,7 @@ def pareto(ranked):
                      or y["expectancy_R"]>x["expectancy_R"])):
                 dom=True;break
         if not dom:selected.append(x)
-    return sorted(selected,key=lambda z:(-z["net_DD_plus10"],-z["expectancy_R"],z["ID"]))
+    return sorted(selected,key=lambda z:(-z["net_DD_plus10"],-z["expectancy_R"],",".join(z.get("members",())) if "ID" not in z else z["ID"]))
 
 def choose_candidates(summaries):
     """Fail closed: inputs MUST come from a reconciled 8-parent T ledger.
