@@ -49,7 +49,8 @@ def month_study(root,month,reg):
     labels_total={k:Counter() for k in IDS}
     daily=[]
     for d in sorted(month_days(root,month)):
-        day=dev_day(d)
+        dev_day(d)  # validate scope, retain original ISO string for frozen engines
+        day=d
         source+=1
         events=list(source_events(file_for(root,day,"Last")))
         ready,_,_=frozen_t05(events,day)
@@ -342,7 +343,7 @@ def report(result):
         "**El DD reportado es CLOSED equity, NO Last intratrade ni trailing real de 50K.**",
         "IC90 bootstrap moving-block 10.000, L5 principal, L3/L10 sensibilidad.",
         "p/q es exploratoria, no compensa selección adaptativa de T01–T208.",
-        "D1 formal mantiene BROKEN_GATE_D0_5_OF_20; no D2 formal autorizada.",
+        "D1 formal mantiene BLOCKED_GATE_D0_5_OF_20; no D2 formal autorizada.",
         "No sumar H2020–24 minuto con T2025–26 Last como una cuenta.",
         "Ninguna variante optimizada después de observar este PnL.",
     ])
