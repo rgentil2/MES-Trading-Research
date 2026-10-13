@@ -66,7 +66,7 @@ class TestMFFUTop2(unittest.TestCase):
         self.assertEqual(reasons["overlap"],1)
 
     def test_fee_router_honors_negative_closed_day_stop(self):
-        a=atom("T05-377",100,101,102,-601.)
+        a=atom("T05-377",100,101,102,-605.)
         b=atom("T215",103,104,105,30.)
         result,reasons=router_mffu({"T05-377":[a],"T215":[b]},
                     MASKS["A_T05_T215"])
