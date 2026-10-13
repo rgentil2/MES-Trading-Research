@@ -9,17 +9,20 @@
 | NQ-C26-28 | 3 → 1 → N/D (legacy) | 3 → 0 | 0 | D1 cerrado (sin calificadas) |
 | NQ-C59-NEXT | 38 → 36 → 31 | 38 → 0 | 0 | D1 cerrado (sin calificadas) |
 | NQ-C97-132 | 36 → 30 → 26 | 36 → 0 | 0 | D1 cerrado (sin calificadas) |
-| NQ-C133-168 | 36 → 29 → 27 | 0 → 0 | 0 | **D1 en ejecución (SIN RESULTADOS AÚN)** |
+| NQ-C133-168 | 36 → 29 → 27 | 36 → 0 | 0 | D1 cerrado (sin calificadas) |
 
-## Estado del NUEVO EMBUDO ECONÓMICO de 36 miembros T133–T168
+## Estado del NUEVO EMBUDO ECONÓMICO de 36 miembros T133–T168 — D1 CERRADA
 
-- **Ocho bloques de estrategias completas**, 20 T133–T152 originales INMUTABLES +16 T153–T168 prerregistradas. **D0: 36 registradas → 29 TESTABLE → 27 diversas**; **gate D1 de >=20 CUMPLIDO**. Auditoría de las 20 etiquetas originales reproducida exactamente; seven DEV 140/135.
-- **Siete bajas N:** T134/T138/T139/T143/T144/T153/T154. Duplicados de CASE: T150≈T158 (Jaccard 1,0), T164≈T163 (0,951456). Se conservaron los 36 ID para la familia estadística D1.
-- **D1 económica experimental:** protocolo prospectivo de market PROXY adverso, stop-first ante timestamps simultáneos, 2 ticks entrada y salida, fees hipotéticas NQ/MNQ, estrés 1,5x y +US$10 RT, 10k bootstrap BH36. El motor D1 no verifica llenados reales de bróker.
-- **Estado actual D1:** RUNNING_FULL36_ECONOMIC_PROXY_UNVERIFIED ([Action 38326216082]) sin resultados monetarios declarados antes de revisión. La cola D2 permanece vacía hasta verificaciones económicas y OOS.
-- **Cortes cronológicos DEV:** oct–dic2025 53 READY, ene–abr2026 82 READY; periodos previamente explorados y NO OOS nuevo. Nunca abrir mayo–septiembre 2026.
-- **Cohortes históricas T29–T58/T59–T96/T97–T132:** 104 D1 físicas/observacionales en bloques, 0 superaron BH de sus familias. T05 se mantiene baseline congelado.
+- **Ocho bloques de estrategias completas**, 20 originales T133–T152 INMUTABLES +16 nuevas T153–T168 registradas antes D0. **D0 36→29 TESTABLE→27 diversas**, supera gate20; semilla original CASE/CONTROL reproducida EXACTA.
+- **D1 ECONÓMICA PROXY completada en los 36** ([Action 38326216082](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38326216082)). **q BH36 mínima=1,0, 0/36 con IC90 L5 enteramente positivo, 0/36 aprueban los filtros.** 26 netos negativos, 5 positivos pero inconclusos, 5 insuficientes (<15 operaciones proxy).
+- **Ejemplos que NO son alfa:** T133 +US$606,75 pero año 2026 DEV negativo, T145 +US$788 pero PF≈1,238 y q1, T147 +US$642,25 con Q4 2025 negativo. Todos son PnL de MODELO HIPOTÉTICO y sin confirmación broker.
+- **Ejecución** en Last: peores precios atómicos, 2 ticks de fricción entrada/salida, stop primero si barreras coinciden, fees SUPUESTAS NQ/MNQ, estrés 1,5x y +US$10 RT. 10k bootstrap bloque por día, BH familiar k36.
+- **Cortes cronológicos 53/82 DEV**, previamente explorados y NO un OOS nuevo; holdouts mayo–septiembre 2026 SELLADOS.
+- **Bandeja D2:** 0 candidatas, no permite fondeo ni una cartera monetizada. No sumar PnL de hipótesis solapadas.
+- **Cohortes observacionales anteriores T29–T58/T59–T96/T97–T132:** 104 estudios D1 en bloques y ninguna sobrevivió BH familiar; T05 solo baseline legacy congelado.
 
-**Fuentes:** [D0 36 completos](NQ_T133_T168_FULL36_EXECUTABLE_D0_RESULTS_2026_10_12.md) · [Costos/ejecución D1 prereg](NQ_T133_T168_36_MEMBER_ECONOMIC_D1_PREREG_2026_10_12.md) · [Código de pruebas](../../local_nq_tick_2025_2026/nq_t133_t168_economic_d1_batch.py).
+**Próxima prioridad:** en lugar de incrementar miles de contrastes en las mismas 135 DEV, examinar si se puede validar ejecución/costos reales y planificar una muestra verdaderamente independiente antes de otro bloque.
 
-Esta fotografía solo lee ledger agregado; no consulta mercado ni trade-by-trade privado.
+**Fuentes:** [Reporte D0 completo](NQ_T133_T168_FULL36_EXECUTABLE_D0_RESULTS_2026_10_12.md) · [Reporte D1 económico](NQ_T133_T168_ECONOMIC_D1_FULL36_RESULTS_2026_10_12.md) · [Prerregistro de D1](NQ_T133_T168_36_MEMBER_ECONOMIC_D1_PREREG_2026_10_12.md).
+
+El ledger resume únicamente agregados seguros; sin filas de mercado ni operaciones privadas.
