@@ -1,5 +1,8 @@
 # Costos MyFundedFutures 50K: T05+T215 frente a T05+T186+T215
 
+**ACTUALIZACIÓN POSTERIOR VERIFICADA 2026-10-13:** las cifras de *retiro* y reparto de este documento presumían de manera irreal que los 7 meses históricos completos eran sim-funded. Ese supuesto quedó reemplazado por la [simulación cronológica de evaluación → nueva etapa funded, con DD Last adverso](NQ_TOP2_MFFU_50K_EOD_FLOATING_REPLAY_RESULTS_2026_10_13.md) (GitHub Action 38443947480 SUCCESS). Retiro máximo condicional **A $1.099,35 y B $2.519,77** con buffer$2.100, **no** $4.407/$5.357 de la ilustración anterior. Los netos brutos fee-adjusted A$6.996,67/B$8.052,35 siguen conciliados, pero las ganancias EVAL no se retiran ni trasladan a la cuenta funded. Documento histórico conservado para trazabilidad.
+
+
 **Corte 2026-10-13.** Estimación aritmética, **no backtest nuevo** ni confirmación de supervivencia en fondeo. Base: [T255 completo](NQ_ALL13_T255_EXHAUSTIVE_SHARED_ACCOUNT_RESULTS_2026_10_13.md), [summary.json del Action 38436947056](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38436947056/artifacts/11833059042), [lista oficial contratos y comisión MFFU 24-ago-2026](https://help.myfundedfutures.com/en/articles/9735811-futures-instrument-list), [Rapid EOD 50k parámetros oficiales 24-ago-2026](https://help.myfundedfutures.com/en/articles/16158363-rapid-eod-50k-a-comprehensive-look), [plan y precio 50K promocional observado](https://myfundedfutures.com/plans/rapid-eod).
 
 ## Supuestos específicos y origen de costo ya cobrado
