@@ -1,0 +1,40 @@
+name: NQ T133-T168 SHADOW D2 SAFE Aggregate Detail Review
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t133-t168-shadow-d2-safe-review.yml'
+      - 'tools/nq_t133_t168_shadow_d2_safe_review.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  safe-six-portfolio-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch ONLY existing safe aggregated six portfolio artifact, NO Last or individual trades
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh run download 38335007318 --repo rgentil2/MES-Trading-Research --name nq-t133-t168-shadow-d2-six-single-account-portfolios-safe --dir safe
+          test -s safe/summary.json
+          test -s safe/report.md
+      - name: Audit six portfolios stress and 50k drawdown against original safe outcomes
+        run: |
+          set -euo pipefail
+          python tools/nq_t133_t168_shadow_d2_safe_review.py --input safe/summary.json --out review/results.json --report review/report.md
+          cat review/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-t133-t168-shadow-d2-six-portfolio-detail-safe-reviewed
+          path: review/
+          if-no-files-found: error
