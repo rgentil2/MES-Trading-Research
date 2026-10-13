@@ -68,7 +68,7 @@ def original_engine_entry(events,day,oldbars,x,t05,times,selected_signals,newreg
     """Return (side, modeled_entry_ticks); independent frozen signal parity."""
     key=x["ID"]
     if key in ("T05-377","T186"):
-        ts_side=selected_signals.get(key)
+        ts_side=selected_signals.get((key,x["decision"]))
         if ts_side is None:
             raise AssertionError("MISSING_ORIGINAL_SIGNAL_SIDE_"+key)
         ts,side=ts_side
