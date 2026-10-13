@@ -47,7 +47,7 @@ def load_frozen():
         or any(m['code']!=CODES[m['id']] for m in members)
         or tuple(x['source_months'])!=MONTHS
         or (x['expected_source_days'],x['expected_ready_days'])!=(140,135)
-        or x['reference_T05']!=BASE
+        or x['reference_T05']!='T05_377 unchanged legacy five-second signal benchmark only'
         or x['selection']!='FIRST_COMPLETE_ATOMIC_233_PRINT_BAR_CLOSING_INSIDE_BLOCK_TIME_WINDOW; prior bars C and D strictly earlier; if no trigger do not scan later bars'
         or x['new_signals_use_five_seconds'] is not False
         or x['new_strategy_execution']['stop_ticks']!=24
