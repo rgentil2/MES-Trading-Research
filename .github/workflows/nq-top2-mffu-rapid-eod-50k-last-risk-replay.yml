@@ -1,0 +1,64 @@
+name: NQ top2 MFFU Rapid EOD 50K floating Last envelope DEV only
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-top2-mffu-rapid-eod-50k-last-risk-replay.yml'
+      - 'local_nq_tick_2025_2026/nq_top2_mffu_eod_float_replay.py'
+      - 'local_nq_tick_2025_2026/test_nq_top2_mffu_eod_float_replay.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nq-top2-mffu-float-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  frozen-portfolio-fee-eod-open-equity-diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      PYTHONPATH: .:local_nq_tick_2025_2026:research/nq
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Ensure prereg and synthetic MFFU exposure tests BEFORE market IO
+        run: |
+          set -euo pipefail
+          test -s research/nq/NQ_TOP2_MFFU_50K_EOD_FLOATING_REPLAY_PREREG_2026_10_13.md
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_top2_mffu_eod_float_replay.py -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_top2_mffu_eod_float_replay.py
+      - name: Read ONLY existing licensed seven DEV Last months and checksum-verifiable releases
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "${GH_TOKEN:-}"
+          mkdir -p _private/arc _private/data _private/months
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          for MONTH in 2025-10 2025-11 2025-12 2026-01 2026-02 2026-03 2026-04; do
+            python -c 'from nq_t209_t228_structural_d0 import month_guard; import sys;month_guard(sys.argv[1])' "$MONTH"
+            gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/arc
+            (cd _private/arc && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+            7z x "_private/arc/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+            python local_nq_tick_2025_2026/nq_top2_mffu_eod_float_replay.py --month "$MONTH" --root _private/data --out "_private/months/mffu_top2_${MONTH}.json"
+            rm -rf _private/arc _private/data
+            mkdir -p _private/arc _private/data
+          done
+      - name: Fail-closed on 123/172 parent routing and 6996.67/8052.35 fee-swap; aggregate risk only
+        run: |
+          set -euo pipefail
+          mkdir -p final
+          python local_nq_tick_2025_2026/nq_top2_mffu_eod_float_replay.py --inputs _private/months --out final/summary.json --report final/report.md
+          cat final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Remove all licensed Last and private session/position data ALWAYS
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-top2-mffu-eod-50k-last-bound-risk-safe-only
+          path: final/
+          if-no-files-found: error
