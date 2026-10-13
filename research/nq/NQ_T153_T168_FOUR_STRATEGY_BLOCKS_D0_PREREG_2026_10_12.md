@@ -1,0 +1,20 @@
+# NQ T153–T168: extensión prospectiva de cuatro nuevos BLOQUES de estrategias ejecutables
+
+**12-oct-2026** · [16 definiciones máquina congeladas ANTES de D0](NQ_T153_T168_FOUR_STRATEGY_BLOCKS_D0_PREREG_2026_10_12.json), commit `b3db35d1a7a15c4624e10abc35eb560e272b4ba5`. No se retocan las **20 estrategias originales T133–T152**, sus resultados [D0 15/20](NQ_T133_T152_FOUR_COMPLETE_STRATEGIES_BLOCKS_D0_RESULTS_2026_10_12.md) ni el límite de casos/control. Este lote amplía una cohorte operativa prospectiva de **20 a 36 miembros originales, separados por mecanismos**. No se abrirán resultados futuros sin D0 familiar completo y PRERREGISTRO ECONÓMICO DE D1.
+
+## Nuevo mecanismo económico — no reciclar los cinco de baja potencia
+
+| Bloque | IDs | Pregunta operativa y familia |
+|---|---|---|
+| **E. Contraimpulso a valor / VWAP** | T153–T156 | Si cierre atómico E377 se separa ≥20 ticks del VWAP de PM, apertura RTH, D377 o última 4181 completa, ¿puede definirse una operación *en dirección a ese VWAP* con stop físico por fuera de E? **No es el pullback anterior**: entra contraria a la separación, no pide tocar-y-recuperar en 233 |
+| **F. Confirmación de subasta** | T157–T160 | Activación de continuación E377 cuando el cuerpo direccional de PM, apertura RTH, D377 o último 4181 confirma el impulso; no exige rompimiento de barreras |
+| **G. Aceptación interior / ubicación de precio** | T161–T164 | Activación de continuación cuando cierre E377 queda del lado del impulso respecto al punto medio del rango PM, apertura RTH, D377 o las tres 233 completas; no exige extremo roto |
+| **H. Estado de cinta / estructura temporal** | T165–T168 | Activación de continuación mediante aumento en última 233 vs anterior de *cantidad*, rango, carga de cantidad primera mitad de E377 o progreso VWAP en dos mitades de grupos atómicos. Grupos nunca partidos |
+
+**Contrato causal por miembro:** misma decisión al cierre de primera E377 de 377 prints `10:00≤E.end<10:15 ET`, con grupos de timestamp indivisibles. Lado entrada F/G/H = `sign(VWAP_E−VWAP_D)`; para E = `−sign(precio último grupo completo E − VWAP referencia)`. Un empate o condición opuesta no se transforma en trade. **Entrada** solo hipótesis de orden mercado en el *siguiente* grupo, aun sin precio ejecutable verificado. **Stop**, desde el instante de decisión, 1 tick fuera del extremo de E en lado de pérdida; riesgo nominal 8–400 ticks, ≤US$250: referencia 1 NQ si $5/tick×dist≤250, en otro caso 1 MNQ a $0,5/tick×dist≤250. **TP=1,5R** y cierre máximo **15 minutos en E o 30 minutos en F/G/H**. No se ejecutan estas órdenes en D0.
+
+**Clasificación congelada:** CASE cuando activación preregistrada y riesgo nominal permitido; CONTROL cuando existe referencia causal pero no hay trigger; OTHER cuando impulso neutro, referencia ambigua o distancia de stop inviable; NOT_EVALUABLE cuando falta barra/referencia causal completa. En una 233 con solo un timestamp atómico, el VWAP y extremo son válidos, pero duración temporal=0 no puede dividirse. **Nunca utilizar comportamiento futuro en D0.**
+
+**Antiguo bloque T133–T152:** se recalculan simultáneamente sus 20 máscaras desde los mismos Last DEV y se cotejan por categoría **CASE/CONTROL/OTHER/MISSING EXACTAMENTE con el JSON congelado**; una diferencia bloquea la ampliación ANTES de usar nueva D0. Se calculan máscaras solapadas y Jaccard entre **los 36 miembros**, no por familias separadas. Se prueban 140 sesiones fuente/135 elegibles y cortes octubre–diciembre 2025 versus enero–abril 2026; estos últimos meses NO son nuevo OOS porque ya se exploraron.
+
+**Gate económico preservado:** 20 TESTABLE distintas (CASE≥15 y CONTROL≥15, Jaccard CASE<0,85). Si alcanza, congelar D1 sobre **TODOS los 36 miembros originales**, incluido LOW_POWER, pero antes un protocolo de fills conservadores, costos NQ/MNQ, ejecución stop/target adversa y evaluación de desviación neta. Sin ese protocolo o sin costo fiable, **D1 BLOQUEADA** incluso con D0 suficiente. Nunca forzar la promoción de T75/T112/T134. Ninguna D2 u OOS abierta automáticamente. [Política nueva](NQ_EXECUTABLE_STRATEGY_COHORT_POLICY_2026_10_12.md).
