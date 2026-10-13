@@ -826,3 +826,10 @@ Copiar esta estructura **al final del archivo** cuando cierre un bloque, y actua
 - **Action [38418969389](https://github.com/rgentil2/MES-Trading-Research/actions/runs/38418969389):** 8 tests sintéticos SUCCESS; procesamiento completo de siete meses **EN CURSO** al registrar esta entrada, sin resultado agregado publicado. Actualizar con una nueva entrada al concluir, sin sustituir esta línea.
 - **Gates:** CASE y CONTROL >=15; CASE Jaccard <.85; para abrir D1 nueva familia, >=20 testables diversos. D0 NO lee retorno futuro; PnL/PF/DD=N/D; D1 formal0/D2 formal0. No salvar CASE insuficientes.
 - **Siguiente:** cerrar G0/D0 y documentar tabla de 20 resultados si el job termina SUCCESS; rotar fase a ejecución y NinjaTrader SIM de reglas ya congeladas, sin barrer más umbrales retrospectivamente.
+
+
+### 2026-10-13 — [PUERTA NINJATRADER SIM] Especificación de paridad, no implementación
+
+- Se registró [paso D Python→NinjaTrader SIM](research/nq/NQ_NINJATRADER_SIM_PARITY_GATE_BEFORE_50K_2026_10_13.md) con restricciones de microestructura, diferencia Last/tick bars, grupos iguales timestamp, gestión OCO, stops y costos, paridad sobre muestra DEV, sin abrir OOS.
+- **No se ha ejecutado NinjaTrader ni NinjaScript** y ninguna candidata de T209–T228 ha pasado D0 todavía. No se altera gate de riesgo/fondeo.
+- Orden vigente: terminar la evaluación cohorte T209–T228, rotar a ingeniería de portabilidad para una especificación congelada, NO optimizar artificialmente señales de alto resultado histórico.
