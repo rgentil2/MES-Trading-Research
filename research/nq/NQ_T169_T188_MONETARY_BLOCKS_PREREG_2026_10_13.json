@@ -1,0 +1,340 @@
+{
+  "prereg_id": "NQ-T169-T188-MONETARY-BLOCKS-V1",
+  "registered_at": "2026-10-13",
+  "explicit_user_priority": "MONETARY_NOT_STATISTICAL_FOR_EXPLORATORY_SELECTION",
+  "block_members": [
+    {
+      "block": "A",
+      "window_et": [
+        "09:10",
+        "09:25"
+      ],
+      "description": "Premarket tardío: buscar entradas que no se solapen con la ventana central de T05.",
+      "ids": [
+        "T169",
+        "T170",
+        "T171",
+        "T172",
+        "T173"
+      ]
+    },
+    {
+      "block": "B",
+      "window_et": [
+        "09:30",
+        "09:40"
+      ],
+      "description": "Primeros diez minutos RTH, antes de la primera ventana 09:40 de T05.",
+      "ids": [
+        "T174",
+        "T175",
+        "T176",
+        "T177",
+        "T178"
+      ]
+    },
+    {
+      "block": "C",
+      "window_et": [
+        "10:20",
+        "10:40"
+      ],
+      "description": "Media mañana; modelos solo pueden entrar si el router T05 tiene capacidad libre.",
+      "ids": [
+        "T179",
+        "T180",
+        "T181",
+        "T182",
+        "T183"
+      ]
+    },
+    {
+      "block": "D",
+      "window_et": [
+        "11:10",
+        "11:35"
+      ],
+      "description": "Cola posterior a las 11:10 ET: hipótesis de diversificación temporal.",
+      "ids": [
+        "T184",
+        "T185",
+        "T186",
+        "T187",
+        "T188"
+      ]
+    }
+  ],
+  "members": [
+    {
+      "id": "T169",
+      "code": "A_PRE_TREND",
+      "block": "A",
+      "window": [
+        "09:10",
+        "09:25"
+      ],
+      "question": "¿Persiste el desplazamiento VWAP de tres barras 377 consecutivas?",
+      "status": "PREREGISTERED_NOT_EXECUTED"
+    },
+    {
+      "id": "T170",
+      "code": "A_PRE_EXHAUST",
+      "block": "A",
+      "window": [
+        "09:10",
+        "09:25"
+      ],
+      "question": "¿Una extensión de 377 de al menos 8 ticks revierte hacia valor?",
+      "status": "PREREGISTERED_NOT_EXECUTED"
+    },
+    {
+      "id": "T171",
+      "code": "A_PRE_COMPRESSION",
+      "block": "A",
+      "window": [
+        "09:10",
+        "09:25"
+      ],
+      "question": "¿Compresión previa (≤16 ticks) seguida de expansión (≥32 ticks) permite continuación?",
+      "status": "PREREGISTERED_NOT_EXECUTED"
+    },
+    {
+      "id": "T172",
+      "code": "A_PRE_BREAK",
+      "block": "A",
+      "window": [
+        "09:10",
+        "09:25"
+      ],
+      "question": "¿Un rompimiento aceptado de extremo 377 anterior continúa?",
+      "status": "PREREGISTERED_NOT_EXECUTED"
+    },
+    {
+      "id": "T173",
+      "code": "A_PRE_SWEEP",
+      "block": "A",
+      "window": [
+        "09:10",
+        "09:25"
+      ],
+      "question": "¿Una barrida sin aceptación del extremo anterior revierte?",
+      "status": "PREREGISTERED_NOT_EXECUTED"
+    },
+    {
+      "id": "T174",
+      "code": "B_OPEN_MACRO_MOMENTUM",
+      "block": "B",
+      "window": [
+        "09:30",
+        "09:40"
+      ],
+      "question": "¿Diferencia ≥12 ticks contra VWAP 4181 completado anticipa continuidad?",
+      "status": "PREREGISTERED_NOT_EXECUTED"
+    },
+    {
+      "id": "T175",
+      "code": "B_OPEN_MACRO_FADE",
+      "block": "B",
+      "window": [
+        "09:30",
+        "09:40"
+      ],
+      "question": "¿Diferencia ≥48 ticks contra VWAP 4181 anticipa reversión?",
+      "status": "PREREGISTERED_NOT_EXECUTED"
+    },
+    {
+      "id": "T176",
+      "code": "B_OPEN_EXPANSION",
+      "block": "B",
+      "window": [
+        "09:30",
+        "09:40"
+      ],
+      "question": "¿Expansión 377 ≥1,5× previa con impulso ≥8 ticks continúa?",
+      "status": "PREREGISTERED_NOT_EXECUTED"
+    },
+    {
+      "id": "T177",
+      "code": "B_OPEN_VALUE_CROSS",
+      "block": "B",
+      "window": [
+        "09:30",
+        "09:40"
+      ],
+      "question": "¿Dos cambios 377 recientes con impulso actual ≥2 ticks continúan?",
+      "status": "PREREGISTERED_NOT_EXECUTED"
+    },
+    {
+      "id": "T178",
+      "code": "B_OPEN_REJECTION",
+      "block": "B",
+      "window": [
+        "09:30",
+        "09:40"
+      ],
+      "question": "¿Barrida 377 ≥8 ticks sin aceptación conduce a reversión?",
+      "status": "PREREGISTERED_NOT_EXECUTED"
+    },
+    {
+      "id": "T179",
+      "code": "C_MID_MICRO_ALIGN",
+      "block": "C",
+      "window": [
+        "10:20",
+        "10:40"
+      ],
+      "question": "¿VWAP 233 y 377 consecutivos alineados continúan?",
+      "status": "PREREGISTERED_NOT_EXECUTED"
+    },
+    {
+      "id": "T180",
+      "code": "C_MID_MICRO_DIVERGE",
+      "block": "C",
+      "window": [
+        "10:20",
+        "10:40"
+      ],
+      "question": "¿Divergencia 233 versus 377 dispara reversión del impulso macro?",
+      "status": "PREREGISTERED_NOT_EXECUTED"
+    },
+    {
+      "id": "T181",
+      "code": "C_MID_MACRO_BREAK",
+      "block": "C",
+      "window": [
+        "10:20",
+        "10:40"
+      ],
+      "question": "¿VWAP 377 fuera del rango 4181 previo sostiene tendencia?",
+      "status": "PREREGISTERED_NOT_EXECUTED"
+    },
+    {
+      "id": "T182",
+      "code": "C_MID_MACRO_SWEEP",
+      "block": "C",
+      "window": [
+        "10:20",
+        "10:40"
+      ],
+      "question": "¿Barrida del rango macro 4181 sin aceptación revierte?",
+      "status": "PREREGISTERED_NOT_EXECUTED"
+    },
+    {
+      "id": "T183",
+      "code": "C_MID_VOLUME_EXPANSION",
+      "block": "C",
+      "window": [
+        "10:20",
+        "10:40"
+      ],
+      "question": "¿Volumen de barra 377 ≥1,75× precedente con desplazamiento sigue?",
+      "status": "PREREGISTERED_NOT_EXECUTED"
+    },
+    {
+      "id": "T184",
+      "code": "D_LATE_DRIFT",
+      "block": "D",
+      "window": [
+        "11:10",
+        "11:35"
+      ],
+      "question": "¿Dos barras 377 y micro 233 alineados sostienen la deriva?",
+      "status": "PREREGISTERED_NOT_EXECUTED"
+    },
+    {
+      "id": "T185",
+      "code": "D_LATE_MICRO_EXHAUST",
+      "block": "D",
+      "window": [
+        "11:10",
+        "11:35"
+      ],
+      "question": "¿Micro 233 contradice fuerte impulso 377 y gira?",
+      "status": "PREREGISTERED_NOT_EXECUTED"
+    },
+    {
+      "id": "T186",
+      "code": "D_LATE_MACRO_FADE",
+      "block": "D",
+      "window": [
+        "11:10",
+        "11:35"
+      ],
+      "question": "¿Extensión ≥48 ticks respecto a VWAP 4181 revierte?",
+      "status": "PREREGISTERED_NOT_EXECUTED"
+    },
+    {
+      "id": "T187",
+      "code": "D_LATE_TIGHT_BREAK",
+      "block": "D",
+      "window": [
+        "11:10",
+        "11:35"
+      ],
+      "question": "¿Rango 377 ≤12 ticks con desplazamiento ≥2 ticks desencadena continuación?",
+      "status": "PREREGISTERED_NOT_EXECUTED"
+    },
+    {
+      "id": "T188",
+      "code": "D_LATE_LARGE_REVERT",
+      "block": "D",
+      "window": [
+        "11:10",
+        "11:35"
+      ],
+      "question": "¿Rango 377 ≥40 ticks con desplazamiento ≥8 ticks revierte?",
+      "status": "PREREGISTERED_NOT_EXECUTED"
+    }
+  ],
+  "source_months": [
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04"
+  ],
+  "expected_source": 140,
+  "expected_ready": 135,
+  "frozen_benchmark": "T05_377",
+  "never_retune_benchmark": true,
+  "signals_use": "FIRST_COMPLETED_ATOMIC_377_PRINT_BAR_IN_FIXED_ET_WINDOW_WITH_233_377_4181_PRIOR_CONTEXT",
+  "new_5s_signals": false,
+  "per_candidate_max_daily_signals": 1,
+  "one_shared_account_per_scenario": true,
+  "max_trades_daily": 2,
+  "closed_daily_loss_stop_usd": -600,
+  "contracts": 1,
+  "stop_ticks": 24,
+  "target_ticks": 48,
+  "max_holding_seconds": 300,
+  "stress_model": "T04_STRESS_1P5_FEE_TWO_TICKS_EACH_SIDE",
+  "extra_cost_rt_usd": 10,
+  "holdouts_opened": false,
+  "confirmatory_alpha_test": false,
+  "economic_comparison": [
+    "modelled_net_usd",
+    "profit_factor",
+    "last_envelope_drawdown_usd",
+    "trade_frequency_by_month",
+    "net_after_additional_10_usd_RT",
+    "router_minus_frozen_T05_under_stress",
+    "router_minus_frozen_T05_after_extra10",
+    "T05_trades_retained",
+    "alternative_executed_count"
+  ],
+  "exploratory_gates": {
+    "router_plus10_delta_positive": true,
+    "router_stress_PF_min": 1.25,
+    "router_plus10_PF_min": 1.25,
+    "router_last_envelope_DD_max_usd_reference_unverified": 2000,
+    "T05_retained_at_least": 104,
+    "combined_trades_per_month_min": 5
+  },
+  "no_portfolio_summing": true,
+  "data_license": "ONLY_PRIVATE_EXISTING_DEV_LAST_ALREADY_ARCHIVED_NO_EXPORT",
+  "statistical_tests_deferred": true,
+  "D1_formal_no_changes": true,
+  "OOS_no_changes": true
+}
