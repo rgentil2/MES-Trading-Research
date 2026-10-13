@@ -1,0 +1,65 @@
+name: NQ five selected T210 T212 T215 T217 T224 exploratory economics BH20 DEV
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/nq-t210-t224-selected-five-economic-shadow.yml'
+      - 'local_nq_tick_2025_2026/nq_t210_t224_five_economic_shadow.py'
+      - 'local_nq_tick_2025_2026/test_nq_t210_t224_five_economic_shadow.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nq-t210-t224-five-econ-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  five-economic-post-selection-nonconfirmatory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 115
+    env:
+      PYTHONPATH: local_nq_tick_2025_2026
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Confirm preregistration and SYNTHETIC tests before any market access
+        run: |
+          set -euo pipefail
+          test -s research/nq/NQ_13_H_T_EXPLORATORY_ECONOMIC_BRIDGE_PREREG_2026_10_13.md
+          test -s research/nq/NQ_T209_T228_20_STRUCTURAL_D0_PREREG_2026_10_13.json
+          python -m unittest discover -s local_nq_tick_2025_2026 -p test_nq_t210_t224_five_economic_shadow.py -v
+          python -m compileall -q local_nq_tick_2025_2026/nq_t210_t224_five_economic_shadow.py
+      - name: Reuse previously licensed 7 months DEV Last with SHA256; never unseal holdouts
+        env:
+          GH_TOKEN: ${{ secrets.NQ_DEV_TICKS_READ_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "${GH_TOKEN:-}"
+          mkdir -p _private/archives _private/data _private/results
+          command -v 7z >/dev/null || (sudo apt-get update -qq && sudo apt-get install -qq -y p7zip-full)
+          for MONTH in 2025-10 2025-11 2025-12 2026-01 2026-02 2026-03 2026-04; do
+            python -c 'from nq_t209_t228_structural_d0 import month_guard; import sys;month_guard(sys.argv[1])' "$MONTH"
+            gh release download "nq-tick-$MONTH" --repo rgentil2/NQ-Ticks-Dev-2026 --pattern "NQ_${MONTH}_Last.7z.001" --pattern "NQ_${MONTH}_Last.7z.sha256" --dir _private/archives
+            (cd _private/archives && sha256sum -c "NQ_${MONTH}_Last.7z.sha256")
+            7z x "_private/archives/NQ_${MONTH}_Last.7z.001" -y -o_private/data >/dev/null
+            python local_nq_tick_2025_2026/nq_t210_t224_five_economic_shadow.py --month "$MONTH" --root _private/data --out "_private/results/five_t_d1_${MONTH}.json"
+            rm -rf _private/archives _private/data
+            mkdir -p _private/archives _private/data
+          done
+      - name: Twenty-family mask parity, bootstrap and BH20; export SAFE aggregate only
+        run: |
+          set -euo pipefail
+          mkdir -p final
+          python local_nq_tick_2025_2026/nq_t210_t224_five_economic_shadow.py --inputs _private/results --out final/summary.json --report final/report.md
+          cat final/report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Delete private licensed Last and individual session economics ALWAYS
+        if: always()
+        run: rm -rf _private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-five-post-d0-exploratory-economics-bh20-safe
+          path: final/
+          if-no-files-found: error
