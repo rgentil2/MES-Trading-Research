@@ -1,0 +1,101 @@
+name: Exploratory ES 1m Builder 50K (DEV ONLY)
+on:
+  push:
+    branches:
+      - exploratory/strategy-builder-50k-v1-20261014
+    paths:
+      - 'research/strategy_builder_50k/run_es_builder_transport.py'
+      - 'research/strategy_builder_50k/test_es_builder_transport.py'
+      - 'research/strategy_builder_50k/ES_BUILDER_TRANSPORT_README.md'
+      - '.github/workflows/es-builder-50k-transport.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'research/strategy_builder_50k/run_es_builder_transport.py'
+      - '.github/workflows/es-builder-50k-transport.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  es-minute-frozen-144:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - name: Checkout source without market-data LFS smudge
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+      - name: Confirm 2025/2026 ES market-data LFS objects are still pointers
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          for suffix in ('25','26'):
+              for path in Path('data_es_staging/raw_lfs').glob(f'ES_*{suffix}/*_Minute_Last.txt'):
+                  if path.stat().st_size>1000:
+                      raise SystemExit('HOLDOUT_UNEXPECTEDLY_MATERIALIZED: '+str(path))
+          print('2025 and 2026 holdout objects remain pointers.')
+          PY
+      - name: Pull ES 1m DEVELOPMENT contracts ONLY from Git LFS
+        shell: bash
+        run: |
+          set -euo pipefail
+          git lfs install
+          git lfs pull --include='data_es_staging/raw_lfs/ES_*20/*_Minute_Last.txt,data_es_staging/raw_lfs/ES_*21/*_Minute_Last.txt,data_es_staging/raw_lfs/ES_*22/*_Minute_Last.txt,data_es_staging/raw_lfs/ES_*23/*_Minute_Last.txt,data_es_staging/raw_lfs/ES_*24/*_Minute_Last.txt' --exclude=''
+      - name: Verify ES source and holdout guard after LFS pull
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from glob import glob
+          found=sorted(glob('data_es_staging/raw_lfs/ES_*2[0-4]/*_Minute_Last.txt'))
+          if len(found)!=20:
+              raise SystemExit('EXPECTED_EXACTLY_20_ES_DEV_CONTRACT_FILES_GOT_'+str(len(found)))
+          for fn in found:
+              if Path(fn).stat().st_size<1000:
+                  raise SystemExit('DEV_ES_NOT_DOWNLOADED_'+fn)
+          for suf in ('25','26'):
+              for p in Path('data_es_staging/raw_lfs').glob(f'ES_*{suf}/*_Minute_Last.txt'):
+                  if p.stat().st_size>1000:
+                      raise SystemExit('ES_HOLDOUT_BROKEN_'+str(p))
+          print('Exact 20 development ES files materialized; sealed holdouts unchanged')
+          PY
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install frozen builder dependencies
+        run: python -m pip install -r research/strategy_builder_50k/requirements.txt
+      - name: Synthetic tests and preregistry freeze (NO historical read)
+        run: |
+          python -m unittest discover -s research/strategy_builder_50k/tests -v
+          python -m unittest discover -s research/strategy_builder_50k -p 'test_es_builder_transport.py' -v
+          python research/strategy_builder_50k/run_es_builder_transport.py --registry-only --output /tmp/unused_es_builder_folder
+      - name: Run one-shot FROZEN cross-instrument ES signal / MES economics 2020-2024
+        run: |
+          python research/strategy_builder_50k/run_es_builder_transport.py \
+            --output /tmp/es_builder_50k_results \
+            --bootstrap 1000 \
+            --allow-existing-dev-reuse
+      - name: Print concise results (no OHLC/bar-level output)
+        run: |
+          python - <<'PY'
+          import json
+          p='/tmp/es_builder_50k_results/ES_BUILDER_REPORT.json'
+          x=json.load(open(p))
+          print('STATUS:',x['status'])
+          print('COMPLETE_ES_SESSIONS:',x['data_audit']['complete_rth_sessions'])
+          print('REGISTERED:',x['family_tests'])
+          print('SCREEN_PASSES:',x['n_criteria_pass'])
+          PY
+      - name: Upload analysis summary only, NO raw licensed OHLCV
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: exploratory-es-minute-mes-50k-2020-2024-v1-v2-144
+          path: |
+            /tmp/es_builder_50k_results/ES_BUILDER_REPORT.json
+            /tmp/es_builder_50k_results/ES_BUILDER_ALL144.csv
+            /tmp/es_builder_50k_results/ES_TRANSPORT_PRECOMMIT.json
+          if-no-files-found: error
+          retention-days: 30
