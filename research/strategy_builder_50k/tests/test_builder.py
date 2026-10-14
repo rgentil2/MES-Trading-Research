@@ -1,6 +1,13 @@
 from datetime import date, timedelta
+from pathlib import Path
+import sys
 import unittest
 import numpy as np
+
+# Works both via `unittest discover` from repository root and locally.
+BUILDER_ROOT = Path(__file__).resolve().parents[1]
+if str(BUILDER_ROOT) not in sys.path:
+    sys.path.insert(0, str(BUILDER_ROOT))
 
 from engine import (FAMILIES,FEATURES,build_registry,indicators,directional_signal,
                     filter_mask,_exit,metrics,analyze,trade_for_day)
