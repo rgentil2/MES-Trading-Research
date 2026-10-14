@@ -52,3 +52,16 @@ Archivos de salida privada:
 ## Gate pendiente
 
 No hay nuevo backtest sobre datos reales confirmado en este chat porque el ZIP privado auditado previamente **no está montado aquí**; **no se inventa un top 10 rentable**. El siguiente gate verdadero es ejecutar V1+V2 con el archivo original autorizado, comparar rutas de costes NQ/MNQ y congelar prioridades de cartera **antes** de evaluar el router sobre la comprobación interna. En todo caso 2025 sigue reservado hasta autorización separada.
+
+## Origen del histórico recuperado — verificación del 14-oct-2026
+
+**No se necesita subir otro ZIP ni descargar mercado nuevo.** El NQ 1m histórico que alimentó la investigación H01–H78 provino de exportaciones NinjaTrader 8 `BarsRequest` (archivo privado `NQMNQ_Research_2020_2026.zip` originalmente adjuntado a la conversación). El 11-oct-2026 se almacenó, conservando exactamente los bytes, en el **Release privado** del repositorio `rgentil2/NQ-Tick-Data`; en GitHub el asset fue renombrado con el sufijo **`.1.zip`**.
+
+- [Release privado de minuto NQ/MNQ](https://github.com/rgentil2/NQ-Tick-Data/releases/tag/nqmnq-minute-2020-2026-v1)
+- Asset verificado a través de GitHub API: `NQMNQ_Research_2020_2026.1.zip`, **65.405.000 bytes**, GitHub asset **ID 631366198** y SHA-256 registrado **`a85a37eb66abda2621cab8110af30d8afb115f652dafc02cc76c7577b2280bc8`**. Este digest es metadata del asset, no una descarga local nueva.
+- No confundir con Releases de ticks NQ Oct2025–2026: este asset es el **ZIP de barras Minute Last** con 25 particiones NQ de desarrollo 2020–2024 y material reservado 2025–2026.
+- Acceso a datos dentro del ZIP: `research.nq.nq_h05_h07_level_volume_screen.load_development(zip_path)` usa `zipfile.ZipFile`, restringe nombres de miembros al directorio `development_2020_2024` mediante `permitted_name`, selecciona un solo contrato por sesión (rollover trimestral fijo) y retorna **1.221 sesiones completas** de NQ RTH. Puede recibir directamente un fichero llamado `NQMNQ_Research_2020_2026.1.zip` (no depende del nombre original).
+- **Límite de acceso actual:** la integración GitHub usada en ChatGPT verificó Release, ID, tamaño y digest, pero **no ofrece descargador de bytes binarios privados del asset**, y ese ZIP no está montado en el contenedor actual. No se ha corrido el backtest nuevo de Builder. El procedimiento compatible es obtener el asset **ya almacenado** a través de una sesión autenticada (GitHub GUI o `gh release download` en un entorno autenticado) y pasarlo al programa; para proceso enteramente en nube, se puede implementar una Action desde el repositorio **privado** con permiso a su propio Release y guardar solo métricas, no precios ni CSV de mercado. No usar accesos anónimos, mover datos al repo público, ni abrir 2025/2026.
+- Ejemplo de recuperación privada, **sin bajar nuevos precios**: `gh release download nqmnq-minute-2020-2026-v1 --repo rgentil2/NQ-Tick-Data --pattern "NQMNQ_Research_2020_2026.1.zip" --dir "<CARPETA_PRIVADA>"` después de `gh auth login`; cotejar SHA-256 antes de ejecutar `run_v2.py --zip "<CARPETA_PRIVADA>/NQMNQ_Research_2020_2026.1.zip" ...`.
+- La validación independiente 2025 y el pseudo-forward 2026 siguen sellados; solo metadata fue recuperada y ninguna barra de esos años fue abierta en esta verificación.
+
