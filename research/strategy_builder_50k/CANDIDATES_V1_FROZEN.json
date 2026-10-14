@@ -1,0 +1,443 @@
+{
+  "project": "NQ Strategy Builder 50k",
+  "version": "v1",
+  "date": "2026-10-14",
+  "seed": 20261014,
+  "status": "PREREG_REGISTERED_BEFORE_ACTUAL_PRICE_READ",
+  "count": 48,
+  "data": "2020-2024 development; 2025 sealed; 2026 excluded",
+  "candidates": [
+    {
+      "id": "SB-01-1",
+      "mechanism": "ema_trend",
+      "filter_name": "volume_confirm",
+      "stop_atr_mult": 1.0,
+      "reward_r": 1.5,
+      "max_hold_min": 20,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-01-2",
+      "mechanism": "ema_trend",
+      "filter_name": "adx_confirm",
+      "stop_atr_mult": 1.5,
+      "reward_r": 1.5,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-01-3",
+      "mechanism": "ema_trend",
+      "filter_name": "regime_quiet",
+      "stop_atr_mult": 2.0,
+      "reward_r": 2.0,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-02-1",
+      "mechanism": "sma_cross",
+      "filter_name": "volume_confirm",
+      "stop_atr_mult": 1.0,
+      "reward_r": 1.5,
+      "max_hold_min": 20,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-02-2",
+      "mechanism": "sma_cross",
+      "filter_name": "adx_confirm",
+      "stop_atr_mult": 1.5,
+      "reward_r": 1.5,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-02-3",
+      "mechanism": "sma_cross",
+      "filter_name": "regime_quiet",
+      "stop_atr_mult": 2.0,
+      "reward_r": 2.0,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-03-1",
+      "mechanism": "rsi_reversal",
+      "filter_name": "volume_confirm",
+      "stop_atr_mult": 1.0,
+      "reward_r": 1.5,
+      "max_hold_min": 20,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-03-2",
+      "mechanism": "rsi_reversal",
+      "filter_name": "adx_confirm",
+      "stop_atr_mult": 1.5,
+      "reward_r": 1.5,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-03-3",
+      "mechanism": "rsi_reversal",
+      "filter_name": "regime_quiet",
+      "stop_atr_mult": 2.0,
+      "reward_r": 2.0,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-04-1",
+      "mechanism": "bollinger_fade",
+      "filter_name": "volume_confirm",
+      "stop_atr_mult": 1.0,
+      "reward_r": 1.5,
+      "max_hold_min": 20,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-04-2",
+      "mechanism": "bollinger_fade",
+      "filter_name": "adx_confirm",
+      "stop_atr_mult": 1.5,
+      "reward_r": 1.5,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-04-3",
+      "mechanism": "bollinger_fade",
+      "filter_name": "regime_quiet",
+      "stop_atr_mult": 2.0,
+      "reward_r": 2.0,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-05-1",
+      "mechanism": "macd_cross",
+      "filter_name": "volume_confirm",
+      "stop_atr_mult": 1.0,
+      "reward_r": 1.5,
+      "max_hold_min": 20,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-05-2",
+      "mechanism": "macd_cross",
+      "filter_name": "adx_confirm",
+      "stop_atr_mult": 1.5,
+      "reward_r": 1.5,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-05-3",
+      "mechanism": "macd_cross",
+      "filter_name": "regime_quiet",
+      "stop_atr_mult": 2.0,
+      "reward_r": 2.0,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-06-1",
+      "mechanism": "stoch_reversal",
+      "filter_name": "volume_confirm",
+      "stop_atr_mult": 1.0,
+      "reward_r": 1.5,
+      "max_hold_min": 20,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-06-2",
+      "mechanism": "stoch_reversal",
+      "filter_name": "adx_confirm",
+      "stop_atr_mult": 1.5,
+      "reward_r": 1.5,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-06-3",
+      "mechanism": "stoch_reversal",
+      "filter_name": "regime_quiet",
+      "stop_atr_mult": 2.0,
+      "reward_r": 2.0,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-07-1",
+      "mechanism": "cci_reversal",
+      "filter_name": "volume_confirm",
+      "stop_atr_mult": 1.0,
+      "reward_r": 1.5,
+      "max_hold_min": 20,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-07-2",
+      "mechanism": "cci_reversal",
+      "filter_name": "adx_confirm",
+      "stop_atr_mult": 1.5,
+      "reward_r": 1.5,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-07-3",
+      "mechanism": "cci_reversal",
+      "filter_name": "regime_quiet",
+      "stop_atr_mult": 2.0,
+      "reward_r": 2.0,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-08-1",
+      "mechanism": "donchian_break",
+      "filter_name": "volume_confirm",
+      "stop_atr_mult": 1.0,
+      "reward_r": 1.5,
+      "max_hold_min": 20,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-08-2",
+      "mechanism": "donchian_break",
+      "filter_name": "adx_confirm",
+      "stop_atr_mult": 1.5,
+      "reward_r": 1.5,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-08-3",
+      "mechanism": "donchian_break",
+      "filter_name": "regime_quiet",
+      "stop_atr_mult": 2.0,
+      "reward_r": 2.0,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-09-1",
+      "mechanism": "keltner_break",
+      "filter_name": "volume_confirm",
+      "stop_atr_mult": 1.0,
+      "reward_r": 1.5,
+      "max_hold_min": 20,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-09-2",
+      "mechanism": "keltner_break",
+      "filter_name": "adx_confirm",
+      "stop_atr_mult": 1.5,
+      "reward_r": 1.5,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-09-3",
+      "mechanism": "keltner_break",
+      "filter_name": "regime_quiet",
+      "stop_atr_mult": 2.0,
+      "reward_r": 2.0,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-10-1",
+      "mechanism": "roc_momentum",
+      "filter_name": "volume_confirm",
+      "stop_atr_mult": 1.0,
+      "reward_r": 1.5,
+      "max_hold_min": 20,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-10-2",
+      "mechanism": "roc_momentum",
+      "filter_name": "adx_confirm",
+      "stop_atr_mult": 1.5,
+      "reward_r": 1.5,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-10-3",
+      "mechanism": "roc_momentum",
+      "filter_name": "regime_quiet",
+      "stop_atr_mult": 2.0,
+      "reward_r": 2.0,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-11-1",
+      "mechanism": "williams_reversal",
+      "filter_name": "volume_confirm",
+      "stop_atr_mult": 1.0,
+      "reward_r": 1.5,
+      "max_hold_min": 20,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-11-2",
+      "mechanism": "williams_reversal",
+      "filter_name": "adx_confirm",
+      "stop_atr_mult": 1.5,
+      "reward_r": 1.5,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-11-3",
+      "mechanism": "williams_reversal",
+      "filter_name": "regime_quiet",
+      "stop_atr_mult": 2.0,
+      "reward_r": 2.0,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-12-1",
+      "mechanism": "adx_trend",
+      "filter_name": "volume_confirm",
+      "stop_atr_mult": 1.0,
+      "reward_r": 1.5,
+      "max_hold_min": 20,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-12-2",
+      "mechanism": "adx_trend",
+      "filter_name": "adx_confirm",
+      "stop_atr_mult": 1.5,
+      "reward_r": 1.5,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-12-3",
+      "mechanism": "adx_trend",
+      "filter_name": "regime_quiet",
+      "stop_atr_mult": 2.0,
+      "reward_r": 2.0,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-13-1",
+      "mechanism": "mfi_reversal",
+      "filter_name": "volume_confirm",
+      "stop_atr_mult": 1.0,
+      "reward_r": 1.5,
+      "max_hold_min": 20,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-13-2",
+      "mechanism": "mfi_reversal",
+      "filter_name": "adx_confirm",
+      "stop_atr_mult": 1.5,
+      "reward_r": 1.5,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-13-3",
+      "mechanism": "mfi_reversal",
+      "filter_name": "regime_quiet",
+      "stop_atr_mult": 2.0,
+      "reward_r": 2.0,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-14-1",
+      "mechanism": "obv_momentum",
+      "filter_name": "volume_confirm",
+      "stop_atr_mult": 1.0,
+      "reward_r": 1.5,
+      "max_hold_min": 20,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-14-2",
+      "mechanism": "obv_momentum",
+      "filter_name": "adx_confirm",
+      "stop_atr_mult": 1.5,
+      "reward_r": 1.5,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-14-3",
+      "mechanism": "obv_momentum",
+      "filter_name": "regime_quiet",
+      "stop_atr_mult": 2.0,
+      "reward_r": 2.0,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-15-1",
+      "mechanism": "vwap_fade",
+      "filter_name": "volume_confirm",
+      "stop_atr_mult": 1.0,
+      "reward_r": 1.5,
+      "max_hold_min": 20,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-15-2",
+      "mechanism": "vwap_fade",
+      "filter_name": "adx_confirm",
+      "stop_atr_mult": 1.5,
+      "reward_r": 1.5,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-15-3",
+      "mechanism": "vwap_fade",
+      "filter_name": "regime_quiet",
+      "stop_atr_mult": 2.0,
+      "reward_r": 2.0,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-16-1",
+      "mechanism": "volume_break",
+      "filter_name": "volume_confirm",
+      "stop_atr_mult": 1.0,
+      "reward_r": 1.5,
+      "max_hold_min": 20,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-16-2",
+      "mechanism": "volume_break",
+      "filter_name": "adx_confirm",
+      "stop_atr_mult": 1.5,
+      "reward_r": 1.5,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    },
+    {
+      "id": "SB-16-3",
+      "mechanism": "volume_break",
+      "filter_name": "regime_quiet",
+      "stop_atr_mult": 2.0,
+      "reward_r": 2.0,
+      "max_hold_min": 30,
+      "side_mode": "BOTH"
+    }
+  ]
+}
