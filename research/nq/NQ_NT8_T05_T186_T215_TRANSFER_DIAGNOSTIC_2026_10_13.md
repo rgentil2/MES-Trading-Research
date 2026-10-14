@@ -23,3 +23,16 @@
 ## Estado, antes de abrir holdout
 
 **REALIZADO:** paquete C# indicador y exportador Python diagnóstico creado para descarga en conversación; Python sintaxis y tests puros 4 PASS; cuestionario y brackets auditados. **FALTA:** C# compilación en PC de usuario, DEV visual parity, posteriormente un **motor NinjaScript independiente** con equivalencia de señales/SL/TP/gestión y OCO, decisión ex ante de TP fuera de grid T215, pruebas de seguridad de órdenes. **NO hay** automatización real de trading, ninguna orden NinjaTrader enviada y **NO** se abrió julio–septiembre 2026 ni holdouts H2025/26. La prueba pseudo-forward **solo después del freeze de código/semántica**, una vez, y si GO, se podrá ir a evaluación pagada $50k **sin semanas obligatorias de Sim101**.
+
+
+## 13-oct-2026 — Corrección local del paquete tras conocer la disposición de los archivos Jan–Jun
+
+El usuario indicó que sus Last históricos residen en una carpeta `Tick_Last` que mezcla meses de 2026. El exportador inicial había supuesto una raíz **padre** y reutilizaba `month_days()`, una función original que rechaza mezclar meses en una carpeta: podía impedir generar el CSV aunque los datos fuesen legítimos. **No se modificó la lógica de ninguna hipótesis**. Se generó como adjunto nuevo en esta conversación `NQ_NinjaTrader8_DEV_JanJun_EXPORTADOR_CORREGIDO.zip` (con `GENERAR_CSV_DEV_ABRIL_2026.ps1`) y los cambios siguientes:
+
+- `--root` acepta directamente la carpeta `Tick_Last` o su padre; selecciona **solo nombres de archivos del mes DEV elegido** y mantiene allowlist 2025-10..2026-04, sin acceder a precios de otros meses ni reservar julio–septiembre.
+- Se añadió la raíz del repositorio a `sys.path` para resolver importaciones `research.nq.*` del motor original, sin reescribirlo.
+- Se creó un lanzador PowerShell local que por defecto comprueba abril 2026, genera un CSV privado (no sobreescribe uno existente), intenta localizar el repositorio Python local y devuelve un error útil si no está clonado; NO descarga datos ni código.
+- Se ejecutaron **5 tests unitarios sintéticos PASS** (incluye carpeta Jan/Mar/Apr/Jun con meses mezclados y rechazo de 2026-07) y comprobación de integridad ZIP; **NO es prueba integral con los ticks del usuario ni compilación independiente de NinjaScript**, ambas pendientes. Si el usuario solo tiene enero–junio, correr `--month 2026-04` y no forzar los agregados de siete meses DEV que requieren octubre–diciembre 2025.
+- Visualizar datos de abril requerirá gráfico histórico del contrato aplicable (habitualmente `NQ JUN26`, según etiquetas de los archivos) y CSV exportado, no NQ DEC26 con octubre actual. No inferir que TXT locales se hayan importado al proveedor de históricos de NinjaTrader.
+
+**Estados:** exportador local corregido, paquete compartido, Python local sintético PASS, usuario aún no ha confirmado número de archivos de abril, repositorio local, CSV generado ni señales NT8 cargadas. Sellados los holdouts T julio–septiembre y H anteriores.
