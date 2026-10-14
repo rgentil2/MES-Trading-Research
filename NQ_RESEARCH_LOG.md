@@ -1018,3 +1018,11 @@ El usuario envió captura visible de NinjaTrader 8 `Data Box` sobre **NQ 06-26, 
 
 **Próximo paso concreto usuario:** descargar ZIP nuevo → ejecutar `INSTALAR_ESTRATEGIA.ps1` o copiar .cs a Strategies, compilar F5; primero convertir abril con `PREPARAR_IMPORTACION_ABRIL.ps1` e importar `NQ 06-26.Last.txt` usando fuente UTC; posteriormente `New → Strategy Analyzer → Backtest`, NQ 06-26, 01–30 abril 2026, `Portfolio=B, DevelopmentOnly=True, EnableSimulationOrders=True` solo histórico; comprobar comisiones y cobertura, exportar trades y cotejar con B=24 de Python y su propio ledger. Si faltan logs/ticks, FAIL-CLOSED; no abrir julio–septiembre holdout T ni H2025–2026.
 
+
+
+### 2026-10-14 — [NT8 APR26 STANDALONE INSTALLER COMPATIBILITY]
+
+- Usuario confirmó que NinjaTrader tiene ticks históricos propios y pidió **todos los archivos y pasos de instalación** de su estrategia autónoma, directamente sin CSV/Python. Entregado anexo nuevo **`NQ_NinjaTrader8_ABRIL2026_Solo_NT8_Instalacion.zip`**, 3 archivos: `Strategies/NQResearchAutonomousDev.cs`, `INSTALAR_ESTRATEGIA.ps1`, `LEEME_INSTALACION.md`. Archivo ZIP creado y contenido auditado localmente. Solo backtest **abril 2026** contrato **NQ JUN26 / MNQ JUN26**.
+- Compatibilidad técnica **sin cambio de reglas**: `AddDataSeries("MNQ 06-26", BarsPeriodType.Tick, 1)` fijo en lugar de pasar `MnqInstrument` dinámico desde propiedad, siguiendo documentación oficial NinjaTrader. Esto no permite 7meses multivencimiento sin port adicional. La estrategia importa NQ y MNQ tick Last de NT8, independiente de la capa CSV anotada.
+- Código de estrategia permanece **NO COMPILADO en NT8 REAL** y ejecución de backtest **NO VERIFICADA**. Aun con compilación PASS, motor histórico, sesiones, ticks y fills pueden diferir del Last hipotético Python. Para backtest primera entrega B abril 24 modelo, A18, BENCH17, con T215 off-grid bloqueado por defecto; no etiquetar reducción como paridad. Verificar NQ/MNQ tick local, `Use Local Data Only`, Trading Hours 08-12 ET, Eastern timezone, comisión y 2ticks slippage ya configurados. No usar Live.
+- No descargar datos, no usar imports, no abrir May-Jun T (interno) ni Jul-Sep T OOS o holdouts H. Documentar logs/tables NT8 y corregir ingeniería **sin overfit outcomes**.
