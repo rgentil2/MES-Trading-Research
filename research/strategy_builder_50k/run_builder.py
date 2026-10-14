@@ -12,6 +12,12 @@ import json
 from pathlib import Path
 import sys
 
+# The command is run as a file from the repository root. Python sets
+# sys.path[0] to this file's folder; add the repo root to find research.nq.
+REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
+if str(REPOSITORY_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPOSITORY_ROOT))
+
 from engine import build_registry, analyze, SEED
 
 
