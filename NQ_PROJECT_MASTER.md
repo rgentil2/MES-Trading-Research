@@ -1,3 +1,12 @@
+
+## 2026-10-13 — NT8 visual CSV annotation checkpoint (user screenshot)
+
+
+### 2026-10-13 — NT8 visual CSV annotation checkpoint (user screenshot)
+
+Screenshot received with NQ JUN26 1min chart and `ResearchFrozenSignalsDev` loaded against local derived April-2026 CSV; at least two labels are visibly plotted: T215 LONG **E 27240.00, SL 27235.75, TP 27246.375 (OFF TICK GRID)**; T186 SHORT **E 27406.50, SL 27412.50, TP 27394.50**. **This verifies GUI CSV annotations, NOT true NinjaTrader strategy signal derivation, live/Sim fills, exact ET time parity, historical rollover or all 24 B April trades.** T215 theoretical target is 1/8 point off the NQ price grid: no autonomous orders until rounding policy precommitted and checked on DEV without looking at OOS. Example defensive LONG TP rounded toward entry would be 27246.25; purely suggested alternative, NOT implemented nor validated. User next action: check chart-date and chart timezone against signal dates / ET session and review signal alignment across April; build standalone NinjaScript engine only after that. **T May-Jun internal and Jul-Sep 2026 holdout remain sealed; no funded trading executed.**
+
+
 # NQ — DOCUMENTO MAESTRO DE INVESTIGACIÓN, REGLAS Y BACKLOG
 
 > **LEE ESTE DOCUMENTO PRIMERO AL INICIAR CUALQUIER CONVERSACIÓN SOBRE NQ.**
