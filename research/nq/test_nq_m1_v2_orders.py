@@ -48,6 +48,33 @@ class TestNQM1V2Orders(unittest.TestCase):
         self.assertEqual(info["both_sides_at_decision"], 0)
         self.assertLessEqual(r["filled"], info["raw_long_at_decision"])
 
+    def test_reject_reasons_sum_to_distinct_signal_occasions(self):
+        result = m.simulate_day(bars_fixture(), strategy(), "2021-06-16")
+        sig = result["signal_diagnostics"]
+        unique_signals = sig["raw_long_at_decision"]+sig["raw_short_at_decision"]-sig["both_sides_at_decision"]
+        self.assertEqual(unique_signals, result["filled"] + sum(result["rejected"].values()))
+
+    def test_one_mnq_feasibility_does_not_change_nq_fills(self):
+        s = strategy()
+        s["exit"]["stop_loss_required"] = {"kind": "FIXED_POINTS", "points": 30.0}
+        r = m.simulate_day(bars_fixture(), s, "2021-06-16")
+        self.assertEqual(r["filled"], 0)
+        self.assertGreater(r["rejected"]["risk_ineligible"], 0)
+        self.assertEqual(r["signal_diagnostics"]["nq_risk_reject_feasible_as_1mnq"],
+                         r["rejected"]["risk_ineligible"])
+        self.assertEqual(r["signal_diagnostics"]["nq_risk_reject_not_feasible_as_1mnq"], 0)
+
+    def test_initial_atr_warmup_and_invalid_vwap_tp_are_separate(self):
+        first = strategy()
+        first["exit"]["stop_loss_required"] = {"kind":"ATR", "period":240, "multiple":1.}
+        r1 = m.simulate_day(bars_fixture(), first, "2021-06-16")
+        self.assertGreater(r1["rejected"]["missing_stop_context"], 0)
+        self.assertEqual(r1["rejected"]["invalid_or_unavailable_target"], 0)
+        second = strategy()
+        second["exit"]["profit_target"] = {"kind":"CAUSAL_LEVEL", "reference":"VWAP"}
+        r2 = m.simulate_day(bars_fixture(), second, "2021-06-16")
+        self.assertGreater(r2["rejected"]["invalid_or_unavailable_target"], 0)
+
     def test_market_fills_and_daily_limit(self):
         r = m.simulate_day(bars_fixture(), strategy(), "2021-06-16")
         self.assertEqual(r["filled"], 2)
