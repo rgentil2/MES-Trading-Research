@@ -192,7 +192,7 @@ def eval_expr(bars: np.ndarray, i: int, expr: dict) -> bool:
     lag = expr["lag_completed_bars"]
     block = expr["indicator"]
     cur = indicator_value(bars, i, block)
-    prior = indicator_value(bars, i-(1 if op in ("RISING", "FALLING") else lag), block)
+    prior = indicator_value(bars, i-lag, block)  # honor the preregistered lag for EVERY predicate
     if cur is None or prior is None:
         return False
     if op in ("RISING", "ABOVE_LAG"):
