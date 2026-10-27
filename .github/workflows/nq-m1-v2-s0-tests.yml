@@ -19,6 +19,8 @@ on:
       - "research/nq/test_nq_m1_v2_talib_parity.py"
       - "research/nq/nq_m1_v2_ist_engineering_pilot.py"
       - "research/nq/test_nq_m1_v2_ist_engineering_pilot.py"
+      - "research/nq/nq_m1_v2_semantic_lint.py"
+      - "research/nq/test_nq_m1_v2_semantic_lint.py"
       - "research/nq/NQ_M1_V2_GENERATOR_SPEC_2026_10_27.md"
       - ".github/workflows/nq-m1-v2-s0-tests.yml"
   workflow_dispatch:
@@ -79,6 +81,19 @@ jobs:
         env:
           PYTHONPATH: .
         run: python -m unittest discover -s research/nq -p test_nq_m1_v2_ist_engineering_pilot.py -v
+      - name: Audit inactive indicator parameters and false search multiplicity S0
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m unittest discover -s research/nq -p test_nq_m1_v2_semantic_lint.py -v
+          python -m research.nq.nq_m1_v2_semantic_lint > /tmp/nq_v2_semantic_audit.json
+          python - <<'PY'
+          import json
+          x=json.load(open("/tmp/nq_v2_semantic_audit.json"))
+          assert x["no_market_data"] and not x["formal_gates_run"]
+          assert x["candidate_count"] == 100
+          print("V2_SEMANTIC_AUDIT_SAFE", {"blocked_candidates":x["blocked_candidates"],"inactive_fields":x["total_fields"].get("inactive_parameter_fields",0)})
+          PY
       - name: Check registered catalog and reproducible candidate batch without market files
         env:
           PYTHONPATH: .
