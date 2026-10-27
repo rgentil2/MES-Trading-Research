@@ -16,6 +16,7 @@ on:
       - "research/nq/test_nq_m1_v2_indicators_ext.py"
       - "research/nq/nq_m1_v2_batch_preflight.py"
       - "research/nq/test_nq_m1_v2_batch_preflight.py"
+      - "research/nq/test_nq_m1_v2_talib_parity.py"
       - "research/nq/NQ_M1_V2_GENERATOR_SPEC_2026_10_27.md"
       - ".github/workflows/nq-m1-v2-s0-tests.yml"
   workflow_dispatch:
@@ -66,6 +67,12 @@ jobs:
           name: nq-m1-v2-s0-300-broad-100-compatible-structural-only
           path: /tmp/nq_v2_s0_two_track_manifest.json
           retention-days: 30
+      - name: Install independent TA-Lib reference (test only)
+        run: python -m pip install "TA-Lib==0.6.8"
+      - name: Verify external TA-Lib numerical parity and causal warmup
+        env:
+          PYTHONPATH: .
+        run: python -m unittest discover -s research/nq -p test_nq_m1_v2_talib_parity.py -v
       - name: Check registered catalog and reproducible candidate batch without market files
         env:
           PYTHONPATH: .
