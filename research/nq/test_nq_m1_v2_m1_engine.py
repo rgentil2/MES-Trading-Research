@@ -37,6 +37,19 @@ def base_strategy():
 
 
 class TestNQM1V2M1Engine(unittest.TestCase):
+    def test_rising_predicate_uses_predeclared_lag_not_only_previous_bar(self):
+        bars = demo_bars()
+        for ix, price in [(56, 102), (57, 102), (58, 100), (59, 100.5), (60, 100.75)]:
+            bars[ix, 0] = price
+            bars[ix, 1] = price + 1
+            bars[ix, 2] = price - 1
+            bars[ix, 3] = price
+        one = {"op": "RISING", "indicator": {
+            "name": "SMA", "parameters": {"period": 2}}, "lag_completed_bars": 1}
+        three = dict(one, lag_completed_bars=3)
+        self.assertTrue(m.eval_expr(bars, 60, one))
+        self.assertFalse(m.eval_expr(bars, 60, three))
+
     def test_38_supported_not_132(self):
         self.assertEqual(len(m.SUPPORTED_INDICATORS), 38)
         r = g.read_registry()
