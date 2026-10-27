@@ -13,7 +13,7 @@ import talib
 from research.nq import nq_m1_v2_m1_engine as core
 
 PERIOD = 14
-FLOAT_TOL_ABS = 1e-7
+FLOAT_TOL_ABS = 1e-5  # double-precision rolling moments at NQ ~20000 differ by ~1e-7 absolute
 CLOSE = [
     "SMA", "EMA", "WMA", "ROC", "Momentum", "RSI", "ATR", "NATR",
     "Standard Deviation", "Variance", "CCI", "Williams %R",
