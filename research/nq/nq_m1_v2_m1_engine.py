@@ -89,7 +89,8 @@ def indicator_value(bars: np.ndarray, i: int, block: dict) -> float | None:
     if name == "True Range":
         return float(_true_range(g)[-1])
     if name == "OBV":
-        return float(np.dot(np.sign(np.diff(c)), v[1:])) if len(c) > 1 else 0.
+        # TA-Lib OBV is initialized at volume of first available bar.
+        return float(v[0] + np.dot(np.sign(np.diff(c)), v[1:])) if len(c) > 1 else float(v[0])
     if n < 1:
         raise ValueError("Indicator period required")
     if name in {"Relative Volume", "Volume Z-Score"}:
@@ -124,9 +125,11 @@ def indicator_value(bars: np.ndarray, i: int, block: dict) -> float | None:
     if name == "RMA":
         return _wilder(c, n)
     if name == "ATR":
-        return _wilder(_true_range(g), n)
+        # TA-Lib/Wilder convention: first true range requires PREVIOUS close.
+        # Exclude TR[0]; ATR(period=n) first exists at end-label index n.
+        return _wilder(_true_range(g)[1:], n)
     if name == "NATR":
-        a = _wilder(_true_range(g), n)
+        a = _wilder(_true_range(g)[1:], n)
         return float(100 * a / c[-1]) if a is not None and c[-1] > 0 else None
     if name == "Z-Score":
         std = float(np.std(values))
