@@ -8,8 +8,8 @@
   "no_mnq": true,
   "holdouts": "ISV1_2023_ISV2_2024_NO_FIT_H2025_H2026_T_SEALED",
   "current_evidence": {
-    "public_ci": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40594259331",
-    "synthetic_test_count": 109,
+    "public_ci": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40595304024",
+    "synthetic_test_count": 117,
     "registered_blocks": 132,
     "implemented_blocks": 38,
     "externally_parity_tested": 15,
@@ -24,7 +24,9 @@
     "funded_plan_50k_variation_requires_confirmation": true,
     "warmup_integrated_into_order_execution": false,
     "d1_d2_formal_adapters_executed": false,
-    "portfolio_formal_replay_executed": false
+    "portfolio_formal_replay_executed": false,
+    "synthetic_d1_d2_primitives_tested": true,
+    "actual_d1_d2_strategy_results": false
   },
   "criteria": [
     {
