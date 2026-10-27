@@ -65,7 +65,7 @@ class TestNQM1V2M1Engine(unittest.TestCase):
             ("Volume Z-Score", {"period": 15}),
             ("Donchian", {"period": 15}),
             ("OBV", {"period": 15}),
-            ("Bollinger Bandwidth", {"period": 15, "multiplier": 2.0}),
+            ("Bollinger Bandwidth", {"period": 15, "std_multiplier": 2.0}),
         ]
         for name, params in cases:
             item = {"name": name, "parameters": params}
