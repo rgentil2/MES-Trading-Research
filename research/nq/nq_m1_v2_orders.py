@@ -227,6 +227,8 @@ def simulate_day(bars: np.ndarray, strategy: dict, session: str,
         raise ValueError("Invalid one-account policy")
     trades, rejected = [], {"expired_pending": 0, "risk_ineligible": 0,
                             "ambiguous_side": 0, "warmup_or_invalid_tp": 0}
+    signal_diagnostics = {"decision_bars_checked": 0, "raw_long_at_decision": 0,
+                          "raw_short_at_decision": 0, "both_sides_at_decision": 0}
     i = 20
     daily_net = 0.
     while i < LAST_IDX and len(trades) < p["max_entries_per_day"]:
@@ -234,6 +236,10 @@ def simulate_day(bars: np.ndarray, strategy: dict, session: str,
             break
         lon = base.eval_expr(bars, i, strategy["long"])
         sho = base.eval_expr(bars, i, strategy["short"])
+        signal_diagnostics["decision_bars_checked"] += 1
+        signal_diagnostics["raw_long_at_decision"] += int(lon)
+        signal_diagnostics["raw_short_at_decision"] += int(sho)
+        signal_diagnostics["both_sides_at_decision"] += int(lon and sho)
         if not lon and not sho:
             i += 1
             continue
@@ -290,4 +296,5 @@ def simulate_day(bars: np.ndarray, strategy: dict, session: str,
         i = executed["exit_idx"]
     return {"status": STATUS, "session": session, "trades": trades,
             "rejected": rejected, "filled": len(trades),
-            "closed_pnl": round(daily_net, 2), "holdouts": "SEALED"}
+            "closed_pnl": round(daily_net, 2), "signal_diagnostics": signal_diagnostics,
+            "holdouts": "SEALED"}
