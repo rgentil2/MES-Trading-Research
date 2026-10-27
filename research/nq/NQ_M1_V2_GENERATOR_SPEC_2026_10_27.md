@@ -1,0 +1,53 @@
+# NQ M1 V2 — Generador abierto, validación reutilizable y Portfolio Builder
+**Decisión:** 2026-10-27. **Estado:** implementación incremental, S0 técnico. No hay resultados económicos de V2, ISV1/ISV2 no ejecutados, ni cartera aprobada. La V1 de 120 y su S1 IST permanecen inmutables.
+
+## Alcance y por qué V2
+Por decisión expresa del usuario: igualar y superar la flexibilidad combinatoria de StrategyQuant, sin restringir la investigación a 5 familias, 120 candidatas o dos condiciones. Mantener el método **60 % generación aleatoria / 40 % recombinación y mutación genética** como primer perfil, configurable y sujeto a prueba, con búsqueda por lotes reanudables, semillas y linajes registrados. **Nunca** confundir generación estructural con evolución económica: la selección genética por fitness solo existe después de implementar el evaluador IST y un ranking de Pareto verificable.
+
+## Registro exacto
+- [Catálogo V2 de 132 bloques](NQ_M1_V2_INDICATOR_CATALOG_2026_10_27.json): 120 indicadores/cálculos + 12 patrones de velas agrupados en 11 familias de 12.
+- Los bloques figuran hoy como `REGISTERED_NOT_YET_CERTIFIED`. **Catalogado NO significa implementado, probado ni certificado**; cada bloque necesita definición matemática, vectorización, pruebas sintéticas de causalidad, paridad contra una referencia conocida y test con datos M1 antes de usarlo en selección.
+- Evitar indicadores que requieran Bid/Ask/tick order flow bajo el universo `Minute_Last`. Niveles de días anteriores exigen sesiones anteriores realmente cargadas, nunca nivel final del día actual ni filtración futura.
+- Los parámetros están individualizados por nombre y rango; ejemplos: RSI periodo 2–120 y niveles 5–95; medias 2–390; MACD fast 2–60, slow 6–240, signal 2–60 con fast<slow; BB 5–240 desviación 0.5–4; ATR 2–240; Opening Range 1–60; stop ATR 0.25–6; rango estadístico según cada bloque. Son **dominios exploratorios ampliables**, NO límites de aprobación o valores optimizados por evidencia posterior.
+- Muestreo uniforme para escala corta y aproximadamente logarítmico para periodos positivos extensos. El parámetro sampleado debe ser técnicamente admisible; señales con warmup incompleto -> `NOT_EVALUABLE`, no completar datos con futuro. Una configuración podrá proponer 1–8 hojas y árboles AND/OR; `max_conditions` es **configurable**, no tope científico del proyecto.
+
+## AST de estrategias y fuentes
+- [Generador V2](nq_m1_v2_generator.py): define `long` y `short` causalmente, árboles AND/OR, hojas que leen barras terminadas, MARKET/LIMIT/STOP, expiración 1–30 barras, SL fijo/ATR/estructura/Chandelier, TP ausente/R/fijo/ATR/nivel causal, trailing, break-even, timeout opcional y flat obligatorio 11:29 America/New_York.
+- **Importante:** el generador crea especificaciones de estrategias. No todas las combinaciones de entradas/salidas están programadas como ejecuciones ni todos los indicadores calculados; `STRUCTURAL_CANDIDATES_ONLY_NOT_BACKTESTED` hasta que el motor de simulación y los adaptadores cubran esa variante. No emitir PnL para tipos no soportados.
+- Dominio inicial: stop fijo 1–120 puntos NQ en tick grid, stop ATR 0.25–6x, stop estructura 2–120 barras + 0–16 ticks, TP R 0.25–8, TP fijo 1–240 puntos, TP ATR 0.25–10, trailing start 0.25R–4R y distancia 0.25–5 ATR, break-even start 0.5R–3R, orden pendiente buffer 0–32 ticks. Cifras **de generación**, no riesgo aceptado por MFFU.
+- **Dos capas de trades**: universo de señales crudas sin límite artificial de tres entradas diarias; router ejecutable con un máximo de una posición simultánea, dos entradas diarias y corte de pérdidas cerrado −600 USD/día en la política comparativa actual. 1 NQ con riesgo nominal máximo inicial 300 USD. Configuración MNQ solo como estudio/tamaño predeclarado, no rescate retrospectivo.
+- Costes M1 exploratorios de referencia heredados V1: NQ tick $5; comisión RT $4.68, deslizamiento adverso 2 ticks por lado, escenarios adversos y DD flotante pendientes de implementar/comprobar para V2. No asumir que drawdown por operaciones cerradas equivale a trailing MLL de cuenta real.
+
+## Generador aleatorio + evolutivo
+1. Lotes reproducibles con seed, fingerprint SHA256 de AST y duplicados eliminados.
+2. Aleatorio crea nuevas combinaciones fuera de la familia de los resultados anteriores; recombinación cruza árboles/entrada/salida; mutación reemplaza módulos.
+3. Al comenzar sin PnL, la genética es **solo estructural** (esto es lo hoy disponible). El algoritmo multiobjetivo Pareto para puntajes IST está preparado como primitiva, **NO es todavía un ciclo de evolución alimentado por un evaluador económico**.
+4. La futura evolución económica debe incluir neto, PF, drawdown, expectativa, frecuencia, estabilidad y complejidad, más diversidad; almacenar todos los intentos y genealogías, incluidos los negativos. Corrección de multiplicidad explícita, no contar linajes correlacionados como descubrimientos independientes.
+5. Un lote técnico (p.ej. 100, 5.000 o 50.000) no representa un límite del universo; se ejecutan lotes adicionales con identificadores, semillas y hashes distintos. No optimizar con ISV ni con reserva sellada.
+
+## Integración de pipeline, sin falsos PASS
+- [Contratos de adaptadores y router](nq_m1_v2_pipeline.py) reutilizan **como referencia verificable** rutas a motores de cohortes T existentes: G0, D0, D1 y D2. Esos motores contienen supuestos de cohortes, fuentes, fechas, stops y umbrales propios, por lo que **todavía NO es seguro invocarlos directamente para V2**.
+- Estado exacto inicial: cuatro `PENDING_ADAPTER`. Se proporciona sobre V2 un contrato técnico de causalidad/envelope y resumen de PnL meramente exploratorio, **no pasan G0/D0/D1/D2 formal por ello**.
+- Futuro adaptador deberá comparar los controles existentes, heredar todos los criterios formales que realmente apliquen, tipificar los otros como `NOT_APPLICABLE_WITH_REASON`, añadir validaciones genéricas por AST y comprobar paridad con fixtures sintéticos. Los umbrales no se ablandan para obtener finalistas.
+- Jerarquía: datos/integridad → ejecutabilidad/riesgo → D1 económico/estadístico → D2 robustez → selección cartera → router de cuenta → validaciones cronológicas. Para protección contra p-hacking registrar número total de candidatos y la genealogía.
+- [Pruebas S0](test_nq_m1_v2_s0.py) y [workflow no-price](../../.github/workflows/nq-m1-v2-s0-tests.yml): no descargan ni necesitan data de mercado.
+
+## Portfolio Builder y Portfolio Allocator V2
+- Crear definiciones estructurales de 2–8 estrategias **como configuración inicial ampliable**; selección por aleatorio + genética y diversidad familiar/temporal/correlación.
+- [Router shadow](nq_m1_v2_pipeline.py) acepta **solo propuestas IST 2020–2022**, prioridad lexicográfica/fijada, bloquea señales simultáneas de menor prioridad, solapamientos, riesgo >300 USD, >2 entradas/día y nuevas entradas si PnL diario cerrado ≤−600. Es una prueba de contratos con operaciones ya computadas; **no** es simulator de cartera con M1/ticks reales, comisiones verificadas, floating-DD ni cálculo de fills integrado.
+- Construir después router real sobre calendario de señales y órdenes, posición compartida, reglas de cuenta, slippage y rechazo; asignación de riesgo predeclarada NQ/MNQ, no sumar equity curves.
+- Fitness del portafolio medirá neto, DD, frecuencia, consistencia y aporte incremental, bajo múltiples pruebas y controles de dependencia; portafolio y prioridades congelados antes de ISV1.
+
+## Regla temporal fija
+- **IST: 2020-01-01–2022-12-31**: único periodo para generar, entrenar y seleccionar. M1 end-of-bar ET con DST, entrada no antes del siguiente open admisible, flat a 11:29 ET.
+- **ISV1 2023** y **ISV2 2024**: solo sobre manifìesto congelado y código/selección SHA, sin retuning ni fitness adaptativo. H2020–2024 ya fue reutilizado históricamente, por tanto estas pruebas no son OOS virgen.
+- **H2025/H2026 SELLADOS**, cohortes T también aisladas; no abrir ni publicar outcomes sin aprobación expresa, prerregistro, gate específico y trazabilidad.
+- Reservar otras ventanas M1 (08:00–11:29) y M5 como **campañas nuevas**, no optimizaciones encubiertas del horario actual.
+
+## Estado y backlog orientado a entregas
+- **COMPLETADO S0 inicial:** catálogo 132, generador estructural random/genetic reproducible, contratos G0–D2 fail-closed, plantillas de cartera, router shadow sintético, pruebas y Actions. No market data ni retornos V2.
+- **SIGUIENTE A (prioridad):** implementar catálogo matemático de indicadores verdaderamente calculados, referencia por indicador y tests causales; añadir ejecutor común MARKET/LIMIT/STOP, SL/TP/trailing/BE, costos, PnL por operación y drawdown intrabar. Inicialmente bloque técnico certificado y ampliar por grupos hasta 132.
+- **SIGUIENTE B:** adaptadores reales hacia controles económicos/estadísticos/Monte Carlo, logs de rechazo, congelación de SHA y selección multiobjetivo genético alimentado por IST.
+- **SIGUIENTE C:** Portfolio Builder/Allocator económico con un router de una cuenta y métricas de drawdown flotante y reglas MFFU confirmadas.
+- **SIGUIENTE D:** nueva campaña completa IST de V2 sobre data privada ya validada, sin abrir ISV/holdouts hasta que se congelen elegibles y puertas.
+- **Precaución:** no afirmar 132 indicadores ejecutables, G0–D2 integrados formalmente, optimización genética económica, backtest V2 exitoso ni portafolio financiable hasta evidencia y tests.
