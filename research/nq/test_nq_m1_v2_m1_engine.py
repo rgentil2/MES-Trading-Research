@@ -59,7 +59,7 @@ class TestNQM1V2M1Engine(unittest.TestCase):
                 low = m.indicator_value(x, 60, {"name":name,
                                                 "parameters":{"period":10,"source":"low"}})
                 self.assertGreater(hi, low)
-                self.assertAlmostEqual(hi-low, 1., places=8)
+                self.assertAlmostEqual(hi-low, 2., places=8)
                 with self.assertRaises(m.UnsupportedV2Feature):
                     m.indicator_value(x, 60, {"name":name,
                                               "parameters":{"period":10,"source":"FAKE"}})
