@@ -112,7 +112,7 @@
       "state": "BLOCKED",
       "evidence": "Legacy cohort-specific validators identified; not ported to V2 AST",
       "remaining": [
-        "Formal V2 data/causality and economic viability adapters with parity unit tests"
+        "Implement AST-to-legacy invariant mapping, fail-closed checks and synthetic parity tests; do not require real candidate pass before market execution"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
@@ -122,7 +122,7 @@
       "state": "BLOCKED",
       "evidence": "No full IST economics run; no economic outcome approval",
       "remaining": [
-        "Profits, PF, expectancy, DD and frequency with unaltered frozen gates"
+        "Freeze D1 economics thresholds; build and synthetically test net, PF, DD, frequency, year labeling and reject reasons; actual D1 results are POST-backtest"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
@@ -132,7 +132,7 @@
       "state": "BLOCKED",
       "evidence": "Not run",
       "remaining": [
-        "Monte Carlo, stress costs, parameter sensitivity, drift, walk-forward and stability gates"
+        "Implement seeded Monte Carlo, cost stress, sensitivity, walk-forward staging and synthetic reproducibility tests; actual robust strategy approval is POST-backtest"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
@@ -142,7 +142,7 @@
       "state": "BLOCKED",
       "evidence": "Shadow candidate router with deterministic priority, no full shared fill/state replay",
       "remaining": [
-        "Single-account replay, risk attribution, dependency/correlation and global floating DD"
+        "Prove priority, one-position order queue, correlated fills and floating account risk on synthetic events; actual performance and optimization results are POST-backtest"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
@@ -152,11 +152,12 @@
       "state": "PARTIAL",
       "evidence": "2023/2024 withheld; 2025/26 sealed; frozen V2.1 cohort",
       "remaining": [
-        "Immutable release manifest, evaluator SHA, indicator certification and no adaptive ISV use"
+        "Freeze SHA of AST, indicator definitions, dataset gate, risk model and evaluation code; retain ISV/holdout years unopened until later phase"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
     }
   ],
-  "gate_status": "BLOCKED"
+  "gate_status": "BLOCKED",
+  "semantic_note": "Pre-execution gates certify ENGINE implementations and frozen protocols with synthetic evidence; D1/D2 and portfolio PERFORMANCE results are necessarily post-economic-backtest stage gates."
 }
