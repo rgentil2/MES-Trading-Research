@@ -1063,3 +1063,9 @@ El usuario envió captura visible de NinjaTrader 8 `Data Box` sobre **NQ 06-26, 
 - **Gates:** `V2_S0_TECHNICAL_PASS`; `V2_FORMAL_G0_D0_D1_D2_PENDING_ADAPTER`; `V2_MARKET_ECONOMICS_NOT_RUN`; `V2_PORTFOLIO_NOT_VALIDATED`.
 - **Próximo:** implementar indicadores y simulador ejecutable, probar paridad/causalidad, enlazar los validadores reales sin cambiar gates, incorporar datos privados IST y ampliar portafolio, sin tocar ISV/holdouts.
 - **Corrección metodológica:** no llamar 132 indicadores operativos a un catálogo ni denominar a contrato preliminar integración certificada de filtros.
+
+### 2026-10-27 — NQ-M1-V2-S0.1: 18 funciones causales y ejecutor MARKET OHLC sintético
+- **Cambio:** [motor de cálculo y ejecución](research/nq/nq_m1_v2_m1_engine.py) con 18 indicadores calculables, entrada mercado siguiente barra, stops fijo/ATR/estructura, TP none/R/fijo/ATR, stop-first y exit time; funciones no soportadas fallan explícitamente. [Pruebas](research/nq/test_nq_m1_v2_m1_engine.py).
+- **Evidencia:** [GitHub Actions 40551900881 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40551900881), 19 pruebas sintéticas en total, sin descarga ni lectura de data real o holdouts. Verificado causalidad por modificación de precios futuros, bloqueo de parámetros no soportados y precedencia stop-first.
+- **No comprobado:** paridad independiente de 18 indicadores, limit/stop, trailing/break-even, G0–D2 formales, cartera real, resultados económicos IST, y periodos ISV/OOS. **Cero estrategias nuevas evaluadas sobre mercado.**
+- **Siguiente:** validación de indicadores y sim de órdenes completo antes de ejecutar campaña privada IST; V1 intacta y 2025/26 H sellados.
