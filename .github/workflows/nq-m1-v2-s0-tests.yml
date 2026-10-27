@@ -14,6 +14,8 @@ on:
       - "research/nq/test_nq_m1_v2_orders.py"
       - "research/nq/nq_m1_v2_indicators_ext.py"
       - "research/nq/test_nq_m1_v2_indicators_ext.py"
+      - "research/nq/nq_m1_v2_batch_preflight.py"
+      - "research/nq/test_nq_m1_v2_batch_preflight.py"
       - "research/nq/NQ_M1_V2_GENERATOR_SPEC_2026_10_27.md"
       - ".github/workflows/nq-m1-v2-s0-tests.yml"
   workflow_dispatch:
@@ -50,6 +52,20 @@ jobs:
         env:
           PYTHONPATH: .
         run: python -m unittest discover -s research/nq -p test_nq_m1_v2_indicators_ext.py -v
+      - name: Test broad 132-block versus compatible 38-scalar structural track
+        env:
+          PYTHONPATH: .
+        run: python -m unittest discover -s research/nq -p test_nq_m1_v2_batch_preflight.py -v
+      - name: Produce sealed-year-safe full structural manifest for future IST-only pilot
+        env:
+          PYTHONPATH: .
+        run: python -m research.nq.nq_m1_v2_batch_preflight --broad-count 300 --compatible-target 100 --seed 20261027 --output /tmp/nq_v2_s0_two_track_manifest.json
+      - name: Upload structural manifest only; absolutely no OHLC or PnL
+        uses: actions/upload-artifact@v4
+        with:
+          name: nq-m1-v2-s0-300-broad-100-compatible-structural-only
+          path: /tmp/nq_v2_s0_two_track_manifest.json
+          retention-days: 30
       - name: Check registered catalog and reproducible candidate batch without market files
         env:
           PYTHONPATH: .
