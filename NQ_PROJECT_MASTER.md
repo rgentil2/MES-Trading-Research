@@ -1,3 +1,21 @@
+## 2026-10-27 — V2.1 NQ EXCLUSIVO: PRIMER PILOTO PRIVADO IST REAL, CONTEOS TÉCNICOS, SIN PnL
+
+**Resultado verificado:** [GitHub Actions privado NQ V2.1 40585881792 — SUCCESS](https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40585881792) y [artifact privado 12771752898](https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40585881792/artifacts/12771752898). Código publicado **pin `9f295b5205cb67da9fa414b2d33e7eda9fb00fc6`**, cohorte AST tipados 100 ingeniería / 82 interpretables hash `fcf49b77937bc3eb687f741e7fa9c2e6e42d59407a59ffb09d9bc51ca9a8d098`, primeras 10 AST interpretables seleccionadas exclusivamente por orden original del catálogo **sin consultar mercado**, × 10 primeras sesiones completas IST 2020–22 = 100 pares estrategia-sesión (no son 100 días independientes).
+
+**Fuente auditada:** 15 miembros `Minute_Last` de 2020–2022, 735 RTH completas disponibles, 39 parciales excluidas, archive SHA validado antes de abrir. **Años abiertos [2020,2021,2022] exclusivamente**; ISV1 2023, ISV2 2024, H2025/H2026 y T no abiertos.
+
+**Conteos técnicos agregados del artifact, NO resultados económicos:**
+- **8.276** evaluaciones de vela, 3.694 long + 4.846 short − 2.689 ambos sentidos simultáneos = **5.851 ocasiones con señal únicas**.
+- Rechazos disjuntos: **2.689 sentidos opuestos simultáneos**, **2.466 stop sin contexto/warmup**, **548 riesgo inicial >US$300 en un NQ**, **106 órdenes pendientes expiradas**, **16 objetivos no válidos/no disponibles**.
+- **26 fills OHLC simulados**; comprobación `2689+2466+548+106+16+26=5851`. **3 de 10 AST** produjeron 9, 9 y 8 fills, **7 AST cero**. **No es tasa de acierto, no refleja PnL, no predice rentabilidad ni elegibilidad para cuenta fondeada**.
+- Los rechazos de stop históricos no pueden etiquetarse como pérdida: el [warmup causal mismo contrato](research/nq/nq_m1_v21_warmup_context.py) está probado, pero **no conectado al ejecutor** hasta poder corroborar identidad del contrato para cada sesión. No generar señales nuevas ni rellenar con otro contrato usando información futura.
+
+**QA final público registrado:** [Actions 40586072527 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40586072527), **83 pruebas aprobadas** incluyendo una adicional para resolver prioridades del router de portafolio NQ en el mismo timestamp solo con riesgo ex-ante. El private piloto tiene SHA anterior a esa modificación del router, de forma que no se confunden muestras/implementaciones. V2.0 y V1 permanecen preservadas.
+
+**Gobierno para siguiente lote (NQ únicamente):** no modificar el límite de riesgo ni escoger beneficiarios de NQ tras estos 10 días; primero resolver (a) calentamiento y contract_id auditado, (b) señales long/short simultáneas con política de arbitraje genética nueva y prerregistrada, (c) mecanismos ejecutables restantes con paridad de los 132 bloques, (d) validadores formales G0/D0/D1/D2 y costes/DD flotante, (e) evaluación IST completa y optimización de portafolio sobre UNA cuenta NQ congelada; solo después ISV1/ISV2. Estados: `NQ_ONLY_1_CONTRACT`, `V21_PUBLIC_83_TESTS_PASS`, `V21_PRIVATE_10x10_TECH_SUCCESS_26_MODEL_FILLS`, `V21_FULL_IST_ECONOMIC_NOT_RUN`, `V21_G0_D0_D1_D2_PENDING`, `V21_PORTFOLIO_FORMAL_PENDING`, `2023_2024_2025_2026_SEALED`.
+
+---
+
 ## 2026-10-27 — NUEVA DECISIÓN NQ EXCLUSIVO Y V2.1: UMBRALES ACTIVOS, WARMUP CAUSAL, PORTAFOLIO (S0.7)
 
 **Decisión del usuario:** **únicamente NQ para nuevas campañas**, un contrato de referencia. No ejecutar escenarios MNQ, no alterar el presupuesto de riesgo por operación ni usar otros mercados para rescatar estrategias; preservar registros previos V2.0 que citaban MNQ solo como historia, no como política prospectiva.
