@@ -1,0 +1,63 @@
+name: NQ M1 V2 S0 registry generator and portfolio contracts
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/nq/NQ_M1_V2_INDICATOR_CATALOG_2026_10_27.json"
+      - "research/nq/nq_m1_v2_generator.py"
+      - "research/nq/nq_m1_v2_pipeline.py"
+      - "research/nq/test_nq_m1_v2_s0.py"
+      - "research/nq/NQ_M1_V2_GENERATOR_SPEC_2026_10_27.md"
+      - ".github/workflows/nq-m1-v2-s0-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  s0-no-prices:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run V2 S0 synthetic integrity and one-account shadow tests
+        env:
+          PYTHONPATH: .
+        run: python -m unittest discover -s research/nq -p test_nq_m1_v2_s0.py -v
+      - name: Check registered catalog and reproducible candidate batch without market files
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m research.nq.nq_m1_v2_generator --mode registry > /tmp/v2registry.json
+          python -m research.nq.nq_m1_v2_generator --mode generate --count 100 --seed 20261027 > /tmp/v2candidates.json
+          python - <<'PY'
+          import json
+          a=json.load(open('/tmp/v2registry.json'))
+          b=json.load(open('/tmp/v2candidates.json'))
+          assert a['total']==132
+          assert a['holdouts']=='SEALED'
+          assert b['count']==100
+          assert b['state']=='STRUCTURAL_CANDIDATES_ONLY_NOT_BACKTESTED'
+          assert b['holdouts']=='SEALED'
+          print("NQ_M1_V2_S0_OK: 132 registry blocks; 100 structural strategies; NO market data.")
+          PY
+      - name: Confirm formal legacy gates remain unadapted (no misleading pass)
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m research.nq.nq_m1_v2_pipeline > /tmp/v2adapters.json
+          python - <<'PY'
+          import json
+          p=json.load(open('/tmp/v2adapters.json'))
+          assert set(p['gate_adapters']) == {'G0','D0','D1','D2'}
+          assert all(x['state']=='PENDING_ADAPTER' for x in p['gate_adapters'].values())
+          assert p['H2025_H2026']=='SEALED'
+          print("V2 fail-closed gate adapter contracts OK; no formal G0-D2 pass claimed")
+          PY
+      # S0 must never download private NQ archives, market prices, or reserved outcomes.
