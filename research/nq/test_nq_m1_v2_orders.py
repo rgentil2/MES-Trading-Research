@@ -39,6 +39,15 @@ class TestNQM1V2Orders(unittest.TestCase):
         with self.assertRaises(ValueError):
             m.simulate_day(b, strategy(), "2021-06-16")
 
+    def test_signal_counts_are_distinct_from_fills_and_risk_rejections(self):
+        r = m.simulate_day(bars_fixture(), strategy(), "2021-06-16")
+        info = r["signal_diagnostics"]
+        self.assertGreater(info["decision_bars_checked"], 0)
+        self.assertGreater(info["raw_long_at_decision"], 0)
+        self.assertEqual(info["raw_short_at_decision"], 0)
+        self.assertEqual(info["both_sides_at_decision"], 0)
+        self.assertLessEqual(r["filled"], info["raw_long_at_decision"])
+
     def test_market_fills_and_daily_limit(self):
         r = m.simulate_day(bars_fixture(), strategy(), "2021-06-16")
         self.assertEqual(r["filled"], 2)
