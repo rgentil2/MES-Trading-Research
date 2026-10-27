@@ -226,9 +226,12 @@ def simulate_day(bars: np.ndarray, strategy: dict, session: str,
             p["daily_closed_pnl_pause_usd"] >= 0):
         raise ValueError("Invalid one-account policy")
     trades, rejected = [], {"expired_pending": 0, "risk_ineligible": 0,
-                            "ambiguous_side": 0, "warmup_or_invalid_tp": 0}
+                            "ambiguous_side": 0, "missing_stop_context": 0,
+                            "invalid_or_unavailable_target": 0}
     signal_diagnostics = {"decision_bars_checked": 0, "raw_long_at_decision": 0,
-                          "raw_short_at_decision": 0, "both_sides_at_decision": 0}
+                          "raw_short_at_decision": 0, "both_sides_at_decision": 0,
+                          "nq_risk_reject_feasible_as_1mnq": 0,
+                          "nq_risk_reject_not_feasible_as_1mnq": 0}
     i = 20
     daily_net = 0.
     while i < LAST_IDX and len(trades) < p["max_entries_per_day"]:
@@ -265,7 +268,7 @@ def simulate_day(bars: np.ndarray, strategy: dict, session: str,
             continue
         risk = _risk(bars, i, side, entry, strategy["exit"]["stop_loss_required"])
         if risk is None:
-            rejected["warmup_or_invalid_tp"] += 1
+            rejected["missing_stop_context"] += 1
             i = fill_idx
             continue
         # NQ price + realistic cost approximation, both entry/exit slippage
@@ -274,12 +277,20 @@ def simulate_day(bars: np.ndarray, strategy: dict, session: str,
         initial_adverse = risk*POINT_USD+exit_slip_usd+FEE
         if initial_adverse > p["max_initial_stop_risk_usd"]:
             rejected["risk_ineligible"] += 1
+            # Diagnostic ONLY: one MNQ at the SAME stop distance. Reference
+            # MNQ $2/point and $1.90 RT fee; exit 2 ticks adverse. Does not
+            # create MNQ orders, performance, sizing or trade eligibility.
+            projected_mnq_risk = risk*2.0 + SLIP*2.0 + 1.90
+            bucket = ("nq_risk_reject_feasible_as_1mnq" if
+                      projected_mnq_risk <= p["max_initial_stop_risk_usd"]
+                      else "nq_risk_reject_not_feasible_as_1mnq")
+            signal_diagnostics[bucket] += 1
             i = fill_idx
             continue
         tp = _tp_distance(bars, i, side, entry, risk,
                           strategy["exit"]["profit_target"])
         if strategy["exit"]["profit_target"]["kind"] != "NONE" and tp is None:
-            rejected["warmup_or_invalid_tp"] += 1
+            rejected["invalid_or_unavailable_target"] += 1
             i = fill_idx
             continue
         executed = _exit_trade(bars, i, fill_idx, side, entry, risk, tp,
