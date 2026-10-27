@@ -59,6 +59,8 @@ def pilot(zip_path: Path, max_days: int = 3, max_strategies: int = 5) -> dict:
             count["model_fills"] += out["filled"]
             for name, n in out["rejected"].items():
                 count["rejected_"+name] += n
+            for name, n in out["signal_diagnostics"].items():
+                count["diagnostic_"+name] += n
             if out["holdouts"] != "SEALED":
                 raise RuntimeError("Strategy simulator unexpected year state")
         results.append({"id": s["id"], "fingerprint_sha256": fingerprint(s),
