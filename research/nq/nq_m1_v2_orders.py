@@ -217,7 +217,8 @@ def simulate_day(bars: np.ndarray, strategy: dict, session: str,
             or not np.isfinite(bars).all() or (bars[:, 4] < 0).any()
             or (bars[:, 1] < bars[:, 2]).any()
             or (bars[:, 1] < bars[:, [0,3]].max(axis=1)).any()
-            or (bars[:, 2] > bars[:, [0,3]].min(axis=1)).any()):
+            or (bars[:, 2] > bars[:, [0,3]].min(axis=1)).any()
+            or (np.abs(bars[:, :4] / TICK - np.round(bars[:, :4] / TICK)) > 1e-7).any()):
         raise ValueError("Malformed RTH 390 x OHLCV bars")
     p = dict(REFERENCE_ACCOUNT if policy is None else policy)
     if (p["max_open_positions"] != 1 or p["max_entries_per_day"] < 1
