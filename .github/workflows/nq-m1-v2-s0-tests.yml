@@ -23,6 +23,8 @@ on:
       - "research/nq/test_nq_m1_v2_semantic_lint.py"
       - "research/nq/nq_m1_v21_semantic_generator.py"
       - "research/nq/test_nq_m1_v21_semantic_generator.py"
+      - "research/nq/nq_m1_v21_warmup_context.py"
+      - "research/nq/test_nq_m1_v21_warmup_context.py"
       - "research/nq/NQ_M1_V2_GENERATOR_SPEC_2026_10_27.md"
       - ".github/workflows/nq-m1-v2-s0-tests.yml"
   workflow_dispatch:
@@ -111,6 +113,10 @@ jobs:
             /tmp/v21_broad_300.json
             /tmp/v21_engineering_100.json
           retention-days: 30
+      - name: Verify NQ V2.1 prior complete RTH session warmup and same-contract roll gates
+        env:
+          PYTHONPATH: .
+        run: python -m unittest discover -s research/nq -p test_nq_m1_v21_warmup_context.py -v
       - name: Check registered catalog and reproducible candidate batch without market files
         env:
           PYTHONPATH: .
