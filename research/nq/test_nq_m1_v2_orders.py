@@ -33,6 +33,12 @@ def strategy():
 
 
 class TestNQM1V2Orders(unittest.TestCase):
+    def test_reject_off_tick_ohlc_prices(self):
+        b = bars_fixture()
+        b[21, 3] += 0.125
+        with self.assertRaises(ValueError):
+            m.simulate_day(b, strategy(), "2021-06-16")
+
     def test_market_fills_and_daily_limit(self):
         r = m.simulate_day(bars_fixture(), strategy(), "2021-06-16")
         self.assertEqual(r["filled"], 2)
