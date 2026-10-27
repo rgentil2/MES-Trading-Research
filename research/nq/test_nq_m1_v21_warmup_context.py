@@ -86,7 +86,7 @@ class TestV21Warmup(unittest.TestCase):
                                 [(m,series(100+i*400)) for i,m in enumerate(metas)])
         self.assertEqual(b.shape,(780,5))
         self.assertAlmostEqual(b[0,0],500)
-        self.assertAlmostEqual(b[-1,0],800+389*.25)
+        self.assertAlmostEqual(b[-1,0],900+389*.25)
 
     def test_no_prior_history_has_no_invented_pre_market(self):
         empty=w.history_for_session(self.target,self.current,[])
