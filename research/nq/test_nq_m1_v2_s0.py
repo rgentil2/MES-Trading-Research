@@ -105,6 +105,20 @@ class TestNQM1V2(unittest.TestCase):
         self.assertEqual(out["rejected"].get("SAME_TIMESTAMP_LOWER_PRIORITY"), 1)
         self.assertEqual(out["rejected"].get("CLOSED_DAILY_PAUSE"), 1)
 
+    def test_nq_router_can_skip_risky_priority_candidate_without_future_information(self):
+        rejected = {"date": "2021-06-15", "strategy_id": "NQ_HIGH",
+                    "signal_idx": 20, "entry_idx": 21, "exit_idx": 25,
+                    "initial_risk_usd": 400., "net_usd": +999999.}
+        accepted = {"date": "2021-06-15", "strategy_id": "NQ_LOW",
+                    "signal_idx": 20, "entry_idx": 21, "exit_idx": 25,
+                    "initial_risk_usd": 200., "net_usd": -50.}
+        out = p.simulate_shadow_router([rejected,accepted],["NQ_HIGH","NQ_LOW"])
+        self.assertEqual(out["entries"],1)
+        self.assertEqual(out["accepted"][0]["strategy_id"],"NQ_LOW")
+        self.assertEqual(out["rejected"].get("RISK_CAP"),1)
+        self.assertEqual(out["net_usd"],-50.)
+        self.assertNotIn("SAME_TIMESTAMP_LOWER_PRIORITY",out["rejected"])
+
     def test_shadow_router_never_opens_holdout(self):
         future = [{"date": "2025-01-08", "strategy_id": "S1", "signal_idx": 20, "entry_idx": 21,
                    "exit_idx": 25, "initial_risk_usd": 100., "net_usd": 5.}]
