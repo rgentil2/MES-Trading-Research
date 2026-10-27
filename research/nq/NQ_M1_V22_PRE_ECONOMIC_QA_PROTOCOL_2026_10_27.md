@@ -25,3 +25,11 @@ La matriz requiere 13 de 13 `PASSED_VERIFIED`, cada uno acompañado de SHA256 y 
 ## Prioridad siguiente y límites de esta entrega
 
 Se implementaron la matriz, su guardia, los adaptadores de procedencia, tests de DST y la aritmética de riesgo de referencia. **No están completas las 94 fórmulas restantes, paridad independiente de todos, integración del warmup con el ejecutor, paridad tick, G0–D2 reales ni el portfolio económico**. No presentarlos como terminados. Primero cerrar estos aspectos técnicos; luego preparar los adaptadores de validación y finalmente prerregistrar el primer backtest económico NQ completo.
+
+## Hito S0.10: pruebas D1/D2 sintéticas antes de ejecución
+
+[GitHub Actions 40595304024 — SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40595304024), **117 pruebas PASS** incluyendo [8 fixtures nuevos](test_nq_m1_v22_synthetic_d1_d2_checks.py) en [módulo D1/D2 preliminar](nq_m1_v22_synthetic_d1_d2_checks.py). Sin descargar ZIP ni conocer PnL de estrategias.
+
+Los fixtures ejercitan cálculo de rentabilidad neta, PF, expectativa y drawdown de **trades cerrados**, frecuencia dividida por los 36 meses IST incluyendo meses sin operaciones; costes de referencia NQ RT comisión US$4,68 + 2 ticks de slippage por lado (US$24,68 baseline total para 1 NQ), stress 1,5× + un cargo adicional, y Monte Carlo de remuestreo por bloques de operaciones con seed fija. Incluyen test de años sellados, rechazo MNQ, muestras insuficientes, infinitos, fechas no ordenadas y límites del remuestreo.
+
+**No** son adaptadores formales equivalentes a los validadores legados de cohortes anteriores, no reproducen DD intrabar fondeado ni sustituyen pruebas de dependencia por sesión/correlación. El PF sin trades perdedores se etiqueta `None` en vez de declararse aprobado automáticamente. Los resultados de NQ no se han calculado y la matriz de 13 requisitos continúa `BLOCKED`. El requisito PRE-execución es probar el **mecanismo**; la aprobación de cada estrategia y portafolio ocurre post-ejecución.
