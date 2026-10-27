@@ -165,7 +165,9 @@ def simulate_shadow_router(trades: list[dict], priority: list[str],
                 rejected["SAME_TIMESTAMP_LOWER_PRIORITY"] += 1
                 continue
             same_signal_times.add(i)
-            if i <= opened_through:
+            # A strategy may evaluate at the exact bar that just closed
+            # the prior position; its new entry is at the NEXT bar only.
+            if i < opened_through:
                 rejected["OVERLAPPING_POSITION"] += 1
                 continue
             if entries >= p["max_entries_per_day"]:
