@@ -1,0 +1,49 @@
+name: NQ M1 chronological discovery S0 no-price preflight
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/nq/nq_m1_chrono_discovery.py"
+      - "research/nq/test_nq_m1_chrono_discovery.py"
+      - "research/nq/NQ_M1_CHRONO_DISCOVERY_CONFIG_2026_10_27.json"
+      - "research/nq/NQ_M1_CHRONOLOGICAL_DISCOVERY_PROTOCOL_2026_10_27.md"
+      - ".github/workflows/nq-m1-chrono-discovery-preflight.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  stage-0:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install existing numerical dependencies
+        run: python -m pip install numpy pandas
+      - name: Verify 120 preregistered candidates, clocks, stop-first and sealed data guards
+        env:
+          PYTHONPATH: .
+        run: python -m unittest discover -s research/nq -p test_nq_m1_chrono_discovery.py -v
+      - name: Generate no-price candidate catalog
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m research.nq.nq_m1_chrono_discovery --mode catalog > /tmp/nq_m1_catalog.json
+          python - <<'PY'
+          import json
+          p=json.load(open('/tmp/nq_m1_catalog.json'))
+          assert p['stage']=='S0_NO_MARKET_DATA'
+          assert p['count']==120
+          assert set(p['by_family'].values())=={24}
+          assert p['H2025_H2026']=='SEALED'
+          print('NQ_M1_S0_TEST_OK; CANDIDATES=120; HOLDOUТS=SEALED; NO_PRICES_READ')
+          PY
+      # No private archive, H-2025/2026, or trading results may be downloaded
+      # by this S0 workflow. Later stages require separate explicit freeze.
