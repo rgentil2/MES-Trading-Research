@@ -50,6 +50,20 @@ class TestNQM1V2M1Engine(unittest.TestCase):
         self.assertTrue(m.eval_expr(bars, 60, one))
         self.assertFalse(m.eval_expr(bars, 60, three))
 
+    def test_moving_averages_use_requested_price_source_not_only_close(self):
+        x = demo_bars()
+        for name in ("SMA", "EMA", "WMA", "RMA"):
+            with self.subTest(name=name):
+                hi = m.indicator_value(x, 60, {"name":name,
+                                               "parameters":{"period":10,"source":"high"}})
+                low = m.indicator_value(x, 60, {"name":name,
+                                                "parameters":{"period":10,"source":"low"}})
+                self.assertGreater(hi, low)
+                self.assertAlmostEqual(hi-low, 1., places=8)
+                with self.assertRaises(m.UnsupportedV2Feature):
+                    m.indicator_value(x, 60, {"name":name,
+                                              "parameters":{"period":10,"source":"FAKE"}})
+
     def test_38_supported_not_132(self):
         self.assertEqual(len(m.SUPPORTED_INDICATORS), 38)
         r = g.read_registry()
