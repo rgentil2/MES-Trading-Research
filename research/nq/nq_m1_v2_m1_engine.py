@@ -59,6 +59,19 @@ def _wilder(values: np.ndarray, period: int):
     return smoothed
 
 
+def _causal_price_source(g: np.ndarray, name: str) -> np.ndarray:
+    """Return per-completed-bar prices; reject unknown source (no silent close fallback)."""
+    o, h, l, c = (g[:,j] for j in range(4))
+    sources = {
+        "open": o, "high": h, "low": l, "close": c,
+        "hl2": (h+l)/2., "hlc3": (h+l+c)/3.,
+        "ohlc4": (o+h+l+c)/4.
+    }
+    if name not in sources:
+        raise UnsupportedV2Feature(f"Unrecognized moving-average price source: {name}")
+    return sources[name]
+
+
 def indicator_value(bars: np.ndarray, i: int, block: dict) -> float | None:
     """Scalar from bars <= i; returns None if warmup unavailable.
     Each formula is a documented initial convention, not certified parity.
@@ -110,7 +123,14 @@ def indicator_value(bars: np.ndarray, i: int, block: dict) -> float | None:
         return float(100 * (c[-1] / c[-n-1] - 1)) if c[-n-1] != 0 else None
     if len(c) < n:
         return None
-    values = c[-n:]
+    # Price-source parameter is part of the AST, not decorative metadata.
+    # All four moving averages must honor the selected completed OHLC source.
+    if name in {"SMA", "EMA", "WMA", "RMA"}:
+        ma_source = _causal_price_source(g, params.get("source", "close"))
+        values = ma_source[-n:]
+    else:
+        ma_source = c
+        values = c[-n:]
     if name == "SMA":
         return float(np.mean(values))
     if name == "WMA":
@@ -118,12 +138,12 @@ def indicator_value(bars: np.ndarray, i: int, block: dict) -> float | None:
         return float(np.dot(values, weights)/weights.sum())
     if name == "EMA":
         # Seed SMA of first n closes, then standard alpha 2/(n+1).
-        smoothed = float(np.mean(c[:n]))
-        for price in c[n:]:
+        smoothed = float(np.mean(ma_source[:n]))
+        for price in ma_source[n:]:
             smoothed += 2./(n+1) * (float(price)-smoothed)
         return smoothed
     if name == "RMA":
-        return _wilder(c, n)
+        return _wilder(ma_source, n)
     if name == "ATR":
         # TA-Lib/Wilder convention: first true range requires PREVIOUS close.
         # Exclude TR[0]; ATR(period=n) first exists at end-label index n.
