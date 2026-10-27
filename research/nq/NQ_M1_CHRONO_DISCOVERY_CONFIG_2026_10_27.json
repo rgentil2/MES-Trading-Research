@@ -1,0 +1,74 @@
+{
+  "id": "NQ_M1_CHRONO_V1_20261027",
+  "status": "PREREGISTERED_CONFIGURATION_NO_MARKET_OUTCOMES",
+  "universe": "NQ_M1_2020_2024_H_REUSED_DEVELOPMENT",
+  "timezone": "America/New_York",
+  "source": "existing_private_minute_zip_NQ_Last_only",
+  "signal_entry_window_et": [
+    "09:30",
+    "11:29"
+  ],
+  "all_positions_flat_et": "11:29",
+  "minute_label": "end_of_bar",
+  "holdout_years_blocked": [
+    2025,
+    2026
+  ],
+  "stages": {
+    "IST": [
+      2020,
+      2021,
+      2022
+    ],
+    "ISV1": [
+      2023
+    ],
+    "ISV2": [
+      2024
+    ]
+  },
+  "search": {
+    "families": [
+      "BREAKOUT",
+      "REVERSAL",
+      "CONTINUATION",
+      "VWAP_PULLBACK",
+      "VOL_EXPANSION"
+    ],
+    "variants": [
+      0,
+      1,
+      2
+    ],
+    "lookbacks": [
+      10,
+      20
+    ],
+    "stop_models": [
+      "ATR",
+      "STRUCTURE"
+    ],
+    "target_r": [
+      null,
+      2
+    ],
+    "expected_candidates": 120,
+    "seed": 20261027
+  },
+  "execution": {
+    "signal_instrument": "NQ",
+    "contract": "NQ",
+    "contract_count": 1,
+    "point_value_usd": 20,
+    "tick_size": 0.25,
+    "round_trip_commission_usd": 4.68,
+    "slippage_ticks_each_side": 2,
+    "max_open_positions": 1,
+    "max_filled_entries_per_day": 2,
+    "closed_pnl_daily_pause_usd": -600,
+    "max_initial_stop_risk_usd": 300,
+    "transaction_cost_stress_multiplier": 1.5,
+    "extra_fee_stress_usd_rt": 10
+  },
+  "notes": "NQ minute proxy with conservative OHLC stop-first; not broker fills. Historical H 2020-2024 already inspected; 2025 and 2026 remain sealed. No transfer of 6E slippage pips."
+}
