@@ -1,3 +1,25 @@
+## 2026-10-27 — NUEVO PROGRAMA NQ M1 EN PYTHON: GENERACIÓN SISTEMÁTICA Y ETAPAS TEMPORALES TIPO SQX
+
+**Decisión expresa del usuario:** después de la campaña de StrategyQuant 6E, volver a **NQ con Python**, comenzar por las **barras M1 ya disponibles** y replicar las **ventanas horarias y validación escalonada de StrategyQuant** (IST→ISV→otros períodos). **La data y los sistemas de validación de GitHub se consideran existentes y adecuados; NO se solicita reconstruirlos.** El foco nuevo es el descubrimiento/generación de estrategias completas y la secuenciación temporal. No se modifican resultados H01–H78, T01–T228, ni controles de riesgo, estadística, rentabilidad o cohortes anteriores.
+
+**Documento operativo NUEVO:** [NQ_M1_CHRONOLOGICAL_DISCOVERY_PROTOCOL_2026_10_27.md](research/nq/NQ_M1_CHRONOLOGICAL_DISCOVERY_PROTOCOL_2026_10_27.md). **Etapas:**
+- **S0**: catálogo de **120** estrategias NQ M1 (5 familias de 24), condiciones causales, SL obligatorio, TP opcional, salida por tiempo y reglas de riesgo; generar manifiesto **sin outcomes**, prerregistro y pruebas sintéticas.
+- **S1/IST**: **01-ene-2020 a 31-dic-2022**. Generación, métricas económicas exploratorias y ranking **solamente aquí**.
+- **S2/ISV1**: **01-ene-2023 a 31-dic-2023**. Reejecutar reglas congeladas; ninguna optimización o selección post hoc.
+- **S3/ISV2**: **01-ene-2024 a 31-dic-2024**. Segundo contraste cronológico de las MISMAS reglas; no atribuir independencia.
+- **S4**: auditoría de estabilidad y evaluaciones progresivas 2020–2024, todos ellos **desarrollo H previamente reutilizado**.
+- **S5/S6:** **2025 y 2026 H continúan SELLADOS**, sin acceso implícito; las reservas T mayo–sept-2026 siguen separadas. Se requiere freeze completo + nuevo gate + autorización explícita para abrirlas.
+
+**Horario base:** 09:30–11:29 **America/New_York** con DST; última posición liquidada y pendientes canceladas **a las 11:29**; las barras M1 tienen timestamps de *fin de barra*, de modo que el simulador solo puede actuar tras conocer su cierre. **Segundo lote** M1 08:00–11:29 y **M5** quedan como experimentos independientes posteriores, sin mirar el beneficio del primero para escoger una ventana favorable.
+
+**Instrumentos/costes:** estrategia de señales en NQ minuto; 1NQ como escenario principal de riesgo y MNQ solo política predeclarada de sizing. No trasladar **slippage 6E 6.25 pips** a NQ: referencia NQ 0.25 puntos/tick, 2 ticks adversos/lado para exploración y comisión instrumentada, estrés ≥1.5× costes. La ausencia de un límite de 3 trades durante generación NO elimina límites en la ejecución: router una posición, 2 operaciones/día y corte −$600 cerrado/día como referencia congelada; ambos recuentos separados.
+
+**Disciplina:** 120 intentos (no millones ni ajuste masivo retrospectivo), registrar todas las alternativas, p/q ajustados según familia y costes, comparar riesgo neto/DD/expectativa y valor incremental en una sola cuenta. El corte S1→S2 debe congelar catálogo elegible y fuente/código por SHA. **IST e ISV1/ISV2 son pruebas cronológicas retrospectivas pero NO OOS virgen**, porque H2020–24 fue previamente explorado. Ningún resultado bajo este protocolo autoriza trading por sí solo.
+
+**Estado de este bloque en el maestro:** `S0_PROTOCOL_REGISTERED`; **resultados de mercado no ejecutados** en este cambio documental; `S1_IST_PENDING`, `S2_ISV1_PENDING`, `S3_ISV2_PENDING`, `H2025_H2026_SEALED`. No afirmar ganancias ni número de finalistas antes de ejecutar el motor sobre barras Minute privadas autorizadas. La ingeniería del runner/manifiesto debe conservar el cortafuegos por año y enlazarse aquí una vez publicada.
+
+---
+
 ## 2026-10-14 — NinjaTrader 8: instalador exclusivo Strategy Analyzer APR26
 
 A solicitud del usuario se creó localmente en la conversación el nuevo paquete instalable **`NQ_NinjaTrader8_ABRIL2026_Solo_NT8_Instalacion.zip`** (**no** alojado como binario en GitHub), con **únicamente** `Strategies/NQResearchAutonomousDev.cs`, `INSTALAR_ESTRATEGIA.ps1` y `LEEME_INSTALACION.md`. **NT8 ya contiene ticks de mercado según el usuario**, por lo que la instalación para **piloto abril de 2026** NO requiere Python, exportador CSV, conversión ni descarga de datos. La lógica calcula T05/T186/T215 de manera nativa con serie secundaria NQ 1tick; MNQ debe tener histórico 1tick para T215.
