@@ -68,10 +68,20 @@ def validate_supported(s: dict) -> None:
                 raise base.UnsupportedV2Feature("Indicator not yet implemented: " + b["name"])
             if b["name"] == "VWAP" and b["parameters"].get("anchor") != "session":
                 raise base.UnsupportedV2Feature("Unsupported VWAP anchor")
-            if node["op"] not in {"RISING", "FALLING", "ABOVE_LAG", "BELOW_LAG", "CROSSES_OWN_LAG"}:
+            level_ops = {"ABOVE_LEVEL", "BELOW_LEVEL", "CROSS_ABOVE_LEVEL", "CROSS_BELOW_LEVEL"}
+            if node["op"] in level_ops:
+                if (b["name"] not in {"RSI", "MFI", "CMO", "CCI", "Z-Score", "Relative Volume"}
+                        or "lag_completed_bars" in node
+                        or type(node.get("threshold")) not in (int, float)
+                        or not math.isfinite(node["threshold"])):
+                    raise base.UnsupportedV2Feature("Unsupported or inactive level predicate")
+            elif node["op"] in {"RISING", "FALLING", "ABOVE_LAG", "BELOW_LAG", "CROSSES_OWN_LAG"}:
+                if (type(node.get("lag_completed_bars")) is not int
+                        or not 1 <= node["lag_completed_bars"] <= 20
+                        or "threshold" in node):
+                    raise base.UnsupportedV2Feature("Invalid lag predicate or unused threshold")
+            else:
                 raise base.UnsupportedV2Feature("Unsupported predicate")
-            if type(node["lag_completed_bars"]) is not int or not 1 <= node["lag_completed_bars"] <= 20:
-                raise base.UnsupportedV2Feature("Invalid causal lag")
 
 
 def _entry_limit_or_trigger(close: float, side: int, kind: str, offset_ticks: int) -> float | None:
