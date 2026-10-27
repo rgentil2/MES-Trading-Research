@@ -1,0 +1,2263 @@
+{
+  "schema": "NQ_M1_V2_INDICATOR_REGISTRY_V1",
+  "created": "2026-10-27",
+  "status": "DESIGN_REGISTRY_ONLY_NOT_132_COMPUTED_INDICATORS",
+  "asset": "NQ",
+  "timeframe": "M1",
+  "indicator_count": 120,
+  "pattern_count": 12,
+  "total_blocks": 132,
+  "profile_policy": "Exploratory ranges, not optimal/approved parameter values. Profiles may be expanded only under new logged campaign; no using later-year performance to adjust.",
+  "runtime_policy": "Each used indicator must be separately implemented, parity-tested, causally audited and marked CERTIFIED before real backtesting. 132 registered != 132 runnable.",
+  "prohibited_data": [
+    "H2025",
+    "H2026",
+    "T_HOLDOUT"
+  ],
+  "stage_years": {
+    "IST": [
+      2020,
+      2021,
+      2022
+    ],
+    "ISV1": [
+      2023
+    ],
+    "ISV2": [
+      2024
+    ]
+  },
+  "groups": {
+    "MEDIAS_MOVILES": 12,
+    "TENDENCIA": 12,
+    "MOMENTUM": 12,
+    "OSCILADORES": 12,
+    "VOLATILIDAD": 12,
+    "VOLUMEN": 12,
+    "VWAP_NIVELES": 12,
+    "ESTADISTICA": 12,
+    "CICLOS_FILTROS": 12,
+    "DERIVADOS_MERCADO": 12,
+    "VELAS_PATRONES": 12
+  },
+  "entries": [
+    {
+      "id": "I001",
+      "name": "SMA",
+      "group": "MEDIAS_MOVILES",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ],
+        "source": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "hl2",
+          "hlc3",
+          "ohlc4"
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I002",
+      "name": "EMA",
+      "group": "MEDIAS_MOVILES",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ],
+        "source": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "hl2",
+          "hlc3",
+          "ohlc4"
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I003",
+      "name": "WMA",
+      "group": "MEDIAS_MOVILES",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ],
+        "source": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "hl2",
+          "hlc3",
+          "ohlc4"
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I004",
+      "name": "RMA",
+      "group": "MEDIAS_MOVILES",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ],
+        "source": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "hl2",
+          "hlc3",
+          "ohlc4"
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I005",
+      "name": "DEMA",
+      "group": "MEDIAS_MOVILES",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ],
+        "source": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "hl2",
+          "hlc3",
+          "ohlc4"
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I006",
+      "name": "TEMA",
+      "group": "MEDIAS_MOVILES",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ],
+        "source": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "hl2",
+          "hlc3",
+          "ohlc4"
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I007",
+      "name": "TRIMA",
+      "group": "MEDIAS_MOVILES",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ],
+        "source": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "hl2",
+          "hlc3",
+          "ohlc4"
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I008",
+      "name": "HMA",
+      "group": "MEDIAS_MOVILES",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ],
+        "source": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "hl2",
+          "hlc3",
+          "ohlc4"
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I009",
+      "name": "KAMA",
+      "group": "MEDIAS_MOVILES",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ],
+        "source": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "hl2",
+          "hlc3",
+          "ohlc4"
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I010",
+      "name": "T3",
+      "group": "MEDIAS_MOVILES",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ],
+        "source": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "hl2",
+          "hlc3",
+          "ohlc4"
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I011",
+      "name": "ALMA",
+      "group": "MEDIAS_MOVILES",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ],
+        "source": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "hl2",
+          "hlc3",
+          "ohlc4"
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I012",
+      "name": "ZLEMA",
+      "group": "MEDIAS_MOVILES",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ],
+        "source": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "hl2",
+          "hlc3",
+          "ohlc4"
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I013",
+      "name": "ADX",
+      "group": "TENDENCIA",
+      "parameters": {
+        "period": [
+          3,
+          120
+        ],
+        "threshold": [
+          10,
+          60
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I014",
+      "name": "ADXR",
+      "group": "TENDENCIA",
+      "parameters": {
+        "period": [
+          3,
+          180
+        ],
+        "threshold": [
+          10,
+          60
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I015",
+      "name": "Aroon",
+      "group": "TENDENCIA",
+      "parameters": {
+        "period": [
+          3,
+          180
+        ],
+        "threshold": [
+          10,
+          60
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I016",
+      "name": "Vortex",
+      "group": "TENDENCIA",
+      "parameters": {
+        "period": [
+          3,
+          180
+        ],
+        "threshold": [
+          10,
+          60
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I017",
+      "name": "SuperTrend",
+      "group": "TENDENCIA",
+      "parameters": {
+        "atr_period": [
+          3,
+          120
+        ],
+        "atr_multiplier": [
+          0.75,
+          6
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I018",
+      "name": "Parabolic SAR",
+      "group": "TENDENCIA",
+      "parameters": {
+        "period": [
+          3,
+          180
+        ],
+        "threshold": [
+          10,
+          60
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I019",
+      "name": "Ichimoku",
+      "group": "TENDENCIA",
+      "parameters": {
+        "period": [
+          3,
+          180
+        ],
+        "threshold": [
+          10,
+          60
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I020",
+      "name": "Chande Kroll Stop",
+      "group": "TENDENCIA",
+      "parameters": {
+        "period": [
+          3,
+          180
+        ],
+        "threshold": [
+          10,
+          60
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I021",
+      "name": "VHF",
+      "group": "TENDENCIA",
+      "parameters": {
+        "period": [
+          3,
+          180
+        ],
+        "threshold": [
+          10,
+          60
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I022",
+      "name": "Trend Intensity Index",
+      "group": "TENDENCIA",
+      "parameters": {
+        "period": [
+          3,
+          180
+        ],
+        "threshold": [
+          10,
+          60
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I023",
+      "name": "Qstick",
+      "group": "TENDENCIA",
+      "parameters": {
+        "period": [
+          3,
+          180
+        ],
+        "threshold": [
+          10,
+          60
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I024",
+      "name": "TTM Trend",
+      "group": "TENDENCIA",
+      "parameters": {
+        "period": [
+          3,
+          180
+        ],
+        "threshold": [
+          10,
+          60
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I025",
+      "name": "RSI",
+      "group": "MOMENTUM",
+      "parameters": {
+        "period": [
+          2,
+          120
+        ],
+        "lower_level": [
+          5,
+          50
+        ],
+        "upper_level": [
+          50,
+          95
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I026",
+      "name": "Stochastic",
+      "group": "MOMENTUM",
+      "parameters": {
+        "k_period": [
+          3,
+          120
+        ],
+        "k_smooth": [
+          1,
+          20
+        ],
+        "d_period": [
+          1,
+          20
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I027",
+      "name": "Stochastic RSI",
+      "group": "MOMENTUM",
+      "parameters": {
+        "period": [
+          2,
+          120
+        ],
+        "k_smooth": [
+          1,
+          20
+        ],
+        "d_period": [
+          1,
+          20
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I028",
+      "name": "CCI",
+      "group": "MOMENTUM",
+      "parameters": {
+        "period": [
+          3,
+          180
+        ],
+        "threshold": [
+          -300,
+          300
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I029",
+      "name": "Williams %R",
+      "group": "MOMENTUM",
+      "parameters": {
+        "period": [
+          2,
+          180
+        ],
+        "threshold": [
+          5,
+          95
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I030",
+      "name": "ROC",
+      "group": "MOMENTUM",
+      "parameters": {
+        "period": [
+          2,
+          180
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I031",
+      "name": "Momentum",
+      "group": "MOMENTUM",
+      "parameters": {
+        "period": [
+          2,
+          180
+        ],
+        "threshold": [
+          5,
+          95
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I032",
+      "name": "CMO",
+      "group": "MOMENTUM",
+      "parameters": {
+        "period": [
+          2,
+          180
+        ],
+        "threshold": [
+          5,
+          95
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I033",
+      "name": "TSI",
+      "group": "MOMENTUM",
+      "parameters": {
+        "period": [
+          2,
+          180
+        ],
+        "threshold": [
+          5,
+          95
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I034",
+      "name": "Ultimate Oscillator",
+      "group": "MOMENTUM",
+      "parameters": {
+        "period": [
+          2,
+          180
+        ],
+        "threshold": [
+          5,
+          95
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I035",
+      "name": "Connors RSI",
+      "group": "MOMENTUM",
+      "parameters": {
+        "period": [
+          2,
+          180
+        ],
+        "threshold": [
+          5,
+          95
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I036",
+      "name": "Relative Vigor Index",
+      "group": "MOMENTUM",
+      "parameters": {
+        "period": [
+          2,
+          180
+        ],
+        "threshold": [
+          5,
+          95
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I037",
+      "name": "MACD",
+      "group": "OSCILADORES",
+      "parameters": {
+        "fast_period": [
+          2,
+          60
+        ],
+        "slow_period": [
+          6,
+          240
+        ],
+        "signal_period": [
+          2,
+          60
+        ],
+        "constraint": "fast_period < slow_period"
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I038",
+      "name": "PPO",
+      "group": "OSCILADORES",
+      "parameters": {
+        "fast_period": [
+          2,
+          60
+        ],
+        "slow_period": [
+          6,
+          240
+        ],
+        "signal_period": [
+          2,
+          60
+        ],
+        "constraint": "fast_period < slow_period"
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I039",
+      "name": "APO",
+      "group": "OSCILADORES",
+      "parameters": {
+        "fast_period": [
+          2,
+          60
+        ],
+        "slow_period": [
+          6,
+          240
+        ],
+        "constraint": "fast_period < slow_period"
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I040",
+      "name": "TRIX",
+      "group": "OSCILADORES",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I041",
+      "name": "Schaff Trend Cycle",
+      "group": "OSCILADORES",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I042",
+      "name": "Know Sure Thing",
+      "group": "OSCILADORES",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I043",
+      "name": "Awesome Oscillator",
+      "group": "OSCILADORES",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I044",
+      "name": "Accelerator Oscillator",
+      "group": "OSCILADORES",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I045",
+      "name": "Fisher Transform",
+      "group": "OSCILADORES",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I046",
+      "name": "Coppock Curve",
+      "group": "OSCILADORES",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I047",
+      "name": "QQE",
+      "group": "OSCILADORES",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I048",
+      "name": "SMI Ergodic",
+      "group": "OSCILADORES",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I049",
+      "name": "ATR",
+      "group": "VOLATILIDAD",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I050",
+      "name": "NATR",
+      "group": "VOLATILIDAD",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ],
+        "multiplier": [
+          0.25,
+          6
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I051",
+      "name": "True Range",
+      "group": "VOLATILIDAD",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ],
+        "multiplier": [
+          0.25,
+          6
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I052",
+      "name": "Bollinger Bands",
+      "group": "VOLATILIDAD",
+      "parameters": {
+        "period": [
+          5,
+          240
+        ],
+        "std_multiplier": [
+          0.5,
+          4
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I053",
+      "name": "Bollinger Bandwidth",
+      "group": "VOLATILIDAD",
+      "parameters": {
+        "period": [
+          5,
+          240
+        ],
+        "std_multiplier": [
+          0.5,
+          4
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I054",
+      "name": "Keltner",
+      "group": "VOLATILIDAD",
+      "parameters": {
+        "ema_period": [
+          3,
+          240
+        ],
+        "atr_period": [
+          2,
+          120
+        ],
+        "atr_multiplier": [
+          0.5,
+          5
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I055",
+      "name": "Donchian",
+      "group": "VOLATILIDAD",
+      "parameters": {
+        "period": [
+          3,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I056",
+      "name": "Historical Volatility",
+      "group": "VOLATILIDAD",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ],
+        "multiplier": [
+          0.25,
+          6
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I057",
+      "name": "Chaikin Volatility",
+      "group": "VOLATILIDAD",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ],
+        "multiplier": [
+          0.25,
+          6
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I058",
+      "name": "Mass Index",
+      "group": "VOLATILIDAD",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ],
+        "multiplier": [
+          0.25,
+          6
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I059",
+      "name": "Ulcer Index",
+      "group": "VOLATILIDAD",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ],
+        "multiplier": [
+          0.25,
+          6
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I060",
+      "name": "Acceleration Bands",
+      "group": "VOLATILIDAD",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ],
+        "multiplier": [
+          0.25,
+          6
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I061",
+      "name": "OBV",
+      "group": "VOLUMEN",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I062",
+      "name": "Accumulation/Distribution",
+      "group": "VOLUMEN",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I063",
+      "name": "Chaikin Oscillator",
+      "group": "VOLUMEN",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I064",
+      "name": "CMF",
+      "group": "VOLUMEN",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I065",
+      "name": "MFI",
+      "group": "VOLUMEN",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I066",
+      "name": "Elder Force Index",
+      "group": "VOLUMEN",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I067",
+      "name": "Ease of Movement",
+      "group": "VOLUMEN",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I068",
+      "name": "Klinger Oscillator",
+      "group": "VOLUMEN",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I069",
+      "name": "Positive Volume Index",
+      "group": "VOLUMEN",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I070",
+      "name": "Negative Volume Index",
+      "group": "VOLUMEN",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I071",
+      "name": "Price Volume Trend",
+      "group": "VOLUMEN",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I072",
+      "name": "Percentage Volume Oscillator",
+      "group": "VOLUMEN",
+      "parameters": {
+        "period": [
+          2,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I073",
+      "name": "VWAP",
+      "group": "VWAP_NIVELES",
+      "parameters": {
+        "anchor": [
+          "session",
+          "previous_completed_session"
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I074",
+      "name": "Anchored VWAP",
+      "group": "VWAP_NIVELES",
+      "parameters": {
+        "anchor": [
+          "session",
+          "causal_timestamp"
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I075",
+      "name": "VWMA",
+      "group": "VWAP_NIVELES",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ],
+        "anchor": [
+          "session",
+          "previous_completed_session",
+          "causal_timestamp"
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I076",
+      "name": "Central Pivot Range",
+      "group": "VWAP_NIVELES",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ],
+        "anchor": [
+          "session",
+          "previous_completed_session",
+          "causal_timestamp"
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I077",
+      "name": "Classic Pivots",
+      "group": "VWAP_NIVELES",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ],
+        "anchor": [
+          "session",
+          "previous_completed_session",
+          "causal_timestamp"
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I078",
+      "name": "Fibonacci Pivots",
+      "group": "VWAP_NIVELES",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ],
+        "anchor": [
+          "session",
+          "previous_completed_session",
+          "causal_timestamp"
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I079",
+      "name": "Camarilla Pivots",
+      "group": "VWAP_NIVELES",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ],
+        "anchor": [
+          "session",
+          "previous_completed_session",
+          "causal_timestamp"
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I080",
+      "name": "Woodie Pivots",
+      "group": "VWAP_NIVELES",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ],
+        "anchor": [
+          "session",
+          "previous_completed_session",
+          "causal_timestamp"
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I081",
+      "name": "DeMark Pivots",
+      "group": "VWAP_NIVELES",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ],
+        "anchor": [
+          "session",
+          "previous_completed_session",
+          "causal_timestamp"
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I082",
+      "name": "Opening Range",
+      "group": "VWAP_NIVELES",
+      "parameters": {
+        "minutes": [
+          1,
+          60
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I083",
+      "name": "Previous Day High/Low",
+      "group": "VWAP_NIVELES",
+      "parameters": {
+        "sessions_back": [
+          1,
+          20
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I084",
+      "name": "Initial Balance",
+      "group": "VWAP_NIVELES",
+      "parameters": {
+        "minutes": [
+          15,
+          120
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I085",
+      "name": "Z-Score",
+      "group": "ESTADISTICA",
+      "parameters": {
+        "period": [
+          8,
+          300
+        ],
+        "z_threshold": [
+          -4,
+          4
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I086",
+      "name": "Standard Deviation",
+      "group": "ESTADISTICA",
+      "parameters": {
+        "period": [
+          5,
+          300
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I087",
+      "name": "Variance",
+      "group": "ESTADISTICA",
+      "parameters": {
+        "period": [
+          5,
+          300
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I088",
+      "name": "Skewness",
+      "group": "ESTADISTICA",
+      "parameters": {
+        "period": [
+          5,
+          300
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I089",
+      "name": "Kurtosis",
+      "group": "ESTADISTICA",
+      "parameters": {
+        "period": [
+          5,
+          300
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I090",
+      "name": "Entropy",
+      "group": "ESTADISTICA",
+      "parameters": {
+        "period": [
+          5,
+          300
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I091",
+      "name": "Autocorrelation",
+      "group": "ESTADISTICA",
+      "parameters": {
+        "period": [
+          5,
+          300
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I092",
+      "name": "Hurst Exponent",
+      "group": "ESTADISTICA",
+      "parameters": {
+        "period": [
+          5,
+          300
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I093",
+      "name": "Linear Regression Slope",
+      "group": "ESTADISTICA",
+      "parameters": {
+        "period": [
+          5,
+          300
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I094",
+      "name": "Regression R²",
+      "group": "ESTADISTICA",
+      "parameters": {
+        "period": [
+          5,
+          300
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I095",
+      "name": "Rolling Quantile",
+      "group": "ESTADISTICA",
+      "parameters": {
+        "period": [
+          5,
+          300
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I096",
+      "name": "Median Absolute Deviation",
+      "group": "ESTADISTICA",
+      "parameters": {
+        "period": [
+          5,
+          300
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I097",
+      "name": "Hilbert Dominant Cycle Period",
+      "group": "CICLOS_FILTROS",
+      "parameters": {
+        "period": [
+          5,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I098",
+      "name": "Hilbert Phase",
+      "group": "CICLOS_FILTROS",
+      "parameters": {
+        "period": [
+          5,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I099",
+      "name": "Hilbert Sine",
+      "group": "CICLOS_FILTROS",
+      "parameters": {
+        "period": [
+          5,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I100",
+      "name": "Hilbert Trend Mode",
+      "group": "CICLOS_FILTROS",
+      "parameters": {
+        "period": [
+          5,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I101",
+      "name": "Hilbert Phasor",
+      "group": "CICLOS_FILTROS",
+      "parameters": {
+        "period": [
+          5,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I102",
+      "name": "Ehlers Cyber Cycle",
+      "group": "CICLOS_FILTROS",
+      "parameters": {
+        "period": [
+          5,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I103",
+      "name": "Ehlers Sinewave",
+      "group": "CICLOS_FILTROS",
+      "parameters": {
+        "period": [
+          5,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I104",
+      "name": "Ehlers Roofing Filter",
+      "group": "CICLOS_FILTROS",
+      "parameters": {
+        "period": [
+          5,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I105",
+      "name": "Even Better Sinewave",
+      "group": "CICLOS_FILTROS",
+      "parameters": {
+        "period": [
+          5,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I106",
+      "name": "Center of Gravity Oscillator",
+      "group": "CICLOS_FILTROS",
+      "parameters": {
+        "period": [
+          5,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I107",
+      "name": "Autocorrelation Periodogram",
+      "group": "CICLOS_FILTROS",
+      "parameters": {
+        "period": [
+          5,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I108",
+      "name": "Dominant Cycle Period",
+      "group": "CICLOS_FILTROS",
+      "parameters": {
+        "period": [
+          5,
+          240
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I109",
+      "name": "Relative Volume",
+      "group": "DERIVADOS_MERCADO",
+      "parameters": {
+        "period": [
+          5,
+          240
+        ],
+        "ratio_threshold": [
+          0.5,
+          5
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I110",
+      "name": "Volume Z-Score",
+      "group": "DERIVADOS_MERCADO",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I111",
+      "name": "Price Volume Rank",
+      "group": "DERIVADOS_MERCADO",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I112",
+      "name": "Price/Volume Correlation",
+      "group": "DERIVADOS_MERCADO",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I113",
+      "name": "Efficiency Ratio",
+      "group": "DERIVADOS_MERCADO",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I114",
+      "name": "Realized Volatility",
+      "group": "DERIVADOS_MERCADO",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I115",
+      "name": "Range Percentile",
+      "group": "DERIVADOS_MERCADO",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I116",
+      "name": "True Range Percentile",
+      "group": "DERIVADOS_MERCADO",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I117",
+      "name": "Opening Gap",
+      "group": "DERIVADOS_MERCADO",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I118",
+      "name": "Previous Close Gap",
+      "group": "DERIVADOS_MERCADO",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I119",
+      "name": "NR4/NR7",
+      "group": "DERIVADOS_MERCADO",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I120",
+      "name": "Volatility Squeeze",
+      "group": "DERIVADOS_MERCADO",
+      "parameters": {
+        "period": [
+          2,
+          390
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I121",
+      "name": "Doji",
+      "group": "VELAS_PATRONES",
+      "parameters": {
+        "body_ratio": [
+          0.05,
+          0.95
+        ],
+        "shadow_ratio": [
+          0.05,
+          0.95
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I122",
+      "name": "Hammer",
+      "group": "VELAS_PATRONES",
+      "parameters": {
+        "body_ratio": [
+          0.05,
+          0.95
+        ],
+        "shadow_ratio": [
+          0.05,
+          0.95
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I123",
+      "name": "Shooting Star",
+      "group": "VELAS_PATRONES",
+      "parameters": {
+        "body_ratio": [
+          0.05,
+          0.95
+        ],
+        "shadow_ratio": [
+          0.05,
+          0.95
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I124",
+      "name": "Engulfing",
+      "group": "VELAS_PATRONES",
+      "parameters": {
+        "body_ratio": [
+          0.05,
+          0.95
+        ],
+        "shadow_ratio": [
+          0.05,
+          0.95
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I125",
+      "name": "Harami",
+      "group": "VELAS_PATRONES",
+      "parameters": {
+        "body_ratio": [
+          0.05,
+          0.95
+        ],
+        "shadow_ratio": [
+          0.05,
+          0.95
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I126",
+      "name": "Morning Star",
+      "group": "VELAS_PATRONES",
+      "parameters": {
+        "body_ratio": [
+          0.05,
+          0.95
+        ],
+        "shadow_ratio": [
+          0.05,
+          0.95
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I127",
+      "name": "Evening Star",
+      "group": "VELAS_PATRONES",
+      "parameters": {
+        "body_ratio": [
+          0.05,
+          0.95
+        ],
+        "shadow_ratio": [
+          0.05,
+          0.95
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I128",
+      "name": "Three White Soldiers",
+      "group": "VELAS_PATRONES",
+      "parameters": {
+        "body_ratio": [
+          0.05,
+          0.95
+        ],
+        "shadow_ratio": [
+          0.05,
+          0.95
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I129",
+      "name": "Three Black Crows",
+      "group": "VELAS_PATRONES",
+      "parameters": {
+        "body_ratio": [
+          0.05,
+          0.95
+        ],
+        "shadow_ratio": [
+          0.05,
+          0.95
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I130",
+      "name": "Inside Bar",
+      "group": "VELAS_PATRONES",
+      "parameters": {
+        "body_ratio": [
+          0.05,
+          0.95
+        ],
+        "shadow_ratio": [
+          0.05,
+          0.95
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I131",
+      "name": "Outside Bar",
+      "group": "VELAS_PATRONES",
+      "parameters": {
+        "body_ratio": [
+          0.05,
+          0.95
+        ],
+        "shadow_ratio": [
+          0.05,
+          0.95
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    },
+    {
+      "id": "I132",
+      "name": "Marubozu",
+      "group": "VELAS_PATRONES",
+      "parameters": {
+        "body_ratio": [
+          0.05,
+          0.95
+        ],
+        "shadow_ratio": [
+          0.05,
+          0.95
+        ]
+      },
+      "status": "REGISTERED_NOT_YET_CERTIFIED",
+      "required_data": "OHLCV_M1_or_prior_completed_RTH_session",
+      "causal_requirement": "COMPLETED_BAR_ONLY"
+    }
+  ]
+}
