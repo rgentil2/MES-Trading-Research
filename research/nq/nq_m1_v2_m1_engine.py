@@ -143,7 +143,7 @@ def indicator_value(bars: np.ndarray, i: int, block: dict) -> float | None:
             return None
         return float(np.max(h[-n-1:-1]))  # upper channel excludes present bar
     if name == "Bollinger Bandwidth":
-        multiple = float(params["multiplier"])
+        multiple = float(params["std_multiplier"])
         mean = float(np.mean(values))
         return float(2*multiple*np.std(values)/abs(mean)) if mean != 0 else None
     raise UnsupportedV2Feature(f"Formula unavailable: {name}")
