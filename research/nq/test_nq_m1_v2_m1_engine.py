@@ -37,8 +37,8 @@ def base_strategy():
 
 
 class TestNQM1V2M1Engine(unittest.TestCase):
-    def test_18_supported_not_132(self):
-        self.assertEqual(len(m.SUPPORTED_INDICATORS), 18)
+    def test_38_supported_not_132(self):
+        self.assertEqual(len(m.SUPPORTED_INDICATORS), 38)
         r = g.read_registry()
         self.assertTrue(m.SUPPORTED_INDICATORS.issubset({x["name"] for x in r["entries"]}))
         self.assertNotIn("MACD", m.SUPPORTED_INDICATORS)
