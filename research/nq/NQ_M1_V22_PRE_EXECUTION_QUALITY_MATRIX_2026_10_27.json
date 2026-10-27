@@ -1,0 +1,154 @@
+{
+  "schema": "NQ_M1_V22_PRE_ECONOMIC_QUALITY_GATE_V1",
+  "date": "2026-10-27",
+  "asset": "NQ",
+  "contracts": 1,
+  "stage": "PRE_ECONOMIC_EXECUTION",
+  "decision": "DO_NOT_RUN_ECONOMIC_BACKTEST_UNTIL_ALL_MANDATORY_GATES_PASSED_WITH_EVIDENCE",
+  "no_mnq": true,
+  "holdouts": "ISV1_2023_ISV2_2024_NO_FIT_H2025_H2026_T_SEALED",
+  "current_evidence": {
+    "public_ci": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40586072527",
+    "synthetic_test_count": 83,
+    "registered_blocks": 132,
+    "implemented_blocks": 38,
+    "externally_parity_tested": 15,
+    "semantically_compatible_count": 82,
+    "semantic_total": 100,
+    "last_private_technical_only": "https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40585881792",
+    "economically_evaluated": false
+  },
+  "criteria": [
+    {
+      "id": "DATA_PROVENANCE",
+      "state": "PASSED_TECHNICAL",
+      "evidence": "NQ minute whitelist 2020-22 with immutable hash and excluded partial RTH; 735 complete sessions; independent contract-id reconciliation still pending",
+      "remaining": [
+        "Independent per-session actual source contract audit"
+      ],
+      "mandatory": true,
+      "verified_evidence_ref": null
+    },
+    {
+      "id": "INDICATOR_LIBRARY_132",
+      "state": "BLOCKED",
+      "evidence": "132 registry blocks; only 38 computed, 15 TA-Lib cross-checked",
+      "remaining": [
+        "94 block implementations, math test vectors and full parity"
+      ],
+      "mandatory": true,
+      "verified_evidence_ref": null
+    },
+    {
+      "id": "PARAMETER_SEMANTICS",
+      "state": "PARTIAL",
+      "evidence": "Typed levels/active parameters V2.1, 82/100 mechanically executable",
+      "remaining": [
+        "18 unsupported anchors, full 132 typed predicate coverage and canonical deduplication"
+      ],
+      "mandatory": true,
+      "verified_evidence_ref": null
+    },
+    {
+      "id": "SAME_CONTRACT_WARMUP",
+      "state": "PARTIAL",
+      "evidence": "Independent same-contract RTH context; deterministic roll mapping adapter; not yet in execution",
+      "remaining": [
+        "Integrate into signals AND stops AND dynamic trailing in execution, no future bars"
+      ],
+      "mandatory": true,
+      "verified_evidence_ref": null
+    },
+    {
+      "id": "SESSION_CLOCK_AND_DST",
+      "state": "PARTIAL",
+      "evidence": "America/New_York 09:31 end-bar through mandatory 11:29 flat",
+      "remaining": [
+        "Cross-check bar end labeling across DST and holiday sessions against independent source"
+      ],
+      "mandatory": true,
+      "verified_evidence_ref": null
+    },
+    {
+      "id": "ORDER_FILL_PARITY",
+      "state": "BLOCKED",
+      "evidence": "Conservative OHLC stop-first, LIMIT/STOP expiries, gap modeling",
+      "remaining": [
+        "Atomic tick/Last reconciliation, intrabar ambiguity, queue and session latency / alternative models"
+      ],
+      "mandatory": true,
+      "verified_evidence_ref": null
+    },
+    {
+      "id": "RISK_AND_ACCOUNT",
+      "state": "BLOCKED",
+      "evidence": "One NQ, $300 initial stop cap; 1 position; 2 fills/day; -$600 closed-day pause",
+      "remaining": [
+        "Floating loss/drawdown, realized+unrealized, funding trailing rule source and pathwide risk simulation"
+      ],
+      "mandatory": true,
+      "verified_evidence_ref": null
+    },
+    {
+      "id": "MULTIPLE_TESTS_AND_LINEAGE",
+      "state": "PARTIAL",
+      "evidence": "Seeded fingerprints and attempt registries; V2.1 no inert numeric param claims",
+      "remaining": [
+        "Independent candidate-dependence accounting, DSR/deflated metrics, full experiment multiplicity"
+      ],
+      "mandatory": true,
+      "verified_evidence_ref": null
+    },
+    {
+      "id": "G0_D0_ADAPTERS",
+      "state": "BLOCKED",
+      "evidence": "Legacy cohort-specific validators identified; not ported to V2 AST",
+      "remaining": [
+        "Formal V2 data/causality and economic viability adapters with parity unit tests"
+      ],
+      "mandatory": true,
+      "verified_evidence_ref": null
+    },
+    {
+      "id": "D1_ECONOMIC_ADAPTER",
+      "state": "BLOCKED",
+      "evidence": "No full IST economics run; no economic outcome approval",
+      "remaining": [
+        "Profits, PF, expectancy, DD and frequency with unaltered frozen gates"
+      ],
+      "mandatory": true,
+      "verified_evidence_ref": null
+    },
+    {
+      "id": "D2_ROBUSTNESS",
+      "state": "BLOCKED",
+      "evidence": "Not run",
+      "remaining": [
+        "Monte Carlo, stress costs, parameter sensitivity, drift, walk-forward and stability gates"
+      ],
+      "mandatory": true,
+      "verified_evidence_ref": null
+    },
+    {
+      "id": "PORTFOLIO_SHARED_ACCOUNT",
+      "state": "BLOCKED",
+      "evidence": "Shadow candidate router with deterministic priority, no full shared fill/state replay",
+      "remaining": [
+        "Single-account replay, risk attribution, dependency/correlation and global floating DD"
+      ],
+      "mandatory": true,
+      "verified_evidence_ref": null
+    },
+    {
+      "id": "FROZEN_TIME_STAGES",
+      "state": "PARTIAL",
+      "evidence": "2023/2024 withheld; 2025/26 sealed; frozen V2.1 cohort",
+      "remaining": [
+        "Immutable release manifest, evaluator SHA, indicator certification and no adaptive ISV use"
+      ],
+      "mandatory": true,
+      "verified_evidence_ref": null
+    }
+  ],
+  "gate_status": "BLOCKED"
+}
