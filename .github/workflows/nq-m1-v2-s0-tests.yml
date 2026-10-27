@@ -8,6 +8,8 @@ on:
       - "research/nq/nq_m1_v2_generator.py"
       - "research/nq/nq_m1_v2_pipeline.py"
       - "research/nq/test_nq_m1_v2_s0.py"
+      - "research/nq/nq_m1_v2_m1_engine.py"
+      - "research/nq/test_nq_m1_v2_m1_engine.py"
       - "research/nq/NQ_M1_V2_GENERATOR_SPEC_2026_10_27.md"
       - ".github/workflows/nq-m1-v2-s0-tests.yml"
   workflow_dispatch:
@@ -26,10 +28,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Install numerical dependency
+        run: python -m pip install numpy
       - name: Run V2 S0 synthetic integrity and one-account shadow tests
         env:
           PYTHONPATH: .
         run: python -m unittest discover -s research/nq -p test_nq_m1_v2_s0.py -v
+      - name: Run synthetic 18-indicator causal M1 execution subset tests
+        env:
+          PYTHONPATH: .
+        run: python -m unittest discover -s research/nq -p test_nq_m1_v2_m1_engine.py -v
       - name: Check registered catalog and reproducible candidate batch without market files
         env:
           PYTHONPATH: .
