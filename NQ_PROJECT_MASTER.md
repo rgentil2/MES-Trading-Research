@@ -1,3 +1,9 @@
+## 2026-10-27 — V2.2 QA S0.10: 117 TESTS, D1/D2 SINTÉTICO PREPARADO, EJECUCIÓN ECONÓMICA BLOQUEADA
+
+**Verificado en [Actions 40595304024 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40595304024): 117 pruebas PASS**, sin nuevos datos de mercado ni backtesting económico. Nueva [librería matemática D1/D2 preliminar](research/nq/nq_m1_v22_synthetic_d1_d2_checks.py) + [8 fixtures](research/nq/test_nq_m1_v22_synthetic_d1_d2_checks.py) comprueba PF, beneficio neto, expectativa, DD solo de trades cerrados, frecuencia en 36 meses IST, sensibilidad a costes NQ, shock de 1,5×, US$10 adicionales y Monte Carlo reproducible por bloques; **no son aún adaptadores formales con paridad a G0–D2 anteriores**, ni prueban rentabilidad real de estrategias, DD flotante ni validez estadística con miles de pruebas correlacionadas. [Matriz 13 puertas](research/nq/NQ_M1_V22_PRE_EXECUTION_QUALITY_MATRIX_2026_10_27.json) permanece `EXECUTION_BLOCKED` y [protocolo de evidencias](research/nq/NQ_M1_V22_PRE_ECONOMIC_QA_PROTOCOL_2026_10_27.md) diferencia pruebas técnicas anteriores a market de evaluaciones D1/D2 reales posteriores. **No iniciar campaña económica NQ hasta certificación y congelación.**
+
+---
+
 ## 2026-10-27 — DECISIÓN: CERRAR TODA LA CALIDAD ANTES DE EJECUTAR NQ ECONÓMICAMENTE (V2.2)
 
 **Nueva instrucción expresa:** «Hagamos todo antes de hacer la ejecución». **Alcance obligatorio:** solo **NQ, un contrato**, sin escenarios MNQ ni apertura de 2023–2026. **No ejecutar ningún lote de backtesting económico ni clasificar ganadoras hasta pasar las pruebas de calidad previamente registradas.** Mantener intactos V1, V2.0 y V2.1 y sus SHAs. Los pilotos históricos anteriores se preservan únicamente como diagnóstico técnico.
