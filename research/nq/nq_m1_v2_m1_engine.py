@@ -12,13 +12,14 @@ import math
 import numpy as np
 from research.nq.nq_m1_v2_generator import fingerprint
 from research.nq.nq_m1_v2_pipeline import REFERENCE_ACCOUNT, validate_candidate_envelope
+from research.nq.nq_m1_v2_indicators_ext import EXTENDED, calc as extended_calc
 
 SUPPORTED_INDICATORS = frozenset((
     "SMA", "EMA", "WMA", "RMA", "ROC", "Momentum",
     "ATR", "NATR", "True Range", "VWAP", "Relative Volume",
     "Z-Score", "Standard Deviation", "Variance",
     "Volume Z-Score", "Donchian", "OBV", "Bollinger Bandwidth"
-))
+)) | EXTENDED
 SAMPLE_STATUS = "SYNTHETIC_ONLY_NO_REFERENCE_PARITY_OR_MARKET_BACKTEST"
 TICK = .25
 POINT_USD = 20.
@@ -71,6 +72,8 @@ def indicator_value(bars: np.ndarray, i: int, block: dict) -> float | None:
     name, params = block["name"], block["parameters"]
     if name not in SUPPORTED_INDICATORS:
         raise UnsupportedV2Feature(f"Not implemented indicator: {name}")
+    if name in EXTENDED:
+        return extended_calc(bars, i, block)
     if not np.isfinite(bars[:i+1]).all():
         raise ValueError("Invalid OHLCV")
     g = bars[:i+1]
