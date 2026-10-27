@@ -12,6 +12,8 @@ on:
       - "research/nq/test_nq_m1_v2_m1_engine.py"
       - "research/nq/nq_m1_v2_orders.py"
       - "research/nq/test_nq_m1_v2_orders.py"
+      - "research/nq/nq_m1_v2_indicators_ext.py"
+      - "research/nq/test_nq_m1_v2_indicators_ext.py"
       - "research/nq/NQ_M1_V2_GENERATOR_SPEC_2026_10_27.md"
       - ".github/workflows/nq-m1-v2-s0-tests.yml"
   workflow_dispatch:
@@ -44,6 +46,10 @@ jobs:
         env:
           PYTHONPATH: .
         run: python -m unittest discover -s research/nq -p test_nq_m1_v2_orders.py -v
+      - name: Test 20 additional causal indicator scalar formulas S0.3
+        env:
+          PYTHONPATH: .
+        run: python -m unittest discover -s research/nq -p test_nq_m1_v2_indicators_ext.py -v
       - name: Check registered catalog and reproducible candidate batch without market files
         env:
           PYTHONPATH: .
