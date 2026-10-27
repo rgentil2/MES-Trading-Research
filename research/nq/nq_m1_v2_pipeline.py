@@ -164,7 +164,10 @@ def simulate_shadow_router(trades: list[dict], priority: list[str],
             if i in same_signal_times:
                 rejected["SAME_TIMESTAMP_LOWER_PRIORITY"] += 1
                 continue
-            same_signal_times.add(i)
+            # Reserve the timestamp ONLY after a candidate is EX-ANTE
+            # executable. If higher-priority NQ exceeds the risk cap, a
+            # lower-priority NQ can still be considered using only risk
+            # known before entry (never trade outcome or future PnL).
             # A strategy may evaluate at the exact bar that just closed
             # the prior position; its new entry is at the NEXT bar only.
             if i < opened_through:
@@ -179,6 +182,7 @@ def simulate_shadow_router(trades: list[dict], priority: list[str],
             if t["initial_risk_usd"] > p["max_initial_stop_risk_usd"]:
                 rejected["RISK_CAP"] += 1
                 continue
+            same_signal_times.add(i)
             accepted.append(t)
             entries += 1
             closed_pnl += float(t["net_usd"])
