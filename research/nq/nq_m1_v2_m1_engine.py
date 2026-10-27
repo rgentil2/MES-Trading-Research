@@ -209,6 +209,25 @@ def eval_expr(bars: np.ndarray, i: int, expr: dict) -> bool:
         return eval_expr(bars, i, expr["left"]) and eval_expr(bars, i, expr["right"])
     if op == "OR":
         return eval_expr(bars, i, expr["left"]) or eval_expr(bars, i, expr["right"])
+    if op in ("ABOVE_LEVEL", "BELOW_LEVEL", "CROSS_ABOVE_LEVEL", "CROSS_BELOW_LEVEL"):
+        # Explicit threshold is a real decision parameter: no hidden RSI,
+        # CCI or volume metadata can affect the signal without this field.
+        level = expr.get("threshold")
+        if (type(level) not in (float,int) or not math.isfinite(level)
+                or "lag_completed_bars" in expr):
+            raise UnsupportedV2Feature("Typed-level predicates require exactly one finite active threshold")
+        cur = indicator_value(bars, i, expr["indicator"])
+        if cur is None:
+            return False
+        if op == "ABOVE_LEVEL":
+            return cur > level
+        if op == "BELOW_LEVEL":
+            return cur < level
+        prior = indicator_value(bars, i-1, expr["indicator"])
+        if prior is None:
+            return False
+        return ((prior <= level and cur > level) if op == "CROSS_ABOVE_LEVEL"
+                else (prior >= level and cur < level))
     lag = expr["lag_completed_bars"]
     block = expr["indicator"]
     cur = indicator_value(bars, i, block)
