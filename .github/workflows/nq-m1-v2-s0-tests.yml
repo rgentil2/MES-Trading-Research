@@ -27,6 +27,11 @@ on:
       - "research/nq/test_nq_m1_v21_warmup_context.py"
       - "research/nq/nq_m1_v21_ist_engineering_pilot.py"
       - "research/nq/test_nq_m1_v21_ist_engineering_pilot.py"
+      - "research/nq/nq_m1_v22_contract_provenance.py"
+      - "research/nq/test_nq_m1_v22_contract_provenance.py"
+      - "research/nq/NQ_M1_V22_PRE_EXECUTION_QUALITY_MATRIX_2026_10_27.json"
+      - "research/nq/nq_m1_v22_quality_gate.py"
+      - "research/nq/test_nq_m1_v22_quality_gate.py"
       - "research/nq/NQ_M1_V2_GENERATOR_SPEC_2026_10_27.md"
       - ".github/workflows/nq-m1-v2-s0-tests.yml"
   workflow_dispatch:
@@ -123,6 +128,30 @@ jobs:
         env:
           PYTHONPATH: .
         run: python -m unittest discover -s research/nq -p test_nq_m1_v21_ist_engineering_pilot.py -v
+      - name: Verify canonical NQ roll identity and same-contract session windows
+        env:
+          PYTHONPATH: .
+        run: python -m unittest discover -s research/nq -p test_nq_m1_v22_contract_provenance.py -v
+      - name: Test mandatory no-price economic execution release gate
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m unittest discover -s research/nq -p test_nq_m1_v22_quality_gate.py -v
+          python -m research.nq.nq_m1_v22_quality_gate > /tmp/nq_v22_readiness.json
+          python - <<'PY'
+          import json
+          x=json.load(open('/tmp/nq_v22_readiness.json'))
+          assert x['decision']=='EXECUTION_BLOCKED'
+          assert not x['ready_for_economic_execution']
+          assert len(x['blocked'])==13 and x['checks_total']==13
+          assert x['asset']=='NQ' and x['contracts']==1 and x['holdouts']=='SEALED'
+          print("NQ_PRE_ECONOMIC_BLOCK_ACTIVE: 13 mandatory quality gates still pending verification")
+          PY
+          if python -m research.nq.nq_m1_v22_quality_gate --require-ready > /tmp/nq_guard_expected_block.txt; then
+            echo "ERROR: economic gate opened prematurely"; exit 1
+          else
+            echo "NQ economic execution rejected by mandatory guard as expected"
+          fi
       - name: Check registered catalog and reproducible candidate batch without market files
         env:
           PYTHONPATH: .
