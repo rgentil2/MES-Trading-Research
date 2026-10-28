@@ -142,6 +142,23 @@
       "gates_verified": 0,
       "qa_tests_passed": 264,
       "artifact_expires_at": "2026-11-27T22:10:45Z"
+    },
+    "s023_frozen_10k_candidate_funnel": {
+      "ci_run": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40780256228",
+      "csv_artifact": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40780256228/artifacts/12855854273",
+      "cohort_original_sha256": "b9d2915fc55f86546ef63d74a588df5244d094eeecb4a7c900a4000d47660be9",
+      "ledger_csv_sha256": "789b108c64e9673960a700cb8773c5cdd683f6efc3b6c494130a7b474849d256",
+      "candidate_count": 10000,
+      "structural_precheck_pass": 10000,
+      "structural_precheck_failed": 0,
+      "formal_g0_passed": 0,
+      "formal_d0_passed": 0,
+      "formal_d1_passed": 0,
+      "formal_d2_passed": 0,
+      "portfolio_approved": 0,
+      "synthetic_qa_tests": 271,
+      "real_prices_opened": false,
+      "global_13_gates_verified": 0
     }
   },
   "criteria": [
@@ -226,7 +243,7 @@
     {
       "id": "MULTIPLE_TESTS_AND_LINEAGE",
       "state": "PARTIAL",
-      "evidence": "Frozen V2.1 compatible 82 ASTs form 82 distinct canonical Boolean/alias groups; 8 semantic QA tests, no simulated prices S0.20 inventory explicitly counts 132 registered, 38 active, 29 isolated, 65 missing; candlestick and overlapping Opening Range/Initial Balance scalar outputs remain possible semantic relatives, not independent hypotheses. S0.21 new V2.6 deterministic random/genetic structural batch fingerprints and explicit one-per-132 coverage, no PnL and no selection. Statistical correction over all evaluated fitness attempts still pending. S0.22 10000 structurally distinct NQ V2.6 candidates generated without market data (6483 random, 1799 mutation, 1718 crossover) under fixed seed 20261028; each AST fingerprint SHA/parents/parameters recorded, plus exact independent 132-name coverage. GitHub run 40777871034 SUCCESS, artifact 12854334218; 264 synthetic QA tests. Parent choice remains UNIFORMLY RANDOM, not fitness-selected, and no strategy performance has been measured.",
+      "evidence": "Frozen V2.1 compatible 82 ASTs form 82 distinct canonical Boolean/alias groups; 8 semantic QA tests, no simulated prices S0.20 inventory explicitly counts 132 registered, 38 active, 29 isolated, 65 missing; candlestick and overlapping Opening Range/Initial Balance scalar outputs remain possible semantic relatives, not independent hypotheses. S0.21 new V2.6 deterministic random/genetic structural batch fingerprints and explicit one-per-132 coverage, no PnL and no selection. Statistical correction over all evaluated fitness attempts still pending. S0.22 10000 structurally distinct NQ V2.6 candidates generated without market data (6483 random, 1799 mutation, 1718 crossover) under fixed seed 20261028; each AST fingerprint SHA/parents/parameters recorded, plus exact independent 132-name coverage. GitHub run 40777871034 SUCCESS, artifact 12854334218; 264 synthetic QA tests. Parent choice remains UNIFORMLY RANDOM, not fitness-selected, and no strategy performance has been measured. S0.23: each of 10000 frozen S0.22 candidate IDs now has append-ready audited funnel CSV (SHA-bound original cohort), canonical AST fingerprint, parent lineage, AND/OR condition counts, entry/stop/target kinds and a technical structure-only precheck. 10000 structurally checked, 0 malformed, 0 formal G0-D2 or portfolio approved; 271 CI tests PASS, run 40780256228, artifact 12855854273.",
       "remaining": [
         "Statistical dependence/multiple-hypothesis correction over all generated attempts",
         "Dedup full 132 implemented blocks and maintain lineage and failed candidates"
@@ -237,7 +254,7 @@
     {
       "id": "G0_D0_ADAPTERS",
       "state": "BLOCKED",
-      "evidence": "Registry-based pre-D0 validator checked all 100 frozen engineering ASTs with typed threshold bounds: 82 structurally interpretable, 18 pending technical implementation; NOT legacy G0/D0 parity nor economic selection.",
+      "evidence": "Registry-based pre-D0 validator checked all 100 frozen engineering ASTs with typed threshold bounds: 82 structurally interpretable, 18 pending technical implementation; NOT legacy G0/D0 parity nor economic selection. S0.23 10000 original ASTs have passed an independent static envelope/registry/AST/lineage scope precheck. This is PRE_G0_WAITING only, NOT formal G0 or D0, and no trades/ISV/holdouts were read; actual adapters/economic validators still outstanding.",
       "remaining": [
         "Implement and independently compare formal G0/D0 invariant adapter to legacy cohort reference",
         "Prove AST registry parameters and stop/entry risk contract on representative synthetic cases",
@@ -283,7 +300,7 @@
     {
       "id": "FROZEN_TIME_STAGES",
       "state": "PARTIAL",
-      "evidence": "2023/2024 withheld; 2025/26 sealed; frozen V2.1 cohort S0.18 independent calendar oracle and private technical audit keep chosen Thursday-minus-eight roll unchanged; only IST 2020–2022 opened, with no signals, fills or PnL. S0.21 generator separately versioned and structural-only; market_data_loaded false, holdouts_opened false; frozen V2.1 38 remains untouched; rollover frozen Thursday -8. S0.22 first 10k AST-only campaign prohibits all market files, records market_data_loaded=false, holds 2023/24 and 2025/26 closed. Seed/source hash and artifact SHA recorded; no rollover changes.",
+      "evidence": "2023/2024 withheld; 2025/26 sealed; frozen V2.1 cohort S0.18 independent calendar oracle and private technical audit keep chosen Thursday-minus-eight roll unchanged; only IST 2020–2022 opened, with no signals, fills or PnL. S0.21 generator separately versioned and structural-only; market_data_loaded false, holdouts_opened false; frozen V2.1 38 remains untouched; rollover frozen Thursday -8. S0.22 first 10k AST-only campaign prohibits all market files, records market_data_loaded=false, holds 2023/24 and 2025/26 closed. Seed/source hash and artifact SHA recorded; no rollover changes. S0.23 recomputed exact 10000 S0.22 AST cohort by fixed seed and verified pinned SHA before emitting ledger; no data archive opened, 2023/24 reserved and 2025/26 sealed. Original rollover kept.",
       "remaining": [
         "Freeze SHA of AST, indicator definitions, dataset gate, risk model and evaluation code; retain ISV/holdout years unopened until later phase"
       ],
