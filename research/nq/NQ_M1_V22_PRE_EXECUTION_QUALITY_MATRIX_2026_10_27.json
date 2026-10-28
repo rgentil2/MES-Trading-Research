@@ -42,14 +42,19 @@
     "predo_technical_pending": 18,
     "release_approval_separate_scope_bound_and_missing": true,
     "final_release_approval_confirmed": false,
-    "fast_qa_ci": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40686462365",
-    "fast_qa_synthetic_test_count": 169,
-    "fast_qa_unified_python_runner_seconds": 1.969,
+    "fast_qa_ci": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40687616106",
+    "fast_qa_synthetic_test_count": 185,
+    "fast_qa_unified_python_runner_seconds": 1.448,
     "extra_active_independent_composite_oracle_checks": 2,
     "active_original_independent_parity_baseline": 15,
     "true_range_talib_index0_startup_not_parity": true,
     "full_workflow_trigger": "MANUAL_DISPATCH_ONLY",
-    "quick_workflow_trigger": "PUSH_NQ_PY_JSON_AND_MANUAL"
+    "quick_workflow_trigger": "PUSH_NQ_PY_JSON_AND_MANUAL",
+    "shared_account_event_qa_synthetic_only": true,
+    "shared_account_event_qa_test_count": 16,
+    "shared_account_event_qa_eod_reference_crosschecks": 4,
+    "shared_account_real_fills_verified": false,
+    "full_ist_economic_not_run": true
   },
   "criteria": [
     {
@@ -119,7 +124,7 @@
     {
       "id": "RISK_AND_ACCOUNT",
       "state": "BLOCKED",
-      "evidence": "One NQ, $300 initial stop cap; 1 position; 2 fills/day; -$600 closed-day pause",
+      "evidence": "Builder 50K provisional arithmetic; independent crosschecks from synthetic shared NQ event replay include EOD trailing floor and floating hard/soft breach; historical or live funded conditions unconfirmed.",
       "remaining": [
         "Floating loss/drawdown, realized+unrealized, funding trailing rule source and pathwide risk simulation"
       ],
@@ -172,10 +177,13 @@
     },
     {
       "id": "PORTFOLIO_SHARED_ACCOUNT",
-      "state": "BLOCKED",
-      "evidence": "Shadow candidate router with deterministic priority, no full shared fill/state replay",
+      "state": "PARTIAL",
+      "evidence": "Synthetic 1 NQ event replay validates priority, one open position, 2 entries/day, $300 nominal stop risk inclusive of baseline cost, soft daily equity pause, hard floor from intraday marked equity, EOD trailing updates, stop-cross reconciliation, and 16 tests plus 4 independent account-reference crosschecks. No actual market signals, queue, fill parity or economic ranking.",
       "remaining": [
-        "Prove priority, one-position order queue, correlated fills and floating account risk on synthetic events; actual performance and optimization results are POST-backtest"
+        "Use independent IST tick/Last source to certify event clock/market order stop executions (technical QA only)",
+        "Build shared-account order queue and portfolio member signal clock with no future PnL lookups",
+        "Verify MFFU account plan and exact floating/soft limits against current official terms",
+        "Formal portfolio G0/D0/D1/D2 and pathwise Monte Carlo not approved"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
