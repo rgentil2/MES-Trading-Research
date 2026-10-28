@@ -1,3 +1,11 @@
+## 2026-10-28 — S0.27: ADAPTADOR DE ARCHIVO M1 REAL IST CON SHA Y AUDITORÍA NUMÉRICA, SIN BACKTEST
+
+Implementado [lector-auditor S0.27](research/nq/nq_m1_v32_real_ist_source_readonly_qa.py): verifica antes de lectura que se conserva **EXECUTION_BLOCKED 0/13**, exige SHA256 fijo `a85a37eb66abda2621cab8110af30d8afb115f652dafc02cc76c7577b2280bc8` del ZIP de NQ M1 privado, abre únicamente 15 `Minute_Last` 2020–2022, comprueba 735 RTH completas / 39 parciales descartadas / 12 rollover según manifest previo, integridad OHLCV y reloj/contrato; produce únicamente recuentos más huella SHA agregada de datos, sin exportar precios. En una muestra fija de sesiones de inicio/mitad/final y todos los cambios trimestrales, puede invocar **132 rutas numéricas** en 11:29 y fin RTH para revisar falta de warmup y causalidad por mutación de barras posteriores; no invoca reglas AST, señales ni fills, no mide PnL.
+
+[CI S0.27 público 40790198066 PASS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40790198066): **326 pruebas sintéticas**; [protocolo técnico](research/nq/NQ_M1_V32_REAL_IST_M1_READONLY_QA_2026_10_28.md). La fuente real debe probarse en el repo privado con SHA fijado: **no confundir el resultado sintético con auditoría completada del ZIP real**. S0.26 sigue exclusivamente artificial; ninguno de los 10.000 candidatos fue backtesteado con este adaptador. 0/13 gates, ISV1 2023 e ISV2 2024 reservados, 2025–2026 sellados y rollover congelado sin modificación.
+
+---
+
 ## 2026-10-28 — S0.26: CICLO COMPLETO SINTÉTICO DE UNA OPERACIÓN NQ M1 (SIN DATOS REALES)
 
 [Motor artificial S0.26](research/nq/nq_m1_v31_full_synthetic_lifecycle.py) integra por primera vez **señal causal AST de 132 rutas → orden MARKET/LIMIT/STOP → espera de orden pendiente 1–30 velas → ejecución proxy OHLC conservadora → SL/TP → trailing/break-even → cierre 11:29 → nueva señal hasta 2 entradas/día**, de forma **exclusiva con datos artificiales construidos internamente**. El motor no acepta arrays M1 históricos y exige un `Fixture` determinista con SHA256 de su escenario. Mantiene separados los 10.000 candidatos estructurales congelados, el V2.1 original y la biblioteca V2.6. No lee fuentes IST 2020–2022 ni años posteriores, ni identifica estrategias rentables.
