@@ -2,12 +2,6 @@ name: NQ V2.5 incubator and funding profile QA no market
 
 on:
   workflow_dispatch:
-  push:
-    branches: [qa/nq-v25-indicator-certification-20261028]
-    paths:
-      - "research/nq/nq_m1_v25_*.py"
-      - "research/nq/test_nq_m1_v25_*.py"
-      - ".github/workflows/nq-m1-v25-incubator-qa.yml"
 
 permissions:
   contents: read
