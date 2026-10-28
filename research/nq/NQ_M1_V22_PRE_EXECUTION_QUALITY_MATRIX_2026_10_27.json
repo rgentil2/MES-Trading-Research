@@ -1,6 +1,6 @@
 {
   "schema": "NQ_M1_V22_PRE_ECONOMIC_QUALITY_GATE_V1",
-  "date": "2026-10-27",
+  "date": "2026-10-28",
   "asset": "NQ",
   "contracts": 1,
   "stage": "PRE_ECONOMIC_EXECUTION",
@@ -62,16 +62,27 @@
     "real_ist_contract_roll_boundaries": 12,
     "real_ist_contexts_checked": 15,
     "real_ist_source_filename_contract_crosscheck": true,
-    "independent_exchange_roll_verification": false
+    "independent_exchange_roll_verification": false,
+    "s018_full_no_market_qa_run": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40749981595",
+    "s018_full_no_market_qa_result": "SUCCESS_WITH_FROZEN_ROLL_ORACLE_AND_REAL_CONTEXT_SYNTHETIC_FIXTURES",
+    "s018_private_real_context_run": "https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40750034374",
+    "s018_private_real_context_artifact": "https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40750034374/artifacts/12843860546",
+    "s018_source_sessions": 735,
+    "s018_contexts_verified_real_source": 15,
+    "s018_indicator_comparisons_real_source": 225,
+    "s018_future_bar_mutation_checks_real_source": 150,
+    "s018_unavailable_indicator_cases_not_imputed": 52,
+    "s018_user_frozen_roll_policy": "THURSDAY_8_CALENDAR_DAYS_BEFORE_THIRD_FRIDAY_QUARTERLY_DO_NOT_CHANGE",
+    "s018_strategy_or_pnl_evaluated": false
   },
   "criteria": [
     {
       "id": "DATA_PROVENANCE",
       "state": "PASSED_TECHNICAL",
-      "evidence": "PRIVATE HISTORICAL QA SUCCESS: exactly 735 complete IST RTH sessions match actual NQ 2020-22 source contract filenames and the previous minute reader; 39 partial sessions excluded, 12 roll boundaries, 15 prior-session contexts checked. Pinned original private ZIP SHA. No 2023+, no orders/PnL. This is source-file identity, NOT independent exchange contract-roll confirmation.",
+      "evidence": "PRIVATE HISTORICAL QA SUCCESS: exactly 735 complete IST RTH sessions match actual NQ 2020-22 source contract filenames and the previous minute reader; 39 partial sessions excluded, 12 roll boundaries, 15 prior-session contexts checked. Pinned original private ZIP SHA. No 2023+, no orders/PnL. This is source-file identity, NOT independent exchange contract-roll confirmation. S0.18: user-frozen Thursday-minus-eight switch policy independently checked across every IST calendar date in public synthetic QA; NEVER replaced with CME customary roll.",
       "remaining": [
-        "Independent CME/broker contract/roll verification against external rule or raw tick metadata",
-        "Independent source timestamp/contract validation at boundary and tick matching before certification"
+        "Independently verify actual NQ contract source/tick/NT8 metadata against the deliberately selected Thursday-minus-eight quarterly switch (not against an alternative roll-selection policy)",
+        "Cross-check raw tick timestamps and contracts at selected boundary sessions before certification"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
@@ -100,10 +111,10 @@
     {
       "id": "SAME_CONTRACT_WARMUP",
       "state": "PARTIAL",
-      "evidence": "Engine accepts checked same-contract prior RTH context; 15 contexts over actual IST sessions including 12 rollover boundaries verified in private file-origin QA. Still no economic replay or actual engine strategy execution with this context.",
+      "evidence": "Engine accepts checked same-contract prior RTH context; 15 contexts over actual IST sessions including 12 rollover boundaries verified in private file-origin QA. Still no economic replay or actual engine strategy execution with this context. S0.18 private real IST 735-session archive: 15 selected same-contract contexts, 225 indicator-context calculations, 150 future-bar mutation checks, 52 truly unavailable without filling; 40750034374 SUCCESS. This is selected technical indicator QA, not complete order/fill parity.",
       "remaining": [
-        "Wire verified source context into complete private NQ model runner and validate stop, ATR, VWAP and signal parity across selected real IST days without PnL",
-        "Independent source-contract and roll sanity check versus exchange/broker data; verify large-lookback edge cases"
+        "Connect verified real IST source context into the complete private strategy/order replay and independently reconcile stops/ATR/VWAP with real Last tick trajectories; no PnL before release",
+        "Check long-lookback edge cases and actual tick/contract source validity beyond 15 selected contexts"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
@@ -199,7 +210,7 @@
     {
       "id": "FROZEN_TIME_STAGES",
       "state": "PARTIAL",
-      "evidence": "2023/2024 withheld; 2025/26 sealed; frozen V2.1 cohort",
+      "evidence": "2023/2024 withheld; 2025/26 sealed; frozen V2.1 cohort S0.18 independent calendar oracle and private technical audit keep chosen Thursday-minus-eight roll unchanged; only IST 2020–2022 opened, with no signals, fills or PnL.",
       "remaining": [
         "Freeze SHA of AST, indicator definitions, dataset gate, risk model and evaluation code; retain ISV/holdout years unopened until later phase"
       ],
