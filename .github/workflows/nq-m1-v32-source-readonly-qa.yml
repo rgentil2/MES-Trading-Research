@@ -2,12 +2,6 @@ name: NQ S0.27 source read-only QA synthetic CI
 
 on:
   workflow_dispatch:
-  push:
-    branches: [research/nq-s027-v32-real-m1-source-qa-20261028]
-    paths:
-      - "research/nq/nq_m1_v32_real_ist_source_readonly_qa.py"
-      - "research/nq/test_nq_m1_v32_real_ist_source_readonly_qa.py"
-      - ".github/workflows/nq-m1-v32-source-readonly-qa.yml"
 
 permissions:
   contents: read
