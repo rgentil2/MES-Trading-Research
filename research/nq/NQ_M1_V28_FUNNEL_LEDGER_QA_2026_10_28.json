@@ -1,0 +1,78 @@
+{
+  "schema": "NQ_V28_S023_FUNNEL_TRACKING_PERSISTENT_QA_SUMMARY",
+  "date": "2026-10-28",
+  "asset": "NQ",
+  "contracts": 1,
+  "timeframe": "M1",
+  "cohort": "NQ_S022_20261028_10000",
+  "seed": 20261028,
+  "candidate_count": 10000,
+  "original_cohort_canonical_sha256": "b9d2915fc55f86546ef63d74a588df5244d094eeecb4a7c900a4000d47660be9",
+  "funnel_run_url": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40780256228",
+  "candidate_ledger_artifact_url": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40780256228/artifacts/12855854273",
+  "artifact_id": 12855854273,
+  "artifact_sha256": "e25a5af935f7b8f4f05d9509be7b08088f7f42e2201cf557f17cb717efb567f0",
+  "csv_sha256": "789b108c64e9673960a700cb8773c5cdd683f6efc3b6c494130a7b474849d256",
+  "artifact_expires_at": "2026-11-27T22:29:09Z",
+  "tested_source_sha": "f33e25283110cc4efd7c3abd6cdfe8f1c6c28360",
+  "qa_tests_passed": 271,
+  "scope": "STRUCTURAL_TRACKING_ONLY_NO_MARKET",
+  "structural_precheck_pass": 10000,
+  "structural_precheck_fail": 0,
+  "formal_quality_gates_verified": 0,
+  "formal_funnel_stage_counts": {
+    "G0": {
+      "passed": 0,
+      "rejected": 0,
+      "waiting": 10000
+    },
+    "D0": {
+      "passed": 0,
+      "rejected": 0,
+      "waiting": 10000
+    },
+    "D1": {
+      "passed": 0,
+      "rejected": 0,
+      "waiting": 10000
+    },
+    "D2": {
+      "passed": 0,
+      "rejected": 0,
+      "waiting": 10000
+    },
+    "ISV1_2023": {
+      "passed": 0,
+      "rejected": 0,
+      "waiting": 10000
+    },
+    "ISV2_2024": {
+      "passed": 0,
+      "rejected": 0,
+      "waiting": 10000
+    },
+    "PORTFOLIO": {
+      "passed": 0,
+      "rejected": 0,
+      "waiting": 10000
+    },
+    "MFFU_50K": {
+      "passed": 0,
+      "rejected": 0,
+      "waiting": 10000
+    }
+  },
+  "sealed_years_not_opened": [
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "market_prices_read": false,
+  "strategies_ranked": false,
+  "trade_fills": false,
+  "economic_fitness": false,
+  "rollover_unchanged": true,
+  "reproduce_command": "python -m research.nq.nq_m1_v28_funnel_ledger --out /tmp/nq_v28_funnel",
+  "note": "Technical-only registry, scope, parameter, AST, lineage checks are not G0/D0 passes or profitable-strategy evidence. Every candidate is PRE_G0_WAITING due to independent 13-gate approval still missing."
+}
