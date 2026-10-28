@@ -32,10 +32,12 @@ def _sma(series:np.ndarray,n:int)->np.ndarray:
 
 def calc(bars:np.ndarray, idx:int, block:dict)->float|None:
     if (not isinstance(bars,np.ndarray) or bars.ndim!=2
-            or bars.shape[1]!=5 or not np.isfinite(bars).all()):
+            or bars.shape[1]!=5):
         raise ValueError("Complete finite M1 OHLCV required for incubator")
     if idx<0:return None
     if idx>=len(bars):raise ValueError("Future not available")
+    if not np.isfinite(bars[:idx+1]).all():
+        raise ValueError("Nonfinite completed price")
     name=block["name"]
     if name not in PROTOTYPES:
         raise ValueError("Unreleased technical indicator name")
