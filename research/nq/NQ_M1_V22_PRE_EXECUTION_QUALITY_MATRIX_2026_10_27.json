@@ -73,7 +73,24 @@
     "s018_future_bar_mutation_checks_real_source": 150,
     "s018_unavailable_indicator_cases_not_imputed": 52,
     "s018_user_frozen_roll_policy": "THURSDAY_8_CALENDAR_DAYS_BEFORE_THIRD_FRIDAY_QUARTERLY_DO_NOT_CHANGE",
-    "s018_strategy_or_pnl_evaluated": false
+    "s018_strategy_or_pnl_evaluated": false,
+    "s019_s020_isolated_qa_run": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40771478487",
+    "s019_s020_qa_tests_passed": 234,
+    "s019_s020_frozen_active_indicators": 38,
+    "s019_s020_original_external_parity": 15,
+    "s019_s020_isolated_prior_5": 5,
+    "s019_s020_isolated_scalar_12": 12,
+    "s019_s020_isolated_candles_12": 12,
+    "s019_s020_registered_but_still_unimplemented": 65,
+    "s019_s020_all_132_certified": false,
+    "s019_s020_true_ist_tick_2020_2022_not_found_in_repo_releases": true,
+    "s019_s020_releases_checked": [
+      "rgentil2/NQ-Tick-Data",
+      "rgentil2/NQ-Ticks-Dev-2026",
+      "rgentil2/NQ-Ticks-Sealed"
+    ],
+    "s019_s020_funding_plan_source": "https://help.myfundedfutures.com/en/articles/11802636-traders-evaluation-simplified",
+    "s019_s020_funding_exact_purchased_profile_still_unknown": true
   },
   "criteria": [
     {
@@ -90,10 +107,11 @@
     {
       "id": "INDICATOR_LIBRARY_132",
       "state": "BLOCKED",
-      "evidence": "Frozen V2.1: 38 implemented; original 15 independently paritied; 2 additional independent composite TA-Lib oracle checks for Z-Score and Bollinger Bandwidth (NOT yet promoted to full certification). True Range matches TA-Lib after idx0 but differs at startup, flagged. Five incubator prototypes externally tested but not integrated.",
+      "evidence": "Frozen V2.1: 38 implemented; original 15 independently paritied; 2 additional independent composite TA-Lib oracle checks for Z-Score and Bollinger Bandwidth (NOT yet promoted to full certification). True Range matches TA-Lib after idx0 but differs at startup, flagged. Five incubator prototypes externally tested but not integrated. S0.19/S0.20: 12 additional isolated scalar definitions plus 12 causal candlestick-rule prototypes; 234 public QA tests passed. Inventory is now frozen 38 active, 5 original isolated, 24 new isolated, 65 catalogue names still have NO implementation. None of the 29 isolated blocks has been promoted/certified as V2.1 executable.",
       "remaining": [
-        "Independent certification of remaining active calculations including full warmup conventions and 132 total registry blocks",
-        "Explicit reconcile True Range first-bar seed convention, freeze future candidate SHA"
+        "Implement remaining 65 registered blocks with distinct effective parameter/output semantics",
+        "Independently certify new isolated 29 and prior active calculations using third-party reference/frozen conventions, including seed True Range",
+        "Only after full parity: promote under NEW version and update full lineage; never rewrite original frozen V2.1 candidate cohort"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
@@ -101,7 +119,7 @@
     {
       "id": "PARAMETER_SEMANTICS",
       "state": "PARTIAL",
-      "evidence": "Typed levels/active parameters V2.1, 82/100 mechanically executable",
+      "evidence": "Typed levels/active parameters V2.1, 82/100 mechanically executable S0.20 custom candlestick body_ratio and shadow_ratio checked by causality and fixture tests, but not TA-Lib-equivalent; 12 additional scalar prototypes validate exact active parameter keys. Original 18 unsupported frozen ASTs unchanged.",
       "remaining": [
         "18 unsupported anchors, full 132 typed predicate coverage and canonical deduplication"
       ],
@@ -132,10 +150,10 @@
     {
       "id": "ORDER_FILL_PARITY",
       "state": "BLOCKED",
-      "evidence": "Synthetic atomic Last first-touch reference demonstrates OHLC stop-first ambiguity; no independent real NinjaTrader/tick replay parity yet",
+      "evidence": "Synthetic atomic Last first-touch reference demonstrates OHLC stop-first ambiguity; no independent real NinjaTrader/tick replay parity yet S0.19 GitHub release inventory of all 3 connected NQ private repositories: 2020–2022 historical archive contains NQ/MNQ MINUTE bars; available tick Last/Bid/Ask releases are 2025–2026 only. There is NO 2020–2022 NQ tick release located to perform the preregistered real IST fill parity.",
       "remaining": [
-        "Replay historical allowed tick source to independently compare trade fills and stop/target order",
-        "Price gap, latency, queue/slippage and pending order risk-at-submission parity"
+        "Obtain or connect an authorized NQ contract-specific 2020–2022 Last tick source, or preregister explicitly scoped conservative OHLC bounds as a new user-approved protocol without calling them tick-verified fills",
+        "Reconcile STOP/LIMIT triggers, gaps, queue priority, stop-first ambiguity, slippage and pending-order risk against independent tick/NT8 replay"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
@@ -143,9 +161,10 @@
     {
       "id": "RISK_AND_ACCOUNT",
       "state": "BLOCKED",
-      "evidence": "Builder 50K provisional arithmetic; independent crosschecks from synthetic shared NQ event replay include EOD trailing floor and floating hard/soft breach; historical or live funded conditions unconfirmed.",
+      "evidence": "Builder 50K provisional arithmetic; independent crosschecks from synthetic shared NQ event replay include EOD trailing floor and floating hard/soft breach; historical or live funded conditions unconfirmed. Official 2026-09-24 MFFU plan matrix implemented as isolated fail-closed configuration profiles: Builder default 50K MLL $2K and DLL $1K soft; Builder add-on MLL $1.5K; Rapid/Pro variants have different consistency and DLL. Full account selection/funding phase unknown; profiles do not certify financial engine.",
       "remaining": [
-        "Floating loss/drawdown, realized+unrealized, funding trailing rule source and pathwide risk simulation"
+        "Confirm exact purchased 50K plan and phase; Builder default is an assumption not a fact",
+        "Prove full pathwise floating equity/EOD trailing, daily soft stop and one-account order semantics using independent reference and all market path cases"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
@@ -153,7 +172,7 @@
     {
       "id": "MULTIPLE_TESTS_AND_LINEAGE",
       "state": "PARTIAL",
-      "evidence": "Frozen V2.1 compatible 82 ASTs form 82 distinct canonical Boolean/alias groups; 8 semantic QA tests, no simulated prices",
+      "evidence": "Frozen V2.1 compatible 82 ASTs form 82 distinct canonical Boolean/alias groups; 8 semantic QA tests, no simulated prices S0.20 inventory explicitly counts 132 registered, 38 active, 29 isolated, 65 missing; candlestick and overlapping Opening Range/Initial Balance scalar outputs remain possible semantic relatives, not independent hypotheses.",
       "remaining": [
         "Statistical dependence/multiple-hypothesis correction over all generated attempts",
         "Dedup full 132 implemented blocks and maintain lineage and failed candidates"
