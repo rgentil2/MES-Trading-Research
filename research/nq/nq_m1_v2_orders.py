@@ -15,6 +15,8 @@ import numpy as np
 from research.nq import nq_m1_v2_m1_engine as base
 from research.nq.nq_m1_v2_generator import fingerprint
 from research.nq.nq_m1_v2_pipeline import REFERENCE_ACCOUNT, validate_candidate_envelope
+from research.nq.nq_m1_v22_contract_provenance import STATUS as CONTEXT_STATUS
+from research.nq.nq_h05_h07_level_volume_screen import roll_contract
 
 TICK = base.TICK
 POINT_USD = base.POINT_USD
@@ -82,6 +84,65 @@ def validate_supported(s: dict) -> None:
                     raise base.UnsupportedV2Feature("Invalid lag predicate or unused threshold")
             else:
                 raise base.UnsupportedV2Feature("Unsupported predicate")
+
+
+def _validate_context(session: str, context: dict | None) -> np.ndarray:
+    """Validate context returned by NQ-only source-contract adapter.
+
+    Validate metadata AGAIN at execution point, so callers cannot inject
+    earlier bars from a different expiry. Even when present, history is
+    ALWAYS cut at the *decision* completed bar by _causal_reader.
+    """
+    if context is None:
+        return np.empty((0,5), dtype=float)
+    if not isinstance(context, dict) or context.get("status") != CONTEXT_STATUS:
+        raise base.UnsupportedV2Feature("Unproven previous-session provenance")
+    if context.get("holdouts") != "SEALED" or context.get("target") is None:
+        raise PermissionError("Unknown source years/holdout state")
+    target=context["target"]
+    if (target.session_date != session or target.symbol != "NQ"
+            or target.contract_id != roll_contract(date.fromisoformat(session))
+            or context.get("source_contract") != target.contract_id):
+        raise PermissionError("Context contract/date differs from NQ current contract")
+    prior=context.get("prior_session_dates")
+    arr=context.get("prior_bars")
+    if (not isinstance(prior, list) or len(prior)>2
+            or not isinstance(arr,np.ndarray) or arr.shape!=(390*len(prior),5)
+            or not np.isfinite(arr).all() or (arr[:,4]<0).any()
+            or (arr[:,1]<arr[:,2]).any()):
+        raise ValueError("Malformed prior RTH context")
+    last=None
+    for name in prior:
+        d=date.fromisoformat(name)
+        if (d >= date.fromisoformat(session) or d.year not in (2020,2021,2022)
+                or roll_contract(d)!=target.contract_id or
+                (last is not None and d<=last)):
+            raise PermissionError("Future, unsorted, holdout or cross-contract prior context")
+        last=d
+    return arr
+
+
+def _causal_reader(history: np.ndarray):
+    """Stateful in prior-RTH data only; no future current bar in calculations."""
+    def read(bars: np.ndarray, i: int, block: dict):
+        if i < 0:
+            if len(history)==0:
+                return None
+            # Never evaluate negative current indexes as synthetic signal bars.
+            return None
+        if block["name"] in {"VWAP","OBV"} or len(history)==0:
+            return base.indicator_value(bars,i,block)
+        if i>=len(bars):
+            raise ValueError("Future signal bar")
+        exact=np.concatenate((history,bars[:i+1]),axis=0)
+        return base.indicator_value(exact,len(exact)-1,block)
+    return read
+
+
+def _completed_context(bars: np.ndarray, decision:int, history:np.ndarray)->np.ndarray:
+    if decision<0 or decision>=len(bars):
+        raise ValueError("Decision requires a completed current bar")
+    return np.concatenate((history,bars[:decision+1]),axis=0) if len(history) else bars[:decision+1]
 
 
 def _entry_limit_or_trigger(close: float, side: int, kind: str, offset_ticks: int) -> float | None:
