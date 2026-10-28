@@ -203,12 +203,13 @@ def check_supported(strategy: dict) -> None:
         raise UnsupportedV2Feature("ATR period outside research range")
 
 
-def eval_expr(bars: np.ndarray, i: int, expr: dict) -> bool:
+def eval_expr(bars: np.ndarray, i: int, expr: dict, reader=None) -> bool:
     op = expr["op"]
+    read = reader if reader is not None else indicator_value
     if op == "AND":
-        return eval_expr(bars, i, expr["left"]) and eval_expr(bars, i, expr["right"])
+        return eval_expr(bars, i, expr["left"], reader) and eval_expr(bars, i, expr["right"], reader)
     if op == "OR":
-        return eval_expr(bars, i, expr["left"]) or eval_expr(bars, i, expr["right"])
+        return eval_expr(bars, i, expr["left"], reader) or eval_expr(bars, i, expr["right"], reader)
     if op in ("ABOVE_LEVEL", "BELOW_LEVEL", "CROSS_ABOVE_LEVEL", "CROSS_BELOW_LEVEL"):
         # Explicit threshold is a real decision parameter: no hidden RSI,
         # CCI or volume metadata can affect the signal without this field.
@@ -216,22 +217,22 @@ def eval_expr(bars: np.ndarray, i: int, expr: dict) -> bool:
         if (type(level) not in (float,int) or not math.isfinite(level)
                 or "lag_completed_bars" in expr):
             raise UnsupportedV2Feature("Typed-level predicates require exactly one finite active threshold")
-        cur = indicator_value(bars, i, expr["indicator"])
+        cur = read(bars, i, expr["indicator"])
         if cur is None:
             return False
         if op == "ABOVE_LEVEL":
             return cur > level
         if op == "BELOW_LEVEL":
             return cur < level
-        prior = indicator_value(bars, i-1, expr["indicator"])
+        prior = read(bars, i-1, expr["indicator"])
         if prior is None:
             return False
         return ((prior <= level and cur > level) if op == "CROSS_ABOVE_LEVEL"
                 else (prior >= level and cur < level))
     lag = expr["lag_completed_bars"]
     block = expr["indicator"]
-    cur = indicator_value(bars, i, block)
-    prior = indicator_value(bars, i-lag, block)  # honor the preregistered lag for EVERY predicate
+    cur = read(bars, i, block)
+    prior = read(bars, i-lag, block)  # honor the preregistered lag for EVERY predicate
     if cur is None or prior is None:
         return False
     if op in ("RISING", "ABOVE_LAG"):
@@ -239,8 +240,8 @@ def eval_expr(bars: np.ndarray, i: int, expr: dict) -> bool:
     if op in ("FALLING", "BELOW_LAG"):
         return cur < prior
     if op == "CROSSES_OWN_LAG":
-        one_back = indicator_value(bars, i-1, block)
-        earlier = indicator_value(bars, i-lag-1, block)
+        one_back = read(bars, i-1, block)
+        earlier = read(bars, i-lag-1, block)
         return one_back is not None and earlier is not None and cur > prior and one_back <= earlier
     raise ValueError(f"Unknown expression operator {op}")
 
