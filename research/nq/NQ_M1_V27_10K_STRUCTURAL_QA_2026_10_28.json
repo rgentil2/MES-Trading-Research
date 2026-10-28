@@ -1,0 +1,60 @@
+{
+  "schema": "NQ_V27_S022_IMMUTABLE_STRUCTURAL_QA_SUMMARY",
+  "date": "2026-10-28",
+  "asset": "NQ",
+  "contracts": 1,
+  "clock": "America/New_York",
+  "timeframe": "M1",
+  "campaign": "PRE_ECONOMIC_STRUCTURAL_ONLY",
+  "seed": 20261028,
+  "conditions_max_per_side": 8,
+  "requested_random_fraction": 0.65,
+  "code_run_sha": "1188db2d985873232e9e0e005a5721fda6996a89",
+  "run_url": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40777871034",
+  "artifact_url": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40777871034/artifacts/12854334218",
+  "artifact_sha256": "24b413d2c3441fc19baefb16d10d411e6f65ec122c2964120a3c7d2fb71adfb2",
+  "artifact_expires_at": "2026-11-27T22:10:45Z",
+  "candidate_bundle_canonical_sha256": "b9d2915fc55f86546ef63d74a588df5244d094eeecb4a7c900a4000d47660be9",
+  "nq_indicator_routes": 132,
+  "indicators_found_in_batch": 132,
+  "one_per_indicator_coverage": 132,
+  "candidate_count": 10000,
+  "unique_AST_count": 10000,
+  "candidate_generation_counts": {
+    "RANDOM": 6483,
+    "MUTATE": 1799,
+    "CROSSOVER": 1718
+  },
+  "entry_types": {
+    "MARKET": 3207,
+    "LIMIT": 3521,
+    "STOP": 3272
+  },
+  "stop_kinds": {
+    "ATR": 2552,
+    "CHANDELIER": 2490,
+    "FIXED_POINTS": 2510,
+    "STRUCTURE": 2448
+  },
+  "profit_target_kinds": {
+    "ATR": 1963,
+    "CAUSAL_LEVEL": 2050,
+    "FIXED_POINTS": 1943,
+    "NONE": 2049,
+    "R_MULTIPLE": 1995
+  },
+  "qa_tests_passed": 264,
+  "holdout_years_unopened": [
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "real_prices_loaded": false,
+  "economic_fitness_computed": false,
+  "strategy_ranking_performed": false,
+  "real_positions_or_trades_generated": false,
+  "finalists_identified": 0,
+  "economic_release_status": "EXECUTION_BLOCKED_0_OF_13_VERIFIED",
+  "notes": "Only structural AND/OR candidate ASTs generated. Crossover/mutation parent selection is not economic genetic optimization; no market model selection has occurred. 132 formula routes are experimental and not all independently certified."
+}
