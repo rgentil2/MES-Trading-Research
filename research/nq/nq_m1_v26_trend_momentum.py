@@ -57,7 +57,7 @@ def _adx(x,n):
             dx[i]=100*abs(pos-neg)/(pos+neg) if pos+neg>0 else 0.
     out=np.full(len(x),np.nan)
     adx=rma(dx[n-1:],n)
-    out[(2*n-1):]=adx
+    out[(2*n-1):]=adx[n-1:]
     return out
 
 def _sar(x,p):
