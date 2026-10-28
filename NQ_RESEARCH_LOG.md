@@ -1257,3 +1257,10 @@ El usuario envió captura visible de NinjaTrader 8 `Data Box` sobre **NQ 06-26, 
 - Solo se abrieron 15 miembros whitelist de 2020–22; 2023/24/25/26 sin leer. Se produjeron SHA raíz agregado del contenido, conteos y estado de calidad; sin publicar OHLC, señales de estrategias, operaciones, métricas, PnL o ranking.
 - [Artifact privado #12860344740](https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40790524579/artifacts/12860344740) SHA ZIP `dc71bd2214d33bd10d112cf06e2aaba58184c78ef72aef43313b59377c7c2bf4`, vence 2026-11-27. [Evidencia persistente JSON](research/nq/NQ_M1_V32_S027_VERIFIED_REAL_SOURCE_QA_2026_10_28.json).
 - El simulador de órdenes S0.26 sigue aislado para fixtures artificiales; 10.000 AST aún NO evaluados económicamente. **0/13 PASSED_VERIFIED**. Próximas piezas: certificar los 132 algoritmos, modelo de ejecución M1 y riesgo MFFU compartido, adaptadores G0-D2, firma final.
+
+### 2026-10-28 — S0.27 validación M1 REAL NQ IST 2020–22, sin PnL
+
+- [CI privado 40790524579 SUCCESS](https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40790524579), código SHA `e722734f066e9533db5276b600fea607fdfb8b38`, ZIP histórico SHA `a85a37eb66abda2621cab8110af30d8afb115f652dafc02cc76c7577b2280bc8`.
+- **735** sesiones completas, **39** parciales descartadas, **12** cambios trimestrales, **15** contextos seleccionados, **3.960** cálculos de rutas numéricas 132/132, **1.980** pruebas de mutar datos futuros sin alterar resultados pasados; cero excepciones numéricas de esa muestra.
+- [Artefacto privado de recuentos](https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40790524579/artifacts/12860344740), SHA256 `dc71bd2214d33bd10d112cf06e2aaba58184c78ef72aef43313b59377c7c2bf4`, vence 2026-11-27; [evidencia duradera](research/nq/NQ_M1_V32_S027_VERIFIED_REAL_SOURCE_QA_2026_10_28.json).
+- No se leyeron 2023–2026, no hubo operaciones históricas, PnL, PF, DD ni ranking. 132 rutas numéricas probadas en muestra NO son 132 paridades matemáticas independientes. 0/13 PASSED_VERIFIED; S0.26 sigue artificial-only, 10.000 AST siguen sin resultados económicos.
