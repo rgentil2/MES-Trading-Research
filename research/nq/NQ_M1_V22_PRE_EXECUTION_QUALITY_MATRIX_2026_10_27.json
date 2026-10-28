@@ -8,8 +8,8 @@
   "no_mnq": true,
   "holdouts": "ISV1_2023_ISV2_2024_NO_FIT_H2025_H2026_T_SEALED",
   "current_evidence": {
-    "public_ci": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40595304024",
-    "synthetic_test_count": 117,
+    "public_ci": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40618840069",
+    "synthetic_test_count": 150,
     "registered_blocks": 132,
     "implemented_blocks": 38,
     "externally_parity_tested": 15,
@@ -22,11 +22,20 @@
     "reference_account_synthetic_tested": true,
     "reference_account_plan_confirmed": false,
     "funded_plan_50k_variation_requires_confirmation": true,
-    "warmup_integrated_into_order_execution": false,
+    "warmup_integrated_into_order_execution": true,
     "d1_d2_formal_adapters_executed": false,
     "portfolio_formal_replay_executed": false,
     "synthetic_d1_d2_primitives_tested": true,
-    "actual_d1_d2_strategy_results": false
+    "actual_d1_d2_strategy_results": false,
+    "warmup_verified_with_synthetic_sessions_only": true,
+    "warmup_consumed_by_private_data_runner": false,
+    "incubator_indicators_independently_parity_tested_unreleased": 3,
+    "v21_calculators_still_frozen_at": 38,
+    "equivalent_semantic_ast_unique_groups_of_82": 82,
+    "last_tick_ohlc_ambiguity_synthetic_reference_tested": true,
+    "last_tick_replay_parity_on_real_ist": false,
+    "ist_adequacy_90_trades_scaled_from_150_5year_diagnostic_only": true,
+    "economic_backtest_new_ist_run": false
   },
   "criteria": [
     {
@@ -42,9 +51,10 @@
     {
       "id": "INDICATOR_LIBRARY_132",
       "state": "BLOCKED",
-      "evidence": "132 registry blocks; only 38 computed, 15 TA-Lib cross-checked",
+      "evidence": "38 active formulas, 15 independent TA-Lib parity; 3 more DEMA/TEMA/TRIMA proven externally in isolated incubator, NOT counted as active/frozen",
       "remaining": [
-        "94 block implementations, math test vectors and full parity"
+        "94 remaining library blocks to implement/release with independent vectors",
+        "23 existing active calculations still without independent parity and freeze new catalog SHA"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
@@ -62,9 +72,11 @@
     {
       "id": "SAME_CONTRACT_WARMUP",
       "state": "PARTIAL",
-      "evidence": "Independent same-contract RTH context; deterministic roll mapping adapter; not yet in execution",
+      "evidence": "SYNTHETIC: validated prior-RTH same-contract context now flows into signal, ATR stop, target and ATR trailing in optional simulate_day(session_context=...). 11 integration tests; still not exercised by private historical runner",
       "remaining": [
-        "Integrate into signals AND stops AND dynamic trailing in execution, no future bars"
+        "Independent source contract metadata reconciliation",
+        "Wire context explicitly into private IST orchestrator and test session/roll/DST real source parity",
+        "Performance/semantic edge cases for large periods"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
@@ -82,9 +94,10 @@
     {
       "id": "ORDER_FILL_PARITY",
       "state": "BLOCKED",
-      "evidence": "Conservative OHLC stop-first, LIMIT/STOP expiries, gap modeling",
+      "evidence": "Synthetic atomic Last first-touch reference demonstrates OHLC stop-first ambiguity; no independent real NinjaTrader/tick replay parity yet",
       "remaining": [
-        "Atomic tick/Last reconciliation, intrabar ambiguity, queue and session latency / alternative models"
+        "Replay historical allowed tick source to independently compare trade fills and stop/target order",
+        "Price gap, latency, queue/slippage and pending order risk-at-submission parity"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
@@ -102,9 +115,10 @@
     {
       "id": "MULTIPLE_TESTS_AND_LINEAGE",
       "state": "PARTIAL",
-      "evidence": "Seeded fingerprints and attempt registries; V2.1 no inert numeric param claims",
+      "evidence": "Frozen V2.1 compatible 82 ASTs form 82 distinct canonical Boolean/alias groups; 8 semantic QA tests, no simulated prices",
       "remaining": [
-        "Independent candidate-dependence accounting, DSR/deflated metrics, full experiment multiplicity"
+        "Statistical dependence/multiple-hypothesis correction over all generated attempts",
+        "Dedup full 132 implemented blocks and maintain lineage and failed candidates"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
@@ -122,9 +136,10 @@
     {
       "id": "D1_ECONOMIC_ADAPTER",
       "state": "BLOCKED",
-      "evidence": "No full IST economics run; no economic outcome approval",
+      "evidence": "Synthetic D1 trade math, cost stress and frequency verified; IST indicative trade sample threshold 90 from original 150/60 months, no hard generator sample filtering",
       "remaining": [
-        "Freeze D1 economics thresholds; build and synthetically test net, PF, DD, frequency, year labeling and reject reasons; actual D1 results are POST-backtest"
+        "Formal D1 adapter with original frozen gates and floating DD/period aggregation",
+        "Run synthetic parity against legacy reference before any future IST economic stage"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
