@@ -187,6 +187,10 @@ def replay(events:list[dict], priority:list[str])->dict:
                 if beyond_stop:
                     open_trade["stop_crossed_unreconciled"]=True
                 pnl=(event["price"]-open_trade["entry_price"])*DOLLARS_PER_POINT*open_trade["side"]-BASELINE_RT_COST
+                # The exit itself can be the path's worst floating-equity
+                # checkpoint (including a gap beyond the stop).
+                open_trade["min_floating_equity"]=min(
+                    open_trade["min_floating_equity"],balance+pnl)
                 balance+=pnl
                 daily_closed+=pnl
                 if balance<=opened_balance-SOFT_DAILY_EQUITY_LOSS:
