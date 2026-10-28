@@ -185,8 +185,12 @@ def replay(events:list[dict], priority:list[str])->dict:
                     **open_trade,"exit_idx":bar,"exit_price":float(event["price"]),
                     "synthetic_net_usd":round(pnl,2),
                     "date":day, "stop_crossed_unreconciled":open_trade["stop_crossed_unreconciled"]})
-                if open_trade["stop_crossed_unreconciled"]:
+                if (open_trade["stop_crossed_unreconciled"]
+                        and event.get("stop_execution_confirmed") is not True):
                     raise ValueError("STOP_CROSSED_WITHOUT_ATOMIC_FILL_RECONCILIATION")
+                if (event.get("stop_execution_confirmed") is True
+                        and not open_trade["stop_crossed_unreconciled"]):
+                    raise ValueError("Stop execution evidence without touched stop")
                 open_trade=None
         if open_trade is not None:
             raise ValueError("No overnight NQ position; missing synthetic EXIT")
