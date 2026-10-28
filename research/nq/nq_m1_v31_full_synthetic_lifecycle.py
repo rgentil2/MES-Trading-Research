@@ -193,11 +193,26 @@ def _protective_replay(bars:np.ndarray,decision:int,fill_idx:int,kind:str,
             if changed!=stop:updates+=1;stop=changed
         row=bars[j]
         bar=Bar(*map(float,row[:4]))
-        ev=exit_bar(bar,side,stop,target,
+        # A take-profit is a LIMIT order, not a guaranteed fill when M1 only
+        # TOUCHES the requested price. Require one-tick trade-through, or a
+        # marketable target at the bar open. A protective stop still wins
+        # on a bar touching BOTH barriers, including an exact TP touch.
+        limit_target_unconfirmed=False
+        target_to_check=target
+        if target is not None:
+            tp_touched=(bar.high>=target if side==1 else bar.low<=target)
+            tp_at_open=(bar.open>=target if side==1 else bar.open<=target)
+            tp_through=(bar.high>=target+TICK if side==1
+                        else bar.low<=target-TICK)
+            stop_touched=(bar.low<=stop if side==1 else bar.high>=stop)
+            if tp_touched and not tp_at_open and not tp_through and not stop_touched:
+                limit_target_unconfirmed=True
+                target_to_check=None
+        ev=exit_bar(bar,side,stop,target_to_check,
                     pending_entry_same_bar=(j==fill_idx and kind!="MARKET"),
                     forced_time_exit=(j==last))
         if ev["ambiguous_bar"]:ambiguous+=1
-        if ev["target_suppressed"]:suppressed+=1
+        if ev["target_suppressed"] or limit_target_unconfirmed:suppressed+=1
         if ev["exited_proxy"]:
             exit_px=ev["exit_price"]
             return {"exit_idx":j,"exit_price":round(exit_px,5),
