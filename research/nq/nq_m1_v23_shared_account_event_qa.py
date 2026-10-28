@@ -87,7 +87,11 @@ def replay(events:list[dict], priority:list[str])->dict:
     # Stable same-minute phases; ENTRY intents compete using frozen priority,
     # not later marks/exits, and cannot be replaced using known future PnL.
     by_day={}
+    last_seen=(None,-1)
     for e in events:
+        if last_seen[0]==e["date"] and e["idx"]<last_seen[1]:
+            raise ValueError("Input event stream out of bar order")
+        last_seen=(e["date"],e["idx"])
         by_day.setdefault(e["date"],[]).append(e)
     balance=INITIAL
     floor=INITIAL-EOD_TRAIL
@@ -174,6 +178,14 @@ def replay(events:list[dict], priority:list[str])->dict:
                 if (event.get("strategy_id") is not None
                         and event["strategy_id"]!=open_trade["strategy_id"]):
                     raise ValueError("Exit belongs to different strategy")
+                # A gap or delayed stop fill can exit beyond the declared
+                # protective level even if no intermediate MARK was emitted.
+                # Never call that a normal TP/time exit without explicit
+                # independent synthetic stop-fill reconciliation metadata.
+                beyond_stop=((open_trade["side"]==1 and event["price"]<=open_trade["stop_price"])
+                             or (open_trade["side"]==-1 and event["price"]>=open_trade["stop_price"]))
+                if beyond_stop:
+                    open_trade["stop_crossed_unreconciled"]=True
                 pnl=(event["price"]-open_trade["entry_price"])*DOLLARS_PER_POINT*open_trade["side"]-BASELINE_RT_COST
                 balance+=pnl
                 daily_closed+=pnl
