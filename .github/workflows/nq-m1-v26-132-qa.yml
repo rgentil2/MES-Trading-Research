@@ -1,0 +1,60 @@
+name: NQ 132 research implementations synthetic audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [feature/nq-v26-132-implementations-20261028]
+    paths:
+      - "research/nq/nq_m1_v26_*.py"
+      - "research/nq/test_nq_m1_v26_*.py"
+      - ".github/workflows/nq-m1-v26-132-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  no-market-full-132-technical:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install numeric libraries plus independent TA-Lib oracle for regression suite
+        run: python -m pip install numpy pandas "TA-Lib==0.6.8"
+      - name: Complete NQ 132 registration implementation tests plus old suites
+        env:
+          PYTHONPATH: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/nq -p 'test_nq_m1_v*.py' -v 2>&1 | tee /tmp/qa132.log
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          s=Path('/tmp/qa132.log').read_text()
+          count=[int(x) for x in re.findall(r'Ran (\d+) tests?',s)]
+          assert len(count)==1 and count[0]>=245,count
+          assert re.search(r'(?m)^OK$',s)
+          print('NQ_132_TECHNICAL_QUALITY_TESTS_PASSED',count[0])
+          PY
+      - name: Assert exactly 132 code routes, and continued 13-gate economic hold
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from research.nq.nq_m1_v26_all_132_router import inventory
+          from research.nq.nq_m1_v22_quality_gate import audit
+          from research.nq.nq_m1_v2_m1_engine import SUPPORTED_INDICATORS
+          assert inventory()["coded"] == 132
+          assert inventory()["new_isolated"] == 65
+          assert len(SUPPORTED_INDICATORS)==38
+          gate=audit()
+          assert gate["decision"]=="EXECUTION_BLOCKED"
+          assert gate["checks_total"]==13 and len(gate["blocked"])==13
+          print("NQ_132_IMPLEMENTATIONS_UNCERTIFIED_ALL_13_ECONOMIC_GATES_CLOSED")
+          PY
+      # No private data checkout, no market releases or PnL by design.
