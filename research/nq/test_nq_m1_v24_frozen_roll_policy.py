@@ -49,8 +49,11 @@ class TestFrozenNQRollPolicy(unittest.TestCase):
                 self.assertEqual(chosen.weekday(), calendar.THURSDAY)
                 self.assertNotEqual(roll_contract(chosen - timedelta(days=1)),
                                     roll_contract(chosen))
+                # The roll date is the first day of the NEXT quarterly contract.
+                following = (quarter + 3) if quarter < 12 else 3
+                following_year = year if quarter < 12 else year + 1
                 self.assertEqual(roll_contract(chosen),
-                                 f"NQ_{quarter:02d}-{year % 100:02d}")
+                                 f"NQ_{following:02d}-{following_year % 100:02d}")
                 switches.append(chosen)
         self.assertEqual(len(switches), 12)
         self.assertEqual(len(set(switches)), 12)
