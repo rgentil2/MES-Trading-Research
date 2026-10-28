@@ -88,12 +88,18 @@ def _metadata(result,p,block):
     thresholds=PREDICATE_FIELDS.intersection(p)
     if thresholds:
         if {"lower_level","upper_level"}<=thresholds:
-            choice=block.get("output","lower_level")
-            if choice not in ("lower_level","upper_level"):
-                raise ValueError("Two-level indicator needs recognized threshold output")
-            return raw-float(p[choice])
+            choice=block.get("output","band_distance")
+            if choice!="band_distance":
+                raise ValueError("RSI band uses both effective lower/upper thresholds")
+            return float(min(raw-float(p["lower_level"]),
+                             float(p["upper_level"])-raw))
         if len(thresholds)!=1:raise ValueError("Ambiguous indicator thresholds")
-        return raw-float(p[next(iter(thresholds))])
+        key=next(iter(thresholds))
+        # Williams is reported as negative %R, while its registered
+        # decision level is the positive 0..100 oversold distance.
+        if block.get("name")=="Williams %R" and key=="threshold":
+            return -raw-float(p[key])
+        return raw-float(p[key])
     return raw
 
 def _original(bars,idx,name,p,context):
@@ -155,8 +161,24 @@ def value(bars:np.ndarray,idx:int,block:dict,context:dict|None=None):
     elif name in OLD_OSC:
         val=osc_calc(bars,idx,{"name":name,"parameters":p})
     elif name in EXTRA:
-        # All names in this prior incubator have no predicate fields except none.
-        val=extra_value(bars,idx,{"name":name,"parameters":{k:v for k,v in p.items() if k not in PREDICATE_FIELDS}})
+        pure={k:v for k,v in p.items() if k not in PREDICATE_FIELDS}
+        if name=="VWMA" and p["anchor"]!="session":
+            n=p["period"]
+            if p["anchor"]=="causal_timestamp":
+                start=context.get("anchor_index") if isinstance(context,dict) else None
+                z=x[max(0,len(x)-n):] if type(start) is int and 0<=start<=len(x)-n else None
+            elif p["anchor"]=="previous_completed_session":
+                previous=(context.get("previous_sessions") if isinstance(context,dict)
+                          and context.get("verified_same_contract") is True else None)
+                z=previous[-1][-n:] if isinstance(previous,(tuple,list)) and previous
+                  and isinstance(previous[-1],np.ndarray) and previous[-1].shape==(390,5) else None
+            else:z=None
+            if z is None or not np.isfinite(z).all():val=None
+            else:
+                total=float(np.sum(z[:,4]))
+                val=float(np.dot(z[:,3],z[:,4])/total) if total>0 else None
+        else:
+            val=extra_value(bars,idx,{"name":name,"parameters":pure})
     elif name in PATTERNS:
         val=candle_value(bars,idx,{"name":name,"parameters":p})
     elif name in TREND:
