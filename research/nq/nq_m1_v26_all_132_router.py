@@ -120,7 +120,7 @@ def _original(bars,idx,name,p,context):
         ranges=series_tr(bars[:idx+1])[-n:]
         # Relative TR (last / rolling mean), otherwise 'period' would be inert.
         baseline=float(np.mean(ranges))
-        return float(ranges[-1]/baseline) if baseline>0 else None
+        return float(ranges[-1]/baseline)*float(p["multiplier"]) if baseline>0 else None
     value=frozen_calc(bars,idx,{"name":name,"parameters":actual})
     if value is None:return None
     if "multiplier" in p:
@@ -156,7 +156,7 @@ def value(bars:np.ndarray,idx:int,block:dict,context:dict|None=None):
         val=osc_calc(bars,idx,{"name":name,"parameters":p})
     elif name in EXTRA:
         # All names in this prior incubator have no predicate fields except none.
-        val=extra_value(bars,idx,{"name":name,"parameters":p})
+        val=extra_value(bars,idx,{"name":name,"parameters":{k:v for k,v in p.items() if k not in PREDICATE_FIELDS}})
     elif name in PATTERNS:
         val=candle_value(bars,idx,{"name":name,"parameters":p})
     elif name in TREND:
