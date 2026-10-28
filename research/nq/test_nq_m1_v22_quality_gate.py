@@ -65,6 +65,47 @@ class TestV22ReleaseGate(unittest.TestCase):
         result=self._with_matrix(bad,g.audit)
         self.assertEqual(result["blocked"][0]["status"],"INVALID_EVIDENCE_REFERENCE")
 
+    def test_fake_thirteen_valid_looking_evidence_refs_still_require_manual_approval(self):
+        bad=copy.deepcopy(self.matrix)
+        for c in bad["criteria"]:
+            c["state"]="PASSED_VERIFIED"
+            c["verified_evidence_ref"]={
+                "sha256":"a"*64,
+                "run_url":"https://github.com/rgentil2/MES-Trading-Research/actions/runs/1"}
+        report=self._with_matrix(bad,g.audit)
+        self.assertEqual(report["passed_verified"],13)
+        self.assertTrue(report["technical_quality_checks_complete"])
+        self.assertEqual(report["decision"],"REQUIRES_FINAL_MANUAL_APPROVAL")
+        self.assertFalse(report["final_manual_release_approved"])
+        self.assertFalse(report["ready_for_economic_execution"])
+        with self.assertRaises(PermissionError):
+            self._with_matrix(bad,g.require_ready)
+
+    def test_approval_must_match_current_evidence_scope_and_version(self):
+        bad=copy.deepcopy(self.matrix)
+        for c in bad["criteria"]:
+            c["state"]="PASSED_VERIFIED"
+            c["verified_evidence_ref"]={
+                "sha256":"b"*64,
+                "run_url":"https://github.com/rgentil2/MES-Trading-Research/actions/runs/2"}
+        report=self._with_matrix(bad,g.audit)
+        bad["final_release_approval"]={
+            "approved":True,"reviewer":"QA reviewer",
+            "approved_scope":"ONE_NQ_IST_2020_2022_ECONOMICS_ONLY",
+            "approved_run_url":"https://github.com/rgentil2/MES-Trading-Research/actions/runs/2",
+            "frozen_evaluator_sha256":"c"*64,
+            "reviewed_quality_sha256":report["release_evidence_digest"]}
+        # Structural approval works only on synthetically fabricated inputs;
+        # this fixture does not certify source evidence or actual readiness.
+        accepted=self._with_matrix(bad,g.audit)
+        self.assertTrue(accepted["ready_for_economic_execution"])
+        stale=copy.deepcopy(bad)
+        stale["criteria"][0]["verified_evidence_ref"]["sha256"]="d"*64
+        self.assertFalse(self._with_matrix(stale,g.audit)["ready_for_economic_execution"])
+        other=copy.deepcopy(bad)
+        other["final_release_approval"]["approved_scope"]="MNQ_OR_2025"
+        self.assertFalse(self._with_matrix(other,g.audit)["ready_for_economic_execution"])
+
     def test_no_false_economic_outcomes_in_baseline(self):
         bad=copy.deepcopy(self.matrix)
         bad["current_evidence"]["economically_evaluated"]=True
