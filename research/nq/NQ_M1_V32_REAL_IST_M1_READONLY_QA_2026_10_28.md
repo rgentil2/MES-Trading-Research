@@ -27,3 +27,22 @@ Para pruebas con el ZIP real, el módulo está diseñado para ejecutarse **dentr
 S0.26 continúa artificial-only, sin posibilidad de introducir un array real y «backtestear» escondidamente. S0.27 agrega lectura validada y comprobaciones numéricas, pero **NO pasa ese array al simulador S0.26**. El motor económico real deberá ser un adaptador separado, auditable y aprobado por la matriz 13 controles con sus evidencias.
 
 **Estado:** 10.000 candidatos estructurales congelados S0.22; 0/13 gates formalmente PASSED_VERIFIED; G0, D0, D1 y D2 sin evaluación económica; portafolio no construido.
+
+## Evidencia posterior: auditoría ejecutada con ZIP M1 auténtico
+
+El adaptador ya fue ejecutado en [GitHub privado #40790524579 SUCCESS](https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40790524579), usando el código público SHA `e722734f066e9533db5276b600fea607fdfb8b38` y ZIP privado SHA `a85a37eb66abda2621cab8110af30d8afb115f652dafc02cc76c7577b2280bc8`.
+
+| Comprobación | Resultado |
+|---|---:|
+| Sesiones NQ M1 RTH 2020–2022 | 735 |
+| Sesiones parciales excluidas | 39 |
+| Rollover trimestrales | 12 |
+| Contextos fuente reales muestreados | 15 |
+| Nombres de indicadores programados muestreados | 132 |
+| Cálculos numéricos sobre mercado real en muestra | 3.960 |
+| Pruebas de invariancia ante barras futuras | 1.980 |
+| Excepciones numéricas en esa muestra | 0 |
+
+[Artefacto de recuentos en repositorio privado](https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40790524579/artifacts/12860344740), SHA256 `dc71bd2214d33bd10d112cf06e2aaba58184c78ef72aef43313b59377c7c2bf4`, caduca el 27-nov-2026. [Resumen permanente con evidencia](NQ_M1_V32_S027_VERIFIED_REAL_SOURCE_QA_2026_10_28.json).
+
+**Límite:** este resultado demuestra integridad y verificaciones causales numéricas internas en una muestra, **no la paridad matemática independiente de 132 fórmulas**. Ningún AST de estrategia, orden, operación, PnL o ranking fue evaluado y los 13 gates económicos siguen sin aprobar.
