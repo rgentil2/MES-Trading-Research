@@ -1,0 +1,59 @@
+name: NQ S0.23 frozen 10K funnel candidate ledger pre-economic
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  no-market-tracking:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install numeric and independent oracle, no private market data checkout
+        run: python -m pip install numpy pandas "TA-Lib==0.6.8"
+      - name: Run all synthetic/regression/10K full-cohort tracking tests
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/nq -p 'test_nq_m1_v*.py' -q
+      - name: Export complete 10K state ledger with all G0–D2 on hold
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python -m research.nq.nq_m1_v28_funnel_ledger --out /tmp/nq_v28_funnel
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          s=json.loads(Path('/tmp/nq_v28_funnel/nq_v28_funnel_stage_summary.json').read_text())
+          assert s["frozen_source_sha256"]=="b9d2915fc55f86546ef63d74a588df5244d094eeecb4a7c900a4000d47660be9"
+          assert s["cohort_candidates"]==10000
+          assert s["structural_precheck_pass"]==10000
+          assert s["structural_precheck_fail"]==0
+          assert s["release_gates_verified"]==0
+          assert s["ready_for_economic_execution"] is False
+          assert s["economic_fitness_computed"] is False
+          assert s["market_prices_read"] is False
+          assert all(stage["passed"]==0 for stage in s["formal_funnel_stages"])
+          print("NQ_V28_FUNNEL_10000_TRACKED_ALL_G0_TO_MFFU_BLOCKED_NO_ECONOMIC_EXECUTION")
+          PY
+      - name: Publish 10k CSV stage ledger and SHA manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: nq-v28-frozen-10k-funnel-tracking-no-market
+          path: |
+            /tmp/nq_v28_funnel/nq_v28_candidate_funnel_ledger.csv
+            /tmp/nq_v28_funnel/nq_v28_funnel_stage_summary.json
+          retention-days: 30
+          if-no-files-found: error
+      # No selection, no PnL, no ISV/holdout access. Formal gates remain zero.
