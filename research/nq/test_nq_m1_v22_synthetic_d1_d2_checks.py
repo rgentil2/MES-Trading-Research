@@ -19,6 +19,12 @@ class TestSyntheticD1D2(unittest.TestCase):
         self.assertAlmostEqual(m["expectancy_usd"],17.5)
         self.assertFalse(m["legacy_cohort_g0_d2_parity_certified"])
 
+    def test_sample_adequacy_scaled_from_original_five_year_criterion(self):
+        self.assertEqual(d.MIN_TRADES_2020_2024,150)
+        self.assertEqual(d.MIN_TRADES,90)
+        self.assertEqual(d.MONTHS,36)
+        self.assertEqual(d.MIN_TRADES_PER_MONTH,5.)
+
     def test_empty_or_zero_loss_has_no_fake_infinite_pf(self):
         a=d.trade_metrics([])
         b=d.trade_metrics(sample([100,50]))
