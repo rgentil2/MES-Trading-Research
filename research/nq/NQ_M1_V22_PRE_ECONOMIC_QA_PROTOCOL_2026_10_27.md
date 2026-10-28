@@ -59,3 +59,17 @@ Los fixtures ejercitan cálculo de rentabilidad neta, PF, expectativa y drawdown
 ### Bloqueos no cerrados y reglas de uso
 
 La conexión al motor NO equivale a cobertura probada con historia real; la identidad de `contract_id` necesita cotejo independiente, no solo usar el mismo `roll_contract`. Se mantiene la prohibición de hacer backtest económico, ajuste de estrategia por PnL, G0–D2 formal o portafolio optimizado. Los 13 controles continúan sin liberar y la evaluación económica aún no se inició.
+
+## Hito S0.14 — 28-oct-2026: 164 pruebas, mayor cobertura de indicadores y bloqueo final de ejecución
+
+**Validación pública:** [GitHub Actions 40684820634 — SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40684820634), **164 pruebas automáticas PASS**, sin datos nuevos de mercado ni resultados de rentabilidad. El conteo de cobertura activa del V2.1 permanece congelado: **38 fórmulas implementadas, 15 contrastadas externamente**.
+
+**Dos prototipos adicionales contrastados externamente:** [nq_m1_v22_incubator_oscillators.py](nq_m1_v22_incubator_oscillators.py) desarrolla APO con EMA fast/slow y TRIX mediante tres EMA causales (SMA inicial), con períodos estrictos y sin atributos decorativos. [Seis tests con TA-Lib](test_nq_m1_v22_incubator_oscillators.py) verifican distintos períodos, valores finales y primer índice disponible; bloquean futuros, parámetros inertes y valores no finitos. Junto con DEMA/TEMA/TRIMA existen **5 fórmulas incubadas fuera de la rama activa**, no 43 fórmulas elegibles. Incorporarlas requerirá un nuevo manifiesto congelado, paridad adicional y QA propia.
+
+**Prefiltro estructural nuevo, explícitamente NO formal G0/D0:** [nq_m1_v22_structural_preflight.py](nq_m1_v22_structural_preflight.py) y [seis casos de prueba](test_nq_m1_v22_structural_preflight.py) verifican rangos y fuentes del catálogo, niveles tipados realmente utilizados, períodos, semántica de AST y bloqueo de fórmulas no implementadas. La cohorte **100 V2.1 ingeniería** mantiene **82 estructuras mecánicamente interpretables y 18 pendientes**, sin consulta de precios ni de reglas de PnL. No atribuir PASS de G0/D0 heredados sin paridad independiente del adaptador.
+
+**Corrección crítica de gobernanza:** [nq_m1_v22_quality_gate.py](nq_m1_v22_quality_gate.py) separa (1) los 13 controles con evidencia verificable y (2) una **aprobación manual final explícita**, vinculada mediante SHA256 a la matriz exacta de controles y la versión congelada del evaluador, y limitada a `ONE_NQ_IST_2020_2022_ECONOMICS_ONLY`. Si solo se inventan 13 hashes válidos sintácticamente, el sistema DEBE permanecer en `REQUIRES_FINAL_MANUAL_APPROVAL`. Nuevos tests prueban esta condición y que cambiar evidencia/scope invalida la aprobación.
+
+**Límite real de seguridad:** las referencias SHA/URL de la matriz son metadatos hasta que se comprueban contra artefactos independientes en GitHub. La aprobación manual y el cotejo externo de evidencia siguen sin realizarse; no afirmar que los 13 controles estén certificados. El gate continua `EXECUTION_BLOCKED` y no se cambió ninguna selección económica NQ ni se abrió ISV/holdouts.
+
+**Siguiente prioridad:** paridad matemática de los 23 calculadores activos no contrastados; ampliar 94 bloques restantes de catálogo; completar G0/D0/D1/D2 con paridad heredada y un portfolio que ejecute una sola cuenta; comparar fills y contrato con datos históricos autorizados únicamente en fase de QA, sin aprovechar PnL para selección.
