@@ -1,0 +1,51 @@
+name: NQ S0.26 synthetic full M1 order lifecycle pre-economic
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/nq-s026-v31-full-m1-synthetic-lifecycle-20261028]
+    paths:
+      - "research/nq/nq_m1_v31_full_synthetic_lifecycle.py"
+      - "research/nq/test_nq_m1_v31_full_synthetic_lifecycle.py"
+      - ".github/workflows/nq-m1-v31-synthetic-lifecycle.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-order-lifecycle-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install numerical formula oracle without historical data
+        run: python -m pip install numpy pandas "TA-Lib==0.6.8"
+      - name: Full synthetic NQ regression and M1 lifecycle tests
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/nq -p 'test_nq_m1_v*.py' -q
+      - name: Verify real economic backtest is still blocked
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from research.nq.nq_m1_v22_quality_gate import audit
+          from research.nq.nq_m1_v31_full_synthetic_lifecycle import STATUS,artificial_m1
+          g=audit()
+          assert g['checks_total']==13 and g['passed_verified']==0
+          assert g['decision']=='EXECUTION_BLOCKED'
+          assert g['ready_for_economic_execution'] is False
+          assert 'ARTIFICIAL_ONLY' in STATUS
+          x,p=artificial_m1()
+          assert x.shape==(390,5)
+          print("NQ_V31_ARTIFICIAL_M1_LIFECYCLE_NO_IST_NO_ECONOMICS")
+          PY
