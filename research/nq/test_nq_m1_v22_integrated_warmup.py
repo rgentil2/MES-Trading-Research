@@ -79,7 +79,7 @@ class TestNQIntegratedWarmup(unittest.TestCase):
         s=strategy()
         s["exit"]["profit_target"]={"kind":"ATR","period":180,"multiple":3.}
         s["exit"]["stop_loss_required"]={"kind":"ATR","period":180,"multiple":1.}
-        s["exit"]["trailing"]={"start_r":.25,"distance_atr":1.,"atr_period":180}
+        s["exit"]["trailing"]={"start_r":.25,"distance_atr":1.,"atr_period":120}
         yes=engine.simulate_day(day,s,"2021-05-04",session_context=proven)
         no=engine.simulate_day(day,s,"2021-05-04")
         self.assertGreater(yes["filled"],0)
