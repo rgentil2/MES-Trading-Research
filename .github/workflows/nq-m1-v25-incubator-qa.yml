@@ -1,0 +1,62 @@
+name: NQ V2.5 incubator and funding profile QA no market
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [qa/nq-v25-indicator-certification-20261028]
+    paths:
+      - "research/nq/nq_m1_v25_*.py"
+      - "research/nq/test_nq_m1_v25_*.py"
+      - ".github/workflows/nq-m1-v25-incubator-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  isolated-nq-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install numeric and independent TA-Lib test oracle
+        run: python -m pip install numpy pandas "TA-Lib==0.6.8"
+      - name: Check all prior and newly isolated NQ V2 tests without market
+        shell: bash
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/nq -p 'test_nq_m1_v*.py' -v 2>&1 | tee /tmp/nq_all_qa.log
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          raw=Path('/tmp/nq_all_qa.log').read_text()
+          count=[int(x) for x in re.findall(r'Ran (\d+) tests?',raw)]
+          assert len(count)==1 and count[0]>=212, count
+          assert re.search(r'(?m)^OK$',raw)
+          print('NQ_ALL_ISOLATED_QA_PASS',count[0])
+          PY
+      - name: Ensure economic quality release STILL BLOCKED
+        env:
+          PYTHONPATH: .
+        shell: bash
+        run: |
+          python - <<'PY'
+          from research.nq.nq_m1_v22_quality_gate import audit
+          from research.nq import nq_m1_v25_extra_scalars as inc
+          from research.nq.nq_m1_v2_m1_engine import SUPPORTED_INDICATORS
+          status=audit()
+          assert status["decision"]=="EXECUTION_BLOCKED"
+          assert status["checks_total"]==13
+          assert len(status["blocked"])==13
+          assert len(SUPPORTED_INDICATORS)==38
+          assert len(inc.PROTOTYPES)==12
+          assert inc.PROTOTYPES.isdisjoint(SUPPORTED_INDICATORS)
+          print('NQ_12_EXTRA_PROTOTYPES_NOT_PROMOTED_FROZEN_38_AND_13_GATES_BLOCKED')
+          PY
+      # Deliberately no market releases, no prices, no model fitness or PnL.
