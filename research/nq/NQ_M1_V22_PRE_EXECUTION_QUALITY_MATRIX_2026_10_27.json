@@ -243,6 +243,15 @@
       "shared_account_portfolio_validated": false,
       "economic_fitness_evaluated": false,
       "quality_gates_verified": 0
+    },
+    "s027_m1_readonly_source_audit": {
+      "technical_ci": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40790198066",
+      "synthetic_tests_passed": 326,
+      "source_adapter": "research/nq/nq_m1_v32_real_ist_source_readonly_qa.py",
+      "private_source_audit_completed": false,
+      "real_strategy_backtest_executed": false,
+      "certified_indicator_parity_132": false,
+      "formal_quality_checks_passed": 0
     }
   },
   "criteria": [
