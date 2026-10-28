@@ -1,3 +1,17 @@
+## 2026-10-28 — NQ S0.21: **132/132 INDICADORES PROGRAMADOS** EN V2.6 AISLADA; 259 TESTS PASS, **SIN CERTIFICACIÓN ECONÓMICA**
+
+**Encargo:** completar de programar los 65 indicadores que faltaban. **Hecho a nivel de código y enrutamiento**: sumando 38 indicadores originales V2.1 congelados + 5 prototipos V2.2 + 24 prototipos V2.5 + **65 implementaciones nuevas** V2.6 (27 trend/momentum, 21 volatility/volume/pivots, 17 cycle/gaps), tenemos **132/132 nombres con una ruta ejecutable de fórmula**. [Ruta de código](research/nq/nq_m1_v26_all_132_router.py) valida ID/nombre y dominios exactos, impide lookahead y parámetros sobrantes, bloquea anclas sin contexto. La biblioteca de 38 V2.1 **NO se modificó**. **No confundir con 132 indicadores externos certificados**, que continúan sin aprobación.
+
+**Integración de combinaciones:** [generador V2.6](research/nq/nq_m1_v26_structural_generator.py) dispone del universo completo (incluyendo manifest 132/132 sin reemplazos), muestras aleatorias, mutaciones y cruces, árbol AND/OR y comparaciones tipadas; el linaje/fingerprint queda separado de V2.1. Solo genera estructura, **no calcula fitness ni operaciones**. La semántica detallada de fórmulas no estándar (True Range normalizado, MACD/PPO histograma, RSI banda, Hilbert FFT y patrones propios) está en [documento de convenciones](research/nq/NQ_M1_V26_132_INDICATOR_SEMANTICS_2026_10_28.md).
+
+**Pruebas:** [Actions 40773361273 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40773361273), **259 tests sintéticos/oráculos PASS**, incluidos rutas 132/132, mutación de barras futuras, reglas de sesión, parámetros registrales, generación aleatoria/genética reproducible y comparaciones limitadas con oráculo independiente TA-Lib (ADX, MACD, KAMA, T3, Stochastic, Bollinger). No constituyen 132 paridades externas aprobadas. Los intentos de CI con defectos nuevos de semántica/sintaxis están preservados como evidencia de depuración; último PASS representa el HEAD corregido.
+
+**Estado de liberación:** [13 gates económicos](research/nq/NQ_M1_V22_PRE_EXECUTION_QUALITY_MATRIX_2026_10_27.json) mantienen 0/13 PASSED_VERIFIED y backtest real BLOQUEADO. Falta certificar **fórmulas/semántica del universo**, comparar fills IST con tick real (la release de 2020–2022 solamente aporta barras minuto), verificar exacto plan MFFU, G0–D2 formal y portafolio pathwise, aprobación final por SHA. Ningún dato ISV1/ISV2/2025/2026 consultado, ningún PnL ni trade generado, rollover jueves −8d intacto.
+
+**Estado operativo siguiente:** se terminó de **implementar las rutas para 132/132**; la siguiente etapa ya NO es escribir otros 65 indicadores, sino auditar su paridad/semántica y cerrar los componentes del evaluador con datos autorizados. El protocolo original de calidad no cambia.
+
+---
+
 ## 2026-10-28 — NQ QA S0.19–S0.20: 234 PRUEBAS PASS, 24 INCUBADORAS NUEVAS; SIN BACKTEST
 
 **Resultado CI público:** [GitHub Actions 40771478487 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40771478487), **234 tests sintéticos/casuales de NQ y oráculos** ejecutados juntos; auditoría completa S0 previa [40771093427 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40771093427). Fallos de fixtures de velas en intento [40771371105 FAILED](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40771371105) se corrigieron sin modificar el objetivo económico ni los datos, conservando la evidencia negativa.
