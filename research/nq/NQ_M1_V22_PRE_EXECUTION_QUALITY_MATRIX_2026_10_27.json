@@ -209,6 +209,40 @@
       "fixed_tema_warmup_3n_minus_2": true,
       "candidate_132_indicators_certified": false,
       "economic_release_passed_verified": 0
+    },
+    "s026_full_artificial_only_m1_lifecycle": {
+      "scope": "TECHNICAL_GENERATED_ARTIFICIAL_FIXTURES_ONLY",
+      "ci_success_run": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40787427627",
+      "ci_tests_passed": 319,
+      "synthetic_end_to_end_signal_and_order": true,
+      "full_pending_market_limit_stop_expiration_synthetic": true,
+      "sl_kinds_synthetic": [
+        "FIXED_POINTS",
+        "ATR",
+        "STRUCTURE",
+        "CHANDELIER"
+      ],
+      "tp_kinds_synthetic": [
+        "NONE",
+        "FIXED_POINTS",
+        "R_MULTIPLE",
+        "ATR",
+        "CAUSAL_LEVEL_VWAP"
+      ],
+      "undefined_pivot_and_previous_session_target_rejected": true,
+      "tp_limit_exact_touch_suppressed": true,
+      "tp_limit_trade_through_min_ticks": 1,
+      "sl_first_same_minute": true,
+      "break_even_trailing_previous_completed_bar_only": true,
+      "flat_1129_et_synthetic": true,
+      "max_two_nq_entries_and_daily_closed_pause_synthetic": true,
+      "all_132_formulas_externally_certified": false,
+      "real_ist_m1_loaded": false,
+      "real_ist_trades": false,
+      "official_mffu_account_rules_certified": false,
+      "shared_account_portfolio_validated": false,
+      "economic_fitness_evaluated": false,
+      "quality_gates_verified": 0
     }
   },
   "criteria": [
@@ -250,7 +284,7 @@
     {
       "id": "SAME_CONTRACT_WARMUP",
       "state": "PARTIAL",
-      "evidence": "Engine accepts checked same-contract prior RTH context; 15 contexts over actual IST sessions including 12 rollover boundaries verified in private file-origin QA. Still no economic replay or actual engine strategy execution with this context. S0.18 private real IST 735-session archive: 15 selected same-contract contexts, 225 indicator-context calculations, 150 future-bar mutation checks, 52 truly unavailable without filling; 40750034374 SUCCESS. This is selected technical indicator QA, not complete order/fill parity. S0.24 scope explicitly M1-only. Previous same-contract real minute history is the required causal context, not independent tick replay. S0.25 signal adapter validates and supplies previously completed prior NQ same-contract RTH context from existing provenance guard; no cross-year/contract leak and no future bar in router. Continuous multi-session warmup for all recursive indicator families and order exits still NOT integrated.",
+      "evidence": "Engine accepts checked same-contract prior RTH context; 15 contexts over actual IST sessions including 12 rollover boundaries verified in private file-origin QA. Still no economic replay or actual engine strategy execution with this context. S0.18 private real IST 735-session archive: 15 selected same-contract contexts, 225 indicator-context calculations, 150 future-bar mutation checks, 52 truly unavailable without filling; 40750034374 SUCCESS. This is selected technical indicator QA, not complete order/fill parity. S0.24 scope explicitly M1-only. Previous same-contract real minute history is the required causal context, not independent tick replay. S0.25 signal adapter validates and supplies previously completed prior NQ same-contract RTH context from existing provenance guard; no cross-year/contract leak and no future bar in router. Continuous multi-session warmup for all recursive indicator families and order exits still NOT integrated. S0.26 artificial complete lifecycle accepts existing validated same-contract prior RTH context for stop ATR and trailing/breakeven calculations; complete 132 signal-family recursive multi-session carryover and independent real source parity remain unverified.",
       "remaining": [
         "Connect verified actual IST same-contract M1 prior-RTH warmup into the full strategy/order replay in a limited technical validation and compare indicator/ATR/SL/TP inputs independently",
         "Check long lookbacks/roll boundaries on original M1 archives, including unavailable contexts, without importing any future bar or different contract"
@@ -271,7 +305,7 @@
     {
       "id": "ORDER_FILL_PARITY",
       "state": "BLOCKED",
-      "evidence": "Synthetic atomic Last first-touch reference demonstrates OHLC stop-first ambiguity; no independent real NinjaTrader/tick replay parity yet S0.19 GitHub release inventory of all 3 connected NQ private repositories: 2020–2022 historical archive contains NQ/MNQ MINUTE bars; available tick Last/Bid/Ask releases are 2025–2026 only. There is NO 2020–2022 NQ tick release located to perform the preregistered real IST fill parity. S0.24 user selected M1-only initial search; prior prerequisite to obtain IST Last/Bid/Ask ticks is replaced by preregistered OHLC conservatism. New isolated synthetic reference defines stop-first dual touch, adverse stop gaps/slippage, no favorable target gap improvement, pending same-bar target suppression and limit-one-tick trade-through (exact touch is not sufficient). 286 synthetic QA tests PASS run 40784552670, not independent broker parity. Existing frozen V2.1 order engine still fills LIMIT exact touches: KNOWN DIFFERENCE needing integration before economic release. Formal gate remains BLOCKED. S0.25 synthetic signal bridge calls one-next-bar conservative M1 entry reference (MARKET/LIMIT/STOP) after completed signal; no exit, no full 1–30-bar expiry, no equity/PnL and no independent real IST parity. Previous V2.1 LIMIT exact-touch issue remains.",
+      "evidence": "Synthetic atomic Last first-touch reference demonstrates OHLC stop-first ambiguity; no independent real NinjaTrader/tick replay parity yet S0.19 GitHub release inventory of all 3 connected NQ private repositories: 2020–2022 historical archive contains NQ/MNQ MINUTE bars; available tick Last/Bid/Ask releases are 2025–2026 only. There is NO 2020–2022 NQ tick release located to perform the preregistered real IST fill parity. S0.24 user selected M1-only initial search; prior prerequisite to obtain IST Last/Bid/Ask ticks is replaced by preregistered OHLC conservatism. New isolated synthetic reference defines stop-first dual touch, adverse stop gaps/slippage, no favorable target gap improvement, pending same-bar target suppression and limit-one-tick trade-through (exact touch is not sufficient). 286 synthetic QA tests PASS run 40784552670, not independent broker parity. Existing frozen V2.1 order engine still fills LIMIT exact touches: KNOWN DIFFERENCE needing integration before economic release. Formal gate remains BLOCKED. S0.25 synthetic signal bridge calls one-next-bar conservative M1 entry reference (MARKET/LIMIT/STOP) after completed signal; no exit, no full 1–30-bar expiry, no equity/PnL and no independent real IST parity. Previous V2.1 LIMIT exact-touch issue remains. S0.26 NEW VERSION separate from original V2.1: artificial-only full M1 order lifecycle across MARKET/LIMIT/STOP, pending 1–30 bar expiry, SL-first dual touch, adverse stop gaps, 1-tick trade-through also required for TP LIMIT, previous-bar trailing/breakeven and 11:29 flat; 319 technical synthetic tests success run 40787427627. No independent real IST verification, exact queue/paths unknowable, formal gate remains BLOCKED.",
       "remaining": [
         "Integrate and independently cross-check the chosen conservative M1-only fill scenario across all entry types, both sides, SL/TP/trailing/gaps, pending expiry, same-bar uncertainty and costs; do not use a Last-tick/original broker parity claim",
         "Repair known discrepancy: frozen V2.1 order runner permits LIMIT touch-only fills, whereas S0.24 conservative M1 protocol requires one-tick trade-through or marketable-at-open",
@@ -284,7 +318,7 @@
     {
       "id": "RISK_AND_ACCOUNT",
       "state": "BLOCKED",
-      "evidence": "Builder 50K provisional arithmetic; independent crosschecks from synthetic shared NQ event replay include EOD trailing floor and floating hard/soft breach; historical or live funded conditions unconfirmed. Official 2026-09-24 MFFU plan matrix implemented as isolated fail-closed configuration profiles: Builder default 50K MLL $2K and DLL $1K soft; Builder add-on MLL $1.5K; Rapid/Pro variants have different consistency and DLL. Full account selection/funding phase unknown; profiles do not certify financial engine.",
+      "evidence": "Builder 50K provisional arithmetic; independent crosschecks from synthetic shared NQ event replay include EOD trailing floor and floating hard/soft breach; historical or live funded conditions unconfirmed. Official 2026-09-24 MFFU plan matrix implemented as isolated fail-closed configuration profiles: Builder default 50K MLL $2K and DLL $1K soft; Builder add-on MLL $1.5K; Rapid/Pro variants have different consistency and DLL. Full account selection/funding phase unknown; profiles do not certify financial engine. S0.26 artificial 1 NQ model applies $300 initial model risk cap, max two entries per day, reference -$600 daily closed synthetic pause; these are NOT the user's exact purchased MFFU program; no joint portfolio risk nor floating/EOD MLL review. Protective gap loss may exceed cap.",
       "remaining": [
         "Confirm exact purchased 50K plan and phase; Builder default is an assumption not a fact",
         "Prove full pathwise floating equity/EOD trailing, daily soft stop and one-account order semantics using independent reference and all market path cases"
@@ -306,7 +340,7 @@
     {
       "id": "G0_D0_ADAPTERS",
       "state": "BLOCKED",
-      "evidence": "Registry-based pre-D0 validator checked all 100 frozen engineering ASTs with typed threshold bounds: 82 structurally interpretable, 18 pending technical implementation; NOT legacy G0/D0 parity nor economic selection. S0.23 10000 original ASTs have passed an independent static envelope/registry/AST/lineage scope precheck. This is PRE_G0_WAITING only, NOT formal G0 or D0, and no trades/ISV/holdouts were read; actual adapters/economic validators still outstanding. S0.25 132-registered AST signal semantics can now be evaluated on caller-supplied synthetic M1, with provenance validation, three-valued logic and conservative first-bar entry scenarios. This is a TECHNICAL BRIDGE, NOT the formal G0/D0 adapter or a trade-level precheck; no formal PASS.",
+      "evidence": "Registry-based pre-D0 validator checked all 100 frozen engineering ASTs with typed threshold bounds: 82 structurally interpretable, 18 pending technical implementation; NOT legacy G0/D0 parity nor economic selection. S0.23 10000 original ASTs have passed an independent static envelope/registry/AST/lineage scope precheck. This is PRE_G0_WAITING only, NOT formal G0 or D0, and no trades/ISV/holdouts were read; actual adapters/economic validators still outstanding. S0.25 132-registered AST signal semantics can now be evaluated on caller-supplied synthetic M1, with provenance validation, three-valued logic and conservative first-bar entry scenarios. This is a TECHNICAL BRIDGE, NOT the formal G0/D0 adapter or a trade-level precheck; no formal PASS. S0.26 life-cycle integration now structurally tests same AST signal, pending/fill/SL/TP/forced-exit chain using code-generated artificial 390-bar days; none of the 10000 candidate cohort run on real IST and no formal G0/D0 admissions or failure counts computed.",
       "remaining": [
         "Implement and independently compare formal G0/D0 invariant adapter to legacy cohort reference",
         "Prove AST registry parameters and stop/entry risk contract on representative synthetic cases",
@@ -318,7 +352,7 @@
     {
       "id": "D1_ECONOMIC_ADAPTER",
       "state": "BLOCKED",
-      "evidence": "Synthetic D1 trade math, cost stress and frequency verified; IST indicative trade sample threshold 90 from original 150/60 months, no hard generator sample filtering",
+      "evidence": "Synthetic D1 trade math, cost stress and frequency verified; IST indicative trade sample threshold 90 from original 150/60 months, no hard generator sample filtering S0.26 full-session artificial-price-only engine can calculate labeled synthetic_net_usd to check arithmetic for one candidate; does NOT consume IST dataset, does NOT create candidate economics/ranking/PF/DD, and is NOT a real D1 adapter. Needs independent accounting/cost parity and approved source contracts.",
       "remaining": [
         "Formal D1 adapter with original frozen gates and floating DD/period aggregation",
         "Run synthetic parity against legacy reference before any future IST economic stage"
@@ -352,7 +386,7 @@
     {
       "id": "FROZEN_TIME_STAGES",
       "state": "PARTIAL",
-      "evidence": "2023/2024 withheld; 2025/26 sealed; frozen V2.1 cohort S0.18 independent calendar oracle and private technical audit keep chosen Thursday-minus-eight roll unchanged; only IST 2020–2022 opened, with no signals, fills or PnL. S0.21 generator separately versioned and structural-only; market_data_loaded false, holdouts_opened false; frozen V2.1 38 remains untouched; rollover frozen Thursday -8. S0.22 first 10k AST-only campaign prohibits all market files, records market_data_loaded=false, holds 2023/24 and 2025/26 closed. Seed/source hash and artifact SHA recorded; no rollover changes. S0.23 recomputed exact 10000 S0.22 AST cohort by fixed seed and verified pinned SHA before emitting ledger; no data archive opened, 2023/24 reserved and 2025/26 sealed. Original rollover kept. S0.24 original 2020–2022 M1 chosen for future economic discovery; does not open 2023, 2024, 2025 or 2026; rollover and source manifest unchanged; no market data read during synthetic policy QA. S0.25 synthetic-only CI never loads historical bars; 2023/24/2025/2026 untouched; frozen user rollover unchanged, 0 economic rankings.",
+      "evidence": "2023/2024 withheld; 2025/26 sealed; frozen V2.1 cohort S0.18 independent calendar oracle and private technical audit keep chosen Thursday-minus-eight roll unchanged; only IST 2020–2022 opened, with no signals, fills or PnL. S0.21 generator separately versioned and structural-only; market_data_loaded false, holdouts_opened false; frozen V2.1 38 remains untouched; rollover frozen Thursday -8. S0.22 first 10k AST-only campaign prohibits all market files, records market_data_loaded=false, holds 2023/24 and 2025/26 closed. Seed/source hash and artifact SHA recorded; no rollover changes. S0.23 recomputed exact 10000 S0.22 AST cohort by fixed seed and verified pinned SHA before emitting ledger; no data archive opened, 2023/24 reserved and 2025/26 sealed. Original rollover kept. S0.24 original 2020–2022 M1 chosen for future economic discovery; does not open 2023, 2024, 2025 or 2026; rollover and source manifest unchanged; no market data read during synthetic policy QA. S0.25 synthetic-only CI never loads historical bars; 2023/24/2025/2026 untouched; frozen user rollover unchanged, 0 economic rankings. S0.26 generated artificial OHLC only; no market file access; IST real backtest still blocked, all 2023/2024/2025/2026 reserved datasets untouched and user-fixed Thursday-eight-days rollover unmodified.",
       "remaining": [
         "Freeze SHA of AST, indicator definitions, dataset gate, risk model and evaluation code; retain ISV/holdout years unopened until later phase"
       ],
