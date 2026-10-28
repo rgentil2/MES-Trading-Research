@@ -1,3 +1,13 @@
+## 2026-10-28 — NQ S0.15: CI RÁPIDA 169 TESTS EN 1,97 S, SIN RELAJAR GATES
+
+**Nuevo pedido del usuario:** mayor agilidad en pruebas técnicas, mantener NQ únicamente y **NO lanzar backtest económico** antes de terminar validaciones. [GitHub Actions 40686462365 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40686462365): **169 pruebas NQ V2 de calidad sintética/paridad ejecutadas juntas en 1,969 segundos de Python**; tiempo total GitHub incluye checkout y dependencias. [Nuevo workflow NQ fast](.github/workflows/nq-m1-v2-fast-qa.yml) agrupa todas las pruebas `test_nq_m1_v*.py`, verifica gate `EXECUTION_BLOCKED`, controla cohortes 100/82 y cancela CI anteriores si llega un commit más nuevo. [Workflow completo](.github/workflows/nq-m1-v2-s0-tests.yml) queda en modo **manual** para hitos con artefactos y verificaciones adicionales; [CI MES/ES](.github/workflows/research-controls.yml) excluye cambios exclusivamente de `research/nq/**` para no instalar dependencias pesadas ni producir errores ajenos al proyecto NQ.
+
+**Paridad independiente adicional, sin inflar certificados:** [nuevo test](research/nq/test_nq_m1_v22_active_external_parity.py) contrasta **Z-Score** vs SMA/STDDEV y **Bollinger Bandwidth** vs BBANDS de TA-Lib en varios períodos y verifica causalidad. **True Range** tiene discrepancia real de inicialización en `idx=0`: TA-Lib NaN frente a `high-low` del motor; coincide de `idx>=1` en la muestra, pero **NO se registra como totalmente paritado**. Los **15 cálculos previamente paritados** siguen siendo la cifra base hasta recertificación de warmup y contratos de parámetros. 38 calculadores activos / 132 bloques registrados, 5 prototipos nuevos externos aislados sin modificar el manifiesto V2.1.
+
+**Estado actual:** [matriz de 13 gates](research/nq/NQ_M1_V22_PRE_EXECUTION_QUALITY_MATRIX_2026_10_27.json) sin liberación ni aprobación humana; G0/D0 formal, 23 cálculos activos restantes sin certificación integral, 94 bloques fuera del motor, integración del runner privado con contexto y replay real tick, riesgo flotante/portafolio pendientes. [Protocolo de calidad](research/nq/NQ_M1_V22_PRE_ECONOMIC_QA_PROTOCOL_2026_10_27.md) actualizado. **Ningún nuevo IST económico, no se utilizaron 2023/2024 ni 2025/2026.**
+
+---
+
 ## 2026-10-28 — NQ V2.2 QA S0.14: 164 TESTS, 5 INCUBADORAS PARITADAS, G0/D0 PREESTRUCTURAL Y LIBERACIÓN MANUAL
 
 **Seguimos SIN ejecutar estrategia económica NQ**, sin tocar ISV1 2023 / ISV2 2024 ni H2025/H2026; sin incorporar MNQ ni modificar manifest V2.1 congelado. [Última evidencia pública 40684820634 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40684820634): **164 pruebas PASS**, puramente sintéticas y de paridad numérica, sin consumo de históricos privados.
