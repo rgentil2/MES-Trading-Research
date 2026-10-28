@@ -177,16 +177,29 @@ def _pending_fill(bars: np.ndarray, idx: int, side: int, kind: str,
     raise base.UnsupportedV2Feature("Unknown entry type")
 
 
-def _risk(bars: np.ndarray, decision: int, side: int, entry: float, sl: dict) -> float | None:
+def _risk(bars: np.ndarray, decision: int, side: int, entry: float, sl: dict,
+          history: np.ndarray | None = None, reader=None) -> float | None:
+    if history is not None and len(history):
+        r=reader or _causal_reader(history)
+        if sl["kind"]=="ATR":
+            val=r(bars,decision,{"name":"ATR","parameters":{"period":int(sl["period"])}})
+            return base._round_up_to_tick(val*float(sl["multiple"])) if val is not None else None
+        if sl["kind"]=="STRUCTURE":
+            b=_completed_context(bars,decision,history)
+            n=int(sl["lookback"])
+            if len(b)<n:return None
+            frag=b[-n:]
+            level=float(np.min(frag[:,2])) if side==1 else float(np.max(frag[:,1]))
+            return base._round_up_to_tick(max(TICK,side*(entry-level)+TICK*float(sl["buffer_ticks"])))
     if sl["kind"] != "CHANDELIER":
         return base._risk_distance(bars, decision, side, entry, sl)
     n = int(sl["period"])
-    if n < 3 or n > 120 or decision+1 < n:
+    if n < 3 or n > 120 or decision+1+(len(history) if history is not None else 0) < n:
         return None
-    atr = base.indicator_value(bars, decision, {"name": "ATR", "parameters": {"period": n}})
+    atr = (reader or base.indicator_value)(bars, decision, {"name": "ATR", "parameters": {"period": n}})
     if atr is None:
         return None
-    context = bars[decision+1-n:decision+1]
+    context = _completed_context(bars,decision,history)[-n:] if history is not None else bars[decision+1-n:decision+1]
     extreme = float(np.max(context[:, 1])) if side == 1 else float(np.min(context[:, 2]))
     stop_level = extreme - side*float(sl["atr_multiple"])*atr
     distance = side*(entry-stop_level)
@@ -196,9 +209,12 @@ def _risk(bars: np.ndarray, decision: int, side: int, entry: float, sl: dict) ->
 
 
 def _tp_distance(bars: np.ndarray, decision: int, side: int,
-                 entry: float, risk: float, target: dict) -> float | None:
+                 entry: float, risk: float, target: dict, reader=None) -> float | None:
     if target["kind"] == "NONE":
         return None
+    if target["kind"] == "ATR" and reader is not None:
+        atr=reader(bars,decision,{"name":"ATR","parameters":{"period":int(target["period"])}})
+        return base._round_down_to_tick(atr*float(target["multiple"])) if atr is not None else None
     if target["kind"] != "CAUSAL_LEVEL":
         return base._target_distance(bars, decision, risk, target)
     vw = base.indicator_value(bars, decision, {"name": "VWAP",
@@ -212,7 +228,7 @@ def _tp_distance(bars: np.ndarray, decision: int, side: int,
 
 
 def _tighten_stop(bars: np.ndarray, previous_bar: int, side: int,
-                  entry: float, risk: float, old_stop: float, exit_policy: dict):
+                  entry: float, risk: float, old_stop: float, exit_policy: dict, reader=None):
     """Move a protective stop ONLY from data of an already completed bar."""
     favorable = (float(bars[previous_bar, 1]) if side == 1
                  else float(bars[previous_bar, 2]))
@@ -224,7 +240,7 @@ def _tighten_stop(bars: np.ndarray, previous_bar: int, side: int,
         proposed = max(proposed, level) if side == 1 else min(proposed, level)
     trail = exit_policy["trailing"]
     if trail is not None and gain >= float(trail["start_r"])*risk:
-        atr = base.indicator_value(bars, previous_bar, {"name": "ATR",
+        atr = (reader or base.indicator_value)(bars, previous_bar, {"name": "ATR",
                     "parameters": {"period": int(trail["atr_period"])}})
         if atr is not None:
             level = favorable - side*float(trail["distance_atr"])*atr
@@ -235,7 +251,7 @@ def _tighten_stop(bars: np.ndarray, previous_bar: int, side: int,
 
 def _exit_trade(bars: np.ndarray, decision: int, fill_idx: int, side: int,
                 entry: float, risk: float, target_distance: float | None,
-                kind: str, exit_policy: dict) -> dict:
+                kind: str, exit_policy: dict, reader=None) -> dict:
     sl = _tick(entry-side*risk, "DOWN" if side == 1 else "UP")
     tp = (None if target_distance is None else
           _tick(entry+side*target_distance, "UP" if side == 1 else "DOWN"))
@@ -246,7 +262,7 @@ def _exit_trade(bars: np.ndarray, decision: int, fill_idx: int, side: int,
         # On the entry bar a pending order's pre-fill high/low MUST NEVER
         # tighten a stop. Even on MARKET, modifications take effect next bar.
         if j > fill_idx and (kind == "MARKET" or j-1 > fill_idx):
-            new_sl = _tighten_stop(bars, j-1, side, entry, risk, sl, exit_policy)
+            new_sl = _tighten_stop(bars, j-1, side, entry, risk, sl, exit_policy, reader)
             if new_sl != sl:
                 updates += 1
                 sl = new_sl
@@ -275,7 +291,7 @@ def _exit_trade(bars: np.ndarray, decision: int, fill_idx: int, side: int,
 
 
 def simulate_day(bars: np.ndarray, strategy: dict, session: str,
-                 policy: dict | None = None) -> dict:
+                 policy: dict | None = None, session_context: dict | None = None) -> dict:
     """Fail-closed IST-only one-strategy proxy; no market data opened here."""
     validate_supported(strategy)
     try:
@@ -292,6 +308,8 @@ def simulate_day(bars: np.ndarray, strategy: dict, session: str,
             or (np.abs(bars[:, :4] / TICK - np.round(bars[:, :4] / TICK)) > 1e-7).any()):
         raise ValueError("Malformed RTH 390 x OHLCV bars")
     p = dict(REFERENCE_ACCOUNT if policy is None else policy)
+    history = _validate_context(session,session_context)
+    reader = _causal_reader(history) if session_context is not None else None
     if (p["max_open_positions"] != 1 or p["max_entries_per_day"] < 1
             or p["max_initial_stop_risk_usd"] <= 0 or
             p["daily_closed_pnl_pause_usd"] >= 0):
@@ -308,8 +326,8 @@ def simulate_day(bars: np.ndarray, strategy: dict, session: str,
     while i < LAST_IDX and len(trades) < p["max_entries_per_day"]:
         if daily_net <= p["daily_closed_pnl_pause_usd"]:
             break
-        lon = base.eval_expr(bars, i, strategy["long"])
-        sho = base.eval_expr(bars, i, strategy["short"])
+        lon = base.eval_expr(bars, i, strategy["long"], reader)
+        sho = base.eval_expr(bars, i, strategy["short"], reader)
         signal_diagnostics["decision_bars_checked"] += 1
         signal_diagnostics["raw_long_at_decision"] += int(lon)
         signal_diagnostics["raw_short_at_decision"] += int(sho)
@@ -337,7 +355,7 @@ def simulate_day(bars: np.ndarray, strategy: dict, session: str,
             rejected["expired_pending"] += 1
             i = last_pending_bar
             continue
-        risk = _risk(bars, i, side, entry, strategy["exit"]["stop_loss_required"])
+        risk = _risk(bars, i, side, entry, strategy["exit"]["stop_loss_required"], history, reader)
         if risk is None:
             rejected["missing_stop_context"] += 1
             i = fill_idx
@@ -359,13 +377,13 @@ def simulate_day(bars: np.ndarray, strategy: dict, session: str,
             i = fill_idx
             continue
         tp = _tp_distance(bars, i, side, entry, risk,
-                          strategy["exit"]["profit_target"])
+                          strategy["exit"]["profit_target"], reader)
         if strategy["exit"]["profit_target"]["kind"] != "NONE" and tp is None:
             rejected["invalid_or_unavailable_target"] += 1
             i = fill_idx
             continue
         executed = _exit_trade(bars, i, fill_idx, side, entry, risk, tp,
-                               kind, strategy["exit"])
+                               kind, strategy["exit"], reader)
         trade = {"date": session, "strategy_id": strategy.get("id", fingerprint(strategy)[:16]),
                  "signal_idx": i, "entry_idx": fill_idx,
                  "entry_order_kind": kind, "requested_price": requested,
@@ -379,4 +397,6 @@ def simulate_day(bars: np.ndarray, strategy: dict, session: str,
     return {"status": STATUS, "session": session, "trades": trades,
             "rejected": rejected, "filled": len(trades),
             "closed_pnl": round(daily_net, 2), "signal_diagnostics": signal_diagnostics,
-            "holdouts": "SEALED"}
+            "holdouts": "SEALED",
+            "validated_same_contract_warmup":session_context is not None,
+            "warmup_prior_bars":len(history)}
