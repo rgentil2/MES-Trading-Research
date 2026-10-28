@@ -56,6 +56,20 @@ class TestNQIntegratedWarmup(unittest.TestCase):
         changed[21:,:4]+=500.
         self.assertEqual(reader(day,20,block),reader(changed,20,block))
 
+    def test_lag_can_reach_previous_completed_same_contract_session(self):
+        day,proven=context()
+        hist=engine._validate_context("2021-05-04",proven)
+        reader=engine._causal_reader(hist)
+        cfg={"name":"SMA","parameters":{"period":180,"source":"close"}}
+        self.assertAlmostEqual(reader(day,-1,cfg),
+                               scalar.indicator_value(hist,len(hist)-1,cfg))
+        # Prior session VWAP and OBV must not leak under a new RTH anchor.
+        self.assertIsNone(reader(day,-1,{"name":"VWAP","parameters":{"anchor":"session"}}))
+        self.assertIsNone(reader(day,-1,{"name":"OBV","parameters":{}}))
+        altered=day.copy()
+        altered[:,3]+=400.
+        self.assertEqual(reader(day,-1,cfg),reader(altered,-1,cfg))
+
     def test_all_signal_operators_keep_future_data_out(self):
         day,proven=context()
         reader=engine._causal_reader(engine._validate_context("2021-05-04",proven))
