@@ -90,7 +90,30 @@
       "rgentil2/NQ-Ticks-Sealed"
     ],
     "s019_s020_funding_plan_source": "https://help.myfundedfutures.com/en/articles/11802636-traders-evaluation-simplified",
-    "s019_s020_funding_exact_purchased_profile_still_unknown": true
+    "s019_s020_funding_exact_purchased_profile_still_unknown": true,
+    "s021_full_132_routed": true,
+    "s021_registered_132": 132,
+    "s021_routed_132": 132,
+    "s021_original_active_frozen_38": 38,
+    "s021_previous_isolated_29": 29,
+    "s021_new_prototype_formulas_65": 65,
+    "s021_names_without_calculation_path": 0,
+    "s021_all_132_externally_certified": false,
+    "s021_independent_talib_subset": [
+      "ADX",
+      "MACD histogram",
+      "KAMA",
+      "T3",
+      "Stochastic D",
+      "Bollinger upper/lower"
+    ],
+    "s021_random_and_genetic_structural_generation": true,
+    "s021_economic_fitness": false,
+    "s021_real_tick_fills_certified": false,
+    "s021_frozen_roll_policy_modified": false,
+    "s021_new_version": "NQ_M1_V26_132_TECHNICAL_CANDIDATE_AST_UNCERTIFIED",
+    "s021_technical_ci": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40773361273",
+    "s021_technical_tests": 259
   },
   "criteria": [
     {
@@ -107,11 +130,11 @@
     {
       "id": "INDICATOR_LIBRARY_132",
       "state": "BLOCKED",
-      "evidence": "Frozen V2.1: 38 implemented; original 15 independently paritied; 2 additional independent composite TA-Lib oracle checks for Z-Score and Bollinger Bandwidth (NOT yet promoted to full certification). True Range matches TA-Lib after idx0 but differs at startup, flagged. Five incubator prototypes externally tested but not integrated. S0.19/S0.20: 12 additional isolated scalar definitions plus 12 causal candlestick-rule prototypes; 234 public QA tests passed. Inventory is now frozen 38 active, 5 original isolated, 24 new isolated, 65 catalogue names still have NO implementation. None of the 29 isolated blocks has been promoted/certified as V2.1 executable.",
+      "evidence": "Frozen V2.1: 38 implemented; original 15 independently paritied; 2 additional independent composite TA-Lib oracle checks for Z-Score and Bollinger Bandwidth (NOT yet promoted to full certification). True Range matches TA-Lib after idx0 but differs at startup, flagged. Five incubator prototypes externally tested but not integrated. S0.19/S0.20: 12 additional isolated scalar definitions plus 12 causal candlestick-rule prototypes; 234 public QA tests passed. Inventory is now frozen 38 active, 5 original isolated, 24 new isolated, 65 catalogue names still have NO implementation. None of the 29 isolated blocks has been promoted/certified as V2.1 executable. S0.21: all 132 catalogue names have actual callable causal calculator routes in isolated new V2.6 reader; 38 prior active frozen plus 29 prior isolated and 65 newly implemented. Six mainstream formula families additionally cross-checked against TA-Lib synthetic oracles; full 132 external parity and StrategyQuant/NinjaTrader conventions UNVERIFIED. V2.6 output choices incl custom Hilbert FFT and provisional True Range ratio explicitly documented; no release.",
       "remaining": [
-        "Implement remaining 65 registered blocks with distinct effective parameter/output semantics",
-        "Independently certify new isolated 29 and prior active calculations using third-party reference/frozen conventions, including seed True Range",
-        "Only after full parity: promote under NEW version and update full lineage; never rewrite original frozen V2.1 candidate cohort"
+        "Independently certify all 132 mathematical specifications, parameter/output meanings, and warmup conventions with reference formulas/platforms",
+        "Resolve custom provisional variants (True Range ratio, RSI band distance, Klinger, Hilbert FFT/Ehlers, multi-output pivot, zero-seed semantics) before any economic use",
+        "Promote only certified formulas into distinct versioned execution campaign; retain V2.1 38 engine unchanged"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
@@ -119,9 +142,11 @@
     {
       "id": "PARAMETER_SEMANTICS",
       "state": "PARTIAL",
-      "evidence": "Typed levels/active parameters V2.1, 82/100 mechanically executable S0.20 custom candlestick body_ratio and shadow_ratio checked by causality and fixture tests, but not TA-Lib-equivalent; 12 additional scalar prototypes validate exact active parameter keys. Original 18 unsupported frozen ASTs unchanged.",
+      "evidence": "Typed levels/active parameters V2.1, 82/100 mechanically executable S0.20 custom candlestick body_ratio and shadow_ratio checked by causality and fixture tests, but not TA-Lib-equivalent; 12 additional scalar prototypes validate exact active parameter keys. Original 18 unsupported frozen ASTs unchanged. S0.21 V2.6 runtime checks all 132 exact registered parameter domains and IDs, typed output selections, typed zero-level threshold AST, causal session-anchor guard, and generator random/mutate/crossover lineage; original 18 V2.1 incompatible frozen candidates are not silently rewritten.",
       "remaining": [
-        "18 unsupported anchors, full 132 typed predicate coverage and canonical deduplication"
+        "Certify every output and parameter materially affects signal under each generated predicate across independent data fixtures",
+        "Resolve specific legacy ambiguous scalar output semantics and truncated contract lookbacks in new V2.6 track",
+        "Retester/legacy cohort AST and baseline comparators need formal separate approval"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
@@ -172,7 +197,7 @@
     {
       "id": "MULTIPLE_TESTS_AND_LINEAGE",
       "state": "PARTIAL",
-      "evidence": "Frozen V2.1 compatible 82 ASTs form 82 distinct canonical Boolean/alias groups; 8 semantic QA tests, no simulated prices S0.20 inventory explicitly counts 132 registered, 38 active, 29 isolated, 65 missing; candlestick and overlapping Opening Range/Initial Balance scalar outputs remain possible semantic relatives, not independent hypotheses.",
+      "evidence": "Frozen V2.1 compatible 82 ASTs form 82 distinct canonical Boolean/alias groups; 8 semantic QA tests, no simulated prices S0.20 inventory explicitly counts 132 registered, 38 active, 29 isolated, 65 missing; candlestick and overlapping Opening Range/Initial Balance scalar outputs remain possible semantic relatives, not independent hypotheses. S0.21 new V2.6 deterministic random/genetic structural batch fingerprints and explicit one-per-132 coverage, no PnL and no selection. Statistical correction over all evaluated fitness attempts still pending.",
       "remaining": [
         "Statistical dependence/multiple-hypothesis correction over all generated attempts",
         "Dedup full 132 implemented blocks and maintain lineage and failed candidates"
@@ -229,7 +254,7 @@
     {
       "id": "FROZEN_TIME_STAGES",
       "state": "PARTIAL",
-      "evidence": "2023/2024 withheld; 2025/26 sealed; frozen V2.1 cohort S0.18 independent calendar oracle and private technical audit keep chosen Thursday-minus-eight roll unchanged; only IST 2020–2022 opened, with no signals, fills or PnL.",
+      "evidence": "2023/2024 withheld; 2025/26 sealed; frozen V2.1 cohort S0.18 independent calendar oracle and private technical audit keep chosen Thursday-minus-eight roll unchanged; only IST 2020–2022 opened, with no signals, fills or PnL. S0.21 generator separately versioned and structural-only; market_data_loaded false, holdouts_opened false; frozen V2.1 38 remains untouched; rollover frozen Thursday -8.",
       "remaining": [
         "Freeze SHA of AST, indicator definitions, dataset gate, risk model and evaluation code; retain ISV/holdout years unopened until later phase"
       ],
