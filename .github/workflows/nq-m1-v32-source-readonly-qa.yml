@@ -1,0 +1,39 @@
+name: NQ S0.27 source read-only QA synthetic CI
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-data-interface:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy pandas "TA-Lib==0.6.8"
+      - name: Verify source adapter against generated source fixtures, no real market
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/nq -p 'test_nq_m1_v*.py' -q
+      - name: Fail closed on 13 economic gates
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from research.nq.nq_m1_v22_quality_gate import audit
+          x=audit()
+          assert x["passed_verified"]==0 and x["checks_total"]==13
+          assert x["decision"]=="EXECUTION_BLOCKED"
+          assert not x["ready_for_economic_execution"]
+          print("NQ_S027_M1_SOURCE_INTERFACE_SYNTHETIC_PASS_NO_PNL")
+          PY
