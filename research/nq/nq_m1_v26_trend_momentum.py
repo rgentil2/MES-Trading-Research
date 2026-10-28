@@ -104,11 +104,6 @@ def value(x,name,p):
                 z+=k*(float(a[i])-z)
             return z
         if L<6*(n-1)+1:return None
-        stage=a.copy()
-        for _ in range(6):
-            stage=ema(stage,n)
-            stage=stage[n-1:] if np.isfinite(stage[n-1]) else stage
-        if len(stage)==0 or not np.isfinite(stage[-1]):return None
         # T3 volume factor 0.7; c1..c4 convention
         z=.7
         c1=-z**3;c2=3*z*z+3*z**3
@@ -219,7 +214,11 @@ def value(x,name,p):
         if not np.isfinite(two[-1]) or not np.isfinite(ab2[-1]):return None
         val=100*two[-1]/ab2[-1] if ab2[-1]>0 else 0.
         if name=="TSI":return signed_threshold(float(val),p,name)
-        return float(val-ema(np.nan_to_num(100*two/np.where(ab2>0,ab2,np.nan),nan=0.),5)[-1])
+        scaled=np.divide(100*two,ab2,out=np.full(len(two),np.nan),where=ab2>0)
+        valid=scaled[np.isfinite(scaled)]
+        if len(valid)<5:return None
+        reference=ema(valid,5)[-1]
+        return float(val-reference) if np.isfinite(reference) else None
     if name=="Ultimate Oscillator":
         n=valid_period(p,"period",2,180)
         if L<=4*n:return None
