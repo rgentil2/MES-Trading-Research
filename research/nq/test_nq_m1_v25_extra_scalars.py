@@ -109,8 +109,8 @@ class TestIsolatedScalars(unittest.TestCase):
         p={"name":"HMA","parameters":{"period":32,"source":"close"}}
         self.assertIsNone(new.value(self.b,7,p))
         self.assertIsNone(new.value(self.b,31,p))
-        self.assertIsNone(new.value(self.b,35,p))
-        self.assertIsNotNone(new.value(self.b,40,p))
+        self.assertIsNone(new.value(self.b,34,p))
+        self.assertIsNotNone(new.value(self.b,35,p))
         for name in ("Opening Range","Initial Balance"):
             p=PARAMETERS[name]
             self.assertIsNone(new.value(self.b,5,{"name":name,"parameters":p}))
