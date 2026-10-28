@@ -58,6 +58,25 @@ class TestV31M1SyntheticLifecycle(unittest.TestCase):
         self.assertTrue(all(t["initial_model_risk_usd"]<=300
                             for t in r["synthetic_trades"]))
 
+    def test_take_profit_exact_touch_is_not_limit_queue_fill(self):
+        import numpy as np
+        bars,_=m.artificial_m1()
+        enter_idx=13
+        entry=float(bars[enter_idx,0])+.5
+        policy=strat()["exit"]
+        policy["exit_after_bars"]=2
+        # Entry bar high < target, next bar high EXACTLY target.
+        self.assertAlmostEqual(float(bars[14,1]),entry+1.)
+        r=m._protective_replay(
+            bars,12,enter_idx,"MARKET",1,entry,3.,1.,policy,np.empty((0,5)))
+        self.assertEqual(r["exit_reason"],"FORCED_CLOSE_WITH_ADVERSE_SLIPPAGE")
+        self.assertEqual(r["targets_suppressed"],1)
+        policy["exit_after_bars"]=3
+        r2=m._protective_replay(
+            bars,12,enter_idx,"MARKET",1,entry,3.,1.,policy,np.empty((0,5)))
+        self.assertEqual(r2["exit_reason"],"TP_NO_GAP_IMPROVEMENT")
+        self.assertEqual(r2["exit_idx"],15)
+
     def test_stop_first_same_entry_bar_long(self):
         baseline,_=m.artificial_m1()
         i=13
