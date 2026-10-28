@@ -8,8 +8,8 @@
   "no_mnq": true,
   "holdouts": "ISV1_2023_ISV2_2024_NO_FIT_H2025_H2026_T_SEALED",
   "current_evidence": {
-    "public_ci": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40618840069",
-    "synthetic_test_count": 150,
+    "public_ci": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40684820634",
+    "synthetic_test_count": 164,
     "registered_blocks": 132,
     "implemented_blocks": 38,
     "externally_parity_tested": 15,
@@ -29,13 +29,19 @@
     "actual_d1_d2_strategy_results": false,
     "warmup_verified_with_synthetic_sessions_only": true,
     "warmup_consumed_by_private_data_runner": false,
-    "incubator_indicators_independently_parity_tested_unreleased": 3,
+    "incubator_indicators_independently_parity_tested_unreleased": 5,
     "v21_calculators_still_frozen_at": 38,
     "equivalent_semantic_ast_unique_groups_of_82": 82,
     "last_tick_ohlc_ambiguity_synthetic_reference_tested": true,
     "last_tick_replay_parity_on_real_ist": false,
     "ist_adequacy_90_trades_scaled_from_150_5year_diagnostic_only": true,
-    "economic_backtest_new_ist_run": false
+    "economic_backtest_new_ist_run": false,
+    "active_38_external_parity_indicators": 15,
+    "predo_technical_82_of_100_checked": true,
+    "predo_technical_pass": 82,
+    "predo_technical_pending": 18,
+    "release_approval_separate_scope_bound_and_missing": true,
+    "final_release_approval_confirmed": false
   },
   "criteria": [
     {
@@ -51,10 +57,10 @@
     {
       "id": "INDICATOR_LIBRARY_132",
       "state": "BLOCKED",
-      "evidence": "38 active formulas, 15 independent TA-Lib parity; 3 more DEMA/TEMA/TRIMA proven externally in isolated incubator, NOT counted as active/frozen",
+      "evidence": "Active frozen V2.1: 38 implemented and 15 external TA-Lib parity. Outside frozen engine: 5 more distinct incubator indicators DEMA/TEMA/TRIMA/APO/TRIX tested against TA-Lib, NOT eligible for strategy selection.",
       "remaining": [
-        "94 remaining library blocks to implement/release with independent vectors",
-        "23 existing active calculations still without independent parity and freeze new catalog SHA"
+        "94 catalog indicators/patterns remain outside frozen runtime; independently implement, validate and release them in a new campaign",
+        "23 active calculations still lack independent parity; freeze new catalogue and evaluator versions before use"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
@@ -126,9 +132,11 @@
     {
       "id": "G0_D0_ADAPTERS",
       "state": "BLOCKED",
-      "evidence": "Legacy cohort-specific validators identified; not ported to V2 AST",
+      "evidence": "Registry-based pre-D0 validator checked all 100 frozen engineering ASTs with typed threshold bounds: 82 structurally interpretable, 18 pending technical implementation; NOT legacy G0/D0 parity nor economic selection.",
       "remaining": [
-        "Implement AST-to-legacy invariant mapping, fail-closed checks and synthetic parity tests; do not require real candidate pass before market execution"
+        "Implement and independently compare formal G0/D0 invariant adapter to legacy cohort reference",
+        "Prove AST registry parameters and stop/entry risk contract on representative synthetic cases",
+        "No actual G0/D0 strategy PASS may be asserted yet"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
@@ -178,5 +186,5 @@
   "gate_status": "BLOCKED",
   "semantic_note": "Pre-execution gates certify ENGINE implementations and frozen protocols with synthetic evidence; D1/D2 and portfolio PERFORMANCE results are necessarily post-economic-backtest stage gates.",
   "final_release_approval": null,
-  "release_policy_note": "Even 13/13 declared verified proofs cannot open economic IST until distinct explicit manual signoff binds exact quality matrix evidence SHA256 and a frozen evaluator SHA. Source artifacts must still be independently inspected; the format checker alone does not verify GitHub contents."
+  "release_policy_note": "RELEASE IS HARD-BLOCKED: 13 individually verified quality gates plus a separately reviewed approval bound to quality evidence SHA256 and pinned evaluator SHA256. SHA/URL format is not cryptographic proof; actual GitHub artifacts and user authorization require external review."
 }
