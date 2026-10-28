@@ -1,3 +1,17 @@
+## 2026-10-28 — NQ V2.2 QA S0.14: 164 TESTS, 5 INCUBADORAS PARITADAS, G0/D0 PREESTRUCTURAL Y LIBERACIÓN MANUAL
+
+**Seguimos SIN ejecutar estrategia económica NQ**, sin tocar ISV1 2023 / ISV2 2024 ni H2025/H2026; sin incorporar MNQ ni modificar manifest V2.1 congelado. [Última evidencia pública 40684820634 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40684820634): **164 pruebas PASS**, puramente sintéticas y de paridad numérica, sin consumo de históricos privados.
+
+**Indicadores:** [APO y TRIX en incubadora](research/nq/nq_m1_v22_incubator_oscillators.py) con [6 tests contra TA-Lib](research/nq/test_nq_m1_v22_incubator_oscillators.py); suman **5 nuevos prototipos independientes** DEMA/TEMA/TRIMA/APO/TRIX con validación externa y sin autorización para entrar a los lotes congelados. El estado activo NO cambia: **38 de 132 implementados, 15 de los 38 con paridad externa**; 94 registros aún sin ejecución formal y 23 calculadores activos sin paridad externa.
+
+**G0/D0 preestructural (NO es paridad formal):** [nuevo validador](research/nq/nq_m1_v22_structural_preflight.py) + [6 tests](research/nq/test_nq_m1_v22_structural_preflight.py) revisan rangos numéricos, parámetros efectivos, niveles typed, identidad NQ/IST y soporte actual de indicadores; **82 de 100 AST de ingeniería interpretables, 18 pendientes de implementación**, sin excluirlas del universo BROAD 132 ni mirar PnL. No declarar que G0/D0 de las cohortes anteriores estén ya certificados.
+
+**Cierre de seguridad reforzado:** [quality_gate.py](research/nq/nq_m1_v22_quality_gate.py) ya NO autoriza `--require-ready` aunque los 13 controles estén marcados como aprobados y sus hash/URL sean formalmente válidos; requiere además **autorización manual final independiente**, vinculada al SHA256 de la matriz de evidencias y SHA256 del ejecutor congelado, restringida a `ONE_NQ_IST_2020_2022_ECONOMICS_ONLY`. Tests confirman bloqueo ante aprobación falsa, cambio de parámetros/scope o evidencia obsoleta. **Nota crítica:** cotejo de evidencia en GitHub no es automático por regex de SHA; el verificador exige revisión independiente real antes de aprobar. [Matriz QA](research/nq/NQ_M1_V22_PRE_EXECUTION_QUALITY_MATRIX_2026_10_27.json) sigue con **0/13 `PASSED_VERIFIED` para liberación**, aunque existan 164 pruebas unitarias exitosas. **ESTADO = EXECUTION_BLOCKED**.
+
+**Próximos controles:** las 94 fórmulas restantes + 23 paridades independientes en activo; cotejo en archivos/ticks IST **solo QA, no rentabilidad**, riesgo flotante y reglas exactas cuenta MFFU; adaptadores legados formales G0→D2 con Monte Carlo y control de múltiples pruebas; portfolio eventos y cuenta única NQ; freeze SHA y autorización manual. [Protocolo detallado](research/nq/NQ_M1_V22_PRE_ECONOMIC_QA_PROTOCOL_2026_10_27.md). No confundir tests de implementación con ganadores de trading.
+
+---
+
 ## 2026-10-27 — NQ V2.2 QA S0.13: WARMUP YA CONECTADO AL MOTOR, 150 TESTS, DEDUP CANÓNICA Y REFERENCIA TICK
 
 **Nueva evidencia:** [GitHub Actions 40618840069 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40618840069), **150 pruebas PASS**, solo datos inventados o referencia externa TA-Lib sobre series sintéticas. Ningún nuevo backtest económico, ningún acceso nuevo a IST/ISV/2025–26. [Protocolo detallado actualizado](research/nq/NQ_M1_V22_PRE_ECONOMIC_QA_PROTOCOL_2026_10_27.md) y [matriz de 13 controles](research/nq/NQ_M1_V22_PRE_EXECUTION_QUALITY_MATRIX_2026_10_27.json) siguen en `EXECUTION_BLOCKED`: pruebas unitarias no reemplazan certificación integral.
