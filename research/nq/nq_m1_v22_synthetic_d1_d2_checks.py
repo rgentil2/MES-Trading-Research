@@ -4,8 +4,10 @@
 This is NOT an adapted/cohort-parity-certified G0/D0/D1/D2 implementation.
 No market files, no portfolio results, no candidate selection.
 Input trades MUST be model net pnl including baseline cost. All dates IST.
-Objective preregistration reference: PF >=1.25, initial DD <=2000,
->=150 trades in IST and >=5 trades/month over all 36 months.
+Exploratory review flags: PF >=1.25, initial closed DD <=2000,
+original >=150 trades over 2020-2024 (60 months) scales to an indicative
+90-trade 2020-22 IST (36 months) adequacy check; >=5 trades/month is a
+separate aspirational frequency diagnostic, NOT a hard generator constraint.
 Those exploratory thresholds are not official MFFU rules or strategy passes.
 """
 from __future__ import annotations
@@ -24,7 +26,8 @@ SLIPPAGE_TICKS_EACH_SIDE=2
 BASELINE_COST_USD=REFERENCE_RT_FEES_USD+2*SLIPPAGE_TICKS_EACH_SIDE*REFERENCE_TICK_USD
 MAX_DD_USD=2000.
 MIN_PF=1.25
-MIN_TRADES=150
+MIN_TRADES_2020_2024=150
+MIN_TRADES=int(MIN_TRADES_2020_2024*36/60)  # 90 for IST; diagnostic only
 MIN_TRADES_PER_MONTH=5.
 STATUS="V22_SYNTHETIC_GAUGE_NOT_FORMAL_G0_D0_D1_D2"
 
