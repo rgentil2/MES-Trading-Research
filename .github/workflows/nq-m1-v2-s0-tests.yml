@@ -2,6 +2,10 @@ name: NQ M1 V2 S0 registry generator and portfolio contracts
 
 on:
   workflow_dispatch:
+  push:
+    branches: [qa/nq-full-quality-20261028]
+    paths:
+      - ".github/workflows/nq-m1-v2-s0-tests.yml"
 
 concurrency:
   group: nq-m1-v2-full-${{ github.ref }}
