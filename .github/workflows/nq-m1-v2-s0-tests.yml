@@ -43,6 +43,8 @@ on:
       - "research/nq/test_nq_m1_v22_semantic_fingerprint.py"
       - "research/nq/nq_m1_v22_incubator_ma.py"
       - "research/nq/test_nq_m1_v22_incubator_ma.py"
+      - "research/nq/nq_m1_v22_tick_first_touch_reference.py"
+      - "research/nq/test_nq_m1_v22_tick_first_touch_reference.py"
       - "research/nq/NQ_M1_V2_GENERATOR_SPEC_2026_10_27.md"
       - ".github/workflows/nq-m1-v2-s0-tests.yml"
   workflow_dispatch:
@@ -195,6 +197,10 @@ jobs:
           assert x['economic_metrics'] is None and x['holdouts']=='SEALED'
           print('NQ_SEMANTIC_GROUPS', x['canonical_groups'], 'DUPLICATES', x['duplicate_candidates'])
           PY
+      - name: Test independent synthetic first Last-tick barrier-touch order vs pessimistic OHLC policy
+        env:
+          PYTHONPATH: .
+        run: python -m unittest discover -s research/nq -p test_nq_m1_v22_tick_first_touch_reference.py -v
       - name: Check registered catalog and reproducible candidate batch without market files
         env:
           PYTHONPATH: .
