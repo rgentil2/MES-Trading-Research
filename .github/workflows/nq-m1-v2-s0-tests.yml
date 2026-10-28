@@ -2,6 +2,10 @@ name: NQ M1 V2 S0 registry generator and portfolio contracts
 
 on:
   workflow_dispatch:
+  push:
+    branches: [qa/nq-v25-indicator-certification-20261028]
+    paths:
+      - ".github/workflows/nq-m1-v2-s0-tests.yml"
 
 concurrency:
   group: nq-m1-v2-full-${{ github.ref }}
@@ -29,6 +33,12 @@ jobs:
         run: |
           python -m unittest discover -s research/nq -p test_nq_m1_v24_frozen_roll_policy.py -v
           python -m unittest discover -s research/nq -p test_nq_m1_v24_real_context_qa.py -v
+      - name: Test V2.5 extra indicator prototypes and 50K funding plans
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pip install "TA-Lib==0.6.8"
+          python -m unittest discover -s research/nq -p 'test_nq_m1_v25_*.py' -v
       - name: Run V2 S0 synthetic integrity and one-account shadow tests
         env:
           PYTHONPATH: .
