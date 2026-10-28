@@ -60,7 +60,7 @@ class TestNQSemanticGroups(unittest.TestCase):
     def test_distinct_stop_policy_alters_hash(self):
         s=self.valid()
         a=f.semantic_fingerprint(s)
-        s["exit"]["exit_after_bars"]=18
+        s["exit"]["exit_after_bars"]=119 if s["exit"]["exit_after_bars"]!=119 else 118
         self.assertNotEqual(a,f.semantic_fingerprint(s))
 
     def test_inert_indicator_parameter_cannot_pass(self):
