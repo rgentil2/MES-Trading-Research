@@ -24,9 +24,9 @@ SEED=20261028
 LEVEL_OPS=("ABOVE_LEVEL","BELOW_LEVEL","CROSS_ABOVE_LEVEL","CROSS_BELOW_LEVEL")
 LAG_OPS=("RISING","FALLING","ABOVE_LAG","BELOW_LAG","CROSSES_OWN_LAG")
 OUTPUTS={
- "Bollinger Bands":("upper","lower","middle","width"),
- "Keltner":("upper","lower","middle","width"),
- "Acceleration Bands":("upper","lower","middle","width"),
+ "Bollinger Bands":("upper","lower","width"),
+ "Keltner":("upper","lower","width"),
+ "Acceleration Bands":("upper","lower","width"),
  "Central Pivot Range":("upper","lower","middle"),
  "Classic Pivots":("upper","lower","middle"),
  "Fibonacci Pivots":("upper","lower","middle"),
@@ -34,7 +34,7 @@ OUTPUTS={
  "Woodie Pivots":("upper","lower","middle"),
  "DeMark Pivots":("upper","lower","middle"),
  "Previous Day High/Low":("upper","lower","middle","width"),
- "RSI":("lower_level","upper_level")
+ "RSI":("band_distance",)
 }
 
 def block(rng,entry):
