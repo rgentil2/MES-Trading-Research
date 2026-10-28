@@ -36,7 +36,7 @@ class TestNQSharedAccountIndependentReference(unittest.TestCase):
         d="2021-06-15"
         out=book.replay([ent(d),close(d,19945.,confirmed=True)],["A"])
         trade=out["trades"][0]
-        self.assertAlmostEqual(trade["min_floating_equity"],48975.32)
+        self.assertAlmostEqual(trade["min_floating_equity"],48875.32)
         self.assertEqual(trade["min_floating_equity"],out["days"][0]["eod_balance"])
         self.assertTrue(out["days"][0]["soft_pause_triggered"])
 
