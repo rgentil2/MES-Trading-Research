@@ -41,7 +41,15 @@
     "predo_technical_pass": 82,
     "predo_technical_pending": 18,
     "release_approval_separate_scope_bound_and_missing": true,
-    "final_release_approval_confirmed": false
+    "final_release_approval_confirmed": false,
+    "fast_qa_ci": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40686462365",
+    "fast_qa_synthetic_test_count": 169,
+    "fast_qa_unified_python_runner_seconds": 1.969,
+    "extra_active_independent_composite_oracle_checks": 2,
+    "active_original_independent_parity_baseline": 15,
+    "true_range_talib_index0_startup_not_parity": true,
+    "full_workflow_trigger": "MANUAL_DISPATCH_ONLY",
+    "quick_workflow_trigger": "PUSH_NQ_PY_JSON_AND_MANUAL"
   },
   "criteria": [
     {
@@ -57,10 +65,10 @@
     {
       "id": "INDICATOR_LIBRARY_132",
       "state": "BLOCKED",
-      "evidence": "Active frozen V2.1: 38 implemented and 15 external TA-Lib parity. Outside frozen engine: 5 more distinct incubator indicators DEMA/TEMA/TRIMA/APO/TRIX tested against TA-Lib, NOT eligible for strategy selection.",
+      "evidence": "Frozen V2.1: 38 implemented; original 15 independently paritied; 2 additional independent composite TA-Lib oracle checks for Z-Score and Bollinger Bandwidth (NOT yet promoted to full certification). True Range matches TA-Lib after idx0 but differs at startup, flagged. Five incubator prototypes externally tested but not integrated.",
       "remaining": [
-        "94 catalog indicators/patterns remain outside frozen runtime; independently implement, validate and release them in a new campaign",
-        "23 active calculations still lack independent parity; freeze new catalogue and evaluator versions before use"
+        "Independent certification of remaining active calculations including full warmup conventions and 132 total registry blocks",
+        "Explicit reconcile True Range first-bar seed convention, freeze future candidate SHA"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
