@@ -1,0 +1,51 @@
+name: NQ S0.25 132 AST causal M1 signal bridge synthetic-only
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/nq-s025-v30-132-signal-m1-bridge-20261028]
+    paths:
+      - "research/nq/nq_m1_v30_132_signal_m1_bridge.py"
+      - "research/nq/test_nq_m1_v30_132_signal_m1_bridge.py"
+      - ".github/workflows/nq-m1-v30-signal-bridge-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-signal-to-m1-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Numeric libraries and independent formula oracle only
+        run: python -m pip install numpy pandas "TA-Lib==0.6.8"
+      - name: Run complete NQ regression and new all-132 M1 bridge tests
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/nq -p 'test_nq_m1_v*.py' -q
+      - name: Assert no economic release or lookahead
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from research.nq.nq_m1_v22_quality_gate import audit
+          from research.nq.nq_m1_v29_ohlc_conservative_protocol import contract
+          from research.nq.nq_m1_v30_132_signal_m1_bridge import STATUS
+          assert audit()['decision']=='EXECUTION_BLOCKED'
+          assert audit()['passed_verified']==0
+          assert audit()['checks_total']==13
+          assert not contract()['M1_backtest_authorized']
+          assert 'NO_MARKET_NO_PNL' in STATUS
+          print('NQ_V30_SYNTHETIC_132_AST_M1_BRIDGE_ONLY_NO_ECONOMIC_EXECUTION')
+          PY
+      # Strict no private archive checkout, prices, backtesting or ranking.
