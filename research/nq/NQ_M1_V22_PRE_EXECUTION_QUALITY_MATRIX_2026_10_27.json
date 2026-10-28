@@ -176,5 +176,7 @@
     }
   ],
   "gate_status": "BLOCKED",
-  "semantic_note": "Pre-execution gates certify ENGINE implementations and frozen protocols with synthetic evidence; D1/D2 and portfolio PERFORMANCE results are necessarily post-economic-backtest stage gates."
+  "semantic_note": "Pre-execution gates certify ENGINE implementations and frozen protocols with synthetic evidence; D1/D2 and portfolio PERFORMANCE results are necessarily post-economic-backtest stage gates.",
+  "final_release_approval": null,
+  "release_policy_note": "Even 13/13 declared verified proofs cannot open economic IST until distinct explicit manual signoff binds exact quality matrix evidence SHA256 and a frozen evaluator SHA. Source artifacts must still be independently inspected; the format checker alone does not verify GitHub contents."
 }
