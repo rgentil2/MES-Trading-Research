@@ -170,8 +170,12 @@ def value(bars:np.ndarray,idx:int,block:dict,context:dict|None=None):
             elif p["anchor"]=="previous_completed_session":
                 previous=(context.get("previous_sessions") if isinstance(context,dict)
                           and context.get("verified_same_contract") is True else None)
-                z=previous[-1][-n:] if isinstance(previous,(tuple,list)) and previous
-                  and isinstance(previous[-1],np.ndarray) and previous[-1].shape==(390,5) else None
+                if (isinstance(previous,(tuple,list)) and previous
+                        and isinstance(previous[-1],np.ndarray)
+                        and previous[-1].shape==(390,5)):
+                    z=previous[-1][-n:]
+                else:
+                    z=None
             else:z=None
             if z is None or not np.isfinite(z).all():val=None
             else:
