@@ -109,7 +109,11 @@ def _validate_context(session: str, context: dict | None) -> np.ndarray:
     if (not isinstance(prior, list) or len(prior)>2
             or not isinstance(arr,np.ndarray) or arr.shape!=(390*len(prior),5)
             or not np.isfinite(arr).all() or (arr[:,4]<0).any()
-            or (arr[:,1]<arr[:,2]).any()):
+            or (arr[:,1]<arr[:,2]).any()
+            or (arr[:,:4]<=0).any()
+            or (arr[:,1]<arr[:,[0,3]].max(axis=1)).any()
+            or (arr[:,2]>arr[:,[0,3]].min(axis=1)).any()
+            or (np.abs(arr[:,:4]/TICK-np.round(arr[:,:4]/TICK))>1e-7).any()):
         raise ValueError("Malformed prior RTH context")
     last=None
     for name in prior:
