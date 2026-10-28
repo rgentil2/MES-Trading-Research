@@ -105,3 +105,18 @@ def audit_actual_session_sources(path:Path)->dict:
         "independent_exchange_roll_verified":False,
         "economic_backtests":0,"strategy_signals_evaluated":0,
         "price_data_exported":False,"pnl_exported":False}
+
+def main():
+    import argparse
+    import json
+    p=argparse.ArgumentParser()
+    p.add_argument("--zip",type=Path,required=True)
+    p.add_argument("--out",type=Path,required=True)
+    a=p.parse_args()
+    result=audit_actual_session_sources(a.zip)
+    a.out.parent.mkdir(parents=True,exist_ok=True)
+    a.out.write_text(json.dumps(result,indent=2,sort_keys=True)+"\n")
+    print(json.dumps(result,sort_keys=True))
+
+if __name__=="__main__":
+    main()
