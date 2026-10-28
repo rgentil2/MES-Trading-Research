@@ -2,12 +2,6 @@ name: NQ V2.7 first 132-indicator structural campaign 10K no market
 
 on:
   workflow_dispatch:
-  push:
-    branches: [research/nq-v27-first-structural-campaign-20261028]
-    paths:
-      - "research/nq/nq_m1_v27_first_structural_campaign.py"
-      - "research/nq/test_nq_m1_v27_first_structural_campaign.py"
-      - ".github/workflows/nq-m1-v27-first-structural-10k.yml"
 
 permissions:
   contents: read
