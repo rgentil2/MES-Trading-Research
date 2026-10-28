@@ -15,7 +15,7 @@
     "externally_parity_tested": 15,
     "semantically_compatible_count": 82,
     "semantic_total": 100,
-    "last_private_technical_only": "https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40585881792",
+    "last_private_technical_only": "https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40745864213",
     "economically_evaluated": false,
     "same_contract_roll_map_adapter_tested": true,
     "m1_ny_clock_dst_synthetic_tested": true,
@@ -42,9 +42,9 @@
     "predo_technical_pending": 18,
     "release_approval_separate_scope_bound_and_missing": true,
     "final_release_approval_confirmed": false,
-    "fast_qa_ci": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40687616106",
-    "fast_qa_synthetic_test_count": 185,
-    "fast_qa_unified_python_runner_seconds": 1.448,
+    "fast_qa_ci": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40745452226",
+    "fast_qa_synthetic_test_count": 190,
+    "fast_qa_unified_python_runner_seconds": 1.94,
     "extra_active_independent_composite_oracle_checks": 2,
     "active_original_independent_parity_baseline": 15,
     "true_range_talib_index0_startup_not_parity": true,
@@ -54,15 +54,24 @@
     "shared_account_event_qa_test_count": 16,
     "shared_account_event_qa_eod_reference_crosschecks": 4,
     "shared_account_real_fills_verified": false,
-    "full_ist_economic_not_run": true
+    "full_ist_economic_not_run": true,
+    "real_ist_source_file_qa_ci": "https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40745864213",
+    "real_ist_source_file_qa_artifact": "https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40745864213/artifacts/12842180388",
+    "real_ist_source_file_verified_complete_sessions": 735,
+    "real_ist_partial_sessions_excluded": 39,
+    "real_ist_contract_roll_boundaries": 12,
+    "real_ist_contexts_checked": 15,
+    "real_ist_source_filename_contract_crosscheck": true,
+    "independent_exchange_roll_verification": false
   },
   "criteria": [
     {
       "id": "DATA_PROVENANCE",
       "state": "PASSED_TECHNICAL",
-      "evidence": "NQ minute whitelist 2020-22 with immutable hash and excluded partial RTH; 735 complete sessions; independent contract-id reconciliation still pending",
+      "evidence": "PRIVATE HISTORICAL QA SUCCESS: exactly 735 complete IST RTH sessions match actual NQ 2020-22 source contract filenames and the previous minute reader; 39 partial sessions excluded, 12 roll boundaries, 15 prior-session contexts checked. Pinned original private ZIP SHA. No 2023+, no orders/PnL. This is source-file identity, NOT independent exchange contract-roll confirmation.",
       "remaining": [
-        "Independent per-session actual source contract audit"
+        "Independent CME/broker contract/roll verification against external rule or raw tick metadata",
+        "Independent source timestamp/contract validation at boundary and tick matching before certification"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
@@ -91,11 +100,10 @@
     {
       "id": "SAME_CONTRACT_WARMUP",
       "state": "PARTIAL",
-      "evidence": "SYNTHETIC: validated prior-RTH same-contract context now flows into signal, ATR stop, target and ATR trailing in optional simulate_day(session_context=...). 11 integration tests; still not exercised by private historical runner",
+      "evidence": "Engine accepts checked same-contract prior RTH context; 15 contexts over actual IST sessions including 12 rollover boundaries verified in private file-origin QA. Still no economic replay or actual engine strategy execution with this context.",
       "remaining": [
-        "Independent source contract metadata reconciliation",
-        "Wire context explicitly into private IST orchestrator and test session/roll/DST real source parity",
-        "Performance/semantic edge cases for large periods"
+        "Wire verified source context into complete private NQ model runner and validate stop, ATR, VWAP and signal parity across selected real IST days without PnL",
+        "Independent source-contract and roll sanity check versus exchange/broker data; verify large-lookback edge cases"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
@@ -103,9 +111,9 @@
     {
       "id": "SESSION_CLOCK_AND_DST",
       "state": "PARTIAL",
-      "evidence": "America/New_York 09:31 end-bar through mandatory 11:29 flat",
+      "evidence": "Actual 2020-22 Minute_Last timezone conversion and 390 RTH end-minute 09:31..16:00 sequence cross-checked on all 735 complete IST sessions by independent timestamp-only file scan and original loader. DST synthetic tests remain.",
       "remaining": [
-        "Cross-check bar end labeling across DST and holiday sessions against independent source"
+        "Independent external calendar checks for DST transitions and partial/holiday schedules; review intentional exclusion of 39 partial sessions"
       ],
       "mandatory": true,
       "verified_evidence_ref": null
