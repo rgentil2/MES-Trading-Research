@@ -1,0 +1,76 @@
+name: NQ M1 fast no-market QA
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/nq/*.py"
+      - "research/nq/*.json"
+      - ".github/workflows/nq-m1-v2-fast-qa.yml"
+  workflow_dispatch:
+
+# When commits arrive rapidly, run only the latest candidate revision.
+# The existing exhaustive workflow is available through manual dispatch.
+concurrency:
+  group: nq-fast-no-market-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  fast-no-prices:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: .github/workflows/nq-m1-v2-fast-qa.yml
+      - name: Install CI dependencies in one batch
+        run: python -m pip install numpy pandas "TA-Lib==0.6.8"
+      - name: Run all NQ V2 synthetic and independent-oracle tests in one process
+        env:
+          PYTHONPATH: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/nq -p 'test_nq_m1_v*.py' -v 2>&1 | tee /tmp/nq_fast_all_tests.log
+          python - <<'PY'
+          import pathlib,re
+          text=pathlib.Path('/tmp/nq_fast_all_tests.log').read_text()
+          counts=[int(x) for x in re.findall(r'Ran (\d+) tests?',text)]
+          assert len(counts)==1, f'Expected one unified test run, got {counts}'
+          assert counts[0]>=164, f'Test coverage dropped: {counts[0]}'
+          assert re.search(r'(?m)^OK$',text), 'Test runner did not succeed'
+          print('NQ_FAST_ALL_TESTS_PASSED', counts[0], 'SYNTHETIC_ORACLE_NO_MARKET')
+          PY
+      - name: Guard NQ-only economic release and stages
+        env:
+          PYTHONPATH: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from research.nq.nq_m1_v22_quality_gate import audit,require_ready
+          from research.nq.nq_m1_v22_structural_preflight import frozen_cohort_diagnostic
+          a=audit()
+          assert a['asset']=='NQ' and a['contracts']==1 and a['holdouts']=='SEALED'
+          assert len(a['blocked'])==13 and not a['ready_for_economic_execution']
+          assert not a['final_manual_release_approved']
+          try:
+              require_ready()
+          except PermissionError:
+              pass
+          else:
+              raise AssertionError('Unapproved NQ economic release')
+          b=frozen_cohort_diagnostic()
+          assert b['rows']==100 and b['structurally_executable_count']==82
+          assert b['market_data_opened'] is False
+          print('NQ_FAST_GATES_BLOCKED_13', 'STRUCTURAL_82_OF_100', 'NO_HOLDOUT')
+          PY
+      # No private archive, market data, backtest or strategy PnL in this job.
