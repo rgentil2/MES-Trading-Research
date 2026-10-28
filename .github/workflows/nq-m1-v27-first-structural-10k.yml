@@ -1,0 +1,85 @@
+name: NQ V2.7 first 132-indicator structural campaign 10K no market
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/nq-v27-first-structural-campaign-20261028]
+    paths:
+      - "research/nq/nq_m1_v27_first_structural_campaign.py"
+      - "research/nq/test_nq_m1_v27_first_structural_campaign.py"
+      - ".github/workflows/nq-m1-v27-first-structural-10k.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  nq-132-structural-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install calculation dependencies; no market archive or trading SDK
+        run: python -m pip install numpy pandas "TA-Lib==0.6.8"
+      - name: Regression + 132 candidate-structural controls
+        shell: bash
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/nq -p 'test_nq_m1_v*.py' -q
+      - name: Ensure existing 13-gate quality hard block still active
+        shell: bash
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from research.nq.nq_m1_v22_quality_gate import audit
+          g=audit()
+          assert g["decision"]=="EXECUTION_BLOCKED"
+          assert g["checks_total"]==13
+          assert g["passed_verified"]==0
+          assert not g["ready_for_economic_execution"]
+          print("NQ_13_QUALITY_GATES_STILL_CLOSED_NO_ECONOMICS")
+          PY
+      - name: Generate 10000 broad 132-indicator NQ structures (no signals)
+        shell: bash
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python -m research.nq.nq_m1_v27_first_structural_campaign \
+            --count 10000 --seed 20261028 --random-fraction 0.65 \
+            --max-conditions 8 --output /tmp/nq_v27_10k
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          root=Path('/tmp/nq_v27_10k')
+          s=json.loads((root/'nq_v27_structural_summary.json').read_text())
+          assert s['candidates_generated']==10000
+          assert s['indicator_routes']==132 and s['per_indicator_coverage_names']==132
+          assert s['observed_in_broad_batch']==132
+          assert all(s['structural_operators'].get(k,0)>0 for k in ('RANDOM','MUTATE','CROSSOVER'))
+          assert not any(s[k] for k in ('holdouts_opened','real_ist_ohlcv_loaded',
+                                       'real_ist_ticks_loaded','fitness_computed',
+                                       'historical_ranking_computed'))
+          assert s['candidates_certified_for_trading']==0
+          print("NQ_STRUCTURAL_10000_CANDIDATES_132_132_COVERED_NO_MARKET_SUCCESS")
+          PY
+      - name: Upload candidate AST inventory and manifests only
+        uses: actions/upload-artifact@v4
+        with:
+          name: nq-v27-first-10k-structural-only
+          path: |
+            /tmp/nq_v27_10k/nq_v27_candidate_ast.jsonl.gz
+            /tmp/nq_v27_10k/nq_v27_132_name_coverage.json
+            /tmp/nq_v27_10k/nq_v27_structural_summary.json
+          retention-days: 30
+          if-no-files-found: error
+      # No 2020-2026 market data, no orders, no fills, no financial backtest.
