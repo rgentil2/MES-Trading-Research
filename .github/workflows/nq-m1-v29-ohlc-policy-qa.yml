@@ -1,0 +1,56 @@
+name: NQ S0.24 M1-only conservative OHLC policy technical audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/nq-s024-m1-only-conservative-fills-20261028]
+    paths:
+      - "research/nq/nq_m1_v29_ohlc_conservative_protocol.py"
+      - "research/nq/test_nq_m1_v29_ohlc_conservative_protocol.py"
+      - ".github/workflows/nq-m1-v29-ohlc-policy-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-ohlc-no-market:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install regression dependencies without price data
+        run: python -m pip install numpy pandas "TA-Lib==0.6.8"
+      - name: Test all NQ modules including independent conservative M1 policy
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/nq -p 'test_nq_m1_v*.py' -q
+      - name: Enforce M1 data choice with unchanged economic hard stop
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from research.nq.nq_m1_v22_quality_gate import audit
+          from research.nq.nq_m1_v29_ohlc_conservative_protocol import contract
+          p=contract()
+          q=audit()
+          assert p["data_source"]=="NQ_M1_IST_2020_2022_ONLY"
+          assert not p["M1_backtest_authorized"]
+          assert not p["tick_certification_claimed"]
+          assert p["quality_gate_passed_verified"]==0
+          assert q["decision"]=="EXECUTION_BLOCKED"
+          assert q["passed_verified"]==0 and q["checks_total"]==13
+          assert not q["ready_for_economic_execution"]
+          print(json.dumps(p,sort_keys=True))
+          print("NQ_M1_ONLY_POLICY_DRAFT_PASS_NO_MARKET_ECONOMICS_BLOCKED")
+          PY
+      # No OHLC archive read, no broker data, no trading PnL.
