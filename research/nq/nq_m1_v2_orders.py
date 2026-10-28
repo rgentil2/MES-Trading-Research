@@ -126,10 +126,14 @@ def _causal_reader(history: np.ndarray):
     """Stateful in prior-RTH data only; no future current bar in calculations."""
     def read(bars: np.ndarray, i: int, block: dict):
         if i < 0:
-            if len(history)==0:
+            if len(history)==0 or block["name"] in {"VWAP","OBV"}:
+                # Session-local values across RTH boundary are intentionally
+                # not compared; no prior VWAP/OBV anchor is inferred.
                 return None
-            # Never evaluate negative current indexes as synthetic signal bars.
-            return None
+            history_index=len(history)+i
+            if history_index < 0:
+                return None
+            return base.indicator_value(history,history_index,block)
         if block["name"] in {"VWAP","OBV"} or len(history)==0:
             return base.indicator_value(bars,i,block)
         if i>=len(bars):
