@@ -47,6 +47,8 @@ on:
       - "research/nq/test_nq_m1_v22_tick_first_touch_reference.py"
       - "research/nq/nq_m1_v22_incubator_oscillators.py"
       - "research/nq/test_nq_m1_v22_incubator_oscillators.py"
+      - "research/nq/nq_m1_v22_structural_preflight.py"
+      - "research/nq/test_nq_m1_v22_structural_preflight.py"
       - "research/nq/NQ_M1_V2_GENERATOR_SPEC_2026_10_27.md"
       - ".github/workflows/nq-m1-v2-s0-tests.yml"
   workflow_dispatch:
@@ -207,6 +209,19 @@ jobs:
         env:
           PYTHONPATH: .
         run: python -m unittest discover -s research/nq -p test_nq_m1_v22_tick_first_touch_reference.py -v
+      - name: Audit executable NQ AST registry parameter domains before future G0 D0 formal parity
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m unittest discover -s research/nq -p test_nq_m1_v22_structural_preflight.py -v
+          python -m research.nq.nq_m1_v22_structural_preflight > /tmp/nq_v22_structural_preflight.json
+          python - <<'PY'
+          import json
+          x=json.load(open('/tmp/nq_v22_structural_preflight.json'))
+          assert x['market_data_opened'] is False and x['not_legacy_g0_d0_parity']
+          assert x['rows']==100 and x['holdouts']=='SEALED'
+          print('NQ_PRE_D0_TECHNICAL_ONLY', x['structurally_executable_count'], x['blocked'])
+          PY
       - name: Check registered catalog and reproducible candidate batch without market files
         env:
           PYTHONPATH: .
