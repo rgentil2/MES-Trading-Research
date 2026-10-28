@@ -33,7 +33,7 @@ class TestOneNQEventBook(unittest.TestCase):
         self.assertEqual(result["rejections"]["NQ_INITIAL_RISK_CAP"],1)
         self.assertEqual([x["strategy_id"] for x in result["trades"]],["B"])
         # Exchanging future exit prices cannot change which order is accepted.
-        other=a.replay(events[:-1]+[exit(s="B",price=19980.)],["A","B"])
+        other=a.replay(events[:-1]+[exit(s="B",price=19995.)],["A","B"])
         self.assertEqual(result["days"][0]["accepted_entry_intents"],
                          other["days"][0]["accepted_entry_intents"])
 
@@ -116,12 +116,23 @@ class TestOneNQEventBook(unittest.TestCase):
         with self.assertRaises(ValueError):
             a.replay([entry(),exit(idx=21)],["A"])
 
+    def test_stop_gap_at_exit_requires_reconciliation_even_without_prior_mark(self):
+        with self.assertRaisesRegex(ValueError,"STOP_CROSSED"):
+            a.replay([entry(),exit(price=19980.)],["A"])
+        outcome=a.replay([entry(),exit(price=19980.,confirmed=True)],["A"])
+        self.assertTrue(outcome["trades"][0]["stop_crossed_unreconciled"])
+
+    def test_reject_rewound_input_event_order(self):
+        bad=[entry(idx=25,signal=24),mark(idx=23),exit(idx=27)]
+        with self.assertRaisesRegex(ValueError,"out of bar order"):
+            a.replay(bad,["A"])
+
     def test_internal_closed_loss_pause_independent_of_official_soft_pause(self):
         # Large discontinuity in synthetic exit is explicitly modeled,
         # not treated as a valid stop at the nominal protective level.
         # Here the soft pause is also triggered; first rejection reason
         # is soft-equity, as required by conservative controls.
-        r=a.replay([entry(),exit(price=19945.),
+        r=a.replay([entry(),exit(price=19945.,confirmed=True),
                     entry(idx=27,signal=26)],["A"])
         self.assertEqual(r["days"][0]["entries"],1)
         self.assertTrue(r["days"][0]["soft_pause_triggered"])
