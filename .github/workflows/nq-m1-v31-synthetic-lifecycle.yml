@@ -2,12 +2,6 @@ name: NQ S0.26 synthetic full M1 order lifecycle pre-economic
 
 on:
   workflow_dispatch:
-  push:
-    branches: [research/nq-s026-v31-full-m1-synthetic-lifecycle-20261028]
-    paths:
-      - "research/nq/nq_m1_v31_full_synthetic_lifecycle.py"
-      - "research/nq/test_nq_m1_v31_full_synthetic_lifecycle.py"
-      - ".github/workflows/nq-m1-v31-synthetic-lifecycle.yml"
 
 permissions:
   contents: read
