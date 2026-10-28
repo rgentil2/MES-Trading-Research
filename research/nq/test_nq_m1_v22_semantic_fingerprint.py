@@ -20,7 +20,11 @@ class TestNQSemanticGroups(unittest.TestCase):
             if r["audit"]["semantic_status"]=="SEMANTICALLY_EXECUTABLE_UNCERTIFIED")
 
     def valid(self):
-        return copy.deepcopy(self.template)
+        result=copy.deepcopy(self.template)
+        # Synthetic mutation is not allowed to reuse its frozen lineage SHA.
+        # Drop lineage before recomputing semantic equivalence.
+        result.pop("lineage",None)
+        return result
 
     def test_alias_equivalent_rising_and_above_lag(self):
         s=self.valid()
