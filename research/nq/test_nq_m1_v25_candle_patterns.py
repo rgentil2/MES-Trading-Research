@@ -42,7 +42,7 @@ class TestCandles(unittest.TestCase):
 
     def test_hammer_and_shooting_star(self):
         hammer=candle(100,101.05,95,101)
-        shooting=candle(100,106,99.95,99.98)
+        shooting=candle(100,106,99.97,99.98)
         self.assertEqual(self.value("Hammer",[hammer]),1)
         self.assertEqual(self.value("Shooting Star",[shooting]),-1)
 
@@ -71,7 +71,7 @@ class TestCandles(unittest.TestCase):
         self.assertEqual(self.value("Outside Bar",[prev,outside]),-1)
 
     def test_parameters_have_effect_for_doji_and_marubozu(self):
-        doji=candle(100,104.5,95.5,100.1)
+        doji=candle(100,104,95.5,100.1)
         self.assertEqual(self.value("Doji",[doji],{"body_ratio":.05,"shadow_ratio":.5}),1)
         self.assertEqual(self.value("Doji",[doji],{"body_ratio":.05,"shadow_ratio":.95}),0)
         trend=candle(100,108,99,107)
