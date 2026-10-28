@@ -1,3 +1,13 @@
+## 2026-10-28 — S0.25: AST DE 132 INDICADORES CONECTADOS A SEÑALES M1 CAUSALES Y ENTRADA CONSERVADORA (SIN BACKTEST)
+
+Se creó [adaptador técnico S0.25](research/nq/nq_m1_v30_132_signal_m1_bridge.py) que evalúa cualquier AST V2.6 de los 132 bloques sobre velas M1 completadas con AND/OR y **tres estados** True/False/None para evitar convertir faltas de warmup o contexto en señales falsas. SHORT desconocido + LONG verdadero NO da entrada; LONG y SHORT simultáneos se descartan. Cada lectura numérica solo ve `bars[:índice+1]`. Se conecta una **prueba técnica de entrada de la siguiente vela** con el escenario conservador S0.24 (MARKET/LIMIT/STOP), sin ejecutar SL/TP/trailing/expiración multi-minuto, sin estadísticas económicas ni datos reales.
+
+**Resultado de pruebas:** [GitHub Actions 40786401583 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40786401583), **303 tests PASS**. Se invocaron las 132/132 rutas vía AST, se compararon señales frente a mutación de velas futuras y se verificaron contextos NQ del mismo contrato y límites de reloj/sesión. El primer intento [40786286676 FAILED](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40786286676) encontró un **defecto real de TEMA** cuando faltaba el warmup compuesto; se corrigió la incubadora para exigir `3n−2` barras (DEMA `2n−1`) y devolver `None`, más una aserción de test sobre señales sin calentamiento. Los 38 indicadores V2.1 originales no se tocaron.
+
+[Documento de alcance](research/nq/NQ_M1_V30_132_AST_SIGNAL_BRIDGE_2026_10_28.md). **Sin abrir IST histórico**, no se ha hecho ningún backtest de las 10.000 candidatas ni calculado PnL. Las 132 matemáticas NO han sido certificadas externamente y la conexión de warmup multisesión para todas las familias/órdenes está pendiente. La [matriz 13 gates](research/nq/NQ_M1_V22_PRE_EXECUTION_QUALITY_MATRIX_2026_10_27.json) permanece **0/13 PASSED_VERIFIED, EXECUTION_BLOCKED**. Próxima tarea: motor de vida completa de orden M1 y coste/riesgo compartido, primero oráculos sintéticos independientes, luego autorizar IST por gates/firmas; 2023/24 reservados, 2025/26 sellados, rollover congelado intacto.
+
+---
+
 ## 2026-10-28 — S0.24: FUENTE NQ M1 CONFIRMADA POR EL USUARIO; SE DESCARTA TICK IST COMO REQUISITO INICIAL
 
 **Decisión del usuario:** «Por ahora quedémonos con los datos de M1». La búsqueda económica futura utilizará **NQ M1 2020–2022 (IST)**, **1 contrato**, sin tick por tick ni trazado de Bid/Ask como requisito de la fase de descubrimiento. ISV1 2023 e ISV2 2024 permanecen reservados, 2025–2026 sellados. Rollover elegido jueves 8 días antes del tercer viernes trimestral sin ajustar los precios: **NO SE CAMBIA**. 735 sesiones RTH completas disponibles con verificación de origen previa.

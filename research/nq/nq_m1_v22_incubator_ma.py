@@ -48,6 +48,13 @@ def calc(bars:np.ndarray, idx:int, block:dict)->float|None:
     if type(n) is not int or not 2<=n<=390:
         raise ValueError("Period must be integer 2..390")
     source=_causal_price_source(bars[:idx+1],p["source"])
+    # Composite EMA requires 2n-1 (DEMA) or 3n-2 (TEMA)
+    # COMPLETED samples. Before this warmup, the old TEMA could index
+    # an empty third EMA array and crash instead of returning None.
+    minimum = (3*n-2 if name=="TEMA" else
+               2*n-1 if name=="DEMA" else n)
+    if len(source)<minimum:
+        return None
     if name=="TRIMA":
         # Explicit TA-Lib convention:
         # odd n=2*k+1 -> SMA(k+1) of SMA(k+1);
