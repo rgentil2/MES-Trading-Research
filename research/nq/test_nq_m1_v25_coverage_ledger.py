@@ -17,7 +17,7 @@ class TestCoverageLedger(unittest.TestCase):
     def test_honest_prototype_numbers(self):
         self.assertEqual(self.result["counts"],{
             "FROZEN_V21_RUNTIME":38,"ISOLATED_20261027":5,
-            "ISOLATED_20261028":12,"NOT_IMPLEMENTED":77
+            "ISOLATED_20261028":12,"ISOLATED_CANDLE_20261028":12,"NOT_IMPLEMENTED":65
         })
         self.assertEqual(self.result["historically_original_external_parity"],15)
 
@@ -30,13 +30,13 @@ class TestCoverageLedger(unittest.TestCase):
         self.assertTrue(all(not row["verified_external_implementation"]
                             for row in self.result["rows"]))
 
-    def test_every_candlestick_requires_real_implementation(self):
+    def test_all_twelve_candles_are_isolated_not_certified(self):
         pattern_names={"Doji","Hammer","Shooting Star","Engulfing",
           "Harami","Morning Star","Evening Star","Three White Soldiers",
           "Three Black Crows","Inside Bar","Outside Bar","Marubozu"}
-        pending={r["name"] for r in self.result["rows"]
-                 if r["status"]=="NOT_IMPLEMENTED"}
-        self.assertTrue(pattern_names<=pending)
+        isolated={r["name"] for r in self.result["rows"]
+                 if r["status"]=="ISOLATED_CANDLE_20261028"}
+        self.assertEqual(pattern_names,isolated)
 
     def test_no_duplicate_anchor_semantics_claims(self):
         rows={x["name"]:x for x in self.result["rows"]}
