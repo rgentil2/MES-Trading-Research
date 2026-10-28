@@ -102,11 +102,27 @@ class TestV30SignalBridge(unittest.TestCase):
 
     def test_no_entry_at_or_after_cutoff_and_early_bar(self):
         s=simple_sma();x=series()
-        for i in (2,117,118,119):
+        for i in (117,118,119):
             with self.subTest(i=i):
                 z=b.entry_probe(x,i,s,"2021-05-04")
                 self.assertFalse(z["entry_proxy"])
                 self.assertEqual(z["entry_proxy_reason"],"SIGNAL_OUTSIDE_ALLOWED_ENTRY_WINDOW")
+
+
+    def test_early_bar_with_insufficient_warmup_does_not_forge_entry(self):
+        s=simple_sma()
+        z=b.entry_probe(series(),2,s,"2021-05-04")
+        self.assertEqual(z["action"],"UNAVAILABLE_SOME_SIGNAL_DATA")
+        self.assertFalse(z["entry_proxy"])
+        self.assertEqual(z["entry_proxy_reason"],"NO_ELIGIBLE_DIRECTION")
+
+    def test_tema_composite_warmup_requires_3n_minus_2_completed_bars(self):
+        from research.nq.nq_m1_v22_incubator_ma import calc
+        x=series()
+        block={"name":"TEMA","parameters":{"period":190,"source":"close"}}
+        self.assertIsNone(calc(x,360,block))
+        block={"name":"TEMA","parameters":{"period":100,"source":"close"}}
+        self.assertIsNotNone(calc(x,360,block))
 
     def test_no_future_bar_results_in_no_hypothetical_fill(self):
         s=simple_sma()
