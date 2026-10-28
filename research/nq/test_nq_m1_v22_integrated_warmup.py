@@ -100,6 +100,17 @@ class TestNQIntegratedWarmup(unittest.TestCase):
         self.assertEqual(no["filled"],0)
         self.assertTrue(all(t["target_price"] is not None for t in yes["trades"]))
 
+    def test_reject_off_tick_or_invalid_prior_rth_ohlc(self):
+        day,proven=context()
+        shifted=dict(proven,prior_bars=proven["prior_bars"].copy())
+        shifted["prior_bars"][0,3]+=.125
+        with self.assertRaises(ValueError):
+            engine.simulate_day(day,strategy(),"2021-05-04",session_context=shifted)
+        inverted=dict(proven,prior_bars=proven["prior_bars"].copy())
+        inverted["prior_bars"][0,1]=inverted["prior_bars"][0,0]-.25
+        with self.assertRaises(ValueError):
+            engine.simulate_day(day,strategy(),"2021-05-04",session_context=inverted)
+
     def test_fail_closed_on_foreign_contract_or_future_prior_day(self):
         day,proven=context()
         for field,bad_value in (("source_contract","NQ_09-21"),("holdouts","OPEN")):
