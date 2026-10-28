@@ -8,6 +8,7 @@ No price archives are read.
 """
 from __future__ import annotations
 import argparse
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -26,6 +27,32 @@ EXPECTED_IDS=frozenset((
 CERTIFIED="PASSED_VERIFIED"
 HASH_RE=re.compile(r"^[0-9a-f]{64}$")
 PERMITTED_STATES=frozenset(("PASSED_VERIFIED","PASSED_TECHNICAL","PARTIAL","BLOCKED"))
+
+
+def _quality_digest(matrix:dict)->str:
+    """Bind manual release signoff to exact scope and all gate evidence."""
+    signed={"schema":matrix["schema"],"asset":matrix["asset"],
+            "contracts":matrix["contracts"],"no_mnq":matrix["no_mnq"],
+            "holdouts":matrix["holdouts"],"criteria":matrix["criteria"],
+            "current_evidence":matrix["current_evidence"]}
+    return hashlib.sha256(json.dumps(signed,sort_keys=True,
+                 separators=(",",":")).encode("utf8")).hexdigest()
+
+
+def _approval_valid(matrix:dict, expected_digest:str)->bool:
+    approval=matrix.get("final_release_approval")
+    if not isinstance(approval,dict) or approval.get("approved") is not True:
+        return False
+    if approval.get("approved_scope")!="ONE_NQ_IST_2020_2022_ECONOMICS_ONLY":
+        return False
+    if (approval.get("reviewed_quality_sha256")!=expected_digest
+            or not HASH_RE.fullmatch(str(approval.get("frozen_evaluator_sha256","")))):
+        return False
+    reviewer=approval.get("reviewer")
+    run=approval.get("approved_run_url")
+    return (isinstance(reviewer,str) and bool(reviewer.strip())
+            and isinstance(run,str)
+            and run.startswith("https://github.com/rgentil2/"))
 
 
 def audit(matrix_path:Path=MATRIX)->dict:
@@ -66,23 +93,36 @@ def audit(matrix_path:Path=MATRIX)->dict:
         raise ValueError("Historical baseline evidence mismatch")
     if r.get("decision")!="DO_NOT_RUN_ECONOMIC_BACKTEST_UNTIL_ALL_MANDATORY_GATES_PASSED_WITH_EVIDENCE":
         raise ValueError("Hard stop policy changed without preregistration")
+    technical_pass=(len(blocked)==0)
+    release_digest=_quality_digest(r)
+    approval_valid=_approval_valid(r,release_digest)
+    # A listing of 13 plausible hashes is not independent proof. A separate
+    # explicitly scoped, version-bound manual approval is REQUIRED, and
+    # future jobs still need to check the real artifacts in the source repo.
+    ready=technical_pass and approval_valid
     return {"schema":r["schema"],"asset":"NQ","contracts":1,
             "registered_blocks":132,"computed_blocks":coverage,
             "external_parity_baseline":15,
             "checks_total":13,
             "passed_verified":13-len(blocked),
             "blocked":blocked,
-            "ready_for_economic_execution":len(blocked)==0,
-            "decision":"EXECUTION_BLOCKED" if blocked else "REQUIRES_FINAL_MANUAL_APPROVAL",
+            "technical_quality_checks_complete":technical_pass,
+            "final_manual_release_approved":approval_valid,
+            "release_evidence_digest":release_digest,
+            "ready_for_economic_execution":ready,
+            "decision":("ECONOMIC_IST_SCOPE_AUTHORIZED" if ready
+                        else "EXECUTION_BLOCKED" if blocked
+                        else "REQUIRES_FINAL_MANUAL_APPROVAL"),
             "holdouts":"SEALED","no_market_data_read":True}
 
 
 def require_ready(matrix_path:Path=MATRIX):
     summary=audit(matrix_path)
     if not summary["ready_for_economic_execution"]:
-        raise PermissionError(
-            "NQ ECONOMIC BACKTEST BLOCKED: "+
-            ", ".join(x["id"] for x in summary["blocked"]))
+        errors=[x["id"] for x in summary["blocked"]]
+        if not summary["final_manual_release_approved"]:
+            errors.append("FINAL_RELEASE_APPROVAL")
+        raise PermissionError("NQ ECONOMIC BACKTEST BLOCKED: "+", ".join(errors))
     return summary
 
 
