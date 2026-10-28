@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'research/**'
+      - '!research/nq/**' # NQ V2 quality is tested in its own fast/no-market workflow
       - 'tools/*.py'
       - 'src/**'
       - 'tests/**'
@@ -14,6 +15,7 @@ on:
   pull_request:
     paths:
       - 'research/**'
+      - '!research/nq/**' # NQ V2 quality is tested in its own fast/no-market workflow
       - 'tools/*.py'
       - 'src/**'
       - 'tests/**'
