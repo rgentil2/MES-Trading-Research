@@ -2,13 +2,6 @@ name: NQ S0.36 frozen 12 AST 15 selected IST session order replay synthetic QA
 
 on:
   workflow_dispatch:
-  push:
-    branches: [research/nq-s036-12ast-15roll-session-ist-replay-20261029]
-    paths:
-      - "research/nq/nq_m1_v39_ast_ist_exploratory_order_replay.py"
-      - "research/nq/nq_m1_v41_ast_15_session_ist_exploratory_replay.py"
-      - "research/nq/test_nq_m1_v41_ast_15_session_ist_exploratory_replay.py"
-      - ".github/workflows/nq-m1-v41-s036-15session-qa.yml"
 
 permissions:
   contents: read
