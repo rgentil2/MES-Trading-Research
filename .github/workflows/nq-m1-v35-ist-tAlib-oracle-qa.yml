@@ -1,0 +1,39 @@
+name: NQ S0.30 real-IST math oracle adapter synthetic regression
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  no-market-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: External oracle library
+        run: python -m pip install numpy pandas "TA-Lib==0.6.8"
+      - name: Run full NQ regression including synthetic real-source adapter oracle
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/nq -p 'test_nq_m1_v*.py' -q
+      - name: Audit 13 locks intact
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from research.nq.nq_m1_v22_quality_gate import audit
+          a=audit()
+          assert a['checks_total']==13 and a['passed_verified']==0
+          assert not a['ready_for_economic_execution']
+          print('NQ_S030_TALIB_REAL_SOURCE_ADAPTER_SYNTHETIC_ONLY_NO_STRATEGIES')
+          PY
