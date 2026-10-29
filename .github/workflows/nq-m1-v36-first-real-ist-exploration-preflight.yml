@@ -2,12 +2,6 @@ name: NQ S0.31 exploratory IST 120-rule pilot artificial preflight
 
 on:
   workflow_dispatch:
-  push:
-    branches: [research/nq-s031-ist-120-exploratory-first-search-20261029]
-    paths:
-      - "research/nq/nq_m1_v36_ist_exploratory_120.py"
-      - "research/nq/test_nq_m1_v36_ist_exploratory_120.py"
-      - ".github/workflows/nq-m1-v36-first-real-ist-exploration-preflight.yml"
 
 permissions:
   contents: read
