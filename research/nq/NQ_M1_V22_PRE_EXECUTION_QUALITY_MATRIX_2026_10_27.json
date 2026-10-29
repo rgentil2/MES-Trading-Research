@@ -266,6 +266,23 @@
       "formula_exceptions": 0,
       "year_reserved_data_opened": false,
       "artifact_expires_at": "2026-11-27T23:54:58Z"
+    },
+    "s028_mandatory_winning_portfolio_ninjatrader_backtest_gate": {
+      "user_required": true,
+      "gate": "N8_AFTER_PORTFOLIO_BEFORE_MFFU_50K",
+      "separate_from_existing_13_gates": true,
+      "run_url": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40804135861",
+      "synthetic_comparison_qa_tests_total": 345,
+      "ninjatrader_compiled": false,
+      "ninjatrader_strategy_analyzer_backtested": false,
+      "portfolio_winner_frozen": false,
+      "separate_shared_nq_account_scheduler_required": true,
+      "native_standard_ohlc_fill_difference_acknowledged": true,
+      "python_and_nt_trades_reconciled": false,
+      "real_historical_ist_economic_executed": false,
+      "formal_economic_gates_passed_verified": 0,
+      "n8_gate_state": "NOT_STARTED_NO_WINNER",
+      "proof": "research/nq/NQ_M1_V33_N8_PORTFOLIO_WINNER_PARITY_GATE_2026_10_28.json"
     }
   },
   "criteria": [
@@ -396,7 +413,7 @@
     {
       "id": "PORTFOLIO_SHARED_ACCOUNT",
       "state": "PARTIAL",
-      "evidence": "Synthetic 1 NQ event replay validates priority, one open position, 2 entries/day, $300 nominal stop risk inclusive of baseline cost, soft daily equity pause, hard floor from intraday marked equity, EOD trailing updates, stop-cross reconciliation, and 16 tests plus 4 independent account-reference crosschecks. No actual market signals, queue, fill parity or economic ranking. S0.24 M1-only path; shared account must consume conservative M1 event fills, not mix tick-only results or independently optimistic strategy PnLs.",
+      "evidence": "Synthetic 1 NQ event replay validates priority, one open position, 2 entries/day, $300 nominal stop risk inclusive of baseline cost, soft daily equity pause, hard floor from intraday marked equity, EOD trailing updates, stop-cross reconciliation, and 16 tests plus 4 independent account-reference crosschecks. No actual market signals, queue, fill parity or economic ranking. S0.24 M1-only path; shared account must consume conservative M1 event fills, not mix tick-only results or independently optimistic strategy PnLs. S0.28 user mandates future winner portfolio NinjaTrader 8 one-account backtest parity N8a and native Standard M1 corroboration N8b, AFTER Portfolio Builder/Allocator and BEFORE MFFU. Only synthetic schema reconciler tested (345 CI tests), no NinjaScript compile or historical winner and no formal gate promotion.",
       "remaining": [
         "Reconcile shared-account signal clock and conservative M1-only OHLC market/limit/stop order proxy using independent original IST M1 sessions (technical parity only)",
         "Build shared-account order queue and portfolio member signal clock with no future PnL lookups",
