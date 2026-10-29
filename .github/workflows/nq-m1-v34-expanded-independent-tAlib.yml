@@ -2,12 +2,6 @@ name: NQ S0.29 expanded independent TA-Lib oracle synthetic QA
 
 on:
   workflow_dispatch:
-  push:
-    branches: [research/nq-s029-expanded-tAlib-parity-20261029]
-    paths:
-      - "research/nq/test_nq_m1_v34_expanded_independent_talib.py"
-      - "research/nq/nq_m1_v26_trend_momentum.py"
-      - ".github/workflows/nq-m1-v34-expanded-independent-tAlib.yml"
 
 permissions:
   contents: read
