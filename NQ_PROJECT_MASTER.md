@@ -1,3 +1,13 @@
+## 2026-10-29 — S0.30 EJECUTADO: TA-Lib independiente en NQ M1 IST REAL (330 COMPARACIONES)
+
+**La auditoría real está ejecutada y aprobada:** [GitHub privado #40866756442 SUCCESS](https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40866756442), fuente original NQ Minute_Last SHA256 `a85a37eb66abda2621cab8110af30d8afb115f652dafc02cc76c7577b2280bc8`, código público fijado `8124869b3459e3f7aea179ac9c6f546f7fe03e90`. Se revisaron **735 sesiones completas** y **39 parciales excluidas**, usando **15 contextos preseleccionados** (inicio/mitad/fin y 12 rollovers), comparando **11 fórmulas** (SMA/EMA/WMA/DEMA/TEMA/TRIMA/APO/TRIX/ATR/NATR/ADXR) contra TA-Lib 0.6.8 en dos cierres M1, índices 118=11:29 ET y 389=16:00 ET. **330/330 comparaciones dentro de tolerancias previamente fijadas; 0 discrepancias**. Para ADXR se corrigió el desfase n−1 en S0.29 y se normalizó **ambos** lados con el `threshold=10` registrado.
+
+[Evidencia JSON persistente](research/nq/NQ_M1_V35_S030_REAL_IST_TALIB_330_QA_EVIDENCE_2026_10_29.json); [artefacto privado solo recuentos](https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40866756442/artifacts/12894730165), SHA256 ZIP `e279882bab3ccb2c9bdf385bef3c23c08483918d764583edeaebb2b8f6c19484` con caducidad 2026-11-28. [Protocolo S0.30](research/nq/NQ_M1_V35_REAL_IST_INDEPENDENT_TALIB_2026_10_29.md); [regresión pública main 355 PASS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40866687590).
+
+**Limitación:** 11 rutas matemáticas, parámetros concretos y **muestra** de 15 sesiones ≠ todas las 132 rutas/variantes certificadas. Ninguna estrategia AST, fill, PnL, ganadora ni portafolio económico ha sido evaluado. Los 13 gates siguen **0/13 PASSED_VERIFIED, EXECUTION_BLOCKED**, 2023/24 ISV y 2025/26 permanecen sin abrir; rollover jueves −8d y cohorte original 10K sin cambios. N8 NinjaTrader 8 continuará obligatorio para el portafolio ganador congelado antes de fondeo.
+
+---
+
 ## 2026-10-29 — S0.29: PARIDAD MATEMÁTICA INDEPENDIENTE AMPLIADA, ERROR REAL DE ADXR CORREGIDO
 
 **Se encontraron diferencias ADXR en referencias TA-Lib y se corrigieron.** El prototipo V2.6 usaba `ADX[t-n]` en lugar de `ADX[t-(n-1)]` al calcular el promedio ADXR. La [primera ejecución CI #40865408719](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40865408719) **FALLÓ** con **21 subtests ADXR** (no 21 estrategias). Después del ajuste de índice en `research/nq/nq_m1_v26_trend_momentum.py`, la [segunda CI #40865519690](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40865519690) registró **351/351 pruebas PASS**. La corrección se hizo exclusivamente en el motor experimental; 10.000 AST congeladas y el original V2.1 no cambian. No se ha ejecutado ninguna evaluación de beneficios históricos.
