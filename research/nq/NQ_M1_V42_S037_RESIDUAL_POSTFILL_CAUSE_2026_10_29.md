@@ -1,0 +1,9 @@
+# S0.37 — Clasificar eventos posfill residuales del replay AST de 15 sesiones IST
+
+**29-oct-2026.** El piloto S0.36 de NQ M1 IST real, **12 AST fijas × 15 sesiones fuente/rollover**, detectó **2 eventos posfill no modelados** después del guard PRE_ORDER S0.35, además de 57 operaciones modelo completas, 2.336 rechazos preorden y 11.971 decisiones de señal indisponibles. El run [#40899114389 SUCCESS](https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40899114389) confirma que la ausencia de incidentes en 3 días no generalizaba a las otras 12 fechas. Estas operaciones no constituyen todavía un historial económico completo ni portafolio.
+
+**Nuevo diagnóstico S0.37:** guardar **solo los contadores de motivos** `POST_FILL_PROTECTION_UNMODELLED`, `POST_FILL_RISK_CAP_UNMODELLED`, `POST_FILL_TARGET_UNMODELLED_*` por AST y agregados, sin precios ni sesiones individuales. Declarar siempre `candidate_fitness_or_winner_selection_permitted = false`; reportar `historical_sample_order_model_complete = false` si existe cualquier caso residual. Este diagnóstico **NO cambia** el modelo de fills, stops, horas, datos o selección de estrategias.
+
+[CI #40899773736 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40899773736), **387/387 pruebas** incluidas 2 nuevas con gap artificial del siguiente minuto; se exige visibilidad de riesgo postfill y se prohíbe que aparezca como cancelación ficticia.
+
+**Límites:** No es evidencia de ejecución de 10.000 AST ni confianza estadística/return ajustado a múltiples pruebas. Se mantienen 0/13 gates certificados, MFFU risk/stop flotante no verificados, ISV1 2023/ISV2 2024 reservados y 2025–26 sellados. El backtest N8 en NinjaTrader 8 del eventual portafolio congelado continúa obligatorio. Las dos causas exactas deben leerse en la siguiente ejecución privada de 15 sesiones, conservando versiones de auditor y SHA.

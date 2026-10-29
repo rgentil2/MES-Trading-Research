@@ -1,0 +1,38 @@
+name: NQ S0.37 post-fill gap cause audit synthetic QA
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-execution-gap-cause:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy pandas "TA-Lib==0.6.8"
+      - name: Full technical regression and deliberate adverse gap exposure
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/nq -p 'test_nq_m1_v*.py' -q
+      - name: Formal economic release stays blocked
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from research.nq.nq_m1_v22_quality_gate import audit
+          x=audit()
+          assert x['checks_total']==13 and x['passed_verified']==0
+          assert x['decision']=='EXECUTION_BLOCKED'
+          print('NQ_S037_ADVERSE_GAP_REPORTED_NOT_FICTITIOUS_CANCEL')
+          PY
