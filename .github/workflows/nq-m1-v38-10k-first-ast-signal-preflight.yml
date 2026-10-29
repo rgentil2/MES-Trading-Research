@@ -1,0 +1,40 @@
+name: NQ S0.33 frozen 10K AST first real IST signal adapter synthetic preflight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-g0-ast-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy pandas "TA-Lib==0.6.8"
+      - name: Full NQ regression and frozen AST signal diagnostic preflight
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/nq -p 'test_nq_m1_v*.py' -q
+      - name: Require no economic release
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from research.nq.nq_m1_v22_quality_gate import audit
+          from research.nq.nq_m1_v38_10k_real_ist_signal_smoke import frozen_sample
+          r=audit()
+          assert r["checks_total"]==13 and r["passed_verified"]==0
+          assert r["decision"]=="EXECUTION_BLOCKED"
+          assert len(frozen_sample())==12
+          print("NQ_S033_12_OF_FROZEN_10K_AST_SIGNAL_EVALUATOR_PREFLIGHT_ONLY")
+          PY
