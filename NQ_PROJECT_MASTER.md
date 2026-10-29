@@ -1,3 +1,13 @@
+## 2026-10-29 — S0.29: PARIDAD MATEMÁTICA INDEPENDIENTE AMPLIADA, ERROR REAL DE ADXR CORREGIDO
+
+**Se encontraron diferencias ADXR en referencias TA-Lib y se corrigieron.** El prototipo V2.6 usaba `ADX[t-n]` en lugar de `ADX[t-(n-1)]` al calcular el promedio ADXR. La [primera ejecución CI #40865408719](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40865408719) **FALLÓ** con **21 subtests ADXR** (no 21 estrategias). Después del ajuste de índice en `research/nq/nq_m1_v26_trend_momentum.py`, la [segunda CI #40865519690](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40865519690) registró **351/351 pruebas PASS**. La corrección se hizo exclusivamente en el motor experimental; 10.000 AST congeladas y el original V2.1 no cambian. No se ha ejecutado ninguna evaluación de beneficios históricos.
+
+Se añadió [batería externa ampliada](research/nq/test_nq_m1_v34_expanded_independent_talib.py) contra TA-Lib v0.6.8, comprobando **11 familias** en 3 series OHLCV **artificiales**, varios períodos y fuentes (SMA/EMA/WMA/DEMA/TEMA/TRIMA/APO/TRIX/ATR/NATR/ADXR), incluyendo warmup y causalidad. Las familias mainstream previamente comparadas se mantienen; **no** implica paridad de 132/132 frente a StrategyQuant/NinjaTrader, ni aprobación de fórmulas personalizadas. [Documento de evidencia y límites](research/nq/NQ_M1_V34_EXPANDED_INDEPENDENT_TALIB_ADXR_2026_10_29.md).
+
+**Bloqueo:** matriz 13 puertas **0/13 PASSED_VERIFIED**, `EXECUTION_BLOCKED`; M1 IST 2020–22 ya verificado como fuente, pero ninguna estrategia de la cohorte 10K ha sido económicamente backtesteada. ISV1 2023/ISV2 2024 y años 2025–26 siguen cerrados. **N8 NinjaTrader 8** permanece obligatorio para portafolio ganador después de congelarlo y antes de fondeo; ADXR deberá estar alineado con la versión congelada cuando se prepare NinjaScript.
+
+---
+
 ## 2026-10-28 — S0.28: NINJATRADER 8 BACKTEST DEL PORTAFOLIO GANADOR SERÁ VALIDACIÓN OBLIGATORIA (N8)
 
 **El usuario volvió a confirmar que el portafolio finalmente seleccionado debe probarse posteriormente como un único sistema en NinjaTrader 8 Strategy Analyzer.** Queda añadido al embudo **después de PORTFOLIO BUILDER/ALLOCATOR y antes de autorizar MFFU 50K**; es un N8 externo **ADICIONAL** a los 13 controles económicos originales, que siguen 0/13 PASSED_VERIFIED. Cadena: 10.000 AST → G0 → D0 → D1 → D2 → ISV1 2023 → ISV2 2024 → cartera y prioridad congeladas → **N8a equivalencia del NinjaScript de cartera frente a Python** → **N8b Strategy Analyzer Standard M1 independiente** → análisis de diferencias → autorización MFFU 50K solo con evidencias de cuenta.
