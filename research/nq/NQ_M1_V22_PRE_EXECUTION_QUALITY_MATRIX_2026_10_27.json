@@ -382,6 +382,29 @@
       "historical_price_used": false,
       "profit_or_fitness_computed": false,
       "quality_gates_passed_verified": 0
+    },
+    "s033_real_ist_10k_ast_first_signal_smoke": {
+      "run": "https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40892951535",
+      "public_qa": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40892536845",
+      "candidate_total_frozen": 10000,
+      "candidate_sampled": 12,
+      "sessions_IST_sampled": 15,
+      "minutes_per_session": 5,
+      "signal_checks": 900,
+      "long": 11,
+      "short": 121,
+      "no_signal": 171,
+      "unavailable": 570,
+      "both_sides_conflict": 27,
+      "source_years_opened": [
+        2020,
+        2021,
+        2022
+      ],
+      "later_periods_opened": false,
+      "model_orders_or_pnl_evaluated": false,
+      "full_10k_economic_ranked": false,
+      "quality_gates_formal_passed": 0
     }
   },
   "criteria": [
@@ -423,7 +446,7 @@
     {
       "id": "SAME_CONTRACT_WARMUP",
       "state": "PARTIAL",
-      "evidence": "Engine accepts checked same-contract prior RTH context; 15 contexts over actual IST sessions including 12 rollover boundaries verified in private file-origin QA. Still no economic replay or actual engine strategy execution with this context. S0.18 private real IST 735-session archive: 15 selected same-contract contexts, 225 indicator-context calculations, 150 future-bar mutation checks, 52 truly unavailable without filling; 40750034374 SUCCESS. This is selected technical indicator QA, not complete order/fill parity. S0.24 scope explicitly M1-only. Previous same-contract real minute history is the required causal context, not independent tick replay. S0.25 signal adapter validates and supplies previously completed prior NQ same-contract RTH context from existing provenance guard; no cross-year/contract leak and no future bar in router. Continuous multi-session warmup for all recursive indicator families and order exits still NOT integrated. S0.26 artificial complete lifecycle accepts existing validated same-contract prior RTH context for stop ATR and trailing/breakeven calculations; complete 132 signal-family recursive multi-session carryover and independent real source parity remain unverified.",
+      "evidence": "Engine accepts checked same-contract prior RTH context; 15 contexts over actual IST sessions including 12 rollover boundaries verified in private file-origin QA. Still no economic replay or actual engine strategy execution with this context. S0.18 private real IST 735-session archive: 15 selected same-contract contexts, 225 indicator-context calculations, 150 future-bar mutation checks, 52 truly unavailable without filling; 40750034374 SUCCESS. This is selected technical indicator QA, not complete order/fill parity. S0.24 scope explicitly M1-only. Previous same-contract real minute history is the required causal context, not independent tick replay. S0.25 signal adapter validates and supplies previously completed prior NQ same-contract RTH context from existing provenance guard; no cross-year/contract leak and no future bar in router. Continuous multi-session warmup for all recursive indicator families and order exits still NOT integrated. S0.26 artificial complete lifecycle accepts existing validated same-contract prior RTH context for stop ATR and trailing/breakeven calculations; complete 132 signal-family recursive multi-session carryover and independent real source parity remain unverified. S0.33 FIRST actual real IST frozen AST 10K signal-only G0 diagnostic verified: 12 preregistered candidates, 15 sessions including rollover, 5 completed bars = 900 signals, 11 LONG 121 SHORT 171 NO_SIGNAL 570 unavailable 27 conflicts; run 40892951535 SUCCESS. This is not formal admission, does not test trade-level execution or 10K economics, and 570 unavailable need causal warmup investigation.",
       "remaining": [
         "Connect verified actual IST same-contract M1 prior-RTH warmup into the full strategy/order replay in a limited technical validation and compare indicator/ATR/SL/TP inputs independently",
         "Check long lookbacks/roll boundaries on original M1 archives, including unavailable contexts, without importing any future bar or different contract"
@@ -479,7 +502,7 @@
     {
       "id": "G0_D0_ADAPTERS",
       "state": "BLOCKED",
-      "evidence": "Registry-based pre-D0 validator checked all 100 frozen engineering ASTs with typed threshold bounds: 82 structurally interpretable, 18 pending technical implementation; NOT legacy G0/D0 parity nor economic selection. S0.23 10000 original ASTs have passed an independent static envelope/registry/AST/lineage scope precheck. This is PRE_G0_WAITING only, NOT formal G0 or D0, and no trades/ISV/holdouts were read; actual adapters/economic validators still outstanding. S0.25 132-registered AST signal semantics can now be evaluated on caller-supplied synthetic M1, with provenance validation, three-valued logic and conservative first-bar entry scenarios. This is a TECHNICAL BRIDGE, NOT the formal G0/D0 adapter or a trade-level precheck; no formal PASS. S0.26 life-cycle integration now structurally tests same AST signal, pending/fill/SL/TP/forced-exit chain using code-generated artificial 390-bar days; none of the 10000 candidate cohort run on real IST and no formal G0/D0 admissions or failure counts computed. S0.31 real IST preregistered 120 CONTROL rules (separate from 10K AST): 735 NQ M1 complete days 2020-22, 70353 model fills across alternative rules, 31 net-positive but 0 with PF>=1.25 and >=150 trades; source/private runs 40870203417 and 40870689524. S0.32 no-market static lower-bound warmup on original frozen 10K: 9130 no proven two-side blocker, 846 one-side, 24 both-side under intraday-only assumptions, none excluded or admitted. The formal 10K G0/D0 adapter is still BLOCKED.",
+      "evidence": "Registry-based pre-D0 validator checked all 100 frozen engineering ASTs with typed threshold bounds: 82 structurally interpretable, 18 pending technical implementation; NOT legacy G0/D0 parity nor economic selection. S0.23 10000 original ASTs have passed an independent static envelope/registry/AST/lineage scope precheck. This is PRE_G0_WAITING only, NOT formal G0 or D0, and no trades/ISV/holdouts were read; actual adapters/economic validators still outstanding. S0.25 132-registered AST signal semantics can now be evaluated on caller-supplied synthetic M1, with provenance validation, three-valued logic and conservative first-bar entry scenarios. This is a TECHNICAL BRIDGE, NOT the formal G0/D0 adapter or a trade-level precheck; no formal PASS. S0.26 life-cycle integration now structurally tests same AST signal, pending/fill/SL/TP/forced-exit chain using code-generated artificial 390-bar days; none of the 10000 candidate cohort run on real IST and no formal G0/D0 admissions or failure counts computed. S0.31 real IST preregistered 120 CONTROL rules (separate from 10K AST): 735 NQ M1 complete days 2020-22, 70353 model fills across alternative rules, 31 net-positive but 0 with PF>=1.25 and >=150 trades; source/private runs 40870203417 and 40870689524. S0.32 no-market static lower-bound warmup on original frozen 10K: 9130 no proven two-side blocker, 846 one-side, 24 both-side under intraday-only assumptions, none excluded or admitted. The formal 10K G0/D0 adapter is still BLOCKED. S0.33 FIRST actual real IST frozen AST 10K signal-only G0 diagnostic verified: 12 preregistered candidates, 15 sessions including rollover, 5 completed bars = 900 signals, 11 LONG 121 SHORT 171 NO_SIGNAL 570 unavailable 27 conflicts; run 40892951535 SUCCESS. This is not formal admission, does not test trade-level execution or 10K economics, and 570 unavailable need causal warmup investigation.",
       "remaining": [
         "Implement and independently compare formal G0/D0 invariant adapter to legacy cohort reference",
         "Prove AST registry parameters and stop/entry risk contract on representative synthetic cases",
