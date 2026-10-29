@@ -2,12 +2,6 @@ name: NQ S0.33 frozen 10K AST first real IST signal adapter synthetic preflight
 
 on:
   workflow_dispatch:
-  push:
-    branches: [research/nq-s033-10k-historical-g0-signal-smoke-20261029]
-    paths:
-      - "research/nq/nq_m1_v38_10k_real_ist_signal_smoke.py"
-      - "research/nq/test_nq_m1_v38_10k_real_ist_signal_smoke.py"
-      - ".github/workflows/nq-m1-v38-10k-first-ast-signal-preflight.yml"
 
 permissions:
   contents: read
