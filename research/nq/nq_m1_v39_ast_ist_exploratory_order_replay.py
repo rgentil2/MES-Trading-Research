@@ -157,9 +157,9 @@ def evaluate_fixed_sample(dates,bars,source,strategies,chosen=None):
         or len({s["id"] for s in strategies})!=len(strategies)):
         raise ValueError("Require <=12 unique AST")
     indices=session_indices(len(dates)) if chosen is None else list(chosen)
-    if len(indices)!=3 or indices!=sorted(set(indices)) or any(
+    if len(indices) not in (3,15) or indices!=sorted(set(indices)) or any(
         type(i) is not int or not 0<=i<len(dates) for i in indices):
-        raise ValueError("Require 3 distinct ordered sessions")
+        raise ValueError("Require 3 or 15 preregistered distinct ordered sessions")
     summary=[];total=Counter()
     for s in strategies:
         records=[];local=Counter()
@@ -187,7 +187,8 @@ def evaluate_fixed_sample(dates,bars,source,strategies,chosen=None):
                 v for k,v in local.items() if k.startswith("POST_FILL_")),
             "signal_unavailable":local["UNAVAILABLE_SOME_SIGNAL_DATA"],
             "ambiguous_sl_first_bars":sum(r["ambiguous_bars"] for r in records),
-            "research_only_insufficient_three_day_sample":True
+            "research_only_insufficient_three_day_sample":len(indices)==3,
+            "research_only_insufficient_sample":True
         })
         total["trades_across_alternative_AST_not_portfolio"]+=len(records)
         total["post_fill_unmodelled"]+=summary[-1]["post_fill_unmodelled"]
@@ -197,7 +198,9 @@ def evaluate_fixed_sample(dates,bars,source,strategies,chosen=None):
     return {
         "schema":"NQ_S034_FROZEN_10K_AST_FIRST_COMPLETE_MODEL_TRADES_PILOT_V1",
         "status":STATUS,"sessions_loaded":len(dates),
-        "sessions_sampled":len(indices),"sample_selection":FIXED_SESSION_SELECTION,
+        "sessions_sampled":len(indices),
+        "sample_selection":FIXED_SESSION_SELECTION if len(indices)==3
+             else "FIRST_MIDDLE_LAST_PLUS_12_ORIGINAL_CONTRACT_ROLLOVERS",
         "candidate_count_exploratory":len(strategies),
         "source_years_opened":list(ALLOWED_YEARS),
         "cost_rt_usd":COMMISSION_RT_USD,
