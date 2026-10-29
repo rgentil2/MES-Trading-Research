@@ -1,0 +1,76 @@
+name: NQ S0.41 native NinjaTrader Standard M1 source contract (NOT NT8 compilation)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/nq-s041-native-standard-m1-baseline-20261029]
+    paths:
+      - 'research/nq/ninjatrader/NQNativeGeneticLabV1.cs'
+      - 'research/nq/ninjatrader/NQNativeResearchFitnessV1.cs'
+      - 'research/nq/ninjatrader/NQNativeM1DataAuditV1.cs'
+      - '.github/workflows/nq-native-v46-standard-m1-source-contract.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  native-csharp-static-source-contract-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check native-only NT8 Standard fill, commissions, safety and no Python calls
+        run: |
+          node <<'NODE'
+          const fs=require('fs'),assert=require('assert');
+          const paths=[
+            'research/nq/ninjatrader/NQNativeGeneticLabV1.cs',
+            'research/nq/ninjatrader/NQNativeResearchFitnessV1.cs',
+            'research/nq/ninjatrader/NQNativeM1DataAuditV1.cs'
+          ];
+          const [s,f,a]=paths.map(x=>fs.readFileSync(x,'utf8'));
+          function contains(src,expr){assert(src.includes(expr),'Missing: '+expr);}
+          function balanced(src) {
+            const braces=[...src].reduce((k,c)=>k+(c==='{')-(c==='}'),0);
+            assert.strictEqual(braces,0,'Unbalanced braces in C# source');
+          }
+          paths.forEach((x,i)=>balanced([s,f,a][i]));
+          [
+            'OrderFillResolution = OrderFillResolution.Standard',
+            'IsFillLimitOnTouch = false',
+            'IncludeCommission = true',
+            'Slippage = 2',
+            'if (State != State.Historical)',
+            'FirstSignalHHmmss = 93500',
+            'LastSignalHHmmss = 112700',
+            'FlatSubmitHHmmss = 112800',
+            'SetStopLoss(CalculationMode.Ticks, StopTicks)',
+            'SetProfitTarget(CalculationMode.Ticks, TargetTicks)',
+            'class NQNativeGeneticLabV1 : Strategy'
+          ].forEach(x=>contains(s,x));
+          [
+            'class NQNativeResearchFitnessV1 : OptimizationFitness',
+            'performance.Currency.Drawdown',
+            'trades < 150','pf < 1.25','closedDrawdown > 2000.0'
+          ].forEach(x=>contains(f,x));
+          [
+            'class NQNativeM1DataAuditV1 : Strategy',
+            'BarsPeriod.BarsPeriodType != BarsPeriodType.Minute',
+            'dayBars == 390',
+            'stamp.Year < 2020 || stamp.Year > 2022',
+            'OnTickGrid',
+            'NQ_NATIVE_M1_AUDIT_SUMMARY'
+          ].forEach(x=>contains(a,x));
+          for (const x of [s,f,a])
+            assert(!/(StreamReader|Process\.Start|File\.ReadAllText|\.csv|python\.exe|python3)/i.test(x),
+              'Unexpected external signal reader/execution in native engine');
+          assert.strictEqual((s.match(/\[NinjaScriptProperty\]/g)||[]).length,9);
+          assert.strictEqual((s.match(/case [0-9]:/g)||[]).length,10);
+          assert(!/EnterLong\(|EnterShort\(|SubmitOrder/.test(a),
+            'Audit code must submit ZERO orders');
+          console.log('S041_NATIVE_NT8_STANDARD_M1_SOURCE_CONTRACT_PASS');
+          console.log('10_signal_primitives 9_optimization_genes NO_PYTHON_NO_TICKS');
+          console.log('NOT_COMPILED_ON_NINJATRADER NOT_BACKTESTED NOT_132_INDICATORS');
+          NODE

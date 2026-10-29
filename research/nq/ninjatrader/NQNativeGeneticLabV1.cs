@@ -1,4 +1,4 @@
-// S0.40 - Native NinjaTrader 8 StrategyQuant-like exploratory generator (V1).
+// S0.40/S0.41 - Native NinjaTrader 8 exploratory generator (V1; Standard M1).
 // EVERYTHING - indicator calculations, structure optimization, orders, PnL - runs
 // inside NinjaTrader 8. No Python signals, market data processing or CSV inputs.
 //
@@ -8,7 +8,9 @@
 // properties. These are structural combinations, not merely MA period tuning.
 // Not 132/132 yet. No claim of 10k unique evaluated until NT8 results exist.
 //
-// STATUS: SOURCE-ONLY / NOT COMPILED IN NINJATRADER HERE / NO BACKTEST YET.
+// S0.41 CHOICE: use NinjaTrader's OWN Standard M1 historical fill engine.
+// No Python execution model or tick-source requirement for initial exploration.
+ // STATUS: SOURCE-ONLY / NOT COMPILED IN NINJATRADER HERE / NO BACKTEST YET.
 // TESTING ONLY. Before any use, NT8 must be configured with Eastern US time,
 // original NQ 1-minute Last history / exact roll schedule, costs, and 2020-22
 // IST only. Exit at 11:28 CLOSE -> next-bar entry/open near 11:29 (conservative
@@ -52,6 +54,15 @@ namespace NinjaTrader.NinjaScript.Strategies
                 StopTargetHandling = StopTargetHandling.PerEntryExecution;
                 BarsRequiredToTrade = 3;
                 IncludeTradeHistoryInBacktest = true;
+                // Explicit native Strategy Analyzer baseline. Costs are
+                // provided by the NT8 NQ commission template, NOT Python.
+                // Standard fill simulates OHLC-based virtual intrabar steps.
+                OrderFillResolution = OrderFillResolution.Standard;
+                IsFillLimitOnTouch = false;
+                IncludeCommission = true;
+                Slippage = 2; // per eligible simulated fill, limited by NT8 bar range
+                StartBehavior = StartBehavior.WaitUntilFlat;
+                RealtimeErrorHandling = RealtimeErrorHandling.StopCancelClose;
 
                 AType = 0; APeriod = 12;
                 BType = 7; BPeriod = 14;
@@ -145,6 +156,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 
         protected override void OnBarUpdate()
         {
+            // This initial research strategy is NEVER intended to submit
+            // live orders. Historical Strategy Analyzer passes only.
+            if (State != State.Historical)
+                return;
             if (BarsInProgress != 0)
                 return;
 
