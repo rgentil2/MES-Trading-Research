@@ -115,9 +115,14 @@ def replay_one_day(bars,day,strategy,session_context=None):
             count["POST_FILL_PROTECTION_UNMODELLED"]+=1
             index=fill_idx+1;continue
         initial=risk*POINT_USD+DEFAULT_SLIP_TICKS_SIDE*TICK*POINT_USD+COMMISSION_RT_USD
-        if initial>ACCOUNT_INTERNAL["max_initial_risk_usd"]:
-            count["POST_FILL_RISK_CAP_UNMODELLED"]+=1
-            index=fill_idx+1;continue
+        # Once a pre-authorized order has a modeled fill, an adverse gap
+        # may make the risk exceed the pre-order cap. This is NOT a free
+        # cancellation: retain and replay the resulting exposed position,
+        # charge its actual modeled outcome, and mark the breach. The breach
+        # disqualifies funded-account suitability irrespective of net PnL.
+        risk_cap_breach=initial>ACCOUNT_INTERNAL["max_initial_risk_usd"]
+        if risk_cap_breach:
+            count["FILLED_RISK_CAP_BREACH"]+=1
         target,reason=_target_distance(bars,index,side,price,risk,exits,prior)
         if reason not in ("VALID","NO_TARGET"):
             count["POST_FILL_TARGET_UNMODELLED_"+reason]+=1
@@ -135,6 +140,8 @@ def replay_one_day(bars,day,strategy,session_context=None):
             "exit_price":action["exit_price"],
             "exit_reason":action["exit_reason"],
             "initial_model_risk_usd":round(initial,2),
+            "risk_cap_breach":risk_cap_breach,
+            "risk_cap_excess_usd":round(max(0.,initial-ACCOUNT_INTERNAL["max_initial_risk_usd"]),2),
             "ambiguous_bars":action["ambiguous_bars"],
             "exploratory_net_usd":action["synthetic_net_usd"]
         }
@@ -181,6 +188,9 @@ def evaluate_fixed_sample(dates,bars,source,strategies,chosen=None):
             "closed_trade_dd_usd":round(dd,2),
             "post_fill_unmodelled":sum(v for k,v in local.items()
                                       if k.startswith("POST_FILL_")),
+            "executed_risk_cap_breaches":local["FILLED_RISK_CAP_BREACH"],
+            "max_model_excess_risk_usd":round(max(
+                (t["risk_cap_excess_usd"] for t in records),default=0.),2),
             "pre_order_rejected":sum(v for k,v in local.items()
                                       if k.startswith("PRE_ORDER_")),
             "economic_metrics_incomplete_if_postfill":any(
@@ -196,6 +206,7 @@ def evaluate_fixed_sample(dates,bars,source,strategies,chosen=None):
         })
         total["trades_across_alternative_AST_not_portfolio"]+=len(records)
         total["post_fill_unmodelled"]+=summary[-1]["post_fill_unmodelled"]
+        total["FILLED_RISK_CAP_BREACH"]+=summary[-1]["executed_risk_cap_breaches"]
         total["pre_order_rejected"]+=sum(
             v for k,v in local.items() if k.startswith("PRE_ORDER_"))
         total["signal_unavailable"]+=summary[-1]["signal_unavailable"]
@@ -219,6 +230,8 @@ def evaluate_fixed_sample(dates,bars,source,strategies,chosen=None):
         "gap_risk_after_fill_remains_unbounded_on_M1":True,
         "historical_sample_order_model_complete":total["post_fill_unmodelled"]==0,
         "any_AST_provisional_PnL_incomplete":total["post_fill_unmodelled"]>0,
+        "any_filled_position_violated_risk_cap":total["FILLED_RISK_CAP_BREACH"]>0,
+        "risk_cap_breaches_are_disqualifying_not_deleted":True,
         "candidate_fitness_or_winner_selection_permitted":False,
         "portfolio_jointly_simulated":False,
         "sample_sufficient_for_strategy_selection":False,
