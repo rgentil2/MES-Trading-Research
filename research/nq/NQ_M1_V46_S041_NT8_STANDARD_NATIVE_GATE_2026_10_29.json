@@ -1,0 +1,75 @@
+{
+  "schema": "NQ_S041_NT8_NATIVE_STANDARD_M1_EXECUTION_BASELINE_2026_10_29",
+  "date": "2026-10-29",
+  "user_decision": "NINJATRADER_8_ONLY_GENERATION_STRATEGIES_BACKTEST_EVALUATION_PORTFOLIO",
+  "price_data": "NQ_M1_LAST",
+  "historical_fill_resolution": "STANDARD_NATIVE_NINJATRADER",
+  "fill_limit_orders_on_touch": false,
+  "slippage_ticks": 2,
+  "include_commission": true,
+  "commission_template_configured_in_user_installation": false,
+  "display_timezone_required": "Eastern Time (America/New_York DST)",
+  "trading_hours_required": "CME RTH equivalent 09:30-16:00 Eastern",
+  "first_signal_et": "09:35",
+  "last_signal_et": "11:27",
+  "submit_flat_on_close_et": "11:28",
+  "flat_approximately_next_bar_open_et": "11:29",
+  "original_rollover_policy": "Quarterly Thursday 8 calendar days before third Friday, no automatic assumption about NT continuous merge",
+  "IST_discovery_years": [
+    2020,
+    2021,
+    2022
+  ],
+  "ISV1_2023_opened": false,
+  "ISV2_2024_opened": false,
+  "sealed_2025_2026_opened": false,
+  "uses_python_data_or_signal_engine": false,
+  "requires_python_nt8_fill_parity": false,
+  "requires_historical_ticks_now": false,
+  "native_signal_primitives_implemented": 10,
+  "native_optimization_genes": 9,
+  "all_132_native_indicators_implemented": false,
+  "native_unique_10000_genotype_generator_implemented": false,
+  "native_csharp_assemblies_compiled_in_nt8": false,
+  "native_data_audit_executed_in_NT8": false,
+  "native_backtest_executed_in_NT8": false,
+  "full_shared_portfolio_MFFU_risk_implemented": false,
+  "portfolio_NT8_standard_backtest_completed": false,
+  "official_MFFU_plan_exact_rules_confirmed": false,
+  "legacy_python_formal_13_gate_passed_verified": 0,
+  "native_release_gates": [
+    {
+      "id": "NT8_COMPILE_STRATEGY_AND_FITNESS",
+      "state": "NOT_VERIFIED"
+    },
+    {
+      "id": "NT8_REAL_M1_DATA_AUDIT_ET_RTH_ROLLOVER",
+      "state": "NOT_VERIFIED"
+    },
+    {
+      "id": "NT8_NATIVE_STANDARD_M1_BACKTEST_IST",
+      "state": "NOT_VERIFIED"
+    },
+    {
+      "id": "NT8_132_INDICATOR_PARITY_SEMANTICS",
+      "state": "NOT_VERIFIED"
+    },
+    {
+      "id": "NT8_UNIQUE_GENERATOR_AND_10K_SEARCH",
+      "state": "NOT_VERIFIED"
+    },
+    {
+      "id": "NT8_G0_D0_D1_D2_FILTERS",
+      "state": "NOT_VERIFIED"
+    },
+    {
+      "id": "NT8_ISV1_ISV2_HOLDOUTS",
+      "state": "NOT_VERIFIED"
+    },
+    {
+      "id": "NT8_MFFU_50K_SHARED_PORTFOLIO_AND_FINAL_BACKTEST",
+      "state": "NOT_VERIFIED"
+    }
+  ],
+  "note": "GitHub static source contract is not NinjaTrader compile, backtest, 132 indicator certification, native portfolio or funding approval."
+}
