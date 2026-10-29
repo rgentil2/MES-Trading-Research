@@ -405,6 +405,28 @@
       "model_orders_or_pnl_evaluated": false,
       "full_10k_economic_ranked": false,
       "quality_gates_formal_passed": 0
+    },
+    "s035_real_ist_frozen_ast_preorder_replay": {
+      "status": "EXPLORATORY_12_AST_3_IST_SESSIONS_ONLY_NOT_FORMAL_G0",
+      "original_run": "https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40896676531",
+      "corrected_run": "https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40897497159",
+      "corrected_artifact": "https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40897497159/artifacts/12908270756",
+      "corrected_artifact_sha256": "4f4047074a79b8bc3bab7a753a5dba4a9f3262b0f75ac9dd1da29a5e8d674552",
+      "preorder_causal_fix_ci": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40897125808",
+      "tests_passed": 381,
+      "frozen_AST_sample": 12,
+      "IST_full_sessions_sample": 3,
+      "completed_trade_proxy_across_separate_AST": 14,
+      "first_version_unmodelled_postfill": 143,
+      "fixed_version_unmodelled_postfill": 0,
+      "fixed_version_preorder_rejections": 463,
+      "signal_unavailable": 2235,
+      "closed_trade_pnl_is_exploratory_only": true,
+      "all_10000_economic_screened": false,
+      "shared_portfolio_risk_verified": false,
+      "MFFU_exact_funded_rules_verified": false,
+      "ninjatrader_portfolio_tested": false,
+      "quality_gates_passed_verified": 0
     }
   },
   "criteria": [
@@ -467,7 +489,7 @@
     {
       "id": "ORDER_FILL_PARITY",
       "state": "BLOCKED",
-      "evidence": "Synthetic atomic Last first-touch reference demonstrates OHLC stop-first ambiguity; no independent real NinjaTrader/tick replay parity yet S0.19 GitHub release inventory of all 3 connected NQ private repositories: 2020–2022 historical archive contains NQ/MNQ MINUTE bars; available tick Last/Bid/Ask releases are 2025–2026 only. There is NO 2020–2022 NQ tick release located to perform the preregistered real IST fill parity. S0.24 user selected M1-only initial search; prior prerequisite to obtain IST Last/Bid/Ask ticks is replaced by preregistered OHLC conservatism. New isolated synthetic reference defines stop-first dual touch, adverse stop gaps/slippage, no favorable target gap improvement, pending same-bar target suppression and limit-one-tick trade-through (exact touch is not sufficient). 286 synthetic QA tests PASS run 40784552670, not independent broker parity. Existing frozen V2.1 order engine still fills LIMIT exact touches: KNOWN DIFFERENCE needing integration before economic release. Formal gate remains BLOCKED. S0.25 synthetic signal bridge calls one-next-bar conservative M1 entry reference (MARKET/LIMIT/STOP) after completed signal; no exit, no full 1–30-bar expiry, no equity/PnL and no independent real IST parity. Previous V2.1 LIMIT exact-touch issue remains. S0.26 NEW VERSION separate from original V2.1: artificial-only full M1 order lifecycle across MARKET/LIMIT/STOP, pending 1–30 bar expiry, SL-first dual touch, adverse stop gaps, 1-tick trade-through also required for TP LIMIT, previous-bar trailing/breakeven and 11:29 flat; 319 technical synthetic tests success run 40787427627. No independent real IST verification, exact queue/paths unknowable, formal gate remains BLOCKED.",
+      "evidence": "Synthetic atomic Last first-touch reference demonstrates OHLC stop-first ambiguity; no independent real NinjaTrader/tick replay parity yet S0.19 GitHub release inventory of all 3 connected NQ private repositories: 2020–2022 historical archive contains NQ/MNQ MINUTE bars; available tick Last/Bid/Ask releases are 2025–2026 only. There is NO 2020–2022 NQ tick release located to perform the preregistered real IST fill parity. S0.24 user selected M1-only initial search; prior prerequisite to obtain IST Last/Bid/Ask ticks is replaced by preregistered OHLC conservatism. New isolated synthetic reference defines stop-first dual touch, adverse stop gaps/slippage, no favorable target gap improvement, pending same-bar target suppression and limit-one-tick trade-through (exact touch is not sufficient). 286 synthetic QA tests PASS run 40784552670, not independent broker parity. Existing frozen V2.1 order engine still fills LIMIT exact touches: KNOWN DIFFERENCE needing integration before economic release. Formal gate remains BLOCKED. S0.25 synthetic signal bridge calls one-next-bar conservative M1 entry reference (MARKET/LIMIT/STOP) after completed signal; no exit, no full 1–30-bar expiry, no equity/PnL and no independent real IST parity. Previous V2.1 LIMIT exact-touch issue remains. S0.26 NEW VERSION separate from original V2.1: artificial-only full M1 order lifecycle across MARKET/LIMIT/STOP, pending 1–30 bar expiry, SL-first dual touch, adverse stop gaps, 1-tick trade-through also required for TP LIMIT, previous-bar trailing/breakeven and 11:29 flat; 319 technical synthetic tests success run 40787427627. No independent real IST verification, exact queue/paths unknowable, formal gate remains BLOCKED. S0.34/S0.35 first real IST frozen AST pilot: 12 AST x 3 preselected days produced 14 modeled completed trades, original 143 POST_FILL risk/target invalidations; S0.35 moved protection/risk/target to PRE_ORDER decision using only closed signal bar, same AST/date real run 40897497159 yields 463 PRE_ORDER rejections and 0 remaining POST_FILL unmodelled IN THIS SAMPLE. CI 40897125808 381 tests. This is insufficient for certified order fills, exact MFFU risk, full 10K G0/D1 or NinjaTrader parity.",
       "remaining": [
         "Integrate and independently cross-check the chosen conservative M1-only fill scenario across all entry types, both sides, SL/TP/trailing/gaps, pending expiry, same-bar uncertainty and costs; do not use a Last-tick/original broker parity claim",
         "Repair known discrepancy: frozen V2.1 order runner permits LIMIT touch-only fills, whereas S0.24 conservative M1 protocol requires one-tick trade-through or marketable-at-open",
@@ -480,7 +502,7 @@
     {
       "id": "RISK_AND_ACCOUNT",
       "state": "BLOCKED",
-      "evidence": "Builder 50K provisional arithmetic; independent crosschecks from synthetic shared NQ event replay include EOD trailing floor and floating hard/soft breach; historical or live funded conditions unconfirmed. Official 2026-09-24 MFFU plan matrix implemented as isolated fail-closed configuration profiles: Builder default 50K MLL $2K and DLL $1K soft; Builder add-on MLL $1.5K; Rapid/Pro variants have different consistency and DLL. Full account selection/funding phase unknown; profiles do not certify financial engine. S0.26 artificial 1 NQ model applies $300 initial model risk cap, max two entries per day, reference -$600 daily closed synthetic pause; these are NOT the user's exact purchased MFFU program; no joint portfolio risk nor floating/EOD MLL review. Protective gap loss may exceed cap.",
+      "evidence": "Builder 50K provisional arithmetic; independent crosschecks from synthetic shared NQ event replay include EOD trailing floor and floating hard/soft breach; historical or live funded conditions unconfirmed. Official 2026-09-24 MFFU plan matrix implemented as isolated fail-closed configuration profiles: Builder default 50K MLL $2K and DLL $1K soft; Builder add-on MLL $1.5K; Rapid/Pro variants have different consistency and DLL. Full account selection/funding phase unknown; profiles do not certify financial engine. S0.26 artificial 1 NQ model applies $300 initial model risk cap, max two entries per day, reference -$600 daily closed synthetic pause; these are NOT the user's exact purchased MFFU program; no joint portfolio risk nor floating/EOD MLL review. Protective gap loss may exceed cap. S0.34/S0.35 first real IST frozen AST pilot: 12 AST x 3 preselected days produced 14 modeled completed trades, original 143 POST_FILL risk/target invalidations; S0.35 moved protection/risk/target to PRE_ORDER decision using only closed signal bar, same AST/date real run 40897497159 yields 463 PRE_ORDER rejections and 0 remaining POST_FILL unmodelled IN THIS SAMPLE. CI 40897125808 381 tests. This is insufficient for certified order fills, exact MFFU risk, full 10K G0/D1 or NinjaTrader parity.",
       "remaining": [
         "Confirm exact purchased 50K plan and phase; Builder default is an assumption not a fact",
         "Prove full pathwise floating equity/EOD trailing, daily soft stop and one-account order semantics using independent reference and all market path cases"
@@ -514,7 +536,7 @@
     {
       "id": "D1_ECONOMIC_ADAPTER",
       "state": "BLOCKED",
-      "evidence": "Synthetic D1 trade math, cost stress and frequency verified; IST indicative trade sample threshold 90 from original 150/60 months, no hard generator sample filtering S0.26 full-session artificial-price-only engine can calculate labeled synthetic_net_usd to check arithmetic for one candidate; does NOT consume IST dataset, does NOT create candidate economics/ranking/PF/DD, and is NOT a real D1 adapter. Needs independent accounting/cost parity and approved source contracts. S0.31 separate 120-rule explorer uses actual IST data to compute provisional historical proxy metrics with conservative OHLC, but does NOT constitute formal 10K V2.6 D1 evaluation nor a shared account MFFU validation. S0.31 shows large closed-DD examples and zero matching PF/trade count threshold.",
+      "evidence": "Synthetic D1 trade math, cost stress and frequency verified; IST indicative trade sample threshold 90 from original 150/60 months, no hard generator sample filtering S0.26 full-session artificial-price-only engine can calculate labeled synthetic_net_usd to check arithmetic for one candidate; does NOT consume IST dataset, does NOT create candidate economics/ranking/PF/DD, and is NOT a real D1 adapter. Needs independent accounting/cost parity and approved source contracts. S0.31 separate 120-rule explorer uses actual IST data to compute provisional historical proxy metrics with conservative OHLC, but does NOT constitute formal 10K V2.6 D1 evaluation nor a shared account MFFU validation. S0.31 shows large closed-DD examples and zero matching PF/trade count threshold. S0.34/S0.35 first real IST frozen AST pilot: 12 AST x 3 preselected days produced 14 modeled completed trades, original 143 POST_FILL risk/target invalidations; S0.35 moved protection/risk/target to PRE_ORDER decision using only closed signal bar, same AST/date real run 40897497159 yields 463 PRE_ORDER rejections and 0 remaining POST_FILL unmodelled IN THIS SAMPLE. CI 40897125808 381 tests. This is insufficient for certified order fills, exact MFFU risk, full 10K G0/D1 or NinjaTrader parity.",
       "remaining": [
         "Formal D1 adapter with original frozen gates and floating DD/period aggregation",
         "Run synthetic parity against legacy reference before any future IST economic stage"

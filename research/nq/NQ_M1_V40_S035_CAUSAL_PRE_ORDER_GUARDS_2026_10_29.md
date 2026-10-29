@@ -19,3 +19,9 @@
 - La versión previa sigue archivada con 143 posfill no modelados y no debe mezclarse su PnL con S0.35.
 - Los resultados históricos tras la corrección deben confirmarse en la misma fuente ZIP SHA congelada, en el runner privado, y añadirse al maestro/bitácora con un nuevo artifact SHA.
 - 13 gates pre-económicos siguen 0/13 verificados y ejecutabilidad real/NinjaTrader sin certificar; años 2023–26 sin leer, selección/portafolio todavía no habilitados.
+
+## Ejecución IST real corregida: prueba de que el guard se movió PRE-orden
+
+[Run privado #40897497159 SUCCESS](https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40897497159) sobre la misma fuente, mismo conjunto AST y mismas 3 sesiones: **463 rechazos PRE_ORDER**, **0 eventos POST_FILL no modelados en esta muestra**, **14 operaciones modelo completas** y 2.235 comprobaciones de señal indisponibles. En S0.34 eran 143 POST_FILL sin modelar. La comparación es un test de causalidad y secuenciación, no de rentabilidad de estrategias ni del perfil financiado. [Artifact corregido 12908270756](https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40897497159/artifacts/12908270756) SHA256 `4f4047074a79b8bc3bab7a753a5dba4a9f3262b0f75ac9dd1da29a5e8d674552`. [Evidencia JSON permanente](NQ_M1_V40_S035_REAL_IST_AST_PREORDER_143_TO_ZERO_EVIDENCE_2026_10_29.json).
+
+**Limitaciones persistentes:** la cota de riesgo usa precio hipotético al colocar la orden, puede degradarse con gap posterior; el full-session/portfolio DD no está certificado, el detector de 132 rutas sigue necesitando semántica completa, ISV1/ISV2 cerrados, la muestra de 3 días carece de representatividad y 0/13 gates formales han aprobado.

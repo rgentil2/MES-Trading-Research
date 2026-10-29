@@ -17,3 +17,7 @@
 [CI #40896243585 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40896243585), **379/379 pruebas** (6 adicionales); comparador diferencial S0.26, causalidad, horario, años reservados, rechazo de ZIP sin SHA, cancelaciones posfill no modeladas y ausencia de PF en caso sin trades.
 
 La ejecución real de este replay deberá efectuarse en el repositorio privado, con una nueva versión de workflow firmada. **Una muestra de 3 sesiones nunca basta para aceptar una estrategia.** Los 13 gates formales siguen 0/13 PASSED_VERIFIED, la campaña 10.000 AST todavía no tiene backtest económico, 2023–2026 permanecen sin leer y el portafolio ganador requerirá backtest independiente en NinjaTrader 8.
+
+## Resultado posterior: replay IST real ejecutado
+
+[Run #40896676531 SUCCESS](https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40896676531) (fuente real NQ M1 2020–22): 12 AST predefinidas × 3 sesiones, 14 operaciones modelo completas y **143 eventos POST_FILL no modelados**. Los eventos detectados demostraron un error de secuenciación de la orden: no se podía cancelar sin riesgo después del fill. **No usar este PnL parcial como fitness ni como selector.** [Artifact 12906672973](https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40896676531/artifacts/12906672973). Corregido en [S0.35](NQ_M1_V40_S035_CAUSAL_PRE_ORDER_GUARDS_2026_10_29.md), se repitieron AST y fechas sin cambio de parámetros y desaparecieron esas invalidaciones posfill en la misma muestra.
