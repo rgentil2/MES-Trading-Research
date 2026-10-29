@@ -1,0 +1,44 @@
+name: NQ S0.35 pre-order causal protection versus post-fill veto QA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/nq-s035-preorder-risk-target-causal-v40-20261029]
+    paths:
+      - "research/nq/nq_m1_v39_ast_ist_exploratory_order_replay.py"
+      - "research/nq/test_nq_m1_v39_ast_ist_exploratory_order_replay.py"
+      - ".github/workflows/nq-m1-v40-s035-preorder-risk-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  causal-preorder-protection:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy pandas "TA-Lib==0.6.8"
+      - name: Verify full NQ no-market regression and separate pre-order risk QA
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/nq -p 'test_nq_m1_v*.py' -q
+      - name: Never claim actual economic release or real fill parity
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from research.nq.nq_m1_v22_quality_gate import audit
+          g=audit()
+          assert g['checks_total']==13 and g['passed_verified']==0
+          assert g['decision']=='EXECUTION_BLOCKED'
+          print("NQ_S035_PROTECTION_BEFORE_ORDER_ONLY_EXPLORATORY_GAP_RISK_OPEN")
+          PY
