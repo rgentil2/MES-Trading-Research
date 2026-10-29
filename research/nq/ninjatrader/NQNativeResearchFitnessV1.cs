@@ -1,5 +1,6 @@
-// S0.40 optional native Strategy Analyzer Optimization Fitness.
+// S0.40/S0.41 optional native Strategy Analyzer Optimization Fitness.
 // Install alongside NQNativeGeneticLabV1.cs in NinjaTrader's NinjaScript Editor.
+// Correct NT8 TradesPerformanceValues.Drawdown casing per official API.
 // Not compiled/tested in NinjaTrader yet; no forward/holdout authorization.
 //
 // Fitness = G0-like coarse gating for research ON IST 2020-22 ONLY.
@@ -19,7 +20,7 @@ namespace NinjaTrader.NinjaScript.OptimizationFitnesses
             int trades = performance.TradesCount;
             double pf = performance.ProfitFactor;
             double net = performance.NetProfit;
-            double closedDrawdown = Math.Abs(performance.Currency.DrawDown);
+            double closedDrawdown = Math.Abs(performance.Currency.Drawdown);
 
             // Fail closed, no optimization reward for tiny-sample/no-loss
             // systems, or for unacceptable closed-trade drawdown.
