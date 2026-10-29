@@ -46,8 +46,11 @@ class TestS031Exploratory(unittest.TestCase):
     def test_ends_no_later_than_1129_and_entry_next_bar(self):
         from research.nq.nq_m1_chrono_discovery import catalog
         rule=next(z for z in catalog(self.cfg)
-                  if z["family"]=="CONTINUATION" and z["target_r"] is None)
-        trades,_=s.run_day(self.arr[0],rule,self.cfg)
+                  if z["family"]=="CONTINUATION" and z["target_r"] is None
+                  and z["stop_model"]=="ATR")
+        bars=np.array([[20000.+i,20002.+i,19999.+i,20001.+i,2000.]
+                       for i in range(390)],float)
+        trades,_=s.run_day(bars,rule,self.cfg)
         self.assertTrue(trades)
         for tr in trades:
             self.assertEqual(tr["entry_idx"],tr["signal_idx"]+1)
@@ -59,8 +62,10 @@ class TestS031Exploratory(unittest.TestCase):
     def test_model_stop_before_tp_on_ambiguous_market_entry_minute(self):
         from research.nq.nq_m1_chrono_discovery import catalog
         r=next(x for x in catalog(self.cfg)
-               if x["family"]=="CONTINUATION" and x["target_r"]==2.)
-        sample=self.arr[0].copy()
+               if x["family"]=="CONTINUATION" and x["target_r"]==2.
+               and x["stop_model"]=="ATR")
+        sample=np.array([[20000.+i,20002.+i,19999.+i,20001.+i,2000.]
+                         for i in range(390)],float)
         idx=30
         side=signal(sample[:idx+1],idx,r)
         self.assertEqual(side,1)
