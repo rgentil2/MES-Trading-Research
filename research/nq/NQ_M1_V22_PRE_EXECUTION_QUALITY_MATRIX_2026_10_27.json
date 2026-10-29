@@ -350,6 +350,38 @@
       "economic_fitness_evaluated": false,
       "ninjatrader_8_portfolio_backtest_executed": false,
       "formal_gate_verified_count": 0
+    },
+    "s031_IST_120_control_exploratory_actual": {
+      "market_run": "https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40870203417",
+      "diagnostic_run": "https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40870689524",
+      "data_scope": "REAL_IST_2020_2022_NQ_M1_735_FULL_SESSIONS",
+      "price_used": true,
+      "pilot_rules": 120,
+      "pilot_indicators": "LEGACY_5_FAMILIES_NOT_132_AST",
+      "modeled_trades_across_separate_rule_alternatives": 70353,
+      "positive_net_pilots": 31,
+      "pf_ge_1_25": 8,
+      "trades_ge_150": 94,
+      "closed_trade_dd_le_2000": 12,
+      "pf_ge_1_25_and_trades_ge_150": 0,
+      "complete_shared_account_economic_gates_passed": false,
+      "real_source_broker_fills_verified": false,
+      "original_10000_AST_financially_scored": 0,
+      "quality_gates_passed_verified": 0
+    },
+    "s032_10k_static_intraday_warmup": {
+      "ci": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40871008503",
+      "tests_passed": 368,
+      "original_cohort_sha": "b9d2915fc55f86546ef63d74a588df5244d094eeecb4a7c900a4000d47660be9",
+      "candidates_regenerated": 10000,
+      "no_static_two_side_barrier_under_intraday_only": 9130,
+      "one_side_static_warmup_barrier": 846,
+      "both_sides_static_warmup_barrier": 24,
+      "candidates_discarded": 0,
+      "formally_admitted_G0": 0,
+      "historical_price_used": false,
+      "profit_or_fitness_computed": false,
+      "quality_gates_passed_verified": 0
     }
   },
   "criteria": [
@@ -447,7 +479,7 @@
     {
       "id": "G0_D0_ADAPTERS",
       "state": "BLOCKED",
-      "evidence": "Registry-based pre-D0 validator checked all 100 frozen engineering ASTs with typed threshold bounds: 82 structurally interpretable, 18 pending technical implementation; NOT legacy G0/D0 parity nor economic selection. S0.23 10000 original ASTs have passed an independent static envelope/registry/AST/lineage scope precheck. This is PRE_G0_WAITING only, NOT formal G0 or D0, and no trades/ISV/holdouts were read; actual adapters/economic validators still outstanding. S0.25 132-registered AST signal semantics can now be evaluated on caller-supplied synthetic M1, with provenance validation, three-valued logic and conservative first-bar entry scenarios. This is a TECHNICAL BRIDGE, NOT the formal G0/D0 adapter or a trade-level precheck; no formal PASS. S0.26 life-cycle integration now structurally tests same AST signal, pending/fill/SL/TP/forced-exit chain using code-generated artificial 390-bar days; none of the 10000 candidate cohort run on real IST and no formal G0/D0 admissions or failure counts computed.",
+      "evidence": "Registry-based pre-D0 validator checked all 100 frozen engineering ASTs with typed threshold bounds: 82 structurally interpretable, 18 pending technical implementation; NOT legacy G0/D0 parity nor economic selection. S0.23 10000 original ASTs have passed an independent static envelope/registry/AST/lineage scope precheck. This is PRE_G0_WAITING only, NOT formal G0 or D0, and no trades/ISV/holdouts were read; actual adapters/economic validators still outstanding. S0.25 132-registered AST signal semantics can now be evaluated on caller-supplied synthetic M1, with provenance validation, three-valued logic and conservative first-bar entry scenarios. This is a TECHNICAL BRIDGE, NOT the formal G0/D0 adapter or a trade-level precheck; no formal PASS. S0.26 life-cycle integration now structurally tests same AST signal, pending/fill/SL/TP/forced-exit chain using code-generated artificial 390-bar days; none of the 10000 candidate cohort run on real IST and no formal G0/D0 admissions or failure counts computed. S0.31 real IST preregistered 120 CONTROL rules (separate from 10K AST): 735 NQ M1 complete days 2020-22, 70353 model fills across alternative rules, 31 net-positive but 0 with PF>=1.25 and >=150 trades; source/private runs 40870203417 and 40870689524. S0.32 no-market static lower-bound warmup on original frozen 10K: 9130 no proven two-side blocker, 846 one-side, 24 both-side under intraday-only assumptions, none excluded or admitted. The formal 10K G0/D0 adapter is still BLOCKED.",
       "remaining": [
         "Implement and independently compare formal G0/D0 invariant adapter to legacy cohort reference",
         "Prove AST registry parameters and stop/entry risk contract on representative synthetic cases",
@@ -459,7 +491,7 @@
     {
       "id": "D1_ECONOMIC_ADAPTER",
       "state": "BLOCKED",
-      "evidence": "Synthetic D1 trade math, cost stress and frequency verified; IST indicative trade sample threshold 90 from original 150/60 months, no hard generator sample filtering S0.26 full-session artificial-price-only engine can calculate labeled synthetic_net_usd to check arithmetic for one candidate; does NOT consume IST dataset, does NOT create candidate economics/ranking/PF/DD, and is NOT a real D1 adapter. Needs independent accounting/cost parity and approved source contracts.",
+      "evidence": "Synthetic D1 trade math, cost stress and frequency verified; IST indicative trade sample threshold 90 from original 150/60 months, no hard generator sample filtering S0.26 full-session artificial-price-only engine can calculate labeled synthetic_net_usd to check arithmetic for one candidate; does NOT consume IST dataset, does NOT create candidate economics/ranking/PF/DD, and is NOT a real D1 adapter. Needs independent accounting/cost parity and approved source contracts. S0.31 separate 120-rule explorer uses actual IST data to compute provisional historical proxy metrics with conservative OHLC, but does NOT constitute formal 10K V2.6 D1 evaluation nor a shared account MFFU validation. S0.31 shows large closed-DD examples and zero matching PF/trade count threshold.",
       "remaining": [
         "Formal D1 adapter with original frozen gates and floating DD/period aggregation",
         "Run synthetic parity against legacy reference before any future IST economic stage"

@@ -1,0 +1,21 @@
+{
+  "schema": "NQ_S032_FROZEN_10K_INTRADAY_WARMUP_STATIC_EVIDENCE_20261029",
+  "date": "2026-10-29",
+  "frozen_10k_bundle_sha256": "b9d2915fc55f86546ef63d74a588df5244d094eeecb4a7c900a4000d47660be9",
+  "ci": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40871008503",
+  "ci_tests_passed": 368,
+  "artifact": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40871008503/artifacts/12895153689",
+  "artifact_zip_sha256": "dd8492b276a66462aee373a54089798b3132acc9eda6fad169df2c28bc70dd50",
+  "candidate_count": 10000,
+  "known_two_sides_session_only_unreachable": 24,
+  "one_side_session_only_unreachable": 846,
+  "no_proven_2side_session_only_barrier": 9130,
+  "all_candidates_preserved": true,
+  "no_price_data_used": true,
+  "no_IST_strategy_performance_evaluated": true,
+  "full_validated_same_contract_prior_session_warmup_not_completed": true,
+  "formal_G0_passes": 0,
+  "formal_13_economic_release_gates_verified": 0,
+  "isv1_2023_isv2_2024_2025_2026_opened": false,
+  "warning": "Static lower-bound conditional on intraday-only warmup of supported formula names. A flagged candidate may be valid with authenticated prior-same-contract warmup and other formulas are unassessed. None is rejected, ranked or called a winner."
+}
