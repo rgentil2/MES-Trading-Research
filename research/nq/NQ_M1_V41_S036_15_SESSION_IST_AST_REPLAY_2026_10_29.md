@@ -1,0 +1,9 @@
+# S0.36 — Escalar el replay económico exploratorio a las 15 sesiones fuente/rollover de IST
+
+**2026-10-29.** El replay original S0.34/S0.35 analizó 12 AST congeladas × 3 días (primero/medio/último) y detectó/corrigió un defecto de veto posfill: S0.35 logró 0 POST_FILL no modelados en esa muestra con 463 rechazos preventivos. La siguiente prueba ampliará **las mismas 12 AST originales** a **15 fechas preregistradas** (primera, central, última y primera de los 12 cambios de contrato), permitiendo encontrar escenarios adicionales de gap/riesgo/semántica sin buscar fechas por beneficio.
+
+Código [`nq_m1_v41_ast_15_session_ist_exploratory_replay.py`](nq_m1_v41_ast_15_session_ist_exploratory_replay.py) reutiliza S0.35 y la misma función de selección de sesiones de S0.33. Preserva 1 NQ por regla, ventana 09:35–11:27, next-bar order, SL-first, TP trade-through, flat 11:29, costes $4.68 RT + 2 ticks lado, riesgo referencia stop US$300 y pausa diaria cerrada US$600, **sin considerar oficial la regla MFFU**. La fuente original se valida SHA256 antes de abrir 15 archivos IST NQ M1 2020–22; 2023–26 permanecen excluidos. Máximo 12 alternativas, **no un portafolio compartido**.
+
+Produce recuentos agregados, 15 días por AST, trades-modelo, resultados netos parciales, PF y DD de operaciones cerradas solo como datos de depuración, con marca NO SELECCIONABLE. La presencia de cualquier `POST_FILL_*` en días ampliados obliga a reportar el modelo económico incompleto; una ausencia no certifica llenado exchange, gap máximo, drawdown flotante o cuenta MFFU.
+
+[CI sintético #40898700031 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/40898700031): **385 pruebas PASS**. Escribiremos separadamente la evidencia real del ZIP privado tras ejecutar su workflow, sin inferir ganadores ni promocionar G0. Los 13 gates técnicos formales permanecen 0/13; el posterior backtest del portafolio congelado en NinjaTrader 8 sigue obligatorio.
