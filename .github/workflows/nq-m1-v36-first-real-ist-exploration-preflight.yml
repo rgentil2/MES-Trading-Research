@@ -1,0 +1,42 @@
+name: NQ S0.31 exploratory IST 120-rule pilot artificial preflight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install numerical dependencies
+        run: python -m pip install numpy pandas "TA-Lib==0.6.8"
+      - name: Full no-market technical and exploratory pilot preflight
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/nq -p 'test_nq_m1_v*.py' -q
+      - name: Verify non-certified exploratory mode never releases economic production gates
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from research.nq.nq_m1_v22_quality_gate import audit
+          from research.nq.nq_m1_v36_ist_exploratory_120 import STATUS,guard
+          q=audit()
+          assert q['checks_total']==13 and q['passed_verified']==0
+          assert q['decision']=='EXECUTION_BLOCKED'
+          assert 'EXPLORATORY' in STATUS and 'NOT_10K' in STATUS
+          guard()
+          print('NQ_S031_FIRST_SEARCH_PREPARED_NOT_FINAL_OR_CERTIFIED')
+          PY
