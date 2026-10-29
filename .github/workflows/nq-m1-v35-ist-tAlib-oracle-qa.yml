@@ -2,12 +2,6 @@ name: NQ S0.30 real-IST math oracle adapter synthetic regression
 
 on:
   workflow_dispatch:
-  push:
-    branches: [research/nq-s030-real-ist-independent-tAlib-20261029]
-    paths:
-      - "research/nq/nq_m1_v35_real_ist_talib_oracles_qa.py"
-      - "research/nq/test_nq_m1_v35_real_ist_talib_oracles_qa.py"
-      - ".github/workflows/nq-m1-v35-ist-tAlib-oracle-qa.yml"
 
 permissions:
   contents: read
