@@ -77,6 +77,26 @@ def replay_one_day(bars,day,strategy,session_context=None):
         level=(None if kind=="MARKET" else
                float(bars[index,3])+side*TICK*offset if kind=="STOP"
                else float(bars[index,3])-side*TICK*offset)
+        # ALL protective decisions below use ONLY the completed signal bar.
+        # For MARKET the next open cannot be known; the signal-close plus
+        # adverse entry slippage is a transparent provisional reference.
+        # STOP/LIMIT quote the previously submitted exact requested price.
+        # This avoids using next-bar fill price to "cancel" orders post-fill.
+        quote=(float(bars[index,3])+side*DEFAULT_SLIP_TICKS_SIDE*TICK
+               if kind=="MARKET" else level)
+        anticipated_risk=_stop_distance(bars,index,side,quote,exits,prior)
+        if anticipated_risk is None:
+            count["PRE_ORDER_NO_PROTECTION"]+=1;index+=1;continue
+        anticipated_cap=(anticipated_risk*POINT_USD+
+                         DEFAULT_SLIP_TICKS_SIDE*TICK*POINT_USD+
+                         COMMISSION_RT_USD)
+        if anticipated_cap>ACCOUNT_INTERNAL["max_initial_risk_usd"]:
+            count["PRE_ORDER_RISK_CAP"]+=1;index+=1;continue
+        anticipated_target,anticipated_reason=_target_distance(
+            bars,index,side,quote,anticipated_risk,exits,prior)
+        if anticipated_reason not in ("VALID","NO_TARGET"):
+            count["PRE_ORDER_TARGET_"+anticipated_reason]+=1
+            index+=1;continue
         expiry=min(CLOSE_IDX-1,
                    index+(1 if kind=="MARKET" else int(spec["expiry_bars"])))
         fill_idx=None;price=None;fill_reason=None
@@ -161,12 +181,18 @@ def evaluate_fixed_sample(dates,bars,source,strategies,chosen=None):
             "closed_trade_dd_usd":round(dd,2),
             "post_fill_unmodelled":sum(v for k,v in local.items()
                                       if k.startswith("POST_FILL_")),
+            "pre_order_rejected":sum(v for k,v in local.items()
+                                      if k.startswith("PRE_ORDER_")),
+            "economic_metrics_incomplete_if_postfill":any(
+                v for k,v in local.items() if k.startswith("POST_FILL_")),
             "signal_unavailable":local["UNAVAILABLE_SOME_SIGNAL_DATA"],
             "ambiguous_sl_first_bars":sum(r["ambiguous_bars"] for r in records),
             "research_only_insufficient_three_day_sample":True
         })
         total["trades_across_alternative_AST_not_portfolio"]+=len(records)
         total["post_fill_unmodelled"]+=summary[-1]["post_fill_unmodelled"]
+        total["pre_order_rejected"]+=sum(
+            v for k,v in local.items() if k.startswith("PRE_ORDER_"))
         total["signal_unavailable"]+=summary[-1]["signal_unavailable"]
     return {
         "schema":"NQ_S034_FROZEN_10K_AST_FIRST_COMPLETE_MODEL_TRADES_PILOT_V1",
@@ -177,6 +203,8 @@ def evaluate_fixed_sample(dates,bars,source,strategies,chosen=None):
         "cost_rt_usd":COMMISSION_RT_USD,
         "slippage_ticks_side":DEFAULT_SLIP_TICKS_SIDE,
         "account_loss_limits_only_provisional":True,
+        "pre_order_stop_target_risk_checks_causal":True,
+        "gap_risk_after_fill_remains_unbounded_on_M1":True,
         "portfolio_jointly_simulated":False,
         "sample_sufficient_for_strategy_selection":False,
         "formal_G0_D0_D1_D2_approved":False,
