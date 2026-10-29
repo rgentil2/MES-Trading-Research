@@ -283,6 +283,36 @@
       "formal_economic_gates_passed_verified": 0,
       "n8_gate_state": "NOT_STARTED_NO_WINNER",
       "proof": "research/nq/NQ_M1_V33_N8_PORTFOLIO_WINNER_PARITY_GATE_2026_10_28.json"
+    },
+    "s029_external_math_parity_expansion": {
+      "independent_reference": "TA-Lib 0.6.8",
+      "initial_failed_ci": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40865408719",
+      "initial_adxr_failed_subtests": 21,
+      "issue": "ADXR lag was t-n; independent TA-Lib uses t-(n-1)",
+      "corrected_v26_math_file": "research/nq/nq_m1_v26_trend_momentum.py",
+      "passed_ci": "https://github.com/rgentil2/MES-Trading-Research/actions/runs/40865519690",
+      "synthetic_test_total_passed": 351,
+      "new_independent_oracle_test_methods": 6,
+      "new_reference_compared_indicator_names": [
+        "SMA",
+        "EMA",
+        "WMA",
+        "DEMA",
+        "TEMA",
+        "TRIMA",
+        "APO",
+        "TRIX",
+        "ATR",
+        "NATR",
+        "ADXR"
+      ],
+      "series_type": "ARTIFICIAL_OHLCV_ONLY",
+      "three_series_1024_bars_each": true,
+      "candidate_frozen_10000_unchanged": true,
+      "historical_source_used": false,
+      "all_132_independently_certified": false,
+      "ninjatrader_backtest_run": false,
+      "quality_gates_passed_verified": 0
     }
   },
   "criteria": [
@@ -300,7 +330,7 @@
     {
       "id": "INDICATOR_LIBRARY_132",
       "state": "BLOCKED",
-      "evidence": "Frozen V2.1: 38 implemented; original 15 independently paritied; 2 additional independent composite TA-Lib oracle checks for Z-Score and Bollinger Bandwidth (NOT yet promoted to full certification). True Range matches TA-Lib after idx0 but differs at startup, flagged. Five incubator prototypes externally tested but not integrated. S0.19/S0.20: 12 additional isolated scalar definitions plus 12 causal candlestick-rule prototypes; 234 public QA tests passed. Inventory is now frozen 38 active, 5 original isolated, 24 new isolated, 65 catalogue names still have NO implementation. None of the 29 isolated blocks has been promoted/certified as V2.1 executable. S0.21: all 132 catalogue names have actual callable causal calculator routes in isolated new V2.6 reader; 38 prior active frozen plus 29 prior isolated and 65 newly implemented. Six mainstream formula families additionally cross-checked against TA-Lib synthetic oracles; full 132 external parity and StrategyQuant/NinjaTrader conventions UNVERIFIED. V2.6 output choices incl custom Hilbert FFT and provisional True Range ratio explicitly documented; no release. S0.22 full 132 design names appear in 10000 distinct structural ASTs plus separate one-per-132 coverage manifest, but formulas remain experimental/uncertified, so indicator gate stays BLOCKED. S0.25 V3.0 AST signal adapter actually invokes each of the 132 code routes through typed predicate evaluation over synthetic NQ M1 (CI 40786401583, 303 PASS). Discovered TEMA premature [-1] error for 3n−2 insufficient warmup, isolated incubator corrected to return unavailable; no promotion of formula external parity. S0.27 real-source spot-check calls to all 132 indicator code routes across selected actual 2020-22 NQ M1 sessions: 3,960 calls, no exceptions, 1,980 future mutation probes with no causality changes. This does NOT establish 132 independent mathematical equivalences to TA-Lib, NT8 or SQX.",
+      "evidence": "Frozen V2.1: 38 implemented; original 15 independently paritied; 2 additional independent composite TA-Lib oracle checks for Z-Score and Bollinger Bandwidth (NOT yet promoted to full certification). True Range matches TA-Lib after idx0 but differs at startup, flagged. Five incubator prototypes externally tested but not integrated. S0.19/S0.20: 12 additional isolated scalar definitions plus 12 causal candlestick-rule prototypes; 234 public QA tests passed. Inventory is now frozen 38 active, 5 original isolated, 24 new isolated, 65 catalogue names still have NO implementation. None of the 29 isolated blocks has been promoted/certified as V2.1 executable. S0.21: all 132 catalogue names have actual callable causal calculator routes in isolated new V2.6 reader; 38 prior active frozen plus 29 prior isolated and 65 newly implemented. Six mainstream formula families additionally cross-checked against TA-Lib synthetic oracles; full 132 external parity and StrategyQuant/NinjaTrader conventions UNVERIFIED. V2.6 output choices incl custom Hilbert FFT and provisional True Range ratio explicitly documented; no release. S0.22 full 132 design names appear in 10000 distinct structural ASTs plus separate one-per-132 coverage manifest, but formulas remain experimental/uncertified, so indicator gate stays BLOCKED. S0.25 V3.0 AST signal adapter actually invokes each of the 132 code routes through typed predicate evaluation over synthetic NQ M1 (CI 40786401583, 303 PASS). Discovered TEMA premature [-1] error for 3n−2 insufficient warmup, isolated incubator corrected to return unavailable; no promotion of formula external parity. S0.27 real-source spot-check calls to all 132 indicator code routes across selected actual 2020-22 NQ M1 sessions: 3,960 calls, no exceptions, 1,980 future mutation probes with no causality changes. This does NOT establish 132 independent mathematical equivalences to TA-Lib, NT8 or SQX. S0.29 TA-Lib crosschecks expanded to 11 formula names and 6 new oracle test methods on three synthetic 1024-bar OHLCV series; first CI 40865408719 found 21 ADXR failures due lag off-by-one; V2.6 ADXR fixed to t-(period-1), second CI 40865519690 351 tests PASS. This improves external-math evidence, but 132-indicator independent parity and full parameter domain still NOT verified.",
       "remaining": [
         "Independently certify all 132 mathematical specifications, parameter/output meanings, and warmup conventions with reference formulas/platforms",
         "Resolve custom provisional variants (True Range ratio, RSI band distance, Klinger, Hilbert FFT/Ehlers, multi-output pivot, zero-seed semantics) before any economic use",
@@ -312,7 +342,7 @@
     {
       "id": "PARAMETER_SEMANTICS",
       "state": "PARTIAL",
-      "evidence": "Typed levels/active parameters V2.1, 82/100 mechanically executable S0.20 custom candlestick body_ratio and shadow_ratio checked by causality and fixture tests, but not TA-Lib-equivalent; 12 additional scalar prototypes validate exact active parameter keys. Original 18 unsupported frozen ASTs unchanged. S0.21 V2.6 runtime checks all 132 exact registered parameter domains and IDs, typed output selections, typed zero-level threshold AST, causal session-anchor guard, and generator random/mutate/crossover lineage; original 18 V2.1 incompatible frozen candidates are not silently rewritten. S0.25 typed thresholds/lag semantics now connected to full AND/OR AST tri-state signal evaluation over 132 synthetic leaf routes; a missing indicator returns None and LONG=True SHORT=None cannot enter. Future-bar modification invariance tested; full parameter-efficacy across all 132 remains uncertified.",
+      "evidence": "Typed levels/active parameters V2.1, 82/100 mechanically executable S0.20 custom candlestick body_ratio and shadow_ratio checked by causality and fixture tests, but not TA-Lib-equivalent; 12 additional scalar prototypes validate exact active parameter keys. Original 18 unsupported frozen ASTs unchanged. S0.21 V2.6 runtime checks all 132 exact registered parameter domains and IDs, typed output selections, typed zero-level threshold AST, causal session-anchor guard, and generator random/mutate/crossover lineage; original 18 V2.1 incompatible frozen candidates are not silently rewritten. S0.25 typed thresholds/lag semantics now connected to full AND/OR AST tri-state signal evaluation over 132 synthetic leaf routes; a missing indicator returns None and LONG=True SHORT=None cannot enter. Future-bar modification invariance tested; full parameter-efficacy across all 132 remains uncertified. S0.29 TA-Lib crosschecks expanded to 11 formula names and 6 new oracle test methods on three synthetic 1024-bar OHLCV series; first CI 40865408719 found 21 ADXR failures due lag off-by-one; V2.6 ADXR fixed to t-(period-1), second CI 40865519690 351 tests PASS. This improves external-math evidence, but 132-indicator independent parity and full parameter domain still NOT verified.",
       "remaining": [
         "Certify every output and parameter materially affects signal under each generated predicate across independent data fixtures",
         "Resolve specific legacy ambiguous scalar output semantics and truncated contract lookbacks in new V2.6 track",
