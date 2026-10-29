@@ -16,7 +16,9 @@ class TestS037PostFillRootCause(unittest.TestCase):
         strategy=strat(stop_kind="STRUCTURE",target_kind="NONE")
         result=r.replay_one_day(gap,"2021-05-04",strategy)
         self.assertGreater(result["counts"].get(
-            "POST_FILL_RISK_CAP_UNMODELLED",0),0)
+            "FILLED_RISK_CAP_BREACH",0),0)
+        self.assertTrue(any(t["risk_cap_breach"] for t in result["trades"]))
+        self.assertTrue(any(t["risk_cap_excess_usd"]>0 for t in result["trades"]))
 
     def test_postfill_reason_categories_mark_derived_fitness_unusable(self):
         bars,_=artificial_m1(kind="UP")
@@ -30,11 +32,13 @@ class TestS037PostFillRootCause(unittest.TestCase):
         s=strat(stop_kind="STRUCTURE",target_kind="NONE")
         report=r.evaluate_fixed_sample(dates,tensor,source,[s])
         item=report["candidates"][0]
-        self.assertGreater(item["post_fill_unmodelled"],0)
-        self.assertGreater(item["post_fill_unmodelled_reason_counts"].get(
-            "POST_FILL_RISK_CAP_UNMODELLED",0),0)
-        self.assertFalse(report["historical_sample_order_model_complete"])
-        self.assertTrue(report["any_AST_provisional_PnL_incomplete"])
+        self.assertEqual(item["post_fill_unmodelled"],0)
+        self.assertGreater(item["executed_risk_cap_breaches"],0)
+        self.assertGreater(item["max_model_excess_risk_usd"],0)
+        self.assertTrue(report["historical_sample_order_model_complete"])
+        self.assertFalse(report["any_AST_provisional_PnL_incomplete"])
+        self.assertTrue(report["any_filled_position_violated_risk_cap"])
+        self.assertTrue(report["risk_cap_breaches_are_disqualifying_not_deleted"])
         self.assertFalse(report["candidate_fitness_or_winner_selection_permitted"])
         self.assertEqual(report["formal_13_gates_verified"],0)
 
