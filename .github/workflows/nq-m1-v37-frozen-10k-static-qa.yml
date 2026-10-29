@@ -2,12 +2,6 @@ name: NQ S0.32 frozen 10000 AST static 09:35 intraday warmup feasibility QA
 
 on:
   workflow_dispatch:
-  push:
-    branches: [research/nq-s031-real-ist-120-results-and-10k-static-feasibility-20261029]
-    paths:
-      - "research/nq/nq_m1_v37_10k_intraday_warmup_audit.py"
-      - "research/nq/test_nq_m1_v37_10k_intraday_warmup_audit.py"
-      - ".github/workflows/nq-m1-v37-frozen-10k-static-qa.yml"
 
 permissions:
   contents: read
