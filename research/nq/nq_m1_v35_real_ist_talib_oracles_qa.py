@@ -72,7 +72,13 @@ def compare_selected_ist(dates,bars,source,expected_counts=False):
                         FloatingPointError,ZeroDivisionError) as exc:
                     mismatches[name+"_RUNTIME_"+type(exc).__name__]+=1
                     continue
+                # AST router explicitly normalizes ADXR to a signed
+                # distance from its registered threshold. Compare to the
+                # *same* TA-Lib ADXR transform; raw-vs-transformed is not
+                # evidence of a mathematical mismatch.
                 expected=float(ref[t])
+                if name=="ADXR" and np.isfinite(expected):
+                    expected-=float(params["threshold"])
                 if actual is None or not np.isfinite(expected):
                     mismatches[name+"_UNAVAILABLE_WHEN_REFERENCE_READY"]+=1
                     continue
