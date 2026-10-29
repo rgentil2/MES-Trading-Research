@@ -1,0 +1,57 @@
+name: NQ S0.40 Native NinjaTrader StrategyQuant prototype source contract
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/nq-s040-native-ninjatrader-strategyquant-prototype-20261029]
+    paths:
+      - "research/nq/ninjatrader/**"
+      - "research/nq/NQ_M1_V45_S040_NATIVE_STRATEGYQUANT_NT8_ARCHITECTURE_2026_10_29.md"
+      - ".github/workflows/nq-native-v45-ninjascript-source-contract.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  source-contract-only-not-nt8-compiled:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - name: Enforce NINJASCRIPT-only generation, structure genes and risk scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          s=research/nq/ninjatrader/NQNativeGeneticLabV1.cs
+          f=research/nq/ninjatrader/NQNativeResearchFitnessV1.cs
+          test -s "$s"
+          test -s "$f"
+          grep -q 'class NQNativeGeneticLabV1 : Strategy' "$s"
+          grep -q 'void EvaluateSlot(int type, int n' "$s"
+          grep -q 'void OnBarUpdate()' "$s"
+          grep -q 'StopTargetHandling.PerEntryExecution' "$s"
+          grep -q 'Calculate.OnBarClose' "$s"
+          grep -q 'SetStopLoss(CalculationMode.Ticks, StopTicks)' "$s"
+          grep -q 'SetProfitTarget(CalculationMode.Ticks, TargetTicks)' "$s"
+          grep -q 'FirstSignalHHmmss = 93500' "$s"
+          grep -q 'LastSignalHHmmss = 112700' "$s"
+          grep -q 'FlatSubmitHHmmss = 112800' "$s"
+          grep -q 'Time\[0\].Year < 2020 || Time\[0\].Year > 2022' "$s"
+          grep -q 'SystemPerformance.AllTrades.TradesPerformance.Currency.CumProfit' "$s"
+          grep -q 'class NQNativeResearchFitnessV1 : OptimizationFitness' "$f"
+          grep -q 'trades < 150' "$f"
+          grep -q 'pf < 1.25' "$f"
+          grep -q 'closedDrawdown > 2000.0' "$f"
+          n=$(grep -c '\[NinjaScriptProperty\]' "$s")
+          test "$n" -eq 9
+          test "$(grep -c '^                case [0-9]:' "$s")" -eq 10
+          # No Python/CSV or external signal files are opened by either script.
+          if grep -Ei '(^|[^A-Za-z])(StreamReader|ReadAllText|File\.Read|\.csv|Process\.Start)\b' "$s" "$f"; then
+            echo "Unexpected external data/signal reader in Ninja-only engine"
+            exit 1
+          fi
+          echo "NQ_S040_CSHARP_SOURCE_CONTRACT_PASS_10_PREDICATES_9_GENES"
+          echo "NOTE: THIS IS NOT A NINJATRADER COMPILATION OR STRATEGY ANALYZER RUN"
