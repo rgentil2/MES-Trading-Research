@@ -2,12 +2,6 @@ name: NQ S0.37 post-fill gap cause audit synthetic QA
 
 on:
   workflow_dispatch:
-  push:
-    branches: [research/nq-s037-postfill-rootcause-15day-20261029]
-    paths:
-      - "research/nq/nq_m1_v39_ast_ist_exploratory_order_replay.py"
-      - "research/nq/test_nq_m1_v42_s037_postfill_gap_cause.py"
-      - ".github/workflows/nq-m1-v42-s037-gap-cause-qa.yml"
 
 permissions:
   contents: read
