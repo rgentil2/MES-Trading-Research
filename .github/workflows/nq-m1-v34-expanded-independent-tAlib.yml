@@ -1,0 +1,48 @@
+name: NQ S0.29 expanded independent TA-Lib oracle synthetic QA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/nq-s029-expanded-tAlib-parity-20261029]
+    paths:
+      - "research/nq/test_nq_m1_v34_expanded_independent_talib.py"
+      - "research/nq/nq_m1_v26_trend_momentum.py"
+      - ".github/workflows/nq-m1-v34-expanded-independent-tAlib.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  strict-independent-numeric-oracles:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install external math reference and numeric libs
+        run: python -m pip install numpy pandas "TA-Lib==0.6.8"
+      - name: Run all NQ V2 synthetic tests including expanded independent oracle
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/nq -p 'test_nq_m1_v*.py' -q
+      - name: Deny economic release and selected portfolio claims
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from research.nq.nq_m1_v22_quality_gate import audit
+          x=audit()
+          assert x['checks_total']==13
+          assert x['passed_verified']==0
+          assert x['decision']=='EXECUTION_BLOCKED'
+          assert not x['ready_for_economic_execution']
+          print('NQ_S029_INDEPENDENT_ORACLES_ONLY_NO_MARKET_NO_PNL')
+          PY
