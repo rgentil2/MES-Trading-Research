@@ -81,7 +81,33 @@ class TestV39HistoricalASTPreliminaryReplay(unittest.TestCase):
         x=m.evaluate_fixed_sample(days,bars,meta,[s])["candidates"][0]
         self.assertEqual(x["model_trades"],0)
         self.assertIsNone(x["model_pf"])
-        self.assertGreater(x["post_fill_unmodelled"],0)
+        self.assertEqual(x["post_fill_unmodelled"],0)
+        self.assertGreater(x["pre_order_rejected"],0)
         self.assertTrue(x["research_only_insufficient_three_day_sample"])
+
+    def test_unavailable_causal_target_is_rejected_before_any_order(self):
+        dates,bars,meta=mock()
+        s=strat(target_kind="PIVOT")
+        day=m.replay_one_day(bars[0],dates[0],s)
+        self.assertEqual(day["trades"],[])
+        self.assertGreater(day["counts"].get(
+            "PRE_ORDER_TARGET_LEVEL_REFERENCE_NEEDS_FORMAL_DEFINITION",0),0)
+        self.assertEqual(sum(v for k,v in day["counts"].items()
+                             if k.startswith("POST_FILL_")),0)
+
+    def test_pretrade_risk_uses_completed_close_not_future_open(self):
+        dates,bars,meta=mock()
+        s=strat()
+        s["exit"]["stop_loss_required"]["points"]=40.
+        from research.nq.nq_m1_v26_structural_generator import sha
+        s["id"]="NQ26_"+sha(s)[:16]
+        baseline=m.replay_one_day(bars[0],dates[0],s)
+        changed=bars[0].copy()
+        changed[13:,:4]+=1000.
+        future_changed=m.replay_one_day(changed,dates[0],s)
+        self.assertEqual(baseline["trades"],[])
+        self.assertEqual(future_changed["trades"],[])
+        self.assertGreater(baseline["counts"].get("PRE_ORDER_RISK_CAP",0),0)
+        self.assertGreater(future_changed["counts"].get("PRE_ORDER_RISK_CAP",0),0)
 
 if __name__=="__main__":unittest.main()
