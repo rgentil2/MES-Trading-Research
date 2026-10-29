@@ -51,3 +51,9 @@ Cada transición económica exigirá SHA256 del resultado, CI y fuente de datos 
 Para que el embudo deje el estado `PRE_G0_WAITING`: cerrar certificación matemática/semántica de las 132 rutas, ejecución de órdenes en IST con tratamiento adecuado de ausencia de ticks 2020–22, exacto plan de MFFU 50K, adaptadores G0/D0/D1/D2, métricas compartidas de cartera y firma de las 13 evidencias. Preservar la regla de rollover usuario de jueves -8 días antes del tercer viernes trimestral, sin ajuste retrospectivo.
 
 **Prohibido:** llamar estrategias rentables o finalistas a estos 10.000 AST, usar los años 2023/24 para seleccionar parámetros, abrir 2025/26, o convertir una prueba sintética de preflight en aprobación formal de ejecución económica.
+
+## Ampliación posterior aprobada por el usuario (S0.28): etapa N8 antes de fondeo
+
+Una vez los 13 controles y G0/D0/D1/D2 estén listos, se seleccionará y congelará el portafolio ganador tras ISV1/ISV2. **Antes de MFFU 50K se ejecutarán los backtests del mismo portafolio compartido en NinjaTrader 8**. Esto exige un NinjaScript único del conjunto, de manera que las estrategias compitan por el mismo NQ y los riesgos diarios sean globales. Se incorporan **N8a paridad de las reglas conservadoras frente a Python** y **N8b robustez en el Strategy Analyzer Standard M1 nativo**. Un único balance de operaciones netas no constituye concordancia suficiente.
+
+El [protocolo N8 S0.28](NQ_M1_V33_NINJATRADER_PORTFOLIO_PARITY_2026_10_28.md) especifica reloj, fuente histórica, prioridad, entradas, SL/TP, costes, importación CSV y comparación por operación. [Registro de bloqueo N8](NQ_M1_V33_N8_PORTFOLIO_WINNER_PARITY_GATE_2026_10_28.json): `NOT_STARTED_NO_WINNER`. El ledger original S0.23 permanece congelado por SHA y **NO se le añaden operaciones o aprobaciones ficticias**. Este paso adicional de verificación final tampoco reduce ni sustituye los 13 gates preeconómicos: siguen 0/13.
