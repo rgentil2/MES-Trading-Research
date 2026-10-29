@@ -185,6 +185,10 @@ def evaluate_fixed_sample(dates,bars,source,strategies,chosen=None):
                                       if k.startswith("PRE_ORDER_")),
             "economic_metrics_incomplete_if_postfill":any(
                 v for k,v in local.items() if k.startswith("POST_FILL_")),
+            "post_fill_unmodelled_reason_counts":dict(sorted(
+                (k,v) for k,v in local.items() if k.startswith("POST_FILL_"))),
+            "pre_order_rejection_reason_counts":dict(sorted(
+                (k,v) for k,v in local.items() if k.startswith("PRE_ORDER_"))),
             "signal_unavailable":local["UNAVAILABLE_SOME_SIGNAL_DATA"],
             "ambiguous_sl_first_bars":sum(r["ambiguous_bars"] for r in records),
             "research_only_insufficient_three_day_sample":len(indices)==3,
@@ -195,6 +199,11 @@ def evaluate_fixed_sample(dates,bars,source,strategies,chosen=None):
         total["pre_order_rejected"]+=sum(
             v for k,v in local.items() if k.startswith("PRE_ORDER_"))
         total["signal_unavailable"]+=summary[-1]["signal_unavailable"]
+        # Aggregate only exception categories; do not disclose any price bars
+        # or pretend a gap-exposed order was never submitted.
+        for k,v in local.items():
+            if k.startswith("POST_FILL_"):
+                total["reason_"+k]+=v
     return {
         "schema":"NQ_S034_FROZEN_10K_AST_FIRST_COMPLETE_MODEL_TRADES_PILOT_V1",
         "status":STATUS,"sessions_loaded":len(dates),
@@ -208,6 +217,9 @@ def evaluate_fixed_sample(dates,bars,source,strategies,chosen=None):
         "account_loss_limits_only_provisional":True,
         "pre_order_stop_target_risk_checks_causal":True,
         "gap_risk_after_fill_remains_unbounded_on_M1":True,
+        "historical_sample_order_model_complete":total["post_fill_unmodelled"]==0,
+        "any_AST_provisional_PnL_incomplete":total["post_fill_unmodelled"]>0,
+        "candidate_fitness_or_winner_selection_permitted":False,
         "portfolio_jointly_simulated":False,
         "sample_sufficient_for_strategy_selection":False,
         "formal_G0_D0_D1_D2_approved":False,
