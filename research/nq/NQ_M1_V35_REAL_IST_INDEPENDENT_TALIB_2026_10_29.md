@@ -20,3 +20,7 @@ El resultado en **datos IST reales** será documentado como ejecución privada i
 ## Límites y siguiente paso
 
 Este muestreo no certifica las 132 fórmulas, todos los parámetros, todas las sesiones, la ejecución M1 ni NinjaTrader. **0/13 controles** siguen sin aprobar. Antes de buscar y filtrar los 10.000 AST, se requieren criterios formales de cálculo de variantes propias, validación completa de fills/cuenta y adaptadores económicos D0–D2 con firmas. El backtest posterior del **portafolio congelado en NinjaTrader 8** continúa como etapa N8 obligatoria adicional.
+
+## Resultado real posterior (verificado)
+
+El [run privado #40866756442](https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40866756442) terminó SUCCESS contra fuente M1 original 2020–2022, **330/330 comparaciones** sobre 11 nombres y 15 sesiones, cero diferencias fuera de tolerancia. [Artefacto privado](https://github.com/rgentil2/NQ-Tick-Data/actions/runs/40866756442/artifacts/12894730165) SHA `e279882bab3ccb2c9bdf385bef3c23c08483918d764583edeaebb2b8f6c19484`, vence 28-nov-2026. [Evidencia JSON](NQ_M1_V35_S030_REAL_IST_TALIB_330_QA_EVIDENCE_2026_10_29.json). No se han efectuado backtests económicos o en NT8 ni aprobado 132/132 fórmulas o los 13 gates.
