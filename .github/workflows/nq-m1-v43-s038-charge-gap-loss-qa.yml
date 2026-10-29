@@ -1,0 +1,45 @@
+name: NQ S0.38 executed gap risk cap breaches charged not cancelled synthetic QA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/nq-s038-executed-risk-cap-breaches-replay-v43-20261029]
+    paths:
+      - "research/nq/nq_m1_v39_ast_ist_exploratory_order_replay.py"
+      - "research/nq/test_nq_m1_v42_s037_postfill_gap_cause.py"
+      - "research/nq/test_nq_m1_v43_s038_executed_gap_risk.py"
+      - ".github/workflows/nq-m1-v43-s038-charge-gap-loss-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  charge-adverse-market-gap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy pandas "TA-Lib==0.6.8"
+      - name: Full no-market regression and explicit adverse gap loss charge
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/nq -p 'test_nq_m1_v*.py' -q
+      - name: Real-money permission stays blocked
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from research.nq.nq_m1_v22_quality_gate import audit
+          g=audit()
+          assert g['checks_total']==13 and g['passed_verified']==0
+          assert g['decision']=='EXECUTION_BLOCKED'
+          print('NQ_S038_FILLED_GAP_LOSS_IS_CHARGED_AND_RISK_BREACH_DISQUALIFIES')
+          PY
