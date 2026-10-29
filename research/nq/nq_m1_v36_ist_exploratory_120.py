@@ -177,15 +177,14 @@ def stats_by_rule(trades,dates,rule,counts):
             no_trade_gap+=1;longest=max(longest,no_trade_gap)
         else:no_trade_gap=0
     return {**rule,"signals":counts["signals"],
-            "model_risk_rejections":counts["PROVISIONAL_MODEL_RISK_UNEXECUTABLE"],
-            "closed_daily_pauses":counts["closed_daily_pause"],
+            "model_risk_rejections":counts.get("PROVISIONAL_MODEL_RISK_UNEXECUTABLE",0),
+            "closed_daily_pauses":counts.get("closed_daily_pause",0),
             "trades":len(nets),"net_usd":round(sum(nets),2),
             "gross_profit_usd":round(gross_profit,2),
             "gross_loss_usd":round(gross_loss,2),"pf":pf,
             "closed_trade_max_dd_usd":round(dd,2),
             "net_per_trade_usd":round(sum(nets)/len(nets),2) if nets else None,
-            "months_with_trades":sum(trades_per_month.values()) if False
-                                  else sum(trades_per_month[m]>0 for m in months),
+            "months_with_trades":sum(trades_per_month[m]>0 for m in months),
             "months_in_IST":len(months),
             "months_with_5plus":sum(trades_per_month[m]>=5 for m in months),
             "longest_consecutive_calendar_months_without_trade":longest,
