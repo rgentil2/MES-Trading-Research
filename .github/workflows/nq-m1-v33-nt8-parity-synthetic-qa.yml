@@ -1,0 +1,48 @@
+name: NQ S0.28 NT8 frozen portfolio parity contract synthetic QA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/nq-s028-nt8-portfolio-parity-contract-20261028]
+    paths:
+      - "research/nq/nq_m1_v33_nt8_portfolio_parity_contract.py"
+      - "research/nq/test_nq_m1_v33_nt8_portfolio_parity_contract.py"
+      - ".github/workflows/nq-m1-v33-nt8-parity-synthetic-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-nt8-comparison-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test dependencies without market source data
+        run: python -m pip install numpy pandas "TA-Lib==0.6.8"
+      - name: Run complete regression and NT8 artificial parity protocol
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/nq -p 'test_nq_m1_v*.py' -q
+      - name: Verify not a real NT8 backtest or economic release
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from research.nq.nq_m1_v22_quality_gate import audit
+          from research.nq.nq_m1_v33_nt8_portfolio_parity_contract import STATUS
+          g=audit()
+          assert g['checks_total']==13 and g['passed_verified']==0
+          assert g['decision']=='EXECUTION_BLOCKED' and not g['ready_for_economic_execution']
+          assert 'SYNTHETIC' in STATUS and 'NO_WINNER' in STATUS
+          print('NQ_S028_NT8_FUTURE_PARITY_CONTRACT_SYNTHETIC_ONLY_NO_WINNER')
+          PY
