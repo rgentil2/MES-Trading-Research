@@ -1,0 +1,59 @@
+name: NQ S0.32 frozen 10000 AST static 09:35 intraday warmup feasibility QA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/nq-s031-real-ist-120-results-and-10k-static-feasibility-20261029]
+    paths:
+      - "research/nq/nq_m1_v37_10k_intraday_warmup_audit.py"
+      - "research/nq/test_nq_m1_v37_10k_intraday_warmup_audit.py"
+      - ".github/workflows/nq-m1-v37-frozen-10k-static-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  frozen-10k-static-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy pandas "TA-Lib==0.6.8"
+      - name: Verify static warmup and all technical tests, no historical market data
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s research/nq -p 'test_nq_m1_v*.py' -q
+      - name: Generate frozen candidate warmup feasibility summary only
+        env:
+          PYTHONPATH: .
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/nq_10k_static"
+          python -m research.nq.nq_m1_v37_10k_intraday_warmup_audit \
+            --out "$RUNNER_TEMP/nq_10k_static/10k_intraday_feasibility_no_pnl.json"
+          python - <<'PY'
+          import json,os
+          p=os.path.join(os.environ["RUNNER_TEMP"],"nq_10k_static",
+                         "10k_intraday_feasibility_no_pnl.json")
+          x=json.load(open(p))
+          assert x["candidate_count"]==10000 and len(x["rows"])==10000
+          assert x["candidate_bundle_canonical_sha256"]=="b9d2915fc55f86546ef63d74a588df5244d094eeecb4a7c900a4000d47660be9"
+          assert x["market_IST_prices_loaded"] is False
+          assert x["economic_profit_or_fitness_computed"] is False
+          assert x["formal_G0_passed"]==0 and x["strategies_excluded_or_ranked"]==0
+          print("NQ_S032_FULL_FROZEN_10K_STATIC_REACHABILITY_AUDITED_WITHOUT_PRICES")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-ist-s032-frozen-10k-static-warmup-reachability-no-market-no-rank
+          path: ${{ runner.temp }}/nq_10k_static/10k_intraday_feasibility_no_pnl.json
+          if-no-files-found: error
+          retention-days: 30
