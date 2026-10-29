@@ -2,12 +2,6 @@ name: NQ S0.34 12 frozen AST full M1 trade replay exploratory synthetic QA
 
 on:
   workflow_dispatch:
-  push:
-    branches: [research/nq-s034-12ast-3day-real-m1-exploratory-replay-20261029]
-    paths:
-      - "research/nq/nq_m1_v39_ast_ist_exploratory_order_replay.py"
-      - "research/nq/test_nq_m1_v39_ast_ist_exploratory_order_replay.py"
-      - ".github/workflows/nq-m1-v39-ast-3day-replay-qa.yml"
 
 permissions:
   contents: read
