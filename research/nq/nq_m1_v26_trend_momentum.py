@@ -116,8 +116,13 @@ def value(x,name,p):
         n=valid_period(p,"period",3,120 if name=="ADX" else 180)
         data=_adx(x,n)
         if name=="ADXR":
-            if L<=n or not np.isfinite(data[-n-1]):return None
-            out=(data[-1]+data[-n-1])/2
+            # TA-Lib ADXR(t) = 0.5 * (ADX(t) + ADX(t-(n-1))).
+            # Previous isolated prototype used t-n (one completed bar too old),
+            # which changed signals in independent multi-parameter oracles.
+            # This corrects ONLY isolated V2.6 math; V2.1 frozen stays intact.
+            if L<n or not np.isfinite(data[-1]) or not np.isfinite(data[-n]):
+                return None
+            out=(data[-1]+data[-n])/2
         else:out=data[-1]
         return signed_threshold(scalar(out),p,name)
     if name=="Vortex":
