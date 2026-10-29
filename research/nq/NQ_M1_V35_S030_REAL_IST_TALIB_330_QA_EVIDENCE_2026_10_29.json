@@ -43,7 +43,6 @@
   ],
   "independent_external_numeric_comparisons": 330,
   "discrepancies_beyond_declared_tolerance": 0,
-  "tai_lib_version": "0.6.8",
   "adxr_lag_correction_applied": true,
   "adxr_registered_threshold_transform_applied_to_external_oracle": true,
   "all_132_independently_verified": false,
@@ -55,5 +54,6 @@
   "holdouts_2023_2024_2025_2026_opened": false,
   "pre_economic_gates_passed_verified": 0,
   "execution_state": "EXECUTION_BLOCKED",
-  "note": "External parity only for named formula/parameter/index checks on selected authorized real IST sessions. Does not justify declaring all 132 formulas certified, opening validation years or running economic search."
+  "note": "External parity only for named formula/parameter/index checks on selected authorized real IST sessions. Does not justify declaring all 132 formulas certified, opening validation years or running economic search.",
+  "ta_lib_version": "0.6.8"
 }
