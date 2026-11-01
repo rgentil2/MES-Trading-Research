@@ -1,3 +1,13 @@
+## 2026-11-01 — S0.43: PRIMERA OPTIMIZACIÓN GENÉTICA REAL EN NINJATRADER 8 — SIN FINALISTAS
+
+**Evidencia del usuario (2 capturas Strategy Analyzer)**: `NQNativeGeneticLabV1` optimizado **nativamente** con `Genetic`, `Max. net profit`, 50 tamaño de generación, 20 generaciones (**hasta ~1.000 evaluaciones nominales, total real y genotipos únicos no verificados**), 80% crossover, 20% mutation, 30 mejores resultados conservados. Datos NQ M1 Last, 2020–2022, Standard Fastest, slippage 2 ticks, comisión NinjaTrader Brokerage activa; rollover de contratos ya confirmado por usuario.
+
+**Mejor candidato IS/T 2020–22**: +**US$8.694,52** neto reportado, **PF 1,22**, **drawdown máximo cerrado -US$4.026,72**, **323** operaciones (168 long / 155 short), **39,94%** win, US$1.860,48 comisión reportada (US$5,76 RT). Los otros 29 resultados conservados exhibidos tienen PnL negativo. Primeros genes visibles del mejor candidato: AType=9 n24, BType=4 n24, AND=0, Reverse=0, **stop/target no completamente visibles en la columna Parameters**. NO inferirlos ni promover variantes sin exportar filas completas.
+
+**Filtros:** pasa neto>0 y >=150 trades; **FALLA** PF>=1,25 y DD cerrado<=US$2.000. Frecuencia >=5/mes cada mes, años individuales, Monte Carlo, Walk Forward, MFFU drawdown flotante y portfolio NO evaluados. **CERO FINALISTAS; no abrir ISV1 2023 ni ISV2 2024**. Como fue seleccionado por `Max. net profit` en los mismos 2020–22, el rendimiento observado tiene sesgo de selección/overfit. Pedir: abrir Backtest individual del mejor resultado, desplegar los nueve genes exactos, guardar Trades CSV y rendimiento por año y mes; sin cambiar parámetros; analizar en IST. Después ampliar biblioteca a 132 y gramática multihoja C# y revisar fitness con DD/PF nativo antes de la campaña 10K. [Evidencia estructurada S0.43](research/nq/NQ_M1_V48_S043_NATIVE_GENETIC_FIRST_IST_RESULTS_2026_11_01.json).
+
+---
+
 ## 2026-11-01 — S0.42: PRIMER BACKTEST NATIVO REAL CONFIRMADO Y PROTOCOLO DE OPTIMIZACIÓN GENÉTICA
 
 **Evidencia en NinjaTrader 8 Desktop enviada por usuario:** auditor **NQNativeM1DataAuditV1** realmente ejecutado sobre 2020–2022: 735 sesiones RTH M1 completas (390 barras), 39 sesiones REVIEW, 0 OHLC/tick-grid inválidos y 26 discontinuidades M1 (no necesariamente 26 minutos). **Usuario confirma explícitamente que NinjaTrader fusiona correctamente los contratos trimestrales**. Autoriza **no bloquear** un primer ensayo exploratorio por las 39 sesiones reducidas; algunas son sesiones especiales/holiday y algunas son huecos RTH, por lo que se registran en lugar de declararlas todas sesiones oficiales cortas o excluirlas sin evidencia.
