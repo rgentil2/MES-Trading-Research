@@ -1,0 +1,98 @@
+{
+  "schema": "NQ_S044_FIRST_NATIVE_GENETIC_TOP_GENOTYPE_COMPLETE_TRADES_REVIEW_V1",
+  "date": "2026-11-01",
+  "evidence_source": "user_uploaded_NinjaTrader_Strategy_Analyzer_Trades_CSV_and_three_screenshots",
+  "study": "IST_2020_2022_ONLY",
+  "native_strategy": "NQNativeGeneticLabV1",
+  "model": "NinjaTrader8_Standard_M1_Last_NQ_merge_confirmed_by_user",
+  "genes": {
+    "AType": 9,
+    "APeriod": 24,
+    "BType": 4,
+    "BPeriod": 24,
+    "CombineMode": 0,
+    "ReverseSignals": 0,
+    "StopTicks": 42,
+    "TargetTicks": 96,
+    "MaxDailyEntrySubmissions": 2
+  },
+  "optimization_selection": "Genetic_50x20_nominal_optimise_for_Max_NetProfit_on_same_IST",
+  "sample_selections": "top_ranked_IS_and_not_independent_OOS",
+  "trade_report": {
+    "count": 323,
+    "net_usd": 8694.52,
+    "profit_factor_reported": 1.22,
+    "profit_factor_computed": 1.215,
+    "closed_max_drawdown_usd": 4026.72,
+    "win_pct": 39.94,
+    "commissions_usd": 1860.48,
+    "commissions_rt_per_trade_usd": 5.76,
+    "positive_months": 21,
+    "negative_months": 15,
+    "months_with_at_least_five_trades": 35,
+    "months_tested": 36,
+    "only_month_under_five_trades": {
+      "month": "2022-04",
+      "trades": 4,
+      "net_usd": 306.96
+    },
+    "active_session_days": 283,
+    "stop_exits": {
+      "trades": 174,
+      "net_usd": -39182.24
+    },
+    "target_exits": {
+      "trades": 93,
+      "net_usd": 44104.32
+    },
+    "time_exits_1129": {
+      "trades": 56,
+      "net_usd": 3772.44
+    },
+    "first_entry_clock": "10:24",
+    "last_entry_clock": "11:28",
+    "last_exit_clock": "11:29",
+    "entries_outside_0935_1129": 0,
+    "exits_after_1129": 0,
+    "overnight_trades": 0,
+    "days_with_more_than_two_trades": 0,
+    "annual": [
+      {
+        "year": 2020,
+        "trades": 111,
+        "net_usd": 165.64,
+        "profit_factor": 1.011,
+        "active_days": 100
+      },
+      {
+        "year": 2021,
+        "trades": 100,
+        "net_usd": 2304,
+        "profit_factor": 1.199,
+        "active_days": 86
+      },
+      {
+        "year": 2022,
+        "trades": 112,
+        "net_usd": 6224.88,
+        "profit_factor": 1.44,
+        "active_days": 97
+      }
+    ]
+  },
+  "gates": {
+    "net_profit_positive": true,
+    "at_least_150_trades": true,
+    "PF_ge_1_25": false,
+    "closed_drawdown_le_2000": false,
+    "at_least_5_trades_every_calendar_month": false,
+    "years_profitable_all_three": true,
+    "annual_stability_strong": false,
+    "official_MFFU_intraday_drawdown_verified": false,
+    "walk_forward_tested": false,
+    "monte_carlo_tested": false,
+    "years_2023_2024_2025_2026_opened": false,
+    "finalist": false
+  },
+  "interpretation": "Full CSV confirms 323 trade totals including commissions and daily/time schedule; only 2022-Apr fails strict 5/month, 2020 net essentially flat, 2022 accounts for ~71.6% of total IS gains; PF and DD thresholds fail. Do not promote. This is optimized on the same IST and therefore strongly selected; do not open reserved ISVs."
+}
