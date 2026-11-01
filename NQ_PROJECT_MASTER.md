@@ -1,3 +1,13 @@
+## 2026-11-01 — S0.44: CSV COMPLETO 323 TRADES DEL MEJOR GENOTIPO GENETIC NT8 — NO FINALISTA
+
+Evidencia real del usuario: 3 capturas y CSV original de **323 operaciones NinjaTrader 8**, mejor candidato obtenido con *Genetic / Max. net profit* en NQ M1 IST2020–2022. **Nueve genes confirmados:** `AType9 (SMA24↔EMA48 crossover)`, `APeriod24`, `BType4 (CCI slope)`, `BPeriod24`, `CombineMode0 (AND)`, `ReverseSignals0`, `StopTicks42`, `TargetTicks96`, `MaxDailyEntrySubmissions2`.
+
+**Conciliación CSV exacta:** **323 trades**, **+US$8.694,52 neto**, **PF1,22** (cálculo sin redondear ~1,2153), **max closed-trade DD -US$4.026,72**, **US$1.860,48 comisiones** (=US$5,76/trade), **39,94% wins**. Operaciones por año: 2020: 111, net +US$165,64, PF~1,011; 2021: 100, net +US$2.304, PF~1,199; 2022: 112, net +US$6.224,88, PF~1,440; 2022 concentra ~71,6% del beneficio in-sample. 21 de 36 meses positivos y **15 negativos**. Solo **2022-04 tiene 4 operaciones**, por lo que el criterio estricto >=5 **cada mes** FALLA (35/36 pasan). Salidas: 174 SL -US$39.182,24; 93 TP +US$44.104,32; 56 flat11:29 +US$3.772,44. Mismo día para cada entrada/salida, ninguna salida después de 11:29, ninguna fecha con >2 entradas. Primera entrada observada 10:24 (warmup), última 11:28.
+
+**G0 no se promociona:** PF1,22<1,25, DD4.026,72>2.000, un mes <5 operaciones, estabilidad de beneficios concentrada en 2022, y optimización hecha sobre la misma muestra IST; MFFU DD flotante, Monte Carlo, Walk Forward, cartera e ISV 2023+ NO validados. **No reajustar este mismo genotipo usando ISV** ni considerarlo finalista. Siguiente prioridad: ampliar generación nativa a 132 indicadores, gramática estructural más rica y fitness/embudo que penalice sobreajuste y respete el DD, preservando las holdouts selladas. [Evidencia agregada S0.44](research/nq/NQ_M1_V49_S044_NATIVE_GENETIC_BEST_323_TRADES_AUDIT_2026_11_01.json).
+
+---
+
 ## 2026-11-01 — S0.43: PRIMERA OPTIMIZACIÓN GENÉTICA REAL EN NINJATRADER 8 — SIN FINALISTAS
 
 **Evidencia del usuario (2 capturas Strategy Analyzer)**: `NQNativeGeneticLabV1` optimizado **nativamente** con `Genetic`, `Max. net profit`, 50 tamaño de generación, 20 generaciones (**hasta ~1.000 evaluaciones nominales, total real y genotipos únicos no verificados**), 80% crossover, 20% mutation, 30 mejores resultados conservados. Datos NQ M1 Last, 2020–2022, Standard Fastest, slippage 2 ticks, comisión NinjaTrader Brokerage activa; rollover de contratos ya confirmado por usuario.
