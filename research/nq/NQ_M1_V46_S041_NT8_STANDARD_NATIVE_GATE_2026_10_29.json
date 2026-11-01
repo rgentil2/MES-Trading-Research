@@ -30,9 +30,9 @@
   "native_optimization_genes": 9,
   "all_132_native_indicators_implemented": false,
   "native_unique_10000_genotype_generator_implemented": false,
-  "native_csharp_assemblies_compiled_in_nt8": false,
-  "native_data_audit_executed_in_NT8": false,
-  "native_backtest_executed_in_NT8": false,
+  "native_csharp_assemblies_compiled_in_nt8": true,
+  "native_data_audit_executed_in_NT8": true,
+  "native_backtest_executed_in_NT8": true,
   "full_shared_portfolio_MFFU_risk_implemented": false,
   "portfolio_NT8_standard_backtest_completed": false,
   "official_MFFU_plan_exact_rules_confirmed": false,
@@ -71,5 +71,15 @@
       "state": "NOT_VERIFIED"
     }
   ],
-  "note": "GitHub static source contract is not NinjaTrader compile, backtest, 132 indicator certification, native portfolio or funding approval."
+  "note": "NQNativeM1DataAuditV1 and NQNativeGeneticLabV1 confirmed compiled/backtested by user screenshots; first Genetic search complete. Fitness module still unverified. G0-D2 and 10K native release gates not satisfied, 2023–26 unopened. No selected finalist.",
+  "first_native_genetic_optimization_executed_in_NT8": true,
+  "first_native_genetic_optimization_top_net_profit_usd": 8694.52,
+  "first_native_genetic_optimization_top_profit_factor": 1.22,
+  "first_native_genetic_optimization_top_closed_drawdown_usd": -4026.72,
+  "first_native_genetic_optimization_top_trades": 323,
+  "first_native_genetic_optimization_finalists_passing_PF_and_DD": 0,
+  "native_optimization_fitness_custom_compiled_verified": false,
+  "actual_genetic_iterations_count_verified": false,
+  "unique_genetic_candidates_count_verified": false,
+  "evidence_S043": "research/nq/NQ_M1_V48_S043_NATIVE_GENETIC_FIRST_IST_RESULTS_2026_11_01.json"
 }
