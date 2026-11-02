@@ -1429,3 +1429,10 @@ El usuario envió captura visible de NinjaTrader 8 `Data Box` sobre **NQ 06-26, 
 
 - 2 capturas usuario Strategy Analyzer V5: NQ M1 2020–22, `ExitMode0`, ATR14/SLx10=15/TPx10=25 (inactivos), count2 A0/12 B7/14 AB AND Reverse0 Stop20 TP32 MaxDaily2. **1.546 trades, 825 largos/721 cortos, neto −$43.554,96, PF0,64, closed DD −$44.380,44, comisiones $8.904,96 y 499 ganadoras**: coincidencia exacta de agregados con V3 baseline S0.41; V5 compila y corre en Windows NinjaTrader real. Comisión cobrada coincide aunque plantilla etiquetada no legible en screenshot.
 - Control modo fijo **APROBADO**; NO es todavía certificación de cada trade, ni prueba de ATR. Próximo: backtest aislado `ExitMode1` con ATR14 StopX10 15, TP32; analizar operaciones, logs y riesgo máximo stop55 sin ampliar techo. Después modos2/3 y optimizador V5 20-unique. [JSON S0.59](research/nq/NQ_M1_V61_S059_V5_NATIVE_FIXED_EXIT_MODE0_PARITY_CONFIRMED_2026_11_02.json).
+
+### 2026-11-02 — S0.60: V5 ATR SL / TP fijo real, auditados 709 trades (sin ventaja económica)
+
+- Screenshot + CSV usuario: `ExitMode1,ATR14,SL1.5×,Target32ticks` sobre NQ M1 2020–22: **709 operaciones**, 519 L/190 S; 415 ganadoras (58,53%), **net -$11.373,84**, PF0,85, DD cerrado -$14.856,72, comisión $4.083,84. CSV reconciliado exactamente.
+- **406 TP +32 ticks cada uno, 283 SL variables 9–57 ticks (35 distancias distintas), 20 cierres a 11:29**. 121 stop fills >55 ticks por máximo 2 ticks de slippage a stop preorden<=55 (consistente con NinjaTrader histórico), peor trade -$290,76 comisión incluida; sin prueba independiente del ATR en cada entrada todavía. No solapamiento y <=2 entradas/día, no salidas después 11:29.
+- 2020 321 trades net -$4.288,96; 2021 327 net -$6.668,52; **2022 61 net -$416,36**; 9/36 meses con <5 trades. G0 fail, riesgo funded no probado. No abrir holdouts. [Auditoría S0.60](research/nq/NQ_M1_V62_S060_V5_NATIVE_ATR_MODE1_709_TRADE_CSV_AUDIT_2026_11_02.md).
+- **Próximo:** backtest modo2 (`ATR14 stop×1,5 target×2,5`) para comprobar variación de distancia de target, después modo3 sin TP; enviar Summary y Trades CSV.
