@@ -1,0 +1,91 @@
+name: NQ S0.58 V5 native ATR exit sources and unique identity QA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/nq-s058-native-v5-atr-exit-family-20261102]
+    paths:
+      - "research/nq/ninjatrader/NQNativeExitCanonicalV5.cs"
+      - "research/nq/ninjatrader/NQNativeATRExitMathV5.cs"
+      - "research/nq/ninjatrader/NQNativeUniqueSearchV5.cs"
+      - "research/nq/ninjatrader/NQNativeUniqueOptimizerV5.cs"
+      - "research/nq/ninjatrader/NQNativeGeneticLabV5.cs"
+      - "research/nq/ninjatrader/NQNativeStructureFitnessV5.cs"
+      - "research/nq/ninjatrader/tests/NQNativeV5CanonicalATRConsoleTest.cs"
+      - ".github/workflows/nq-native-v5-s058-atr-csharp-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  actual-production-Csharp-V5:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Build & execute actual V3 Boolean and V5 ATR/identity/generator CSharp
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v5qa"
+          cat > "$RUNNER_TEMP/v5qa/qa.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>disable</Nullable>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          cp research/nq/ninjatrader/NQNativeBooleanCanonicalV3.cs "$RUNNER_TEMP/v5qa/"
+          cp research/nq/ninjatrader/NQNativeExitCanonicalV5.cs "$RUNNER_TEMP/v5qa/"
+          cp research/nq/ninjatrader/NQNativeATRExitMathV5.cs "$RUNNER_TEMP/v5qa/"
+          cp research/nq/ninjatrader/NQNativeUniqueSearchV5.cs "$RUNNER_TEMP/v5qa/"
+          cp research/nq/ninjatrader/tests/NQNativeV5CanonicalATRConsoleTest.cs "$RUNNER_TEMP/v5qa/Program.cs"
+          dotnet run --configuration Release --project "$RUNNER_TEMP/v5qa/qa.csproj"
+      - name: Static native NinjaTrader historical, entry, runtime contract
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs=require('fs'), assert=require('node:assert/strict');
+          const dir='research/nq/ninjatrader/';
+          const v3=fs.readFileSync(dir+'NQNativeGeneticLabV3.cs','utf8');
+          const v5=fs.readFileSync(dir+'NQNativeGeneticLabV5.cs','utf8');
+          const opt=fs.readFileSync(dir+'NQNativeUniqueOptimizerV5.cs','utf8');
+          const search=fs.readFileSync(dir+'NQNativeUniqueSearchV5.cs','utf8');
+          const canonical=fs.readFileSync(dir+'NQNativeExitCanonicalV5.cs','utf8');
+          const math=fs.readFileSync(dir+'NQNativeATRExitMathV5.cs','utf8');
+          for(const name of ['Calculate.OnBarClose','State.Historical',
+            'Time[0].Year < 2020 || Time[0].Year > 2022',
+            'FirstSignalHHmmss = 93500','LastSignalHHmmss = 112700',
+            'FlatSubmitHHmmss = 112800','ATR(ATRPeriod)[0]',
+            'NQNativeATRExitMathV5.TryCompute','SetStopLoss(signal, CalculationMode.Ticks',
+            'ExitMode == 2','EnterLong(1, LongTag)','EnterShort(1, ShortTag)',
+            'NQ_V5_EXIT_RUNTIME'])assert(v5.includes(name),name);
+          assert(v5.indexOf('SetStopLoss(signal, CalculationMode.Ticks') <
+                 v5.indexOf('EnterLong(1, LongTag)'),'stop before entry');
+          assert(v5.includes('if (ExitMode == 0)') && 
+                 v5.includes('SetStopLoss(CalculationMode.Ticks, StopTicks)') &&
+                 v5.includes('SetProfitTarget(CalculationMode.Ticks, TargetTicks)'));
+          assert(v3.includes('SetStopLoss(CalculationMode.Ticks, StopTicks)'));
+          assert(opt.includes('RunIteration(); // ONLY AFTER the uniqueness check'));
+          assert(opt.indexOf('var genome=search.TryNext()') <
+                 opt.indexOf('RunIteration(); // ONLY AFTER the uniqueness check'));
+          assert(opt.includes('NQNativeGeneticLabV5'));
+          assert(opt.includes('for(int i=0;i<20;i++)'));
+          assert(opt.includes('NQUniqueSearchV5.Names'));
+          assert(search.includes('seen.Add(c.RuntimeKey)') &&
+                 search.includes('if (c.IsRedundant)'));
+          assert(canonical.includes('mode==0') && canonical.includes('mode==1') &&
+                 canonical.includes('mode==2'));
+          assert(math.includes('Math.Ceiling(rawStop)'));
+          console.log('NQ_S058_V5_STATIC_HISTORY_AND_PRE_ENTRY_CONTRACT_PASS');
+          console.log('NINJATRADER_WINDOWS_COMPILE_NOT_CLAIMED');
+          NODE
