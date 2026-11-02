@@ -2,14 +2,6 @@ name: NQ S0.49 V3 native Boolean canonicalization actual CSharp QA
 
 on:
   workflow_dispatch:
-  push:
-    branches: [research/nq-s049-v3-semantic-canonicalizer-fitness-20261102]
-    paths:
-      - "research/nq/ninjatrader/NQNativeBooleanCanonicalV3.cs"
-      - "research/nq/ninjatrader/NQNativeGeneticLabV3.cs"
-      - "research/nq/ninjatrader/NQNativeStructureFitnessV3.cs"
-      - "research/nq/ninjatrader/tests/NQCanonicalizationConsoleTest.cs"
-      - ".github/workflows/nq-native-v3-s049-boolean-canonical-dotnet-ci.yml"
 
 permissions:
   contents: read
