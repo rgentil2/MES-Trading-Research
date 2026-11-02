@@ -76,11 +76,12 @@ jobs:
           const adapter=fs.readFileSync(dir+'NQNativeUniqueOptimizerV4.cs','utf8');
           const v3=fs.readFileSync(dir+'NQNativeGeneticLabV3.cs','utf8');
           for(const token of ['RunIteration();','NQUniqueSearchV4','OnOptimize()',
-          'NumberOfIterations','HashSet','TryNext','WriteMember',
+          'NumberOfIterations','TryNext','WriteMember',
           'STOP binding validation','BEFORE the first RunIteration',
           'NQ_V4','V3']) assert(adapter.includes(token),token);
           assert(adapter.indexOf('var genome=search.TryNext()') <
                  adapter.indexOf('RunIteration(); // ONLY AFTER'), 'Dedup before run');
+          assert(pure.includes('HashSet<string>'));
           assert(pure.includes('seen.Add(c.RuntimeKey)'));
           assert(pure.includes('if (c.IsRedundant)'));
           assert(pure.includes('new Random(seed)'));
