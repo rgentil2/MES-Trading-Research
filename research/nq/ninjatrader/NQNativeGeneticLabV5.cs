@@ -333,30 +333,13 @@ namespace NinjaTrader.NinjaScript.Strategies
             // ATR is sampled at the COMPLETED signal bar [0], no future
             // fill bar price or indicator values are used. Native NT8 fills
             // the entry on the next historical bar. Quantize to whole ticks.
-            int intendedStopTicks = StopTicks;
-            int intendedTargetTicks = TargetTicks;
-            if (ExitMode > 0)
-            {
-                double atr = ATR(ATRPeriod)[0];
-                if (double.IsNaN(atr) || double.IsInfinity(atr) ||
-                    atr <= 0.0 || TickSize <= 0.0)
-                    return;
-                double stopRaw = (atr / TickSize) * (ATRStopX10 / 10.0);
-                if (double.IsNaN(stopRaw) || double.IsInfinity(stopRaw) ||
-                    stopRaw < 1.0 || stopRaw > 55.0)
-                    return;
-                intendedStopTicks = (int)Math.Ceiling(stopRaw);
-                if (ExitMode == 2)
-                {
-                    double targetRaw = (atr / TickSize) *
-                        (ATRTargetX10 / 10.0);
-                    if (double.IsNaN(targetRaw) ||
-                        double.IsInfinity(targetRaw) ||
-                        targetRaw < 1.0 || targetRaw > 240.0)
-                        return;
-                    intendedTargetTicks = (int)Math.Ceiling(targetRaw);
-                }
-            }
+            int intendedStopTicks, intendedTargetTicks;
+            double completedSignalAtr = ExitMode == 0 ? 0.0 : ATR(ATRPeriod)[0];
+            if (!NQNativeATRExitMathV5.TryCompute(ExitMode,
+                    completedSignalAtr, TickSize, StopTicks, TargetTicks,
+                    ATRStopX10, ATRTargetX10,
+                    out intendedStopTicks, out intendedTargetTicks))
+                return;
 
             // Research-only approximate pre-order risk gate, NOT a
             // complete funded-account intrabar/trailing drawdown model.
