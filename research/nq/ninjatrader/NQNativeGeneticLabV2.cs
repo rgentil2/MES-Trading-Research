@@ -1,4 +1,4 @@
-// S0.40/S0.41 - Native NinjaTrader 8 exploratory generator (V1; Standard M1).
+// S0.45 - Native NinjaTrader 8 exploratory structural generator (V2; Standard M1).
 // EVERYTHING - indicator calculations, structure optimization, orders, PnL - runs
 // inside NinjaTrader 8. No Python signals, market data processing or CSV inputs.
 //
@@ -9,11 +9,11 @@
 // This is a bounded structural prototype, not arbitrary 1..8 AST trees and
 // not yet 132 indicator formulas. Random/Genetic is NT8's own optimizer.
 // 16 NT8 parameters; GENETIC DOES NOT guarantee unique structural variants.
- // No custom optimizer, portfolio, walk-forward, or Monte Carlo in this V2.
- // V1 remains untouched for differential checks on 2-slot controls.
- // NOTE: Static tick-based SL/TP are ONLY temporary technical baselines.
- // Dynamic ATR exits were requested for a LATER module; not implemented here.
- // No claim of 10k unique or profitability until NT8 results exist.
+// No custom optimizer, portfolio, walk-forward, or Monte Carlo in this V2.
+// V1 remains untouched for differential checks on 2-slot controls.
+// NOTE: Static tick-based SL/TP are ONLY temporary technical baselines.
+// Dynamic ATR exits were requested for a LATER module; not implemented here.
+// No claim of 10k unique or profitability until NT8 results exist.
 //
 // S0.41 CHOICE: use NinjaTrader's OWN Standard M1 historical fill engine.
 // No Python execution model or tick-source requirement for initial exploration.
@@ -61,6 +61,7 @@ namespace NinjaTrader.NinjaScript.Strategies
                 StopTargetHandling = StopTargetHandling.PerEntryExecution;
                 BarsRequiredToTrade = 3;
                 IncludeTradeHistoryInBacktest = true;
+                IsInstantiatedOnEachOptimizationIteration = true;
                 // Explicit native Strategy Analyzer baseline. Costs are
                 // provided by the NT8 NQ commission template, NOT Python.
                 // Standard fill simulates OHLC-based virtual intrabar steps.
