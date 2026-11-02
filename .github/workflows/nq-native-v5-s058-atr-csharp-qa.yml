@@ -12,6 +12,7 @@ on:
       - "research/nq/ninjatrader/NQNativeGeneticLabV5.cs"
       - "research/nq/ninjatrader/NQNativeStructureFitnessV5.cs"
       - "research/nq/ninjatrader/tests/NQNativeV5CanonicalATRConsoleTest.cs"
+      - "research/nq/ninjatrader/tests/NQNativeUniqueOptimizerV5AdapterShimTest.cs"
       - ".github/workflows/nq-native-v5-s058-atr-csharp-qa.yml"
 
 permissions:
@@ -50,6 +51,28 @@ jobs:
           cp research/nq/ninjatrader/NQNativeUniqueSearchV5.cs "$RUNNER_TEMP/v5qa/"
           cp research/nq/ninjatrader/tests/NQNativeV5CanonicalATRConsoleTest.cs "$RUNNER_TEMP/v5qa/Program.cs"
           dotnet run --configuration Release --project "$RUNNER_TEMP/v5qa/qa.csproj"
+      - name: Compile and execute actual V5 optimizer adapter against explicit NT8 API shim
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v5adapter"
+          cat > "$RUNNER_TEMP/v5adapter/shim.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>disable</Nullable>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          cp research/nq/ninjatrader/NQNativeBooleanCanonicalV3.cs "$RUNNER_TEMP/v5adapter/"
+          cp research/nq/ninjatrader/NQNativeExitCanonicalV5.cs "$RUNNER_TEMP/v5adapter/"
+          cp research/nq/ninjatrader/NQNativeUniqueSearchV5.cs "$RUNNER_TEMP/v5adapter/"
+          cp research/nq/ninjatrader/NQNativeUniqueOptimizerV5.cs "$RUNNER_TEMP/v5adapter/"
+          cp research/nq/ninjatrader/tests/NQNativeUniqueOptimizerV5AdapterShimTest.cs "$RUNNER_TEMP/v5adapter/Program.cs"
+          dotnet run --configuration Release --project "$RUNNER_TEMP/v5adapter/shim.csproj"
       - name: Static native NinjaTrader historical, entry, runtime contract
         shell: bash
         run: |
