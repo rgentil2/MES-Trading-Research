@@ -1355,3 +1355,8 @@ El usuario envió captura visible de NinjaTrader 8 `Data Box` sobre **NQ 06-26, 
 
 - Captura real NT8: `NQNativeGeneticLabV2` ejecutó `ConditionCount2`, A0/12 + B7/14 AND, SL20 TP32 MaxDaily2, Standard NQ M1 Last, IST2020–22 con costes. Agregados idénticos a V1: 1546 trades, -$43.554,96, PF0,64, closed DD -$44.380,44, $8.904,96 comisión, 825 long/721 short. V2 sí compila y corre nativamente; **solo equivalencia de métricas de Summary**, no comparación trade-by-trade.
 - Próximo: test `ConditionCount=1`; luego `3` con BC OR; luego `4` con BC/CD OR. No optimizar aún ni abrir ISV; SL/TP ticks solo temporal, ATR pendiente.
+
+### 2026-11-02 — S0.47: backtests reales V2 1/3/4 hojas completados
+
+- El usuario completó tres pruebas `NQNativeGeneticLabV2` nuevas en Strategy Analyzer, mismo Standard M1/IST/SL20/TP32: **1 hoja** 1548 trades net -$43.996,48 PF0,64 DD$43.996,48; **3 hojas** 1547 trades net -$40.075,72 PF0,66 DD$40.229,96 (A AND B OR C); **4 hojas** 1545 trades net -$36.729,20 PF0,69 DD$36.945,56 (A AND B OR C OR D); **2 hojas** paridad V1 ya registrada: 1546 trades net -$43.554,96 PF0,64 DD$44.380,44. Cambios en resultados confirman que los slots activos pueden afectar la lógica, pero no todos los genes/verdades ni paridad por trade.
+- Todos pierden y no superan G0. Siguiente paso: **Genetic V2 smoke 20×5** con 16 genes, stops/targets temporales fijos 20/32 para identificar variación estructural; posteriores ATR dinámicos. 2023+ reservado.
