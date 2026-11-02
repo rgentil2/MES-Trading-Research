@@ -1,0 +1,73 @@
+{
+  "schema": "NQ_S056_V4_ACTUAL_NATIVE_PRE_RUN_ITERATION_DEDUP_VERIFIED_V1",
+  "date": "2026-11-02",
+  "source": "Verbatim user-provided NinjaTrader 8 NinjaScript Output",
+  "begin": "NQ_V4 BEGIN target=3 seed=20261102 maxAttempts=100 selectedParams=16 baseline=[16 V3 genes]",
+  "pre_run": "NQ_V4 PRE_RUN candidate=1 uniqueId=NQBC3_CE90DDFDD7D9ADB16ED270BC effective=2 genes=2/2/18/7/6/2/18/9/30/1/0/0/1/20/32/2",
+  "end": "NQ_V4 END executed=1 generatedUnique=1 attempted=100 structuralRedundantSkipped=65 equivalentFingerprintSkipped=34 invalidSkipped=0 failure=0 exhausted=True",
+  "parsed": {
+    "target": 3,
+    "seed": 20261102,
+    "max_attempts": 100,
+    "selected_params": 16,
+    "pre_run_candidates": 1,
+    "executed_backtests": 1,
+    "unique_accepted": 1,
+    "attempted": 100,
+    "internal_redundant_skipped": 65,
+    "runtime_fingerprint_duplicate_skipped": 34,
+    "invalid_skipped": 0,
+    "failures": 0,
+    "exhausted": true,
+    "attempt_accounting_ok": true
+  },
+  "candidate": {
+    "ConditionCount": 2,
+    "AType": 2,
+    "APeriod": 18,
+    "BType": 7,
+    "BPeriod": 6,
+    "CType": 2,
+    "CPeriod": 18,
+    "DType": 9,
+    "DPeriod": 30,
+    "CombineAB": 1,
+    "CombineBC": 0,
+    "CombineCD": 0,
+    "ReverseSignals": 1,
+    "StopTicks": 20,
+    "TargetTicks": 32,
+    "MaxDailyEntrySubmissions": 2
+  },
+  "fingerprint": "NQBC3_CE90DDFDD7D9ADB16ED270BC",
+  "matched_historical_V3_runtime_log": true,
+  "previous_NT8_single_result": {
+    "trades": 1547,
+    "net_profit_usd": -46390.72,
+    "pf": 0.62,
+    "closed_max_drawdown_usd": -47330.2,
+    "commission_usd": 8910.72
+  },
+  "conclusions": {
+    "real_NT8_V4_OnOptimize_parameter_binding_executed": true,
+    "real_pre_RunIteration_redundant_skip_confirmed_for_test_window": true,
+    "one_actual_RunIteration_confirmed_by_adapter_log": true,
+    "exhaustion_accurately_reported": true,
+    "user_requested_three_distinct_variants_available": false,
+    "twenty_unique_historical_evaluations_verified": false,
+    "ten_thousand_unique_historical_evaluations_verified": false,
+    "evolutionary_genetic_crossover_mutation_implemented": false,
+    "ATR_dynamic_exits_implemented": false,
+    "indicator_library_132_in_NT8": false,
+    "G0_to_D2_approved": false,
+    "reserved_2023_to_2026_opened": false
+  },
+  "next_smoke": {
+    "unique_candidates_target": 20,
+    "seed": 20261102,
+    "max_attempts": 2000,
+    "keep_best_results": 20,
+    "ranges": "Count 1..4 step1; A and B types 0..9 step1; A and B periods 6..30 step6; C type2 period18; D type9 period30; AB1 BC0 CD0 Reverse1 Stop20 Target32 MaxDaily2 fixed; IST 2020-2022 NQ Last M1 Standard commission included",
+    "expected": "Verify BEGIN/PRE_RUN/END, twenty distinct PRE_RUN identities and matching runtime V3 identities, executed=20, failure=0, no stop; no promise of profit or formal candidates."
+  }
+}
