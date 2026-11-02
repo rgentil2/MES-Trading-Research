@@ -1,0 +1,77 @@
+name: NQ S0.64 native G0 financial and frequency rule QA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/nq-s064-g0-native-fitness-risk-frequency-20261102]
+    paths:
+      - "research/nq/ninjatrader/NQNativeG0RulesV6.cs"
+      - "research/nq/ninjatrader/NQNativeG0FitnessV6.cs"
+      - "research/nq/ninjatrader/tests/NQNativeG0RulesV6ConsoleTest.cs"
+      - "research/nq/ninjatrader/tests/NQNativeG0FitnessV6ShimTest.cs"
+      - ".github/workflows/nq-native-g0-s064-csharp-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  native-source-rule-and-fitness-shim:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Execute pure production G0 decisions and boundary tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/g0pure"
+          cat > "$RUNNER_TEMP/g0pure/qa.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>disable</Nullable>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          cp research/nq/ninjatrader/NQNativeG0RulesV6.cs "$RUNNER_TEMP/g0pure/"
+          cp research/nq/ninjatrader/tests/NQNativeG0RulesV6ConsoleTest.cs "$RUNNER_TEMP/g0pure/Program.cs"
+          dotnet run --configuration Release --project "$RUNNER_TEMP/g0pure/qa.csproj"
+      - name: Compile production G0 OptimizationFitness against an explicit simulated NT8 API
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/g0shim"
+          cp "$RUNNER_TEMP/g0pure/qa.csproj" "$RUNNER_TEMP/g0shim/qa.csproj"
+          cp research/nq/ninjatrader/NQNativeG0RulesV6.cs "$RUNNER_TEMP/g0shim/"
+          cp research/nq/ninjatrader/NQNativeG0FitnessV6.cs "$RUNNER_TEMP/g0shim/"
+          cp research/nq/ninjatrader/tests/NQNativeG0FitnessV6ShimTest.cs "$RUNNER_TEMP/g0shim/Program.cs"
+          dotnet run --configuration Release --project "$RUNNER_TEMP/g0shim/qa.csproj"
+      - name: Static restrictions and fail-closed audit
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs=require('fs'),assert=require('node:assert/strict');
+          const x=fs.readFileSync('research/nq/ninjatrader/NQNativeG0RulesV6.cs','utf8');
+          const y=fs.readFileSync('research/nq/ninjatrader/NQNativeG0FitnessV6.cs','utf8');
+          for(const s of ['MinTrades=150','MinProfitFactor=1.25',
+              'MaxClosedDrawdownUSD=2000.0','MinTradesPerCalendarMonth=5',
+              'new int[36]','new DateTime(2023,1,1)',
+              'PNL_MISMATCH_NATIVE_VS_TRADE_HISTORY',
+              'CLOSED_DRAWDOWN','ClosedMaxDrawdownUSD']){
+              if(s!=='CLOSED_DRAWDOWN')assert(x.includes(s),s);
+          }
+          assert(y.includes('NQNativeGeneticLabV5'));
+          assert(y.includes('t.ProfitCurrency'));
+          assert(y.includes('NQNativeG0RulesV6.Evaluate'));
+          assert(y.includes('Value=NQNativeG0RulesV6.RejectScore'));
+          assert(!y.includes('RunIteration(')); // fitness cannot skip backtests
+          console.log('NQ_S064_G0_STATIC_CONTRACT_PASS');
+          NODE
