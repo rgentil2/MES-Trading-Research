@@ -1,0 +1,81 @@
+{
+  "schema": "NQ_S059_V5_REAL_NT8_FIXED_EXIT_MODE0_V3_PARITY_V1",
+  "date": "2026-11-02",
+  "sources": [
+    "user-provided Strategy Analyzer screenshots 20261102-230550.png and 20261102-230607.png"
+  ],
+  "strategy": "NQNativeGeneticLabV5",
+  "backtest_type": "Backtest",
+  "instrument": "NQ DEC26, NQ Last M1, confirmed prior historical merge",
+  "period_start": "2020-01-01",
+  "period_end": "2022-12-31",
+  "settings": {
+    "ConditionCount": 2,
+    "AType": 0,
+    "APeriod": 12,
+    "BType": 7,
+    "BPeriod": 14,
+    "CType": 4,
+    "CPeriod": 18,
+    "DType": 6,
+    "DPeriod": 20,
+    "CombineAB": 0,
+    "CombineBC": 0,
+    "CombineCD": 0,
+    "ReverseSignals": 0,
+    "StopTicks": 20,
+    "TargetTicks": 32,
+    "MaxDailyEntrySubmissions": 2,
+    "ExitMode": 0,
+    "ATRPeriod": 14,
+    "ATRStopX10": 15,
+    "ATRTargetX10": 25,
+    "historical_fill": "Standard (Fastest)",
+    "slippage": 2,
+    "commission_checkbox": true,
+    "observed_commission_template_label": "Not legible/appears blank in screenshot; actual commission dollars match prior NinjaTrader Brokerage baseline"
+  },
+  "expected_V3_exact": {
+    "trades": 1546,
+    "long_trades": 825,
+    "short_trades": 721,
+    "net_usd": -43554.96,
+    "pf_rounded": 0.64,
+    "max_closed_drawdown_usd": -44380.44,
+    "commission_usd": 8904.96,
+    "winning_trades": 499
+  },
+  "actual_V5": {
+    "trades": 1546,
+    "long_trades": 825,
+    "short_trades": 721,
+    "net_usd": -43554.96,
+    "pf_rounded": 0.64,
+    "max_closed_drawdown_usd": -44380.44,
+    "commission_usd": 8904.96,
+    "winning_trades": 499,
+    "gross_profit_usd": 76915.76,
+    "gross_loss_usd": -120470.72,
+    "long_net_usd": -24067,
+    "short_net_usd": -19487.96,
+    "win_pct_rounded": 32.28,
+    "slippage_total": 1297
+  },
+  "audit_conclusion": {
+    "V5_installed_and_backtest_executed_in_real_NT8": true,
+    "ExitMode0_expected_aggregate_parity_with_V3": true,
+    "V5_compilation_inferred_from_executable_backtest": true,
+    "full_tradewise_parity": false,
+    "mode1_ATR_backtest_verified": false,
+    "mode2_ATR_backtest_verified": false,
+    "mode3_ATR_backtest_verified": false,
+    "V5_optimizer_20_unique_verified": false,
+    "economic_finalist": false
+  },
+  "next_steps": [
+    "Save V5 mode0 baseline template optional; do not overwrite V3/V4.",
+    "Run isolated V5 ExitMode=1 with other signal parameters frozen, compare trade count, positions, stop placement, and session flat; expect many ATR oversized stops to be rejected by 55 tick guard, do not loosen.",
+    "Run isolated modes2 then3, each with same instrument/time/costs.",
+    "Only after modes stable, run custom V5 20-unique optimized smoke and compare 20 PRE_RUN ids to V5 runtime."
+  ]
+}
