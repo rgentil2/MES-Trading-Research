@@ -30,6 +30,7 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Xml.Serialization;
 using NinjaTrader.Cbi;
 using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
@@ -44,10 +45,20 @@ namespace NinjaTrader.NinjaScript.Strategies
         private double firstClosedCumProfit = 0.0;
 
         // Read by NQNativeStructureFitnessV3. Not NinjaScriptProperty genes.
+        [Browsable(false)]
+        [XmlIgnore]
         public bool CanonicalReady { get; private set; }
+        [Browsable(false)]
+        [XmlIgnore]
         public bool IsStructurallyRedundant { get; private set; }
+        [Browsable(false)]
+        [XmlIgnore]
         public int EffectiveConditionCount { get; private set; }
+        [Browsable(false)]
+        [XmlIgnore]
         public string CanonicalRuntimeFingerprint { get; private set; }
+        [Browsable(false)]
+        [XmlIgnore]
         public string CanonicalBooleanKey { get; private set; }
 
         private const string LongTag  = "GEN_LONG";
@@ -123,10 +134,21 @@ namespace NinjaTrader.NinjaScript.Strategies
                     IsStructurallyRedundant = k.IsRedundant;
                     CanonicalReady = true;
                 }
-                catch (ArgumentException)
+                catch (ArgumentException ex)
                 {
                     // Malformed optimizer genes: fitness rejects candidate.
+                    Print("NQ_V3_CANONICAL_REJECT invalid-gene " + ex.Message);
                 }
+                // Diagnostic emitted by the actual historical strategy
+                // instance, not by the configuration UI/SetDefaults.
+                // During a Genetic run this is one line per iteration:
+                // informational only, not proof of unique evaluations.
+                Print("NQ_V3_CANONICAL_RUNTIME"
+                    + " ready=" + CanonicalReady
+                    + " redundant=" + IsStructurallyRedundant
+                    + " effective=" + EffectiveConditionCount
+                    + " id=" + CanonicalRuntimeFingerprint
+                    + " bool=" + CanonicalBooleanKey);
             }
             else if (State == State.Configure)
             {
