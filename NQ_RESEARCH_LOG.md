@@ -1436,3 +1436,10 @@ El usuario envió captura visible de NinjaTrader 8 `Data Box` sobre **NQ 06-26, 
 - **406 TP +32 ticks cada uno, 283 SL variables 9–57 ticks (35 distancias distintas), 20 cierres a 11:29**. 121 stop fills >55 ticks por máximo 2 ticks de slippage a stop preorden<=55 (consistente con NinjaTrader histórico), peor trade -$290,76 comisión incluida; sin prueba independiente del ATR en cada entrada todavía. No solapamiento y <=2 entradas/día, no salidas después 11:29.
 - 2020 321 trades net -$4.288,96; 2021 327 net -$6.668,52; **2022 61 net -$416,36**; 9/36 meses con <5 trades. G0 fail, riesgo funded no probado. No abrir holdouts. [Auditoría S0.60](research/nq/NQ_M1_V62_S060_V5_NATIVE_ATR_MODE1_709_TRADE_CSV_AUDIT_2026_11_02.md).
 - **Próximo:** backtest modo2 (`ATR14 stop×1,5 target×2,5`) para comprobar variación de distancia de target, después modo3 sin TP; enviar Summary y Trades CSV.
+
+### 2026-11-02 — S0.61: V5 ExitMode2 ATR SL+ATR TP probado, 683 CSV reconciliadas
+
+- Imagen + CSV: `ExitMode2`, ATR14 SL1.5×, TP2.5×, mismas entradas, NQ M1 2020–22. **683 trades** (463 L/220 S), **net -$15.664,08**, PF0,85, DD cerrado -$21.074,24, fees $3.934,08; 254 ganadoras (37,19%).
+- **214 TP** con 46 objetivos distintos **+19…+92 ticks** net +$85.777,36; **409 SL** 41 distancias distintas **-7…-57 ticks** net -$106.120,84; **60 cierres horario** net +$4.679,40. 170 stop fills realizados >55 ticks y hasta57, compatibles con máximo stop planificado 55 + slippage2, sin valores ATR originales para auditoría tick-by-tick. Peor operación -$290,76 con comisiones; <=2/day, cero solapes, todas salidas <=11:29.
+- Frecuencia anual 2020 312, 2021 311, 2022 **60**. **10 de 36 meses** con <5 trades. Modo2 da pérdida -$4.290,24 adicional y DD cerrado $6.217,52 mayor frente a modo1. G0 falla por neto negativo, PF, DD y meses secos. [JSON S0.61](research/nq/NQ_M1_V63_S061_V5_NATIVE_ATR_MODE2_683_TRADES_CSV_AUDIT_2026_11_02.json).
+- Siguiente `ExitMode3` con ATR14 SL1.5× y sin TP, auditar CSV (0 Exit name Profit target). Luego V5 Optimizer 20 únicos, preservar ISV2023+.
