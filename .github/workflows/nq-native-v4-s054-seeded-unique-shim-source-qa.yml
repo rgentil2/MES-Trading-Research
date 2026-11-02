@@ -2,14 +2,6 @@ name: NQ S0.54 V4 deduplicating optimizer pure CSharp + NT8 adapter shim QA
 
 on:
   workflow_dispatch:
-  push:
-    branches: [research/nq-s054-v4-native-prebacktest-unique-optimizer-20261102]
-    paths:
-      - "research/nq/ninjatrader/NQNativeUniqueSearchV4.cs"
-      - "research/nq/ninjatrader/NQNativeUniqueOptimizerV4.cs"
-      - "research/nq/ninjatrader/tests/NQNativeUniqueSearchV4ConsoleTest.cs"
-      - "research/nq/ninjatrader/tests/NQNativeUniqueOptimizerV4AdapterShimTest.cs"
-      - ".github/workflows/nq-native-v4-s054-seeded-unique-shim-source-qa.yml"
 
 permissions:
   contents: read
