@@ -1,3 +1,16 @@
+## 2026-11-02 — S0.53: FITNESS CUSTOM V3 FUNCIONA DENTRO DE NINJATRADER — TRES VARIANTES DETERMINISTAS
+
+El usuario ejecutó el experimento S0.52 **en NinjaTrader 8 Strategy Analyzer real**, `Strategy=NQNativeGeneticLabV3`, `Optimizer=Default`, `Optimize on=NQNativeStructureFitnessV3`, `Keep best=3`, NQ M1 Last 2020–22, Standard, 2 ticks de slippage y comisión NinjaTrader Brokerage activa. Variación exclusiva de `ConditionCount=2..4`; demás genes congelados `A2/18,B7/6,C2/18,D9/30,AB1,BC0,CD0,Reverse1,Stop20,TP32,MaxDaily2`.
+
+**Tres filas reales de resultado:**
+- Count2 `A OR B`: **Performance/fitness -US$46.390,72** = Total net profit -US$46.390,72; **1.547 trades, PF 0,62, DD cerrado -US$47.330,20**. No redundante.
+- Count3 `(A OR B) AND A = A`: **Performance -1×10¹²**, pero **Total net profit -US$46.655,72**, **1.547 trades, PF0,62, DD cerrado -US$47.595,20**. Redundancia penalizada.
+- Count4 `((A OR B) AND A) AND D = A AND D`: **Performance -1×10¹²**, pero **Total net profit -US$8.286,32**, **357 trades, PF0,69, DD cerrado -US$8.731,76**. Redundancia penalizada aunque el PnL sea menos negativo. Coincide con genotipo anterior V2/V3.
+
+**Resultado G0:** ninguno rentable ni aprobado; 3 backtests sí fueron ejecutados. **CONTRATO DEL FITNESS PERSONALIZADO V3 CONFIRMADO NATIVAMENTE**: utiliza identidad de hojas reales y baja puntuación de redundantes. Importante: no evita ejecutar un backtest duplicado ni memoriza candidatos entre generaciones; se debe diseñar Custom Optimizer para filtrar huellas **antes de `RunIteration`** y respetar rangos de Strategy Analyzer, sin sobreafirmar que 10.000 genotipos únicos están resueltos. [Evidencia JSON S0.53](research/nq/NQ_M1_V55_S053_NATIVE_V3_FITNESS_DEFAULT_THREE_CASES_VERIFIED_2026_11_02.json). Mantener 132 rutas, ATR dinámico, G0–D2, ISV2023+ y portafolio pendientes.
+
+---
+
 ## 2026-11-02 — S0.52: V3 REAL NT8 SIN Y CON REDUNDANCIA CERTIFICADA; SIGUIENTE PRUEBA CUSTOM FITNESS (3 CASOS)
 
 **Evidencia fresca del usuario en 2 capturas + log runtime (NQ Last M1, Standard, IST2020–22, comisiones NinjaTrader Brokerage restauradas):** control 2 condiciones A0 n12 + B7 n14 AND0, SL20 TP32 y MaxDaily2: **1546 trades, -$43.554,96 neto, PF0,64, DD cerrado -$44.380,44, comisiones $8.904,96**, línea `NQ_V3_CANONICAL_RUNTIME ready=True redundant=False effective=2 id=NQBC3_97A7396DFB465D4F93F4859D bool=BCANv1:00:012,07:014;tt=0001`. Cuatro condiciones S0.48 `4/2/18/7/6/2/18/9/30/1/0/0/1/20/32/2`: **357 trades, -$8.286,32 neto, PF0,69, DD cerrado -$8.731,76, comisiones $2.056,32**, línea `NQ_V3_CANONICAL_RUNTIME ready=True redundant=True effective=2 id=NQBC3_D081C4AB236E860917A3463E bool=BCANv1:02:018,09:030;tt=0001`. Ambas huellas coinciden con los ensayos .NET8 y ambos netos reproducen V2/V1 baselines. **Detector semántico activo realmente dentro de NT8**; aún NO se ha probado la clase `NQNativeStructureFitnessV3` en Optimization.

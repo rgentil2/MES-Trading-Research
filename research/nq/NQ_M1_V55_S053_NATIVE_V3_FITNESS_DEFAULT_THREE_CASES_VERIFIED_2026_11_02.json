@@ -1,0 +1,88 @@
+{
+  "schema": "NQ_S053_NT8_NATIVE_V3_CUSTOM_FITNESS_ACTUAL_3_VARIANTS",
+  "date": "2026-11-02",
+  "evidence": "User-supplied NinjaTrader8 Strategy Analyzer screenshot of Default optimizer results",
+  "strategy": "NQNativeGeneticLabV3",
+  "optimizer": "Default",
+  "optimize_on": "NQNativeStructureFitnessV3",
+  "keep_best": 3,
+  "market_data": {
+    "symbol": "NQ DEC26 with user-confirmed contract merge",
+    "price": "Last",
+    "interval": "M1",
+    "period": "2020-01-01_to_2022-12-31",
+    "historical_fill": "Standard (Fastest)",
+    "slippage_ticks": 2,
+    "include_commissions": true,
+    "commission_template": "NinjaTrader Brokerage"
+  },
+  "fixed_genes": {
+    "AType": 2,
+    "APeriod": 18,
+    "BType": 7,
+    "BPeriod": 6,
+    "CType": 2,
+    "CPeriod": 18,
+    "DType": 9,
+    "DPeriod": 30,
+    "CombineAB": 1,
+    "CombineBC": 0,
+    "CombineCD": 0,
+    "Reverse": 1,
+    "StopTicks": 20,
+    "TargetTicks": 32,
+    "MaxDailyEntrySubmissions": 2
+  },
+  "variable_gene": {
+    "ConditionCount": {
+      "min": 2,
+      "max": 4,
+      "increment": 1
+    }
+  },
+  "results": [
+    {
+      "count": 2,
+      "boolean": "A OR B",
+      "structurally_redundant": false,
+      "fitness_usd": -46390.72,
+      "net_usd": -46390.72,
+      "pf": 0.62,
+      "closed_dd_usd": -47330.2,
+      "trades": 1547
+    },
+    {
+      "count": 3,
+      "boolean": "(A OR B) AND A == A",
+      "structurally_redundant": true,
+      "fitness_value": -1000000000000,
+      "net_usd": -46655.72,
+      "pf": 0.62,
+      "closed_dd_usd": -47595.2,
+      "trades": 1547
+    },
+    {
+      "count": 4,
+      "boolean": "((A OR B) AND A) AND D == A AND D",
+      "structurally_redundant": true,
+      "fitness_value": -1000000000000,
+      "net_usd": -8286.32,
+      "pf": 0.69,
+      "closed_dd_usd": -8731.76,
+      "trades": 357
+    }
+  ],
+  "key_result": "Native custom NT8 OptimizationFitness honors canonical status for control and both redundant expressions. Performance differs from Total net profit on penalized cases; no selection due to net alone.",
+  "passed_contract": "V3_CUSTOM_FITNESS_RUNTIME_CONFIRMED",
+  "unverified": [
+    "Duplicate genotypes skipped before executing a backtest",
+    "Genetic search actually generating unique structural combinations",
+    "132 native indicators",
+    "ATR exits",
+    "PF/DD formal gates",
+    "Monthly robustness, walkforward, montecarlo",
+    "2023+ reserved holdouts",
+    "Portfolio"
+  ],
+  "remarks": "-1e12 fitness still allows historical backtest to run and retain raw PnL. Diagnostic only. Three rows in screenshot, not economic winners."
+}
