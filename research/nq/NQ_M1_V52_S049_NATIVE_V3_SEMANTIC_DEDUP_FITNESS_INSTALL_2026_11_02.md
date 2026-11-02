@@ -34,3 +34,20 @@ La equivalencia semántica considera las hojas como variables independientes, sa
 ## Próxima fase después de instalar y validar
 
 Crear **Custom Optimizer** que evite llamar `RunIteration()` para huellas ya vistas, con semilla y set aislados por ejecución; exigir 10K candidatos *efectivos* antes de finalización. También ampliar 132 indicadores y probar nuevas salidas dinámicas por ATR, como pidió el usuario, en una versión separada de este estudio de identidad. Posteriormente integrar G0/D0/D1/D2 y riesgo flotante MFFU 50K compartido. **2023–2026 permanecen sin leer** y no hay finalistas.
+
+## S0.50 — Diagnóstico correcto de los cinco campos canónicos en NinjaTrader 8
+
+**Evidencia del usuario** (captura Strategy Analyzer 2026-11-02): V3 compiló y corrió **realmente** en NQ M1 IST2020–22, `ConditionCount=2`, AType0/APeriod12, BType7/BPeriod14, AND, stop20/target32, 2 entradas/día; **1546 operaciones, -US$43.554,96 neto, PF0,64, DD -US$44.380,44, US$8.904,96 comisiones, 825 long/721 short**, idénticos agregados a V1 y V2. Esto verifica **paridad de ejecución agregada** del script V3 pero **NO** prueba que su firma booleana ni custom Optimization Fitness haya funcionado.
+
+La captura mostraba propiedades públicas automáticas en `Strategy parameters`: `CanonicalBooleanKey=""`, `CanonicalReady=false`, `CanonicalRuntimeFingerprint=""`, `EffectiveConditionCount=0`, `IsStructurallyRedundant=true`. Esa pantalla refleja valores de la **instancia de configuración `SetDefaults`** en NinjaTrader y no establece que la instancia histórica `State.DataLoaded` haya fallado. NT8 recomienda usar `[Browsable(false)]` para propiedades runtime que no deban exponerse y `[XmlIgnore]` para impedir persistencia de variables calculadas; véanse https://ninjatrader.com/support/helpguides/nt8/ninjascript_best_practices.htm y https://static.ninjatrader.com/support/helpGuides/nt8/xmlignoreattribute.htm.
+
+Se actualizó **SOLO `NQNativeGeneticLabV3.cs`**: los cinco getters calculados ahora llevan `[Browsable(false)][XmlIgnore]`, sin tocar genotipo ni órdenes, y al entrar a `State.DataLoaded` emite una línea `NQ_V3_CANONICAL_RUNTIME ready=... redundant=... effective=... id=... bool=...` en **NinjaScript Output**. La V2 y el fitness V3 no cambian.
+
+**Protocolo de verificación en Windows**:
+1. Reemplazar únicamente el `.cs` V3 en la carpeta Strategies, dejando los otros dos módulos V3 (`NQNativeBooleanCanonicalV3.cs` y `NQNativeStructureFitnessV3.cs`) instalados.
+2. Reiniciar/abrir NinjaScript Editor y compilar **F5**. Sin errores se debe observar que `Strategy parameters` ya no muestra los cinco campos calculados (solo los 16 genes).
+3. Abrir **New → NinjaScript Output**, ejecutar de nuevo el **Backtest control dos hojas** con los mismos datos/comisiones, comprobar resultados iguales a V2 y registrar línea `NQ_V3_CANONICAL_RUNTIME ready=True redundant=False effective=2`. El literal booleano puede aparecer como `True` y `False` (C# `bool.ToString`).
+4. Ejecutar Backtest individual de genotipo S0.48 completo `4/2/18/7/6/2/18/9/30/1/0/0/1/20/32/2` y revisar `NQ_V3_CANONICAL_RUNTIME ready=True redundant=True effective=2`; esta huella no altera fills (esperamos comparar agregado con la V2 de genotipo idéntico, no usar la fila de optimización como garantía).
+5. **Sólo cuando ambas líneas estén verificadas**: Strategy Analyzer → Optimization → `Optimize on=NQNativeStructureFitnessV3` y `Optimizer=Genetic`; usar los rangos S0.49, 20×5 nominal. El fitness rechaza redundantes mediante puntuación `-1e12` **después** de su backtest. Si se selecciona `Max. net profit` el filtro NO actúa.
+
+**Límite:** CI S0.50 verifica solo que el `.cs` de producción del canonicalizador compila/ejecuta en .NET8 (1034 aserciones) y que las anotaciones existen. No prueba NinjaTrader runtime ni que la clase OptimizationFitness vea los valores computados. Mantener ISV2023+ sellados y código C# exclusivamente.
