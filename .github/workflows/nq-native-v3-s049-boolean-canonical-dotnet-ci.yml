@@ -1,0 +1,83 @@
+name: NQ S0.49 V3 native Boolean canonicalization actual CSharp QA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/nq-s049-v3-semantic-canonicalizer-fitness-20261102]
+    paths:
+      - "research/nq/ninjatrader/NQNativeBooleanCanonicalV3.cs"
+      - "research/nq/ninjatrader/NQNativeGeneticLabV3.cs"
+      - "research/nq/ninjatrader/NQNativeStructureFitnessV3.cs"
+      - "research/nq/ninjatrader/tests/NQCanonicalizationConsoleTest.cs"
+      - ".github/workflows/nq-native-v3-s049-boolean-canonical-dotnet-ci.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  executable-pure-csharp-plus-static-ninjascript-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Compile and execute EXACT production Boolean V3 canonicalizer in .NET 8
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/nqcanon"
+          cat > "$RUNNER_TEMP/nqcanon/nqcanon.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>disable</Nullable>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          cp research/nq/ninjatrader/NQNativeBooleanCanonicalV3.cs "$RUNNER_TEMP/nqcanon/"
+          cp research/nq/ninjatrader/tests/NQCanonicalizationConsoleTest.cs "$RUNNER_TEMP/nqcanon/Program.cs"
+          dotnet run --configuration Release --project "$RUNNER_TEMP/nqcanon/nqcanon.csproj"
+      - name: Cross-check V3's NinjaTrader source contracts, no selection of MaxNet
+        shell: bash
+        run: |
+          node <<'JS'
+          const fs=require('fs'),assert=require('assert');
+          const p=n=>fs.readFileSync('research/nq/ninjatrader/'+n+'.cs','utf8');
+          const v1=p('NQNativeGeneticLabV1');
+          const v2=p('NQNativeGeneticLabV2');
+          const v3=p('NQNativeGeneticLabV3');
+          const fitness=p('NQNativeStructureFitnessV3');
+          assert(v1.includes('class NQNativeGeneticLabV1'));
+          assert(v2.includes('class NQNativeGeneticLabV2'));
+          assert(v3.includes('class NQNativeGeneticLabV3 : Strategy'));
+          assert.equal((v3.match(/\[NinjaScriptProperty\]/g)||[]).length,16);
+          assert.equal((v3.match(/case [0-9]:/g)||[]).length,10);
+          for (const key of [
+            'State == State.DataLoaded','NQNativeBooleanCanonicalV3.Analyze',
+            'CanonicalReady','IsStructurallyRedundant',
+            'CanonicalRuntimeFingerprint','EffectiveConditionCount',
+            'State != State.Historical',
+            'OrderFillResolution = OrderFillResolution.Standard',
+            'IncludeCommission = true','Slippage = 2',
+            'IsInstantiatedOnEachOptimizationIteration = true',
+            'Time[0].Year < 2020 || Time[0].Year > 2022',
+            'SetStopLoss(CalculationMode.Ticks, StopTicks)'
+          ]) assert(v3.includes(key),'Missing V3: '+key);
+          for (const key of [
+            'class NQNativeStructureFitnessV3 : OptimizationFitness',
+            'OnCalculatePerformanceValue(StrategyBase strategy)',
+            'strategy as NQNativeGeneticLabV3',
+            'v3.IsStructurallyRedundant',
+            'count < 1','Value = -1.0e12','Value = net'
+          ]) assert(fitness.includes(key),'Missing fitness: '+key);
+          assert(!/(python\.exe|Process\.Start|File\.ReadAllText|StreamReader)/i.test(v3+fitness));
+          console.log('NQ_S049_V3_NINJASCRIPT_STATIC_CONTRACT_PASS');
+          console.log('NOT_COMPILED_IN_NINJATRADER_NOT_LIVE_BACKTESTED');
+          JS
