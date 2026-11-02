@@ -1,0 +1,84 @@
+name: NQ S0.54 V4 deduplicating optimizer pure CSharp + NT8 adapter shim QA
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  executable-csharp-v4-and-adapter-shim:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Compile and execute actual production V3/V4 unique generation
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v4-unique"
+          cat > "$RUNNER_TEMP/v4-unique/qa.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>disable</Nullable>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          cp research/nq/ninjatrader/NQNativeBooleanCanonicalV3.cs "$RUNNER_TEMP/v4-unique/"
+          cp research/nq/ninjatrader/NQNativeUniqueSearchV4.cs "$RUNNER_TEMP/v4-unique/"
+          cp research/nq/ninjatrader/tests/NQNativeUniqueSearchV4ConsoleTest.cs "$RUNNER_TEMP/v4-unique/Program.cs"
+          dotnet run --configuration Release --project "$RUNNER_TEMP/v4-unique/qa.csproj"
+      - name: Compile actual production custom optimizer against explicitly marked NT8 API shim
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v4-optimizer"
+          cat > "$RUNNER_TEMP/v4-optimizer/adapter.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>disable</Nullable>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          cp research/nq/ninjatrader/NQNativeBooleanCanonicalV3.cs "$RUNNER_TEMP/v4-optimizer/"
+          cp research/nq/ninjatrader/NQNativeUniqueSearchV4.cs "$RUNNER_TEMP/v4-optimizer/"
+          cp research/nq/ninjatrader/NQNativeUniqueOptimizerV4.cs "$RUNNER_TEMP/v4-optimizer/"
+          cp research/nq/ninjatrader/tests/NQNativeUniqueOptimizerV4AdapterShimTest.cs "$RUNNER_TEMP/v4-optimizer/Program.cs"
+          dotnet run --configuration Release --project "$RUNNER_TEMP/v4-optimizer/adapter.csproj"
+      - name: Static guardrails and NT8-specific uncertainty disclosure
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs=require('fs'), assert=require('assert');
+          const dir='research/nq/ninjatrader/';
+          const pure=fs.readFileSync(dir+'NQNativeUniqueSearchV4.cs','utf8');
+          const adapter=fs.readFileSync(dir+'NQNativeUniqueOptimizerV4.cs','utf8');
+          const v3=fs.readFileSync(dir+'NQNativeGeneticLabV3.cs','utf8');
+          for(const token of ['RunIteration();','NQUniqueSearchV4','OnOptimize()',
+          'NumberOfIterations','TryNext','WriteMember',
+          'STOP binding validation',
+          'NQ_V4','V3']) assert(adapter.includes(token),token);
+          assert(adapter.indexOf('var genome=search.TryNext()') <
+                 adapter.indexOf('RunIteration(); // ONLY AFTER'), 'Dedup before run');
+          assert(pure.includes('HashSet<string>'));
+          assert(pure.includes('seen.Add(c.RuntimeKey)'));
+          assert(pure.includes('if (c.IsRedundant)'));
+          assert(pure.includes('new Random(seed)'));
+          assert(v3.includes('IsInstantiatedOnEachOptimizationIteration = true'));
+          assert(!/(python\.exe|Process\.Start|WebRequest|File\.ReadAllText)/.test(adapter+pure));
+          console.log('NQ_S054_V4_STATIC_PRE_RUN_DEDUP_CONTRACT_PASS');
+          console.log('SHIM_ONLY: ACTUAL_NINJATRADER_PARAMETER_ABI_UNVERIFIED');
+          NODE
