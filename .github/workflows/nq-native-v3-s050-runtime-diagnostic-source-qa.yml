@@ -2,11 +2,6 @@ name: NQ S0.50 V3 canonical runtime diagnostics plus .NET 1034 tests
 
 on:
   workflow_dispatch:
-  push:
-    branches: [research/nq-s050-v3-hide-computed-canonical-fields-runtime-diagnostic-20261102]
-    paths:
-      - "research/nq/ninjatrader/NQNativeGeneticLabV3.cs"
-      - ".github/workflows/nq-native-v3-s050-runtime-diagnostic-source-qa.yml"
 
 permissions:
   contents: read
