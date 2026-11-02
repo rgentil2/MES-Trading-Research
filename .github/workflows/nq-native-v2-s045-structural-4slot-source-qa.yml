@@ -2,11 +2,6 @@ name: NQ S0.45 NT8 native V2 four-slot structural source QA
 
 on:
   workflow_dispatch:
-  push:
-    branches: [research/nq-s045-nt8-native-4slot-structural-v2-20261102]
-    paths:
-      - "research/nq/ninjatrader/NQNativeGeneticLabV2.cs"
-      - ".github/workflows/nq-native-v2-s045-structural-4slot-source-qa.yml"
 
 permissions:
   contents: read
