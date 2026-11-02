@@ -1,3 +1,13 @@
+## 2026-11-02 — S0.48: PRIMER GENETIC V2 NATIVO, 20 MEJORES NEGATIVOS Y DUPLICACIÓN ESTRUCTURAL OBSERVADA
+
+El usuario ejecutó la prueba de **NQNativeGeneticLabV2 Genetic**, 20×5 = ~100 evaluaciones *nominales* (cantidad real de evaluaciones y genotipos únicos no visible), crossover80%, mutation20%, objetivo `Max. net profit`, con **16 genes**, NQ M1 Last IST2020–22, costos NinjaTrader Standard, SL20/TP32 solo como control técnico; de las **20 mejores guardadas, 0 positivas**.
+
+**Mejor guardada rank1:** `4/2/18/7/6/2/18/9/30/1/0/0/1/20/32/2` = `Count4, A=WMA slope18, B=RSI band6, C=WMA slope18, D=SMA/EMA crossover30, AB=OR, BC=AND, CD=AND, Reverse1, SL20, TP32, MaxDaily2`. Backtest: **357 trades; neto -US$8.286,32; PF0,69; max DD cerrado -US$8.731,76; win34,17%; comisión US$2.056,32**. La segunda guardada tiene -US$26.259,96, el resto también pierde. Ningún candidato pasa G0.
+
+**Hallazgo NUEVO de arquitectura:** La estructura `((A OR B) AND C) AND D` con **A=C exactamente** (ambos tipo2 WMA slope n18) se reduce por ley de absorción a **`A AND D`** (y después `ReverseSignals=1`) para señales bullish y bearish. La «estrategia de cuatro condiciones» óptima reportada **tiene solo dos condiciones funcionales**; el B RSI band n6 queda **semánticamente irrelevante**. El optimizador permite genes estructurales redundantes y desperdicia búsquedas; **no deduce 4 hojas útiles**. Antes de escalar a 10.000 se debe implementar canonicalización/rechazo de equivalentes (idealmente mediante expresión booleana normalizada y firma por tabla de verdad para cada hoja con identidad de indicador+parámetros), registro de identificadores efectivos y búsqueda de genotipos únicos. Evitar aumentar generaciones de 100 a 10K sin corregir sesgos de duplicación. Mantener innovaciones ATR exits dinámicas para fase posterior explícita, no alterar stops/targets en esta prueba técnica. [Evidencia JSON S0.48](research/nq/NQ_M1_V51_S048_NATIVE_V2_GENETIC_FIRST_RESULTS_DUPLICATE_STRUCTURE_2026_11_02.json). **No abrir 2023–26**.
+
+---
+
 ## 2026-11-02 — S0.47: V2 NINJATRADER 8 — 1, 3, 4 CONDICIONES PROBADAS EN BACKTEST REAL
 
 **Evidencia: 3 capturas nuevas del usuario desde Strategy Analyzer NT8** para `NQNativeGeneticLabV2`, NQ M1 Last IST2020–2022, merge previamente confirmado por usuario, misma plantilla de comisión, Standard (Fastest), slippage 2, limit-touch false y SL20 ticks / TP32 ticks temporales. Después de la paridad agregada V2=V1 con 2 hojas (1546 trades, -$43.554,96, PF0,64, DD$44.380,44), se ejecutaron:
