@@ -1,3 +1,14 @@
+## 2026-11-02 — S0.47: V2 NINJATRADER 8 — 1, 3, 4 CONDICIONES PROBADAS EN BACKTEST REAL
+
+**Evidencia: 3 capturas nuevas del usuario desde Strategy Analyzer NT8** para `NQNativeGeneticLabV2`, NQ M1 Last IST2020–2022, merge previamente confirmado por usuario, misma plantilla de comisión, Standard (Fastest), slippage 2, limit-touch false y SL20 ticks / TP32 ticks temporales. Después de la paridad agregada V2=V1 con 2 hojas (1546 trades, -$43.554,96, PF0,64, DD$44.380,44), se ejecutaron:
+- **ConditionCount 1**, solo AType0/APeriod12: **1548 trades, neto -US$43.996,48, PF0,64, max DD cerrado -US$43.996,48**. B/C/D ignorados.
+- **ConditionCount 3**, AType0/APeriod12 AND BType7/BPeriod14 OR CType4/CPeriod18 (CombineAB0, CombineBC1): **1547 trades, neto -US$40.075,72, PF0,66, max DD cerrado -US$40.229,96**.
+- **ConditionCount 4**, mismas A/B/C + OR DType6/DPeriod20 (CombineCD1): **1545 trades, neto -US$36.729,20, PF0,69, max DD cerrado -US$36.945,56**.
+
+**Conclusión:** V2 instalada, compilada y los cuatro valores de ConditionCount=1/2/3/4 corrieron sobre el histórico, con métricas diferentes al habilitar slots. Evidencia de ejecución de estructuras pero NO prueba formal de que toda la tabla de verdad / 16 genes/operadores sea correcta operación por operación. Todas las configuraciones son perdedoras y el límite 2 entradas/día reduce cambios en cantidad de trades. NO son finalistas, ni han aprobado G0, ni se han abierto ISV2023+. El siguiente paso es la pequeña optimización de V2 **Genetic: 20 individuos×5 generaciones, crossover80%, mutation20%, 20 resultados, fitness Max. net profit solo diagnóstico** sobre IST 2020–22. Mantener SL20/TP32 fijos SOLO para testear arquitectura; salidas ATR dinámicas, 132 rutas, deduplicación y portafolio pendientes. [Guía S0.45](research/nq/NQ_M1_V50_S045_NATIVE_V2_INSTALL_AND_STRUCTURAL_TEST_2026_11_02.md).
+
+---
+
 ## 2026-11-02 — S0.46: V2 compila en NinjaTrader y reproduce el backtest V1 de dos condiciones
 
 **Evidencia nueva del usuario:** captura real de Strategy Analyzer `NQNativeGeneticLabV2`, `ConditionCount=2`, `AType0/APeriod12`, `BType7/BPeriod14`, `CombineAB=0`, `Reverse=0`, `Stop20`, `Target32`, `MaxDailyEntries2`, mismas series NQ Last M1, merge confirmado, IST2020–22, Standard (Fastest), slippage2 y plantilla de comisiones NinjaTrader Brokerage. **V2 reproduce exactamente los agregados del primer V1**: 1546 operaciones (825 long/721 short), -US$43.554,96 neto, PF0,64, máximo DD cerrado -US$44.380,44, comisión US$8.904,96 y 32,28% rentables. Por tanto, V2 sí se instaló/compiló/ejecutó en Windows y pasó la prueba de equivalencia **AGREGADA** de dos hojas. **No decir que se hizo conciliación trade-by-trade** sin exportar ambos CSV.
