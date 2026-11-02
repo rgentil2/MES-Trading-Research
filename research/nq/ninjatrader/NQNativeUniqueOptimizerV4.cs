@@ -21,20 +21,24 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using NinjaTrader.NinjaScript;
+using NinjaTrader.Cbi;
 using NinjaTrader.NinjaScript.Strategies;
 
 namespace NinjaTrader.NinjaScript.Optimizers
 {
     public class NQNativeUniqueOptimizerV4 : Optimizer
     {
+        [NinjaScriptProperty]
         [Display(Name="Unique candidates target (smoke 20)",Order=1,GroupName="01 V4")]
         [Range(1,10000)]
         public int UniqueCandidates { get; set; }
 
+        [NinjaScriptProperty]
         [Display(Name="Random seed",Order=2,GroupName="01 V4")]
         [Range(1,Int32.MaxValue)]
         public int Seed { get; set; }
 
+        [NinjaScriptProperty]
         [Display(Name="Max attempts",Order=3,GroupName="01 V4")]
         [Range(1,2000000)]
         public int MaxAttempts { get; set; }
@@ -47,6 +51,11 @@ namespace NinjaTrader.NinjaScript.Optimizers
                 UniqueCandidates = 20;
                 Seed = 20261102;
                 MaxAttempts = 10000;
+            }
+            else if (State == State.Configure && Strategies != null &&
+                     Strategies.Count == 1)
+            {
+                NumberOfIterations = UniqueCandidates;
             }
         }
 
