@@ -1,0 +1,172 @@
+{
+  "schema": "NQ_S061_V5_NATIVE_ATR_MODE2_FULL_EXPORTED_TRADE_CSV_AUDIT_V1",
+  "date": "2026-11-02",
+  "source": "User NinjaTrader Strategy Analyzer Summary screenshot and NinjaTrader Grid 2026-11-02 06-20 p. m..csv, all 683 rows analyzed locally, raw personal export not added to repo",
+  "source_csv_sha256": "3ad8e3a94aef75d3ee40bdaee0665f2f528dfd71032a78ec6fb1aa3b9f3c049e",
+  "settings": {
+    "strategy": "NQNativeGeneticLabV5",
+    "exit_mode": 2,
+    "atr_period": 14,
+    "atr_stop_x10": 15,
+    "atr_target_x10": 25,
+    "condition_count": 2,
+    "AType": 0,
+    "APeriod": 12,
+    "BType": 7,
+    "BPeriod": 14,
+    "CType": 4,
+    "CPeriod": 18,
+    "DType": 6,
+    "DPeriod": 20,
+    "CombineAB": 0,
+    "CombineBC": 0,
+    "CombineCD": 0,
+    "ReverseSignals": 0,
+    "max_daily_entries": 2,
+    "inactive_fixed_stop_ticks": 20,
+    "inactive_fixed_target_ticks": 32,
+    "instrument": "NQ DEC26",
+    "bars": "Last M1",
+    "period": "2020-01-01 / 2022-12-31",
+    "commission_RT_usd": 5.76,
+    "slippage_setting_ticks": 2
+  },
+  "screenshot_and_csv": {
+    "trades": 683,
+    "long_trades": 463,
+    "short_trades": 220,
+    "winners": 254,
+    "losers": 429,
+    "win_percent": 37.19,
+    "net_usd": -15664.08,
+    "gross_profit_usd": 92166.96,
+    "gross_loss_usd": -107831.04,
+    "commissions_usd": 3934.08,
+    "pf_rounded": 0.85,
+    "closed_max_drawdown_usd": -21074.24,
+    "long_net_usd": -7726.88,
+    "short_net_usd": -7937.2,
+    "avg_trade_usd": -22.93,
+    "max_realized_loss_net_usd": -290.76,
+    "max_realized_winner_net_usd": 454.24,
+    "slippage_total_reported": 576
+  },
+  "exit_audit": {
+    "profit_target": {
+      "n": 214,
+      "net_usd": 85777.36,
+      "realized_ticks_min": 19,
+      "realized_ticks_max": 92,
+      "distinct_realized_tick_sizes": 46,
+      "valid_variable_target": true
+    },
+    "stop_loss": {
+      "n": 409,
+      "net_usd": -106120.84,
+      "realized_adverse_ticks_min": 7,
+      "realized_adverse_ticks_max": 57,
+      "distinct_realized_tick_sizes": 41,
+      "realized_stops_greater_than_55ticks": 170,
+      "interpretation": "Realized distance >55 is consistent with max intended stop 55 plus 2 simulated stop-market slippage ticks; not proof of original ordered stop price."
+    },
+    "scheduled_flat": {
+      "n": 60,
+      "long": 42,
+      "short": 18,
+      "net_usd": 4679.4,
+      "exit_label": "EXIT_1129_L/S",
+      "max_exit_clock": "11:29"
+    }
+  },
+  "risk_and_time_checks": {
+    "max_entries_per_day": 2,
+    "days_with_more_than_2": 0,
+    "overlap_open_positions": 0,
+    "negative_trade_duration_count": 0,
+    "earliest_entry_clock": "09:50",
+    "latest_entry_clock": "11:28",
+    "latest_exit_clock": "11:29",
+    "trades_outside_holdout_years": 0,
+    "all_qty_one": true,
+    "max_observed_net_loss_abs_usd": 290.76,
+    "per_trade_300_guard_breaches_in_export": 0,
+    "note": "Maximum closed-trade realized loss is not proof against live gap or funded trailing equity DD."
+  },
+  "by_year": [
+    {
+      "year": 2020,
+      "trades": 312,
+      "net_usd": -3627.12
+    },
+    {
+      "year": 2021,
+      "trades": 311,
+      "net_usd": -10031.36
+    },
+    {
+      "year": 2022,
+      "trades": 60,
+      "net_usd": -2005.6
+    }
+  ],
+  "months_with_less_than_5_trades": 10,
+  "months_total": 36,
+  "months_below_5": [
+    [
+      "2020-03",
+      0
+    ],
+    [
+      "2020-09",
+      4
+    ],
+    [
+      "2022-01",
+      2
+    ],
+    [
+      "2022-02",
+      1
+    ],
+    [
+      "2022-03",
+      0
+    ],
+    [
+      "2022-04",
+      0
+    ],
+    [
+      "2022-05",
+      2
+    ],
+    [
+      "2022-06",
+      3
+    ],
+    [
+      "2022-09",
+      4
+    ],
+    [
+      "2022-10",
+      0
+    ]
+  ],
+  "compare_with_mode1": {
+    "trades_delta": -26,
+    "net_delta_usd": -4290.24,
+    "closed_drawdown_increase_usd": 6217.52,
+    "pf_change_rounded": 0,
+    "winrate_change_percentage_points": -21.34
+  },
+  "formal_go_no_go": {
+    "net_positive": false,
+    "pf_ge_1_25": false,
+    "max_closed_drawdown_le_2000": false,
+    "trades_ge_150": true,
+    "min_five_per_month": false,
+    "finalist": false
+  },
+  "scope_and_next": "Mode2 functional behavior consistent with ATR SL and ATR TP plus scheduled flat. No original per-trade ATR values/stop entry orders in export, hence exact ATR math / market fills are not independently replayed. Run ExitMode3 with all else same, confirm zero Profit target exit labels, all exits Stop loss or EXIT_1129 and trade risk/time. Keep 2023+ untouched."
+}
