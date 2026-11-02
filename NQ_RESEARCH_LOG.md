@@ -1350,3 +1350,8 @@ El usuario envió captura visible de NinjaTrader 8 `Data Box` sobre **NQ 06-26, 
 - Añadido `research/nq/ninjatrader/NQNativeGeneticLabV2.cs`, Strategy independiente de V1 con 1–4 condiciones A/B/C/D, 10 primitivas por posición, AND/OR por unión y modo reverse, 16 propiedades optimizables; AND/OR se agrupan de izquierda a derecha. No es AST arbitrario 1..8, aún no incluye 132 indicadores.
 - [Guía de instalación y ejecución](research/nq/NQ_M1_V50_S045_NATIVE_V2_INSTALL_AND_STRUCTURAL_TEST_2026_11_02.md): primero comparar count2 contra baseline V1 1546 trades -US$43.554,96 con mismas comisiones/merge; después count1/3/4 y pequeña Genetic 20×5 solo para comprobar estructuras. `StopTicks` y `TargetTicks` permanecen temporales para test; usuario quiere **ATR SL/TP más adelante**, no implementar ahora.
 - [CI estático #41472326826 SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/41472326826) verifica 16 genes y aislamiento V1; **no equivale a compilar ni ejecutar NinjaTrader**. El primer backtest V2 permanece pendiente en Windows; 2023–26 siguen reservados.
+
+### 2026-11-02 — S0.46: paridad agregada V2=V1, NinjaTrader 8 real
+
+- Captura real NT8: `NQNativeGeneticLabV2` ejecutó `ConditionCount2`, A0/12 + B7/14 AND, SL20 TP32 MaxDaily2, Standard NQ M1 Last, IST2020–22 con costes. Agregados idénticos a V1: 1546 trades, -$43.554,96, PF0,64, closed DD -$44.380,44, $8.904,96 comisión, 825 long/721 short. V2 sí compila y corre nativamente; **solo equivalencia de métricas de Summary**, no comparación trade-by-trade.
+- Próximo: test `ConditionCount=1`; luego `3` con BC OR; luego `4` con BC/CD OR. No optimizar aún ni abrir ISV; SL/TP ticks solo temporal, ATR pendiente.
