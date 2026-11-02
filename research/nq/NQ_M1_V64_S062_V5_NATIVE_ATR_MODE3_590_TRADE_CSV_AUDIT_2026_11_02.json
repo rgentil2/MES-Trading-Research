@@ -1,0 +1,196 @@
+{
+  "schema": "NQ_S062_V5_NT8_EXITMODE3_USER_CSV_FULL_AUDIT_V1",
+  "date": "2026-11-02",
+  "source": "User-supplied NinjaTrader Strategy Analyzer screenshot and NinjaTrader Grid 2026-11-02 06-28 p. m..csv; 590 rows parsed locally; raw CSV stays outside repository",
+  "source_sha256": "0d2587fd49d43a206f7de987ee199018080bd746f7fe6093fce623103ceb2987",
+  "setup": {
+    "strategy": "NQNativeGeneticLabV5",
+    "exitMode": 3,
+    "atrPeriod": 14,
+    "atrStopX10": 15,
+    "atrTargetX10": 25,
+    "atrTargetActive": false,
+    "fixedStopTicks": 20,
+    "fixedTargetTicks": 32,
+    "fixedStopsAndTargetsInactive": true,
+    "signals": "ConditionCount=2 A0/12 B7/14 AB0 Reverse0, C4/18 D6/20 inactive",
+    "instrument": "NQ DEC26 (user-confirmed historical merged)",
+    "bars": "Last M1",
+    "period": "2020-01-01 .. 2022-12-31",
+    "maxDailyEntries": 2,
+    "commissionTemplate": "NinjaTrader Brokerage prior control; per trade $5.76",
+    "slippageTicks": 2
+  },
+  "reconciled": {
+    "trades": 590,
+    "profitNetUSD": 3096.6,
+    "lastCumulativeProfitUSD": 3096.6,
+    "grossProfitUSD": 107745.8,
+    "grossLossUSD": -104649.2,
+    "commissionUSD": 3398.4,
+    "profitFactorApprox": 1.0296,
+    "profitFactorDisplayed": 1.03,
+    "maxClosedDrawdownUSD": -9643.04,
+    "longTrades": 375,
+    "shortTrades": 215,
+    "longNetUSD": -1975,
+    "shortNetUSD": 5071.6,
+    "winners": 170,
+    "losers": 420,
+    "winRatePct": 28.81,
+    "avgTradeNetUSD": 5.25,
+    "largestWinUSD": 3419.24,
+    "largestLossUSD": -290.76
+  },
+  "exits": {
+    "stopLoss": {
+      "count": 395,
+      "netUSD": -102530.2,
+      "distinctObservedTickDistances": 42,
+      "negativeDistanceTicksMin": 9,
+      "negativeDistanceTicksMax": 57,
+      "realizedStopsBeyond55Ticks": 172,
+      "realizedStopsBeyond57": 0
+    },
+    "scheduledLong": {
+      "exitTag": "EXIT_1129_L",
+      "count": 134,
+      "netUSD": 62173.16
+    },
+    "scheduledShort": {
+      "exitTag": "EXIT_1129_S",
+      "count": 61,
+      "netUSD": 43453.64
+    },
+    "scheduledTotal": 195,
+    "profitTargets": 0,
+    "unrecognizedExitTags": 0
+  },
+  "constraints": {
+    "noOverlappingTrades": true,
+    "maxEntriesPerCalendarDay": 2,
+    "exitsAfter1129": 0,
+    "earliestEntryClock": "09:50",
+    "latestEntryClock": "11:28",
+    "latestExitClock": "11:29",
+    "negativeDurations": 0,
+    "realizedTradeLossOver300USD": 0,
+    "simulatedLossMaxUSD": 290.76,
+    "interpretation": "Up to 57 realized adverse ticks consistent with <=55 planned ATR stop plus historical 2 ticks simulated slippage, but CSV has no original ATR & stop order offset to confirm per-trade intent."
+  },
+  "byYear": [
+    {
+      "year": 2020,
+      "trades": 269,
+      "netUSD": 5135.56,
+      "monthsBelow5": 2
+    },
+    {
+      "year": 2021,
+      "trades": 269,
+      "netUSD": 450.56,
+      "monthsBelow5": 0
+    },
+    {
+      "year": 2022,
+      "trades": 52,
+      "netUSD": -2489.52,
+      "monthsBelow5": 8
+    }
+  ],
+  "yearlyMonthCounts": {
+    "2020": [
+      37,
+      26,
+      0,
+      19,
+      28,
+      29,
+      20,
+      31,
+      4,
+      18,
+      20,
+      37
+    ],
+    "2021": [
+      14,
+      19,
+      6,
+      31,
+      16,
+      34,
+      27,
+      33,
+      26,
+      27,
+      25,
+      11
+    ],
+    "2022": [
+      2,
+      1,
+      0,
+      0,
+      2,
+      2,
+      7,
+      7,
+      4,
+      0,
+      14,
+      13
+    ]
+  },
+  "monthsBelowFive": 10,
+  "monthsTotal": 36,
+  "concentration": {
+    "largestSingleWinnerUSD": 3419.24,
+    "netWithoutLargestWinnerUSD": -322.64,
+    "largestThreeWinnersSumUSD": 8687.72,
+    "netWithoutLargestThreeUSD": -5591.12,
+    "largestSingleProfitGreaterThanTotalNet": true
+  },
+  "modeComparison": [
+    {
+      "exitMode": 0,
+      "trades": 1546,
+      "netUSD": -43554.96,
+      "pf": 0.64,
+      "maxClosedDrawdownUSD": -44380.44
+    },
+    {
+      "exitMode": 1,
+      "trades": 709,
+      "netUSD": -11373.84,
+      "pf": 0.85,
+      "maxClosedDrawdownUSD": -14856.72
+    },
+    {
+      "exitMode": 2,
+      "trades": 683,
+      "netUSD": -15664.08,
+      "pf": 0.85,
+      "maxClosedDrawdownUSD": -21074.24
+    },
+    {
+      "exitMode": 3,
+      "trades": 590,
+      "netUSD": 3096.6,
+      "pf": 1.03,
+      "maxClosedDrawdownUSD": -9643.04
+    }
+  ],
+  "qaStatus": {
+    "mode3FunctionalBehaviorConsistentWithNoTakeProfitAndAtrSL": true,
+    "exactSubmittedATRTicksPerTradeProven": false,
+    "profitFactorMin125Pass": false,
+    "closedDDAtMost2000Pass": false,
+    "allMonthsAtLeast5Trades": false,
+    "positiveNetPass": true,
+    "tradesAtLeast150Pass": true,
+    "economicFinalist": false,
+    "fundedAccountSafetyValidated": false
+  },
+  "next": "Run V5 custom optimizer in NT8 with 20 unique modes/structures, selected params 20; verify complete PRE_RUN/END/runtime log and trade fills, record 20 economic results. Keep holdout 2023+ unopened. Separately add raw pre-entry ATR and rejection counters for native proof/reasons for sparse 2022."
+}
