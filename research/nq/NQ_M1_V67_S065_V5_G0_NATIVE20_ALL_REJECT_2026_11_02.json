@@ -1,0 +1,263 @@
+{
+  "schema": "NQ_S065_NATIVE_V5_G0_20_CANDIDATE_SCREENSHOT_LOG_AUDIT_V1",
+  "date": "2026-11-02",
+  "source": "User screenshot + 20 NQ_G0 REJECT lines and 1 repeated output from selected result; no new historical periods opened",
+  "platform": "NinjaTrader 8 Strategy Analyzer native Windows",
+  "strategy": "NQNativeGeneticLabV5",
+  "optimizer": {
+    "target": 20,
+    "selected_params": 20,
+    "attempted": 23,
+    "executed": 20,
+    "generated_unique": 20,
+    "structural_redundant_skipped": 3,
+    "equivalent_fingerprint_skipped": 0,
+    "invalid_skipped": 0,
+    "failure": 0,
+    "exhausted": false
+  },
+  "fitness": "NQNativeG0FitnessV6",
+  "dataset": "NQ Last M1 2020-01-01 through 2022-12-31; historical roll based on user's confirmed merging",
+  "same_seed_as_S063": 20261102,
+  "same_candidate_id_set_as_S063": true,
+  "G0_logs": {
+    "distinct_candidate_ids": 20,
+    "total_messages": 21,
+    "duplicate_selected_id": "NQEX5_010D3F69BD586F67ABA39B85",
+    "passes": 0,
+    "rejects": 20,
+    "exceptions": 0,
+    "pnl_mismatches": 0,
+    "rejection_counts_are_first_failing_rule_only": true
+  },
+  "summary": {
+    "rows": 20,
+    "firstReasons": {
+      "MONTHLY_FREQUENCY": 13,
+      "NEGATIVE_NET": 5,
+      "INSUFFICIENT_TRADES": 2
+    },
+    "positiveNet": 4,
+    "allBelowPF125": true,
+    "ddOver2000": 19,
+    "monthsBelow5": 15,
+    "tradesBelow150": 2
+  },
+  "thresholds": {
+    "minTrades": 150,
+    "minProfitFactor": 1.25,
+    "maxClosedDrawdownUSD": 2000,
+    "minMonthlyTradesEveryMonth2020through2022": 5,
+    "netUSDPositive": true
+  },
+  "candidates": [
+    {
+      "id": "NQEX5_010D3F69BD586F67ABA39B85",
+      "first_failure": "MONTHLY_FREQUENCY",
+      "trades": 690,
+      "net_usd": -15309.4,
+      "pf": 0.8583,
+      "closed_dd_usd": 20899.88,
+      "months_below5": 9,
+      "pass": false
+    },
+    {
+      "id": "NQEX5_835C7DF27E09E96434C5D185",
+      "first_failure": "MONTHLY_FREQUENCY",
+      "trades": 718,
+      "net_usd": -12615.68,
+      "pf": 0.8338,
+      "closed_dd_usd": 13818.36,
+      "months_below5": 8,
+      "pass": false
+    },
+    {
+      "id": "NQEX5_008BC7F43FE6C705994FFC50",
+      "first_failure": "MONTHLY_FREQUENCY",
+      "trades": 622,
+      "net_usd": 4102.28,
+      "pf": 1.0364,
+      "closed_dd_usd": 11834.92,
+      "months_below5": 10,
+      "pass": false
+    },
+    {
+      "id": "NQEX5_A9EBF3EC09E94D0E4B242F92",
+      "first_failure": "NEGATIVE_NET",
+      "trades": 1546,
+      "net_usd": -47219.96,
+      "pf": 0.6131,
+      "closed_dd_usd": 47576.92,
+      "months_below5": 0,
+      "pass": false
+    },
+    {
+      "id": "NQEX5_AE8F62797858CA6799E1DB11",
+      "first_failure": "MONTHLY_FREQUENCY",
+      "trades": 602,
+      "net_usd": -18572.52,
+      "pf": 0.8274,
+      "closed_dd_usd": 22537.36,
+      "months_below5": 10,
+      "pass": false
+    },
+    {
+      "id": "NQEX5_D7328649568FBA937A346DF7",
+      "first_failure": "MONTHLY_FREQUENCY",
+      "trades": 601,
+      "net_usd": -3266.76,
+      "pf": 0.9684,
+      "closed_dd_usd": 18265.12,
+      "months_below5": 10,
+      "pass": false
+    },
+    {
+      "id": "NQEX5_EBCBD749DAD8A1C884A7B397",
+      "first_failure": "MONTHLY_FREQUENCY",
+      "trades": 691,
+      "net_usd": -16405.16,
+      "pf": 0.8505,
+      "closed_dd_usd": 24171,
+      "months_below5": 9,
+      "pass": false
+    },
+    {
+      "id": "NQEX5_62FE48C30D9954BFA1647E62",
+      "first_failure": "MONTHLY_FREQUENCY",
+      "trades": 620,
+      "net_usd": -6346.2,
+      "pf": 0.9428,
+      "closed_dd_usd": 29134.48,
+      "months_below5": 10,
+      "pass": false
+    },
+    {
+      "id": "NQEX5_F48DC6F11B4ADB1976857523",
+      "first_failure": "MONTHLY_FREQUENCY",
+      "trades": 687,
+      "net_usd": -13922.12,
+      "pf": 0.8694,
+      "closed_dd_usd": 19983.48,
+      "months_below5": 9,
+      "pass": false
+    },
+    {
+      "id": "NQEX5_260B8A4041DC0221ECD6D839",
+      "first_failure": "NEGATIVE_NET",
+      "trades": 1545,
+      "net_usd": -42699.2,
+      "pf": 0.6437,
+      "closed_dd_usd": 42737.68,
+      "months_below5": 0,
+      "pass": false
+    },
+    {
+      "id": "NQEX5_E009F097EDDF92452472B324",
+      "first_failure": "MONTHLY_FREQUENCY",
+      "trades": 611,
+      "net_usd": 1320.64,
+      "pf": 1.0124,
+      "closed_dd_usd": 23474.24,
+      "months_below5": 10,
+      "pass": false
+    },
+    {
+      "id": "NQEX5_DD8A4C0EDD5D6558BDEE85F9",
+      "first_failure": "INSUFFICIENT_TRADES",
+      "trades": 99,
+      "net_usd": -25.24,
+      "pf": 0.9978,
+      "closed_dd_usd": 2009.32,
+      "months_below5": 26,
+      "pass": false
+    },
+    {
+      "id": "NQEX5_2B1A99A8F1CBB76694D656BF",
+      "first_failure": "MONTHLY_FREQUENCY",
+      "trades": 689,
+      "net_usd": -21508.64,
+      "pf": 0.8069,
+      "closed_dd_usd": 22847.24,
+      "months_below5": 10,
+      "pass": false
+    },
+    {
+      "id": "NQEX5_3BAA229559F8DF051F948EA3",
+      "first_failure": "NEGATIVE_NET",
+      "trades": 1546,
+      "net_usd": -43834.96,
+      "pf": 0.6361,
+      "closed_dd_usd": 44725.24,
+      "months_below5": 0,
+      "pass": false
+    },
+    {
+      "id": "NQEX5_51ECCD7C0683E83ED94881EB",
+      "first_failure": "MONTHLY_FREQUENCY",
+      "trades": 690,
+      "net_usd": -15409.4,
+      "pf": 0.8574,
+      "closed_dd_usd": 20999.88,
+      "months_below5": 9,
+      "pass": false
+    },
+    {
+      "id": "NQEX5_20E3912683C3DDA48153AB96",
+      "first_failure": "NEGATIVE_NET",
+      "trades": 1546,
+      "net_usd": -32549.96,
+      "pf": 0.7187,
+      "closed_dd_usd": 33989.76,
+      "months_below5": 0,
+      "pass": false
+    },
+    {
+      "id": "NQEX5_9463CA257F984AD66C178763",
+      "first_failure": "MONTHLY_FREQUENCY",
+      "trades": 571,
+      "net_usd": 5436.04,
+      "pf": 1.0579,
+      "closed_dd_usd": 12423.76,
+      "months_below5": 10,
+      "pass": false
+    },
+    {
+      "id": "NQEX5_1C6C2B06AE74B3500AA909DE",
+      "first_failure": "NEGATIVE_NET",
+      "trades": 1545,
+      "net_usd": -43114.2,
+      "pf": 0.641,
+      "closed_dd_usd": 44004.48,
+      "months_below5": 0,
+      "pass": false
+    },
+    {
+      "id": "NQEX5_3ACB6BE4331093028252C5D4",
+      "first_failure": "INSUFFICIENT_TRADES",
+      "trades": 90,
+      "net_usd": 746.6,
+      "pf": 1.1074,
+      "closed_dd_usd": 1491.28,
+      "months_below5": 26,
+      "pass": false
+    },
+    {
+      "id": "NQEX5_F5594D1E76250A020B2B43B5",
+      "first_failure": "MONTHLY_FREQUENCY",
+      "trades": 690,
+      "net_usd": -20414.4,
+      "pf": 0.8126,
+      "closed_dd_usd": 22243.04,
+      "months_below5": 10,
+      "pass": false
+    }
+  ],
+  "conclusions": [
+    "Native V5 G0 optimizer-financial adapter compiled and ran 20 historical tests, producing 20 deterministic unique rejection evaluations; exact statistical values reproduce S0.63.",
+    "All 20 candidates fail PF>=1.25, 19 exceed closed-trade DD<=2000, 15 have at least one month with fewer than 5 entries, 2 have fewer than 150 trades. First reason shown depends on G0 check order and does NOT summarize all failed criteria.",
+    "Optimization display -1000000000000 for every candidate is a reject fitness score, NOT money lost. Underlying Total net profit and other trading data remain authentic.",
+    "Since all reject scores are equal, do not use sorted Optimization Results to choose a best candidate; later diagnostic fitness should retain multi-gate flags and analysis of near misses without weakening hard gates.",
+    "G0 performs post-backtest ranking, and closed-trade DD is not funded account equity/trailing/intrabar DD. No final eligible candidate, no holdout 2023+ opened."
+  ],
+  "next": "Preserve G0 run template separate from V5 baseline. Next development target: explicit all-failure diagnostics, daily & floating intrabar risk model, wider indicator/ATR generation and G1 IS/ISV/OOS pipeline; do not scale indiscriminately with all rejections tying."
+}
