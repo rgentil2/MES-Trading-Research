@@ -64,7 +64,7 @@ internal static class Program
         T(!noFeeMatch.Valid,"native mismatch fail closed");
         Flag(noFeeMatch,"PNL_MISMATCH_NATIVE_VS_TRADE_HISTORY");
 
-        var multi=Swap(good,0,-100,5500,1500);
+        var multi=Swap(good,0,-2000,5500,1500);
         multi.RemoveAt(1);
         var m=NQNativeG0DiagnosticsV7.Evaluate(multi,Net(multi));
         T(m.Valid&&!m.Pass,"multiple signals");
