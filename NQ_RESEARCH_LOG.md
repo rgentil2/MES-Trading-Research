@@ -1532,3 +1532,17 @@ Entregado por conversación un **prototipo descargable** de motor masivo V10 (NQ
 - **Persistencia:** primer lote 222 scores, +270 al extender a nueve generaciones = 492; replay completo sin una sola llamada nueva al scorer. SHA de origen, definición de score, mutaciones/rangos y genes comprobados; corrupción y duplicación fail-closed. El proceso puede regenerar el orden de RNG a partir de la semilla; el estado interno de NT8 no se inventa ni se reutiliza.
 - **Gate aprobado:** capacidad y reanudación verificadas por tests sintéticos. **PENDIENTE** evaluar esos candidatos económicamente con el histórico real `NQ DEC2026`, nuevas fórmulas independientes, portafolio final, equivalencia nativa y una sola integración NT8. Ningún P&L real demostrado.
 - **Prioridad siguiente:** mejorar motor de indicadores y ranking económico masivo; continuar construcción sin solicitarle al usuario tareas de NinjaTrader.
+
+
+---
+
+### 2026-11-06 — S0.79 V18: 396 condiciones en 36 familias, generador evolutivo extendido
+
+- **Objetivo:** aumentar la verdadera diversidad matemática de indicadores y conectarla al motor genético/económico, no multiplicar artificialmente el número de señales mediante umbrales.
+- **Decisión de plataforma:** instrumento final `NQ DEC2026`, histórico M1 2020–2022 ya visible allí; sin auditorías de contratos ni validaciones F5/NT8 hasta migración única al final.
+- **Código:** `NQNativeConditionCatalogV18.cs`, `NQNativeExitCanonicalV18.cs`, `NQNativeExpandedResearchV18.cs`; extensiones compatibles en evolución V12, simulador V12, caché V14, journal V17; tres tests y `.github/workflows/nq-v18-expanded-conditions-qa.yml`. Informe [S0.79](research/nq/NQ_S079_V18_EXPANDED_396_CONDITIONS_2026_11_06.md).
+- **CI real:** [42257874795](https://github.com/rgentil2/MES-Trading-Research/actions/runs/42257874795), **SUCCESS 3/3**.
+- **Resultados:** 24 familias matemáticas adicionales, 36 totales, **396 condiciones** = 36 familias × 11 reglas. V11 132/132 preservadas. **17.424** pruebas de señales, **19** familias con contraste de signo alcista/bajista, **264** nuevas condiciones seguras con barras planas y volumen cero. GA/V9 interno sobre barras M1 sintéticas: **180** candidatos únicos, las **36** familias aparecieron y **24** genomas V11 mantuvieron operaciones/P&L/score idénticos. Replay journal V17 del catálogo EXCANv18 reproducible.
+- **Capacidad masiva ampliada:** **109.464 genomas únicos realmente puntuados** contra una función **sintética** con 396/396 reglas visitadas (4.857 duplicados y 65 estructuras redundantes descartados). NO significa que 109.464 backtests de NQ real se hayan corrido ni que exista rentabilidad demostrada.
+- **Gate/estado:** biblioteca + integración V18 con simulación económica conservadora interna aprobadas; todavía **36 fórmulas** frente a meta previa de 100 indicadores independientes. No asumir que 396 condiciones cumplen 100 indicadores. Falta integrar el catálogo V18 con walk-forward V15 y la congelación de portafolio V16 (siguen conectadas a V11), optimizar motor para backtests masivos M1 y validar datos de mercado reales en la única etapa final.
+- **Siguiente bloque:** V19 arquitectura de señales compactas, variedad de fórmulas sin pseudodiversidad y cierre del generador antes de migración a NinjaTrader.
