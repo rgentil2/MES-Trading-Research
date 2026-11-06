@@ -15,6 +15,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Security.Cryptography;
 using NinjaTrader.Cbi;
 using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
@@ -72,6 +73,70 @@ namespace NinjaTrader.NinjaScript.Strategies
             GroupName="V25 Audit Output",Order=7)]
         public string ReportDirectory{get;set;}
 
+        [NinjaScriptProperty]
+        [Display(Name="Prior approved stage SHA256 (EXTERNAL/FINAL only)",
+            GroupName="V25 Gate Authorization",Order=8)]
+        public string PreviousGateSHA256{get;set;}
+
+        [NinjaScriptProperty]
+        [Display(Name="Folder containing prior V25 stage pass evidence",
+            GroupName="V25 Gate Authorization",Order=9)]
+        public string StageGateDirectory{get;set;}
+
+        private static string FileHash(string path)
+        {
+            using(var stream=File.OpenRead(path))
+            using(var sha=SHA256.Create())
+                return BitConverter.ToString(sha.ComputeHash(stream))
+                    .Replace("-","").ToLowerInvariant();
+        }
+        private void RequirePreviousStageApproval()
+        {
+            if(HistoricalScope=="DEV")
+            {
+                if(!String.IsNullOrEmpty(PreviousGateSHA256))
+                    throw new InvalidOperationException(
+                        "V25_DEV_CANNOT_USE_OLD_PRIOR_GATE_TOKEN");
+                return;
+            }
+            if(String.IsNullOrWhiteSpace(StageGateDirectory)||
+               !Path.IsPathRooted(StageGateDirectory)||
+               String.IsNullOrWhiteSpace(PreviousGateSHA256)||
+               PreviousGateSHA256.Length!=64)
+                throw new InvalidOperationException(
+                    "V25_EXTERNAL_FINAL_REQUIRES_PREVIOUS_NATIVE_GATE_SHA");
+            string prior=HistoricalScope=="EXTERNAL"?"DEV":"EXTERNAL";
+            string lockFile=Path.Combine(StageGateDirectory,
+                "V25_"+prior+"_PASSED.sha256");
+            string report=Path.Combine(StageGateDirectory,
+                "V25_"+prior+"_audit.tsv");
+            if(!File.Exists(lockFile)||!File.Exists(report)||
+               FileHash(lockFile)!=PreviousGateSHA256)
+                throw new InvalidOperationException(
+                    "V25_PREVIOUS_STAGE_HASH_OR_FILES_NOT_VERIFIED");
+            string[] lines=File.ReadAllLines(lockFile);
+            if(lines.Length!=6||
+               lines[0]!="version\t"+
+                   NQNativeV25FrozenSignalCore.Version||
+               lines[1]!="scope\t"+prior||
+               lines[2]!="V25LockSHA256\t"+FrozenV25LockSHA256||
+               lines[3]!="reportSHA256\t"+FileHash(report)||
+               lines[5]!="verdict\tPROVISIONAL_PASS")
+                throw new InvalidOperationException(
+                    "V25_PRIOR_AUDIT_GATE_MISMATCH");
+            if(prior=="DEV"&&lines[4]!="previousGateSHA256\t")
+                throw new InvalidOperationException("V25_DEV_GATE_CHAIN_INVALID");
+            if(prior=="EXTERNAL")
+            {
+                string dev=Path.Combine(StageGateDirectory,
+                    "V25_DEV_PASSED.sha256");
+                if(!File.Exists(dev)||
+                   lines[4]!="previousGateSHA256\t"+FileHash(dev))
+                    throw new InvalidOperationException(
+                        "V25_FINAL_REQUIRES_UNCHANGED_DEV_CHAIN");
+            }
+        }
+
         protected override void OnStateChange()
         {
             if(State==State.SetDefaults)
@@ -94,6 +159,8 @@ namespace NinjaTrader.NinjaScript.Strategies
                 CandidateId="";
                 HistoricalScope="DEV";
                 ReportDirectory="";
+                PreviousGateSHA256="";
+                StageGateDirectory="";
             }
             else if(State==State.Configure)
             {
@@ -152,6 +219,7 @@ namespace NinjaTrader.NinjaScript.Strategies
                 if(core.CanonicalId!=canonical)
                     throw new InvalidOperationException(
                         "V25_FROZEN_CANONICAL_DOES_NOT_MATCH_20_GENES");
+                RequirePreviousStageApproval();
                 entryTag="V25_"+CandidateId;
                 Directory.CreateDirectory(ReportDirectory);
                 prefix=Path.Combine(ReportDirectory,
