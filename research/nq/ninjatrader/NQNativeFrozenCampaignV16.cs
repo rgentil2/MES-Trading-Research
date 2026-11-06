@@ -21,10 +21,18 @@ namespace NinjaTrader.NinjaScript.Strategies
         public readonly string Id,CanonicalId;
         private readonly int[] genes;
         public NQFrozenCandidateV16(string id,int[] genome)
+            : this(id,genome,NQNativeExitCanonicalV11.Analyze)
+        {}
+
+        // V20 freezes genuine EXCANv19 identities. Older V16 callers
+        // retain V11 semantics; never coerce new signals into old IDs.
+        public NQFrozenCandidateV16(string id,int[] genome,
+            Func<int[],NQExitIdentityV11> canonicalizer)
         {
-            if(String.IsNullOrWhiteSpace(id)||genome==null||genome.Length!=20)
-                throw new ArgumentException("Frozen candidate id/20-gene vector required");
-            var c=NQNativeExitCanonicalV11.Analyze(genome);
+            if(String.IsNullOrWhiteSpace(id)||genome==null||
+               genome.Length!=20||canonicalizer==null)
+                throw new ArgumentException("Frozen candidate id/20 genes/canonicalizer required");
+            var c=canonicalizer(genome);
             if(c.IsRedundant)
                 throw new ArgumentException("Redundant candidate not freezeable");
             Id=id;CanonicalId=c.RuntimeKey;
@@ -62,6 +70,9 @@ namespace NinjaTrader.NinjaScript.Strategies
         private readonly NQChronologicalRiskConfigV15 risk;
         private readonly DateTime finalCutoffExclusive;
         private readonly string freezeDigest;
+        private readonly Func<IList<NQTimedBarV12>,int[],int,int,
+            NQHistoricalResultV12> versionedOosEvaluator;
+        private readonly string evaluatorVersion;
         private bool externalConsumed,externalAccepted,finalConsumed;
 
         public string FreezeDigest{get{return freezeDigest;}}
@@ -73,7 +84,28 @@ namespace NinjaTrader.NinjaScript.Strategies
             IList<NQFrozenCandidateV16> frozen,
             NQChronologicalRiskConfigV15 riskConfig,
             int minimumDaysPerMonth,DateTime finalEndExclusive)
+            : this(developmentManifest,developmentRisk,frozen,riskConfig,
+                minimumDaysPerMonth,finalEndExclusive,null,null)
+        {}
+
+        // Versioned V19 evaluator is only for an already-frozen OOS
+        // candidate portfolio; no generator or training rank is passed
+        // to this stage. Frozen digest binds V20 scorer implementation.
+        public NQNativeFrozenCampaignV16(NQDataManifestV16 developmentManifest,
+            NQIntegratedPortfolioRiskResultV15 developmentRisk,
+            IList<NQFrozenCandidateV16> frozen,
+            NQChronologicalRiskConfigV15 riskConfig,
+            int minimumDaysPerMonth,DateTime finalEndExclusive,
+            Func<IList<NQTimedBarV12>,int[],int,int,
+                NQHistoricalResultV12> externalEvaluator,
+            string externalEvaluatorVersion)
         {
+            if((externalEvaluator==null)!=(externalEvaluatorVersion==null)||
+               externalEvaluatorVersion!=null&&
+                   String.IsNullOrWhiteSpace(externalEvaluatorVersion))
+                throw new ArgumentException("Versioned evaluator and ID required together");
+            versionedOosEvaluator=externalEvaluator;
+            evaluatorVersion=externalEvaluatorVersion;
             if(developmentManifest==null ||
                developmentManifest.Partition!=
                     NQDataPartitionV16.Development2020_2022 ||
@@ -128,7 +160,9 @@ namespace NinjaTrader.NinjaScript.Strategies
                     development.ContractPolicy+"\n"+
                     finalEndExclusive.ToString("yyyy-MM-dd")+"\n"+
                     String.Join("\n",chosen.Select(x=>
-                        x.Id+"|"+x.CanonicalId));
+                        x.Id+"|"+x.CanonicalId))+
+                    (evaluatorVersion==null?"":"\nOOS_EVALUATOR_VERSION="+
+                        evaluatorVersion);
                 freezeDigest=BitConverter.ToString(
                     sha.ComputeHash(Encoding.UTF8.GetBytes(body)))
                     .Replace("-","").ToLowerInvariant();
@@ -180,10 +214,14 @@ namespace NinjaTrader.NinjaScript.Strategies
             foreach(var candidate in chosen)
             {
                 int[] genes=candidate.Genes;
-                var replay=NQNativeHistoricalEvaluatorV12.EvaluateHeldout(
-                    dataset.Bars,genes,
-                    NQNativeDataLoaderV16.FirstYear(partition),
-                    NQNativeDataLoaderV16.LastYear(partition));
+                var replay=versionedOosEvaluator==null?
+                    NQNativeHistoricalEvaluatorV12.EvaluateHeldout(
+                        dataset.Bars,genes,
+                        NQNativeDataLoaderV16.FirstYear(partition),
+                        NQNativeDataLoaderV16.LastYear(partition)):
+                    versionedOosEvaluator(dataset.Bars,genes,
+                        NQNativeDataLoaderV16.FirstYear(partition),
+                        NQNativeDataLoaderV16.LastYear(partition));
                 var economics=NQNativeFoldScoreV15.Score(replay,from,until);
                 response.Candidates.Add(new NQHoldoutMetricsV16(
                     candidate.Id,candidate.CanonicalId,economics,
