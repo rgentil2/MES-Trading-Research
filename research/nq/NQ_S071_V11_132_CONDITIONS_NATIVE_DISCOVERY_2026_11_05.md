@@ -50,14 +50,26 @@ A condition ID is `family * 11 + predicate` (0 through 131). `NQNativeConditions
 7. `research/nq/ninjatrader/NQNativeDiscoveryFitnessV11.cs` — discovery fitness
 8. `research/nq/ninjatrader/tests/NQNativeConditionsV11Test.cs` — mathematical CI
 9. `research/nq/ninjatrader/tests/NQNativeResearchOptimizerV11ShimTest.cs` — optimizer C# API-shim CI
-10. `.github/workflows/nq-v11-conditions-qa.yml` — CI compile/numerical checks and V5 risk/order diff guard
+10. `research/nq/ninjatrader/tests/NQNativeSignalLabV11ShimTest.cs` — compile exact strategy source against mock NT8 interfaces and test historical guards
+11. `.github/workflows/nq-v11-conditions-qa.yml` — 3 independent CI jobs and V5 risk/order diff guard
 
 ## Validation plan and limitations
 
 1. CI **must pass** numerical tests of every condition: array bounds, flat markets, warmup, synthetic price/volume scaling, mutual exclusivity, deterministic condition names.
 2. CI **must pass** 1000 reproducible unique candidate generations (including all 132 types actually selected as active leaves), 500 with exits unchanged, strict Min=Max fail-closed handling and unchanged order/risk code regions versus V5.
-3. **Still pending:** a real Windows NinjaTrader 8 compile/import of all 7 V11 NinjaScript files, with the existing V9 dependencies present.
-4. **Still pending:** NT8 historical Strategy Analyzer 20-run smoke on NQ Last M1 2020–2022 with proper continuous-contract history, Eastern chart time, commissions, 2-tick slippage and conservative bar-based fills. Export trades and compare with audit.
-5. **Still pending:** performance profiling, controlled OOS 2023–2026, evolutionary fitness-guided GA, robust Monte Carlo/walk-forward and portfolio allocator.
+3. The **strategy source also compiled against a mock NinjaTrader API shim**. Simulated execution verified research 2020–22, NQ M1, daily entry limit, 11:28 flatten and no realtime orders. Source-shim is NOT the actual vendor runtime.
+4. **Still pending:** a real Windows NinjaTrader 8 compile/import of all 7 V11 NinjaScript files, with the existing V9 dependencies present.
+5. **Still pending:** NT8 historical Strategy Analyzer 20-run smoke on NQ Last M1 2020–2022 with proper continuous-contract history, Eastern chart time, commissions, 2-tick slippage and conservative bar-based fills. Export trades and compare with audit.
+6. **Still pending:** performance profiling, controlled OOS 2023–2026, evolutionary fitness-guided GA, robust Monte Carlo/walk-forward and portfolio allocator.
 
 Do NOT equate source-shim green checks with actual NinjaTrader backtest validation. Do NOT use V11 live.
+
+## CI run results
+
+[GitHub Actions — all three V11 jobs successful](https://github.com/rgentil2/MES-Trading-Research/actions/runs/42165394492):
+- Numeric: `NQ_V11_132_CONDITIONS_PASS checked=3432 active=2000 distinctSignatures=103`
+- Optimizer shim: `NQ_V11_SOURCE_SHIM_PASS=1000_UNIQUE_500_FROZEN_REPLAY_RANGES_AND_GUARDS`
+- Native strategy source shim: `NQ_V11_NATIVE_STRATEGY_SOURCE_SHIM_PASS RESEARCH_ONLY_2020_22_NQ_M1_RTH_DAILY_CAP_EXIT`
+- Frozen risk/order source diff: `NQ_V11_V5_RISK_EXIT_CONTRACT_UNCHANGED`
+
+**No NinjaTrader 8 Windows binary or backtest was run.**
