@@ -17,7 +17,7 @@ internal static class NQNativeV24Console
     static void Help()
     {
         Console.WriteLine("V24 ONLY: full-M1 economic long-horizon scaling.");
-        Console.WriteLine("  --bench-synthetic36 <dir> <population> <generations>");
+        Console.WriteLine("  --bench-synthetic36 <dir> <population> <generations> [featureMiB] [signalMiB]");
         Console.WriteLine("  --run-development <V23-search-config.json>");
         Console.WriteLine("  --version");
         Console.WriteLine("This does not validate NQ edge or invoke NinjaTrader.");
@@ -103,10 +103,17 @@ internal static class NQNativeV24Console
             NQEvolutionConfigV12 ga;
             int[] genes;
             string destination,sourceDescription;
-            if(args.Length==4&&args[0]=="--bench-synthetic36")
+            long featureBudget=512L*1024*1024;
+            long signalBudget=256L*1024*1024;
+            if(args.Length>=4&&args.Length<=6&&
+               args[0]=="--bench-synthetic36")
             {
                 int population=Positive(args[2],10000);
                 int generations=Positive(args[3],10000);
+                if(args.Length>=5)
+                    featureBudget=(long)Positive(args[4],2048)*1048576L;
+                if(args.Length==6)
+                    signalBudget=(long)Positive(args[5],2048)*1048576L;
                 data=NQNativeSynthetic36V24.Build();
                 ga=Genetic(population,generations);
                 genes=new NQGeneratorSettingsV23().BaselineGenes;
@@ -144,7 +151,7 @@ internal static class NQNativeV24Console
                 data,genes,ga,
                 Path.Combine(destination,"v24_economics_ledger.tsv"),
                 Path.Combine(destination,"v24_top_ranking.tsv"),
-                20,128L*1024*1024,256L*1024*1024);
+                20,signalBudget,featureBudget);
             Output(result,destination,sourceDescription);
             Console.WriteLine("V24_REPORTS="+destination);
             Console.WriteLine("NQ_V24_NO_NATIVE_NT8_FILLS_NO_FUNDED_EDGE_CERTIFICATE");
