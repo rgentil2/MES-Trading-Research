@@ -74,6 +74,11 @@ namespace NinjaTrader.NinjaScript.Strategies
         public string ReportDirectory{get;set;}
 
         [NinjaScriptProperty]
+        [Display(Name="Frozen V23→V25 handoff.tsv from --prepare",
+            GroupName="V25 Frozen Identity",Order=4)]
+        public string FrozenHandoffFile{get;set;}
+
+        [NinjaScriptProperty]
         [Display(Name="Prior approved stage SHA256 (EXTERNAL/FINAL only)",
             GroupName="V25 Gate Authorization",Order=8)]
         public string PreviousGateSHA256{get;set;}
@@ -90,6 +95,51 @@ namespace NinjaTrader.NinjaScript.Strategies
                 return BitConverter.ToString(sha.ComputeHash(stream))
                     .Replace("-","").ToLowerInvariant();
         }
+        private void VerifyFrozenHandoff()
+        {
+            if(String.IsNullOrWhiteSpace(FrozenHandoffFile)||
+               !Path.IsPathRooted(FrozenHandoffFile)||
+               !File.Exists(FrozenHandoffFile))
+                throw new InvalidOperationException(
+                    "V25_REQUIRE_PREPARED_FROZEN_HANDOFF_FILE");
+            string[] rows=File.ReadAllLines(FrozenHandoffFile);
+            if(rows.Length<8||rows.Length>10||
+               rows[0]!="V25LockSHA256\t"+FrozenV25LockSHA256||
+               !rows[1].StartsWith("V23ArtifactsSHA256\t",
+                   StringComparison.Ordinal)||
+               !rows[2].StartsWith("sourceBarsSHA256\t",
+                   StringComparison.Ordinal)||
+               !rows[3].StartsWith("frozenCampaignDigest\t",
+                   StringComparison.Ordinal)||
+               rows[4]!="candidateId\tcanonicalBase64\tgenes20")
+                throw new InvalidOperationException(
+                    "V25_FROZEN_HANDOFF_SHA_OR_HEADER_MISMATCH");
+            int candidates=rows.Length-5;
+            if(candidates<3||candidates>5)
+                throw new InvalidOperationException(
+                    "V25_REQUIRE_THREE_TO_FIVE_FROZEN_STRATEGIES");
+            int found=0;
+            var unique=new HashSet<string>(StringComparer.Ordinal);
+            for(int i=5;i<rows.Length;i++)
+            {
+                var cols=rows[i].Split('\t');
+                if(cols.Length!=3||!unique.Add(cols[0]))
+                    throw new InvalidOperationException(
+                        "V25_DUPLICATE_OR_BAD_FROZEN_HANDOFF_ROW");
+                if(cols[0]==CandidateId)
+                {
+                    if(cols[1]!=FrozenCanonicalBase64||
+                       cols[2]!=FrozenGenes20)
+                        throw new InvalidOperationException(
+                            "V25_NATIVE_GENES_NOT_IN_VERIFIED_FROZEN_HANDOFF");
+                    found++;
+                }
+            }
+            if(found!=1)
+                throw new InvalidOperationException(
+                    "V25_APPROVED_CANDIDATE_ABSENT_FROM_HANDOFF");
+        }
+
         private void RequirePreviousStageApproval()
         {
             if(HistoricalScope=="DEV")
@@ -157,6 +207,7 @@ namespace NinjaTrader.NinjaScript.Strategies
                 FrozenCanonicalBase64="";
                 FrozenGenes20="";
                 CandidateId="";
+                FrozenHandoffFile="";
                 HistoricalScope="DEV";
                 ReportDirectory="";
                 PreviousGateSHA256="";
@@ -219,6 +270,7 @@ namespace NinjaTrader.NinjaScript.Strategies
                 if(core.CanonicalId!=canonical)
                     throw new InvalidOperationException(
                         "V25_FROZEN_CANONICAL_DOES_NOT_MATCH_20_GENES");
+                VerifyFrozenHandoff();
                 RequirePreviousStageApproval();
                 entryTag="V25_"+CandidateId;
                 Directory.CreateDirectory(ReportDirectory);
