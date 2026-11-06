@@ -105,3 +105,36 @@ jobs:
           print("NQ_V11_V5_RISK_EXIT_CONTRACT_UNCHANGED")
           print("REAL_NT8_WINDOWS_COMPILE_AND_HISTORICAL_BACKTEST_STILL_REQUIRED")
           PY
+  strategy-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile actual V11 strategy and exercise historical guards under mock NT8 runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v11strategy"
+          cat > "$RUNNER_TEMP/v11strategy/v11strategy.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <Nullable>disable</Nullable>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          cp research/nq/ninjatrader/NQNativeConditionsV11.cs "$RUNNER_TEMP/v11strategy/"
+          cp research/nq/ninjatrader/NQNativeBooleanCanonicalV11.cs "$RUNNER_TEMP/v11strategy/"
+          cp research/nq/ninjatrader/NQNativeExitCanonicalV11.cs "$RUNNER_TEMP/v11strategy/"
+          cp research/nq/ninjatrader/NQNativeATRExitMathV5.cs "$RUNNER_TEMP/v11strategy/"
+          cp research/nq/ninjatrader/NQNativeSignalLabV11.cs "$RUNNER_TEMP/v11strategy/"
+          cp research/nq/ninjatrader/tests/NQNativeSignalLabV11ShimTest.cs "$RUNNER_TEMP/v11strategy/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/v11strategy/v11strategy.csproj" --configuration Release
