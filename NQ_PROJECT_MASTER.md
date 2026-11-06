@@ -1,3 +1,11 @@
+## 2026-11-06 — V23 CONSOLIDADA EN MAIN — NO CAMBIAR OBJETIVOS DE VERSIONES
+
+**Hecho verificado:** el PR acumulado [#82](https://github.com/rgentil2/MES-Trading-Research/pull/82) fue **FUSIONADO a `main`** mediante squash, commit **`d1d7bd434e89f28e696e37c9a5eb00c2c97a5a29`**. En la matriz del PR, **14/14 workflows GitHub Actions SUCCESS** de las versiones V10–V23. Los 12 PR históricos apilados **#70–#81 fueron cerrados como redundantes**, NO marcados como fusionados individualmente; sus cambios están incorporados por el árbol acumulado de #82. El proyecto .NET8 `tools/nq-v23-research/NQResearchV23.csproj` compila todos los **42 módulos C# V11–V23** de `main` en una sola versión reproducible. Reportes V23 íntegros, SHA de fuente/config/barras, auditoría de estrategias rechazadas, 0 rebacktests en replay verificados.
+
+**Contrato de objetivos inmutable:** [V19–V25](research/nq/NQ_FIXED_VERSION_SCOPE_V19_V25_2026_11_06.md). **V23 completó GENERADOR + INFORMES + CONSOLIDACIÓN**; **V24 será escalamiento económico M1 36 meses/100k**; **V25 será la única integración y validación final NT8 NQ DEC2026**. No renumerar ni cambiar estas descripciones. **No** se ha probado edge/PF/DD real de NQ, no se ha hecho backtest nativo ni validación de fondeo; las pruebas son sintéticas y OOS sigue congelado. [Informe S0.84](research/nq/NQ_S084_V23_COMPLETE_GENERATOR_REPORTS_2026_11_06.md).
+
+---
+
 ## 2026-11-06 — S0.84 V23: GENERADOR COMPLETO Y RESULTADOS FINALES — OBJETIVO FIJO
 
 **Contrato de versiones obligatorio:** [V19–V25](research/nq/NQ_FIXED_VERSION_SCOPE_V19_V25_2026_11_06.md). El usuario pidió explícitamente **NO cambiar descripciones u objetivos entre versiones**. Así queda definido inmutable: **V23 = un ejecutor configurable de búsqueda, persistencia, filtros, ranking, portafolio y reportes auditables + consolidación reproducible de PR**; **V24 = escala económica de 36 meses hacia 100k backtests completos**; **V25 = única migración y validación final en NinjaTrader 8 con NQ DEC2026**. No intercambiar ni renombrar estos objetivos.
