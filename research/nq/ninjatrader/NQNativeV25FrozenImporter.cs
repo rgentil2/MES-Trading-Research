@@ -14,7 +14,9 @@ namespace NinjaTrader.NinjaScript.Strategies
     {
         public string SourceBarsSHA256,ConfigurationSHA256;
         public string FreezeDigest,V23ArtifactManifestSHA256;
-        public string V25LockSHA256,Instrument;
+        public string V25LockSHA256,Instrument,ContractPolicy;
+        public int MinimumFullSessionsPerMonth;
+        public NQChronologicalRiskConfigV15 AccountRisk;
         public readonly List<NQFrozenCandidateV16> Candidates=
             new List<NQFrozenCandidateV16>();
     }
@@ -133,9 +135,58 @@ namespace NinjaTrader.NinjaScript.Strategies
             }
             if(buckets.Count!=count)
                 throw new InvalidDataException("V25_MISSING_FROZEN_GENOMES");
+            var snapshot=new Dictionary<string,string>(StringComparer.Ordinal);
+            var settingsRows=File.ReadAllLines(Path.Combine(root,
+                "settings_snapshot.tsv"));
+            if(settingsRows.Length<2||
+               settingsRows[0]!="configurationKey\tcanonicalValue")
+                throw new InvalidDataException("V25_BAD_SETTINGS_SNAPSHOT");
+            foreach(string line in settingsRows.Skip(1))
+            {
+                var pair=line.Split('\t');
+                if(pair.Length!=2||!snapshot.TryAdd(pair[0],pair[1]))
+                    throw new InvalidDataException("V25_BAD_CONFIG_SNAPSHOT_ROW");
+            }
+            string contractPolicy;
+            try{contractPolicy=Encoding.UTF8.GetString(
+                Convert.FromBase64String(Required(snapshot,
+                    "V23.ContractPolicy")));}
+            catch(FormatException ex)
+            {throw new InvalidDataException("V25_BAD_CONTRACT_POLICY",ex);}
+            int minFull;
+            if(!Int32.TryParse(Required(snapshot,
+                "V23.MinimumFullSessionsPerMonth"),
+                NumberStyles.Integer,I,out minFull)||
+               minFull<1||minFull>23)
+                throw new InvalidDataException("V25_BAD_MIN_SESSIONS");
+            var risk=new NQChronologicalRiskConfigV15();
+            double d;
+            if(!Double.TryParse(Required(snapshot,
+                "V23.Research.AccountRisk.MaxAccountStressDDUSD"),
+                NumberStyles.Float,I,out d)||d>2000||d<=0)
+                throw new InvalidDataException("V25_BAD_ACCOUNT_DD");
+            risk.MaxAccountStressDDUSD=d;
+            if(!Double.TryParse(Required(snapshot,
+                "V23.Research.AccountRisk.MaxSessionPeakToTroughUSD"),
+                NumberStyles.Float,I,out d)||d>1000||d<=0)
+                throw new InvalidDataException("V25_BAD_DAILY_RISK");
+            risk.MaxSessionPeakToTroughUSD=d;
+            if(!Double.TryParse(Required(snapshot,
+                "V23.Research.AccountRisk.MaxConcurrentAdverseUSD"),
+                NumberStyles.Float,I,out d)||d>1000||d<=0)
+                throw new InvalidDataException("V25_BAD_CONCURRENT_RISK");
+            risk.MaxConcurrentAdverseUSD=d;
+            if(!Double.TryParse(Required(snapshot,
+                "V23.Research.AccountRisk.PointValueUSD"),
+                NumberStyles.Float,I,out d)||Math.Abs(d-20)>1e-9)
+                throw new InvalidDataException("V25_NOT_NQ_POINT_VALUE");
+            risk.PointValueUSD=d;
+            risk.Validate();
             var result=new NQNativeV25FrozenPackage{
                 SourceBarsSHA256=bars,ConfigurationSHA256=settings,
                 FreezeDigest=digest,Instrument=Required(summary,"instrument"),
+                ContractPolicy=contractPolicy,
+                MinimumFullSessionsPerMonth=minFull,AccountRisk=risk,
                 V23ArtifactManifestSHA256=
                     NQNativeReproducibilityV23.SHAFile(
                         Path.Combine(root,"artifacts.sha256"))
@@ -163,6 +214,11 @@ namespace NinjaTrader.NinjaScript.Strategies
                 result.ConfigurationSHA256+"\n"+
                 result.SourceBarsSHA256+"\n"+
                 result.FreezeDigest+"\n"+
+                result.ContractPolicy+"\n"+
+                result.MinimumFullSessionsPerMonth.ToString(I)+"\n"+
+                result.AccountRisk.MaxAccountStressDDUSD.ToString("R",I)+"\n"+
+                result.AccountRisk.MaxSessionPeakToTroughUSD.ToString("R",I)+"\n"+
+                result.AccountRisk.MaxConcurrentAdverseUSD.ToString("R",I)+"\n"+
                 String.Join("\n",result.Candidates.Select(x=>
                     x.Id+"|"+x.CanonicalId+"|"+
                     String.Join("/",x.Genes.Select(v=>v.ToString(I)))));
