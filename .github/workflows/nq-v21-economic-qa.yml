@@ -9,6 +9,8 @@ on:
       - 'research/nq/ninjatrader/NQNativeBulkEconomicV21.cs'
       - 'research/nq/ninjatrader/tests/NQNativeFeatureMemoV21Test.cs'
       - 'research/nq/ninjatrader/tests/NQNativeBulkEconomicV21Test.cs'
+      - 'research/nq/ninjatrader/NQNativeResearchRunnerV21.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeFullFunnelV21Test.cs'
       - '.github/workflows/nq-v21-economic-qa.yml'
   pull_request:
     paths:
@@ -19,6 +21,8 @@ on:
       - 'research/nq/ninjatrader/NQNativeBulkEconomicV21.cs'
       - 'research/nq/ninjatrader/tests/NQNativeFeatureMemoV21Test.cs'
       - 'research/nq/ninjatrader/tests/NQNativeBulkEconomicV21Test.cs'
+      - 'research/nq/ninjatrader/NQNativeResearchRunnerV21.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeFullFunnelV21Test.cs'
       - '.github/workflows/nq-v21-economic-qa.yml'
   workflow_dispatch:
 permissions:
@@ -100,3 +104,41 @@ jobs:
           grep -q 'NQNativeExitCanonicalV19.Analyze' research/nq/ninjatrader/NQNativeBulkEconomicV21.cs
           ! grep -Eq '\\b(EnterLong|EnterShort|ExitLong|ExitShort|RunIteration|SetProfitTarget|SetStopLoss)\\s*\\(' research/nq/ninjatrader/NQNativeBulkEconomicV21.cs
           echo NQ_V21_NO_NT8_ORDERS_ONLY_OFFLINE_M1_ECONOMIC_RESEARCH
+  full-v21-portfolio-funnel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with: {lfs: false}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Execute full V21 economic ledger to V13 G0 to V15 portfolio/WF and versioned OOS
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/nqv21full"
+          cat > "$RUNNER_TEMP/nqv21full/test.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>disable</Nullable>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeConditionCatalogV18 NQFeatureMathV19 NQTrendFeaturesV19 NQMomentumFeaturesV19 NQVolatilityFeaturesV19 NQVolumeActionFeaturesV19 NQNativeConditionCatalogV19 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeExitCanonicalV18 NQNativeExitCanonicalV19 NQNativeUniqueSearchV11 NQNativeEvolutionCoreV12 NQNativeATRExitMathV5 NQNativeG0RulesV6 NQNativeG0DiagnosticsV7 NQNativeDiscoveryScoreV9 NQNativeHistoricalEvaluatorV12 NQNativeSignalCacheV14 NQNativeWalkForwardV15 NQNativeWalkForwardV20 NQNativeRobustnessV13 NQNativePortfolioV13 NQNativeChronologicalRiskV15 NQNativeIntegratedPortfolioRiskV15 NQNativeDataLoaderV16 NQNativeFrozenCampaignV16 NQNativeScoreJournalV17 NQNativeExpandedResearchV19 NQNativeHeldoutSignalsV20 NQNativeV20OosEvaluator NQNativeResearchRunnerV16 NQNativeResearchRunnerV20 NQNativeFeatureMemoV21 NQNativeEconomicLedgerV21 NQNativeBulkEconomicV21 NQNativeResearchRunnerV21; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/nqv21full/"
+          done
+          cp research/nq/ninjatrader/tests/NQNativeFullFunnelV21Test.cs "$RUNNER_TEMP/nqv21full/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/nqv21full/test.csproj" --configuration Release
+      - name: Verify full economic candidate ranking feeds the existing G0 and OOS without adding NinjaTrader order calls
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'NQNativeBulkEconomicV21.Run' research/nq/ninjatrader/NQNativeResearchRunnerV21.cs
+          grep -q 'NQNativeIntegratedPortfolioRiskV15.Evaluate' research/nq/ninjatrader/NQNativeResearchRunnerV21.cs
+          grep -q 'NQNativeWalkForwardV20' research/nq/ninjatrader/NQNativeResearchRunnerV21.cs
+          ! grep -Eq '\\b(EnterLong|EnterShort|ExitLong|ExitShort|RunIteration|SetProfitTarget|SetStopLoss)\\s*\\(' research/nq/ninjatrader/NQNativeResearchRunnerV21.cs
+          echo NQ_V21_ECONOMICS_TO_OOS_NO_LIVE_NT8_ORDERS
