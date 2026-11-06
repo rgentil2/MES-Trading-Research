@@ -27,6 +27,25 @@ internal static class V19FormulaTest
         }
         return x;
     }
+    // Sparse event families require explicit trigger fixtures; random
+    // paths alone commonly contain zero engulfings/NR7 breakouts.
+    private static List<NQBarV11> EventPath(bool engulf)
+    {
+        var b=Enumerable.Range(0,230)
+            .Select(_=>new NQBarV11(15000,15003,14997,15000,200))
+            .ToList();
+        if(engulf)
+        {
+            b[224]=new NQBarV11(15001,15002,14997,14998,200);
+            b[225]=new NQBarV11(14997.5,15002.5,14997,15002,300);
+        }
+        else
+        {
+            b[224]=new NQBarV11(15000,15000.25,14999.75,15000,200);
+            b[225]=new NQBarV11(15000,15002.5,14999.75,15002,300);
+        }
+        return b;
+    }
     private static double SMA(IList<NQBarV11> b,int at,int n)
     {
         double sum=0;
@@ -163,7 +182,16 @@ internal static class V19FormulaTest
 
         // 84 feature formulas must not be identical stub expressions.
         // Fingerprint each one on three DISTINCT synthetic paths / bars.
-        var paths=new[]{Bars(111),Bars(222),Bars(333)};
+        var bullishEngulf=EventPath(true);
+        var narrowBreakout=EventPath(false);
+        A(NQNativeConditionCatalogV19.Feature(
+            bullishEngulf,225,115,12)==1,
+          "true bullish engulfing must activate family 115");
+        A(NQNativeConditionCatalogV19.Feature(
+            narrowBreakout,225,117,12)>0,
+          "true NR7 breakout must activate family 117");
+        var paths=new[]{Bars(111),Bars(222),Bars(333),
+            bullishEngulf,narrowBreakout};
         var fingerprints=new HashSet<string>(StringComparer.Ordinal);
         int varying=0;
         for(int f=36;f<120;f++)
@@ -179,10 +207,10 @@ internal static class V19FormulaTest
                 x.ToString("R",System.Globalization.CultureInfo.InvariantCulture))));
             if(values.Max()-values.Min()>1e-10)varying++;
         }
-        A(fingerprints.Count>=75,
-            "at least 75 distinct numerical formula fingerprints");
-        A(varying>=72,
-            "at least 72/84 formula definitions change across paths");
+        A(fingerprints.Count==84,
+            "all 84 numeric formulas distinguishable across random and event fixtures");
+        A(varying==84,
+            "all 84 formulas vary across completed-bar inputs");
         bool tb,ts;
         A(!NQNativeConditionCatalogV19.TryEvaluate(
             b,1320,12,out tb,out ts),
