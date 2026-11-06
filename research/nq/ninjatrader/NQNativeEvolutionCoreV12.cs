@@ -86,6 +86,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 
         private readonly NQGeneRangeV11[] ranges;
         private readonly NQEvolutionConfigV12 cfg;
+        private readonly Func<int[],NQExitIdentityV11> canonicalizer;
         private readonly Random rng;
         private readonly HashSet<string> evaluated =
             new HashSet<string>(StringComparer.Ordinal);
@@ -99,7 +100,17 @@ namespace NinjaTrader.NinjaScript.Strategies
 
         public NQEvolutionEngineV12(NQGeneRangeV11[] searchRanges,
                                     NQEvolutionConfigV12 settings)
+            : this(searchRanges,settings,NQNativeExitCanonicalV11.Analyze)
+        {}
+
+        // V18 can inject a new catalog identity without modifying V11.
+        public NQEvolutionEngineV12(NQGeneRangeV11[] searchRanges,
+                                    NQEvolutionConfigV12 settings,
+                                    Func<int[],NQExitIdentityV11> canonical)
         {
+            if(canonical==null)
+                throw new ArgumentNullException("canonical");
+            canonicalizer=canonical;
             if(searchRanges==null||searchRanges.Length!=20||
                searchRanges.Any(x=>x==null)||settings==null)
                 throw new ArgumentException("20 V11 search domains and GA config required");
@@ -183,7 +194,7 @@ namespace NinjaTrader.NinjaScript.Strategies
         {
             summary.Attempts++;
             NQExitIdentityV11 identity;
-            try { identity=NQNativeExitCanonicalV11.Analyze(g); }
+            try { identity=canonicalizer(g); }
             catch(ArgumentException){summary.Invalid++;return null;}
             if(identity.IsRedundant){summary.Redundant++;return null;}
             if(!evaluated.Add(identity.RuntimeKey)){summary.Duplicates++;return null;}
