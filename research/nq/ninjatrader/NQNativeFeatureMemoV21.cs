@@ -139,6 +139,28 @@ namespace NinjaTrader.NinjaScript.Strategies
                 return 0;
             int family=condition/NQNativeConditionCatalogV19.Rules;
             int rule=condition%NQNativeConditionCatalogV19.Rules;
+            var values=AcquireValues(family,period);
+            int state=NQNativeConditionCatalogV19.ResolveRule(
+                values[ordinal],
+                values[ordinal-1],
+                values[ordinal-2],rule);
+            if(state< -1||state>1)
+                throw new InvalidOperationException("INVALID_CACHED_V19_RULE");
+            return state;
+        }
+        // V24: obtain a completed-bar value table once per active
+        // (family,period) for a candidate and reuse it across its M1
+        // simulation. This avoids thousands of dictionary/LRU hits.
+        // Returned arrays are read-only by contract (not enforced by
+        // C# arrays); caller MUST NOT modify. An evicted table can remain
+        // temporarily referenced by up to four active candidate leaves,
+        // so the LRU limit only bounds resident dictionary payload.
+        internal double[] AcquireValues(int family,int period)
+        {
+            if(family<36||family>=NQNativeConditionCatalogV19.Families||
+               period<NQNativeConditionCatalogV19.MinPeriod||
+               period>NQNativeConditionCatalogV19.MaxPeriod)
+                throw new ArgumentOutOfRangeException("family/period");
             long key=Key(family,period);
             Table entry;
             if(!tables.TryGetValue(key,out entry))
@@ -162,14 +184,23 @@ namespace NinjaTrader.NinjaScript.Strategies
                 FeatureHits++;
                 age.Remove(entry.Node);age.AddFirst(entry.Node);
             }
-            int state=NQNativeConditionCatalogV19.ResolveRule(
-                entry.Values[ordinal],
-                entry.Values[ordinal-1],
-                entry.Values[ordinal-2],rule);
-            if(state< -1||state>1)
-                throw new InvalidOperationException("INVALID_CACHED_V19_RULE");
-            return state;
+            return entry.Values;
         }
+        internal bool SharesSource(NQNativeSignalCacheV14 cache)
+        {return Object.ReferenceEquals(original,cache);}
+        internal int SourceOrdinal(int sourceIndex)
+        {
+            if(sourceIndex<0||sourceIndex>=ordinalBySource.Length)
+                throw new ArgumentOutOfRangeException("sourceIndex");
+            return ordinalBySource[sourceIndex];
+        }
+        internal int SourceRthWithinDay(int sourceIndex)
+        {
+            if(sourceIndex<0||sourceIndex>=ordinalWithinDay.Length)
+                throw new ArgumentOutOfRangeException("sourceIndex");
+            return ordinalWithinDay[sourceIndex];
+        }
+
         public NQHistoricalResultV12 Evaluate(int[] genes)
         {
             return original.EvaluateExpandedWithSignalProvider(

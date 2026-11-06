@@ -1,0 +1,107 @@
+name: NQ V24 fixed-scope 36-month FULL M1 economic scaling and exact-fill parity
+on:
+  push:
+    paths:
+      - 'research/nq/ninjatrader/NQNativeFeatureMemoV21.cs'
+      - 'research/nq/ninjatrader/NQNativePreparedEconomicV24.cs'
+      - 'research/nq/ninjatrader/NQNativeEconomicScaleV24.cs'
+      - 'research/nq/ninjatrader/NQNativeSynthetic36V24.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeLongHorizonV24Test.cs'
+      - 'tools/nq-v24-scale/NQNativeV24Console.cs'
+      - 'tools/nq-v24-scale/NQResearchV24.csproj'
+      - '.github/workflows/nq-v24-economic-scale-qa.yml'
+  pull_request:
+    paths:
+      - 'research/nq/ninjatrader/NQNativeFeatureMemoV21.cs'
+      - 'research/nq/ninjatrader/NQNativePreparedEconomicV24.cs'
+      - 'research/nq/ninjatrader/NQNativeEconomicScaleV24.cs'
+      - 'research/nq/ninjatrader/NQNativeSynthetic36V24.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeLongHorizonV24Test.cs'
+      - 'tools/nq-v24-scale/NQNativeV24Console.cs'
+      - 'tools/nq-v24-scale/NQResearchV24.csproj'
+      - '.github/workflows/nq-v24-economic-scale-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  full-36-month-economic-throughput:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with: {lfs: false}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Pinned V24 economic executable must compile, with same V23 sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build tools/nq-v24-scale/NQResearchV24.csproj --configuration Release --nologo
+          dotnet run --project tools/nq-v24-scale/NQResearchV24.csproj --no-build --configuration Release -- --version | grep S0.85_V24_PREPARED_VALUES_EXCANv19_V12_FILLED_M1_V9
+      - name: Execute 36-month FULL V12 M1 economic GA benchmark + deterministic resume
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/nqv24"
+          cat > "$RUNNER_TEMP/nqv24/test.csproj" <<XML
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>disable</Nullable>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          # Compile SAME assembly as V24 pinned C# modules, so
+          # legacy V21 QA can access intentionally internal helpers.
+          # The XML source list is authoritative; do not glob NT8 scripts.
+          while IFS= read -r rel; do
+            if [ "$rel" = "NQNativeV24Console.cs" ]; then continue; fi
+            cp "tools/nq-v24-scale/$rel" "$RUNNER_TEMP/nqv24/"
+          done < <(grep '<Compile Include=' tools/nq-v24-scale/NQResearchV24.csproj | cut -d '"' -f 2)
+          cp research/nq/ninjatrader/tests/NQNativeLongHorizonV24Test.cs "$RUNNER_TEMP/nqv24/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/nqv24/test.csproj" --configuration Release
+      - name: V24 remains economic-scoring-only and never touches held-out OOS
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'NQNativeEconomicScaleV24.Run' tools/nq-v24-scale/NQNativeV24Console.cs
+          grep -q 'NQNativeEconomicLedgerV21' research/nq/ninjatrader/NQNativeEconomicScaleV24.cs
+          grep -q 'NQNativeHistoricalEvaluatorV12' research/nq/ninjatrader/NQNativeSignalCacheV14.cs
+          ! grep -Eq '\\b(EnterLong|EnterShort|ExitLong|ExitShort|RunIteration|SetProfitTarget|SetStopLoss)\\s*\\(' research/nq/ninjatrader/NQNativePreparedEconomicV24.cs research/nq/ninjatrader/NQNativeEconomicScaleV24.cs tools/nq-v24-scale/NQNativeV24Console.cs
+          echo NQ_V24_RESEARCH_ONLY_M1_NO_NATIVE_ORDER_API
+  v21-memo-compatibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {lfs: false}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Older V21 33k signal and full backtest parity unaffected
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/nqv21regression"
+          cat > "$RUNNER_TEMP/nqv21regression/test.csproj" <<XML
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>disable</Nullable>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          # Compile SAME assembly as V24 pinned C# modules, so
+          # legacy V21 QA can access intentionally internal helpers.
+          # The XML source list is authoritative; do not glob NT8 scripts.
+          while IFS= read -r rel; do
+            if [ "$rel" = "NQNativeV24Console.cs" ]; then continue; fi
+            cp "tools/nq-v24-scale/$rel" "$RUNNER_TEMP/nqv21regression/"
+          done < <(grep '<Compile Include=' tools/nq-v24-scale/NQResearchV24.csproj | cut -d '"' -f 2)
+          cp research/nq/ninjatrader/tests/NQNativeFeatureMemoV21Test.cs "$RUNNER_TEMP/nqv21regression/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/nqv21regression/test.csproj" --configuration Release
