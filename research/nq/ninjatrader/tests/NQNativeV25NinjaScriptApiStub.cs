@@ -173,7 +173,7 @@ internal static class V25NativeSyntaxHarness
             Guid.NewGuid().ToString("N")+".tsv");
         try
         {
-            System.IO.File.WriteAllText(handoff,
+            string handoffBody=
                 "V25LockSHA256\t"+locked.FrozenV25LockSHA256+"\n"+
                 "V23ArtifactsSHA256\t"+new string('b',64)+"\n"+
                 "sourceBarsSHA256\t"+new string('c',64)+"\n"+
@@ -184,7 +184,11 @@ internal static class V25NativeSyntaxHarness
                 "NQ-00002\t"+locked.FrozenCanonicalBase64+"\t"+
                     locked.FrozenGenes20+"\n"+
                 "NQ-00003\t"+locked.FrozenCanonicalBase64+"\t"+
-                    locked.FrozenGenes20+"\n");
+                    locked.FrozenGenes20+"\n";
+            System.IO.File.WriteAllText(handoff,handoffBody+
+                "handoffContentSHA256\t"+
+                NinjaTrader.NinjaScript.Strategies
+                    .NQNativeReproducibilityV23.SHA(handoffBody)+"\n");
             locked.FrozenHandoffFile=handoff;
             try
             {
@@ -212,6 +216,23 @@ internal static class V25NativeSyntaxHarness
             catch(InvalidOperationException ex)
             {A(ex.Message.Contains("NATIVE_GENES_NOT_IN_VERIFIED"),
                 "native adapter must use exact 20 handoff genes");}
+            // Restore the approved candidate identity but modify its
+            // handoff bytes without regenerating the canonical SHA:
+            // native adapter must reject before any historical entry.
+            locked.FrozenGenes20=String.Join("/",genome);
+            locked.FrozenCanonicalBase64=Convert.ToBase64String(
+                System.Text.Encoding.UTF8.GetBytes(
+                    NinjaTrader.NinjaScript.Strategies
+                    .NQNativeExitCanonicalV19.Analyze(genome).RuntimeKey));
+            System.IO.File.AppendAllText(handoff,"TAMPER");
+            try
+            {
+                locked.Invoke(NinjaTrader.NinjaScript.State.DataLoaded);
+                throw new Exception("V25_ACCEPTED_MODIFIED_HANDOFF_SHA");
+            }
+            catch(InvalidOperationException ex)
+            {A(ex.Message.Contains("HANDOFF_CONTENT_SHA_CHANGED"),
+                "native handoff file SHA must detect changed gene rows");}
         }
         finally
         {if(System.IO.File.Exists(handoff))System.IO.File.Delete(handoff);}
@@ -220,6 +241,7 @@ internal static class V25NativeSyntaxHarness
             " defaultDisabled=TRUE noLiveChartActivation=TRUE"+
             " finalWithoutExternalDenied=TRUE"+
             " changedGeneHandoffRejected=TRUE"+
+            " modifiedHandoffSHARejected=TRUE"+
             " note=NOT_A_REAL_NINJATRADER_DLL_COMPILATION");
         return 0;
     }
