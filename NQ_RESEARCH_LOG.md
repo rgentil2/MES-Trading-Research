@@ -1518,3 +1518,17 @@ Entregado por conversación un **prototipo descargable** de motor masivo V10 (NQ
 - **Corrección:** las instrucciones previas (S0.69/S0.70) que pedían F5/pruebas intermedias de 20/250 estrategias, los pedidos de exportación o el control de rollovers **quedan superadas para el orden actual**. No ejecutarlas de nuevo salvo petición explícita del usuario.
 - **Gate/decisión:** **CAMBIO DE PRIORIDAD APROBADO POR EL USUARIO**; ninguna estrategia se ha aceptado para operar. **Siguiente bloque P0: escalamiento y persistencia del generador**.
 - **Evidencia:** actualización del [maestro](NQ_PROJECT_MASTER.md) en rama `feat/nq-v16-data-adapter-oos-gates` y [PR #75](https://github.com/rgentil2/MES-Trading-Research/pull/75); este registro es una decisión de alcance, no un resultado de backtest.
+
+
+---
+
+### 2026-11-06 — S0.78 V17: generación genética >100k candidatos y persistencia del scoring
+
+- **Objetivo:** eliminar bloqueo de capacidad de 100.000 combinaciones únicas y permitir reanudar búsquedas largas, respetando el orden de prioridad del usuario.
+- **Decisión de plataforma:** `NQ DEC2026` será la serie de referencia en NinjaTrader, M1 2020–2022 visible allí; sin nuevas auditorías de contratos ni pruebas NT8 hasta la integración completa.
+- **Código:** `tests/NQNative100kEvolutionV17Test.cs`, `NQNativeScoreJournalV17.cs`, `tests/NQNativeScoreJournalV17Test.cs`, `.github/workflows/nq-v17-100k-generator-qa.yml`, [reporte S0.78](research/nq/NQ_S078_V17_MASS_GENETIC_GENERATOR_2026_11_06.md).
+- **CI real:** [GitHub Actions 42243570744](https://github.com/rgentil2/MES-Trading-Research/actions/runs/42243570744), **SUCCESS 2/2**.
+- **Resultados precisos:** 190 generaciones, población 600, 24 élites, **109.464 identidades únicas puntuadas sintéticamente** con V12 fitness-guided GA y canonicalización V11, 4.447 duplicados descartados, 170 redundantes, 73.757 mutaciones, 66.753 cruces, 37.560 inmigrantes, 132 condiciones presentes. Reproducibilidad del prefijo con la misma semilla; checksum SHA256 de extremos `78936c2382f423fabf5bc7a8b7dae224bbff0dc5ec0b1025516952d6c9116c41`. Las mediciones CI 1,475–2,014 ms son del núcleo con oracle sintético, **NO** de 100.000 backtests reales de NQ.
+- **Persistencia:** primer lote 222 scores, +270 al extender a nueve generaciones = 492; replay completo sin una sola llamada nueva al scorer. SHA de origen, definición de score, mutaciones/rangos y genes comprobados; corrupción y duplicación fail-closed. El proceso puede regenerar el orden de RNG a partir de la semilla; el estado interno de NT8 no se inventa ni se reutiliza.
+- **Gate aprobado:** capacidad y reanudación verificadas por tests sintéticos. **PENDIENTE** evaluar esos candidatos económicamente con el histórico real `NQ DEC2026`, nuevas fórmulas independientes, portafolio final, equivalencia nativa y una sola integración NT8. Ningún P&L real demostrado.
+- **Prioridad siguiente:** mejorar motor de indicadores y ranking económico masivo; continuar construcción sin solicitarle al usuario tareas de NinjaTrader.
