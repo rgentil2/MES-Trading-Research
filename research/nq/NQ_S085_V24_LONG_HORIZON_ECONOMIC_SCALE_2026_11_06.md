@@ -10,7 +10,7 @@
 - `NQNativeEconomicScaleV24.cs`: función pública para ejecutar una búsqueda GA real, un candidato = simulación económica completa **V12 de todas las barras M1** (no fitness sintético), con scores y net/PF/DD en diario SHA V21, reanudación sin backtest repetido, métricas de velocidad **backtests nuevos/seg**, millones de RTH barras recorridas/seg, tablas cacheadas/evictadas y memoria aproximada del proceso. Los genomas se canonizan en EXCANv19 1.320 condiciones.
 - `NQNativeSynthetic36V24.cs`: fixture determinística OHLCV de **todos los días lunes–viernes 2020–2022, 08:00–11:29 ET**. Son 36 meses, **783 sesiones sintéticas y 164.430 barras M1**, de las cuales **93.960** forman el bucle reducido 09:30–11:29 y **92.394** son barras 09:30–11:27 de señal. Los datos son fabricados; no pretenden reproducir precios, calendario real de festivos, rollover ni condiciones de mercado de NQ.
 - `tools/nq-v24-scale/NQResearchV24.csproj` (mismo árbol explícito C# de V11–V23 + V24) y `NQNativeV24Console.cs` tienen `--bench-synthetic36` y `--run-development` (este último queda para cuando sea apropiado alimentar los datos reales de desarrollo). Permite asignar topología genética y presupuestos de caché, genera diario económico + ranking + perfil de velocidad/memoria sin modificar reportes de V23.
-- Workflows CI: `.github/workflows/nq-v24-economic-scale-qa.yml` valida regresión V21 y paridad económica de 36 meses; `.github/workflows/nq-v24-economic-throughput-1k-qa.yml` encadena 1.120 y 10.500 evaluaciones económicas completas de **36 meses sintéticos**, con reanudación sin backtests repetidos y artefactos conservados.
+- Workflows CI: `.github/workflows/nq-v24-economic-scale-qa.yml` valida regresión V21 y paridad económica de 36 meses; `.github/workflows/nq-v24-economic-throughput-1k-qa.yml` encadena 1.120 y 10.500; `.github/workflows/nq-v24-100k-full-economic-qa.yml` intenta 100.700 backtests económicos completos (límite 180 minutos). Todos usan solo **36 meses sintéticos**, con reanudación y artefactos versionados; no autorizan trading.
 
 ## Evidencia V24 de paridad y primer rendimiento medido (COMPLETADO)
 
@@ -29,7 +29,21 @@ Esto significa:
 
 El segundo workflow ejecuta, siempre sobre la misma muestra **sintética 36 meses**, una generación real de **1.120 evaluaciones M1 económicas** y luego **10.500** (población 600, 19 generaciones, élites 50). Cada nivel vuelve a arrancar la campaña en el mismo directorio para confirmar que las filas del diario y los rankings se conservan idénticos y que la segunda ejecución hace **0 backtests nuevos**.
 
-**No atribuir éxito a los niveles 1.120/10.500 hasta consultar el run completo y sus logs.** Los resultados positivos medidos, las tasas y la memoria deben ser registrados desde sus outputs verificables. 100.000+ backtests largos de NQ real tampoco pueden asumirse a partir de fixtures.
+### 1.120 simulaciones económicas reales V12, 36 meses sintéticos — CONFIRMADO
+
+**[Github Actions 42293251090, etapa `economic-one-thousand` SUCCESS](https://github.com/rgentil2/MES-Trading-Research/actions/runs/42293251090)**:
+
+- `NQ_V24_SCALE_ECONOMIC source=SYNTHETIC_36_MONTH_WEEKDAYS fullBacktests=1120 journalReused=0 workingBars=93960 seconds=56.065 backtestsPerSecond=19.9766 featurePayloadMiB=337.65 maxWorkingSetMiB=520.00`.
+- Misma fuente M1 2020–22 sintética (164.430 barras/783 sesiones). **1.120 backtests V12 económicos completos**; filas fuente/genoma/score P&L PF DD persistidas = **1.121 líneas** incluido el encabezado.
+- Segundo run: `fullBacktests=0 journalReused=1120 workingBars=93960 seconds=0.104`, archivo de ranking byte idéntico y diario sin filas añadidas; no se volvieron a simular las entradas/salidas.
+- Un único benchmark de runner CI: **19,98 backtests nuevos por segundo**, 56,065 s; **520 MiB** pico aproximado de memoria del proceso y 337,65 MiB de payload numérico residente. No es tasa garantizada, ni prueba NQ real, ni certificación de 100k.
+
+### 10.500 y 100.700 simulaciones — NO declarar éxito sin evidencia final
+
+- `economic-ten-thousand` en [workflow 42293251090](https://github.com/rgentil2/MES-Trading-Research/actions/runs/42293251090): **10.500** candidatos económicos completos en la misma muestra sintética de 36 meses y reinicio posterior sin backtests. Al redactar este informe, la etapa se encontraba **ejecutándose**.
+- `hundred-thousand-full-m1-economic` en [workflow 42293746661](https://github.com/rgentil2/MES-Trading-Research/actions/runs/42293746661): **100.700** candidatos únicos esperados, todos deben pasar realmente por el simulador V12 de 36 meses; salida de diario de 100.701 filas y reinicio sin evaluaciones si se completa. Al redactar este informe, el run había **comenzado, sin resultado verificado**. Límite de CI: 180 minutos; exceder tiempo o memoria se debe registrar como insuficiencia de capacidad, no como éxito.
+
+**Los resultados de 10.500/100.700 permanecen NO VERIFICADOS en este informe hasta revisar la conclusión del workflow.** Nunca confundir puntuación con oráculo sintético con un backtest económico real. 100.000 backtests de 36 meses **sintéticos** tampoco validan rentabilidad del NQ real.
 
 ## Decisiones inmutables y limitaciones
 
