@@ -82,16 +82,32 @@ namespace NinjaTrader.NinjaScript.Strategies
         }
 
         private static void Direction(IList<NQBarV11> rth,int[] g,
+                                      int sourceIndex,
+                                      Func<int,int,int,int> cachedSignal,
                                       out bool bull,out bool bear)
         {
             bull=false;bear=false;
             for(int s=0;s<g[0];s++)
             {
                 bool b1,b2;
-                if(!NQNativeConditionsV11.TryEvaluate(rth,g[1+2*s],
-                        g[2+2*s],out b1,out b2))
+                if(cachedSignal==null)
                 {
-                    bull=false;bear=false;return;
+                    if(!NQNativeConditionsV11.TryEvaluate(rth,g[1+2*s],
+                            g[2+2*s],out b1,out b2))
+                    {
+                        bull=false;bear=false;return;
+                    }
+                }
+                else
+                {
+                    // -1=short; 0=neutral/unready; +1=long.
+                    // Fail closed on an invalid cache value.
+                    int signal=cachedSignal(sourceIndex,g[1+2*s],g[2+2*s]);
+                    if(signal< -1 || signal>1)
+                        throw new InvalidOperationException(
+                            "Invalid cached directional signal");
+                    b1=signal==1;
+                    b2=signal==-1;
                 }
                 if(s==0){bull=b1;bear=b2;}
                 else
@@ -112,6 +128,16 @@ namespace NinjaTrader.NinjaScript.Strategies
         public static NQHistoricalResultV12 Evaluate(
             IList<NQTimedBarV12> source,int[] genes)
         {
+            return EvaluateWithSignals(source,genes,null,false);
+        }
+
+        // Internal research fast path. The V14 cache is responsible for
+        // creating and validating an immutable source snapshot; ordinary
+        // public calls still independently validate every input bar.
+        internal static NQHistoricalResultV12 EvaluateWithSignals(
+            IList<NQTimedBarV12> source,int[] genes,
+            Func<int,int,int,int> cachedSignal,bool sourceValidated)
+        {
             if(source==null||genes==null||source.Count==0)
                 return Reject("NULL_OR_EMPTY");
             NQExitIdentityV11 canonical;
@@ -121,6 +147,7 @@ namespace NinjaTrader.NinjaScript.Strategies
                 return Reject("REDUNDANT_BOOLEAN");
             // Full dataset must be validated even if a trade is rare. A mixed
             // 2023/26 sample MUST NOT leak into 2020-22 optimization.
+            if(!sourceValidated)
             for(int i=0;i<source.Count;i++)
             {
                 if(source[i]==null||source[i].Time.Year<2020 ||
@@ -229,7 +256,7 @@ namespace NinjaTrader.NinjaScript.Strategies
                 if(stop*DollarPerTick+SlipTicks*DollarPerTick+FeeRT>300.0)
                 {r.RiskBlocked++;continue;}
                 bool bull,bear;
-                Direction(rth,genes,out bull,out bear);
+                Direction(rth,genes,i,cachedSignal,out bull,out bear);
                 if(bull==bear)continue;
                 r.SignalCount++;
                 pendingEntry=true;
