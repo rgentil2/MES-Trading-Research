@@ -24,9 +24,17 @@ namespace NinjaTrader.NinjaScript.Strategies
         static Dictionary<string,string> Settings(string path)
         {
             var d=new Dictionary<string,string>(StringComparer.Ordinal);
+            int row=0;
             foreach(string line in File.ReadAllLines(path))
             {
+                row++;
                 int x=line.IndexOf('=');
+                // V23 run_summary.txt has an intentional human
+                // title at line 1. campaign.lock is keys-only.
+                if(row==1&&x<0&&
+                   Path.GetFileName(path)=="run_summary.txt"&&
+                   line=="S0.84 V23 COMPLETE GENERATOR RESEARCH ONLY")
+                    continue;
                 if(x<1||!d.TryAdd(line.Substring(0,x),
                     line.Substring(x+1)))
                     throw new InvalidDataException("V25_INVALID_CAMPAIGN_LOCK_FIELD");
