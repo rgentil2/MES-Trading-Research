@@ -46,9 +46,11 @@ namespace NinjaTrader.NinjaScript.Strategies
     public class NQNativeGeneticLabV5
     {
         public readonly List<string> Logs=new List<string>();
-        public string Name{get;set;},Description{get;set;};
+        public string Name{get;set;}
+        public string Description{get;set;}
         public State State{get;set;}
-        public int BarsInProgress{get;set;},CurrentBar{get;set;};
+        public int BarsInProgress{get;set;}
+        public int CurrentBar{get;set;}
         public DateTime[] Time{get;set;}=new DateTime[1];
         public double[] Close{get;set;}=new[]{102.0};
         public FakeBarPeriod BarsPeriod{get;set;}=new FakeBarPeriod();
@@ -57,14 +59,25 @@ namespace NinjaTrader.NinjaScript.Strategies
         public FakeSystem SystemPerformance{get;set;}=new FakeSystem();
         public string CanonicalRuntimeFingerprint{get;set;}="NQEX5_SIMULATED";
         public int ConditionCount{get;set;}=1;
-        public int AType{get;set;}=5,APeriod{get;set;}=6;
-        public int BType{get;set;}=6,BPeriod{get;set;}=6;
-        public int CType{get;set;}=4,CPeriod{get;set;}=18;
-        public int DType{get;set;}=6,DPeriod{get;set;}=30;
-        public int CombineAB{get;set;},CombineBC{get;set;},CombineCD{get;set;},ReverseSignals{get;set;};
-        public int StopTicks{get;set;}=20,TargetTicks{get;set;}=32;
+        public int AType{get;set;}=5;
+        public int APeriod{get;set;}=6;
+        public int BType{get;set;}=6;
+        public int BPeriod{get;set;}=6;
+        public int CType{get;set;}=4;
+        public int CPeriod{get;set;}=18;
+        public int DType{get;set;}=6;
+        public int DPeriod{get;set;}=30;
+        public int CombineAB{get;set;}
+        public int CombineBC{get;set;}
+        public int CombineCD{get;set;}
+        public int ReverseSignals{get;set;}
+        public int StopTicks{get;set;}=20;
+        public int TargetTicks{get;set;}=32;
         public int MaxDailyEntrySubmissions{get;set;}=2;
-        public int ExitMode{get;set;}=0,ATRPeriod{get;set;}=14,ATRStopX10{get;set;}=15,ATRTargetX10{get;set;}=25;
+        public int ExitMode{get;set;}=0;
+        public int ATRPeriod{get;set;}=14;
+        public int ATRStopX10{get;set;}=15;
+        public int ATRTargetX10{get;set;}=25;
         public double TickSize{get;set;}=0.25;
         public int BaseOnBarCalls{get;private set;}
         protected virtual void OnStateChange(){}
