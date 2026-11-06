@@ -181,7 +181,9 @@ namespace NinjaTrader.NinjaScript.Strategies
             {
                 int[] genes=candidate.Genes;
                 var replay=NQNativeHistoricalEvaluatorV12.EvaluateHeldout(
-                    dataset.Bars,genes,partition);
+                    dataset.Bars,genes,
+                    NQNativeDataLoaderV16.FirstYear(partition),
+                    NQNativeDataLoaderV16.LastYear(partition));
                 var economics=NQNativeFoldScoreV15.Score(replay,from,until);
                 response.Candidates.Add(new NQHoldoutMetricsV16(
                     candidate.Id,candidate.CanonicalId,economics,
@@ -192,7 +194,9 @@ namespace NinjaTrader.NinjaScript.Strategies
                 all.AddRange(replay.Executed);
             }
             response.AccountRisk=NQNativeChronologicalRiskV15.EvaluateHeldout(
-                dataset.Bars,all,risk,partition);
+                dataset.Bars,all,risk,
+                    NQNativeDataLoaderV16.FirstYear(partition),
+                    NQNativeDataLoaderV16.LastYear(partition));
             if(!response.AccountRisk.Valid)
             {
                 response.Valid=false;
