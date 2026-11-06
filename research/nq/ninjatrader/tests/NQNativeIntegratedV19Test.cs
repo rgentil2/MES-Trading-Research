@@ -94,32 +94,40 @@ internal static class V19IntegrationTest
             rows,24*1024*1024);
 
         int old=0,mid=0;
-        var gen=new NQUniqueSearchV11(
-            NQNativeExitCanonicalV18.DefaultDomains(
-                BaselineV18,true),20261106);
-        while(old<18||mid<18)
+        var g11=new NQUniqueSearchV11(
+            NQEvolutionEngineV12.DefaultDomains(BaselineV18,true),
+            20261106);
+        while(old<18)
         {
-            var candidate=gen.TryNext();
+            var candidate=g11.TryNext();
             if(candidate==null)continue;
-            bool hasV18=Enumerable.Range(0,candidate.Genes[0])
-                .Any(k=>candidate.Genes[1+2*k]>=132);
-            if(!hasV18&&old<18)
-            {
-                Compare(v11.Evaluate(candidate.Genes),
-                    v19.Evaluate(candidate.Genes),"V11 "+old);
-                old++;
-            }
-            else if(hasV18&&mid<18)
-            {
-                Compare(v18.Evaluate(candidate.Genes),
-                    v19.Evaluate(candidate.Genes),"V18 "+mid);
-                mid++;
-            }
-            A(gen.Attempted<100000,
-              "bounded V11 and V18 regression sampling");
+            Compare(v11.Evaluate(candidate.Genes),
+                v19.Evaluate(candidate.Genes),"V11 "+old);
+            old++;
+            A(g11.Attempted<20000,"bounded V11 structural sample");
+        }
+        // V18 types 132..395 cannot enter V11's own canonicalizer.
+        // Sample these via the V18 extended canonicalizer explicitly.
+        var g18=new NQEvolutionEngineV12(
+            NQNativeExitCanonicalV18.DefaultDomains(BaselineV18,true),
+            new NQEvolutionConfigV12{
+                Population=40,Generations=2,Elites=4,
+                Tournament=3,Seed=20261106,MaxAttempts=5000
+            },NQNativeExitCanonicalV18.Analyze)
+            .Run(genome=>0);
+        foreach(var candidate in g18.Evaluated)
+        {
+            if(mid>=18)break;
+            var genes=candidate.Genome.Genes;
+            bool hasNew=Enumerable.Range(0,genes[0])
+                .Any(k=>genes[1+2*k]>=132);
+            if(!hasNew)continue;
+            Compare(v18.Evaluate(genes),v19.Evaluate(genes),
+                "V18 "+mid);
+            mid++;
         }
         A(old==18&&mid==18,
-          "36 preserved old C# economic simulation outcomes");
+          "36 preserved V11/V18 economic simulation outcomes");
 
         // Validate the V19-only cache is not changing V12 entry/exit
         // rules compared to a direct signal calculation on RTH prefixes.
