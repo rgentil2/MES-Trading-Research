@@ -42,3 +42,11 @@ Aun si el PR acumulado queda abierto/revisable, **no** afirmar que el código ya
 ## Siguiente fase: V24 sin cambios de nombre
 
 V24, definido antes de V23 y congelado en el contrato, se enfocará exclusivamente en **escala económica con escenarios de longitud equivalente a 36 meses** y pruebas progresivas hacia 10k–100k backtests V12 completos, medición de CPU/memoria y detección de cuellos reales. El generador y reportes ya corresponden a V23; no se traslada el objetivo.
+
+
+## Estado de consolidación verificado al cierre de V23
+
+- **Fusionado, no solo propuesto:** [PR acumulado #82](https://github.com/rgentil2/MES-Trading-Research/pull/82), squash merge a `main`, commit **`d1d7bd434e89f28e696e37c9a5eb00c2c97a5a29`**.
+- **Matriz del PR completada antes de fusionar: 14/14 workflows SUCCESS** (versiones V10–V23). Los PR históricos apilados #70–#81 quedaron **cerrados como reemplazados** por el árbol acumulado, no fusionados individualmente.
+- El ejecutable autónomo `NQResearchV23.csproj` incluye **42 módulos C# enumerados** de la rama principal y permite reconstruir el software sin depender de una cadena de PR.
+- El cierre de software de V23 NO significa que exista una estrategia rentable de mercado NQ ni que se haya completado la validación en NinjaTrader. El objetivo fijo de **V24** es escalar el backtest económico largo; **V25** será la única comparación nativa final.
