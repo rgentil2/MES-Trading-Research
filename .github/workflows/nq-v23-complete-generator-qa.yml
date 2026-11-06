@@ -67,7 +67,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/nqv23test"
-          cat > "$RUNNER_TEMP/nqv23test/test.csproj" <<'XML'
+          cat > "$RUNNER_TEMP/nqv23test/test.csproj" <<XML
           <Project Sdk="Microsoft.NET.Sdk">
             <PropertyGroup>
               <OutputType>Exe</OutputType>
@@ -76,11 +76,11 @@ jobs:
               <Nullable>disable</Nullable>
               <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
             </PropertyGroup>
+            <ItemGroup>
+              <ProjectReference Include="$GITHUB_WORKSPACE/tools/nq-v23-research/NQResearchV23.csproj" />
+            </ItemGroup>
           </Project>
           XML
-          for src in $(grep -oE '\\.\\./\\.\\./research/nq/ninjatrader/[^"]+\\.cs' tools/nq-v23-research/NQResearchV23.csproj); do
-            cp "tools/nq-v23-research/$src" "$RUNNER_TEMP/nqv23test/"
-          done
           cp research/nq/ninjatrader/tests/NQNativeCompleteGeneratorV23Test.cs "$RUNNER_TEMP/nqv23test/Program.cs"
           dotnet run --project "$RUNNER_TEMP/nqv23test/test.csproj" --configuration Release
   regression-prior-v22-funnel:
@@ -96,7 +96,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/nqv23regress"
-          cat > "$RUNNER_TEMP/nqv23regress/test.csproj" <<'XML'
+          cat > "$RUNNER_TEMP/nqv23regress/test.csproj" <<XML
           <Project Sdk="Microsoft.NET.Sdk">
             <PropertyGroup>
               <OutputType>Exe</OutputType>
@@ -105,10 +105,10 @@ jobs:
               <Nullable>disable</Nullable>
               <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
             </PropertyGroup>
+            <ItemGroup>
+              <ProjectReference Include="$GITHUB_WORKSPACE/tools/nq-v23-research/NQResearchV23.csproj" />
+            </ItemGroup>
           </Project>
           XML
-          for src in $(grep -oE '\\.\\./\\.\\./research/nq/ninjatrader/[^"]+\\.cs' tools/nq-v23-research/NQResearchV23.csproj); do
-            cp "tools/nq-v23-research/$src" "$RUNNER_TEMP/nqv23regress/"
-          done
           cp research/nq/ninjatrader/tests/NQNativeFullFunnelV22Test.cs "$RUNNER_TEMP/nqv23regress/Program.cs"
           dotnet run --project "$RUNNER_TEMP/nqv23regress/test.csproj" --configuration Release
