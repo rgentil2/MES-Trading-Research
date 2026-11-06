@@ -1,3 +1,13 @@
+## 2026-11-06 — S0.78 V17: 109.464 GENOMAS ÚNICOS PUNTUADOS + REANUDACIÓN DE FITNESS (CI VERDE)
+
+**Estado real:** CI [42243570744](https://github.com/rgentil2/MES-Trading-Research/actions/runs/42243570744) **SUCCESS**, 2/2 pruebas. Motor C# V12/V11: 190 generaciones, 600 individuos, 24 élites, **109.464 candidatos únicos** evaluados con **fitness sintético**, 132 condiciones exploradas. Duplicados rechazados 4.447, redundantes 170; 73.757 mutaciones, 66.753 cruces. Tiempo núcleo genético de CI 1,475–2,014 ms **sin evaluar mercado real**. Resultado sin probar P&L real ni 100k backtests del NQ.
+
+**Nuevo diario `NQNativeScoreJournalV17.cs`:** guarda y reutiliza puntuaciones de forma reproducible por SHA256 de la fuente + identidad del scorer + parámetros y rangos; la prueba retomó 222 scores, añadió 270 nuevos para 492, luego reprodujo sin ninguna reevaluación. Rechaza fuente, función, rangos o archivos corruptos. CI sintético [42243570744](https://github.com/rgentil2/MES-Trading-Research/actions/runs/42243570744). [Informe completo](research/nq/NQ_S078_V17_MASS_GENETIC_GENERATOR_2026_11_06.md).
+
+**Sigue vigente la decisión S0.77:** referencia NT8 `NQ DEC2026` y datos M1 2020–2022 visibles en plataforma; **terminar generador primero**, excluir nuevas auditorías de contratos/rollovers y migración intermedia; **una sola validación NinjaTrader cuando todo esté integrado**. La siguiente prioridad NO es exportar ni compilar NT8: completar la evaluación histórica masiva, biblioteca de indicadores realmente independientes, diversidad, ranking, persistencia completa y ensamblado del portafolio, sin abrir holdouts.
+
+---
+
 ## 2026-11-06 — DECISIÓN DEL USUARIO: PRIORIDAD MÁXIMA TERMINAR GENERADOR NQ, MIGRACIÓN NT8 AL FINAL
 
 **Esta decisión es la prioridad vigente y sustituye las instrucciones de etapas anteriores que proponían compilar F5, exportar M1, hacer pruebas intermedias o auditar contratos/rollovers antes de terminar el generador.** Conservar esas notas históricas para trazabilidad, pero **NO EJECUTARLAS** como próximo paso.
