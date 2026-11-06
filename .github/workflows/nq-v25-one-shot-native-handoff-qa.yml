@@ -1,0 +1,92 @@
+name: NQ V25 fixed-scope final NT8 handoff, exact signal and fill audit (offline QA)
+on:
+  push:
+    paths:
+      - 'research/nq/ninjatrader/NQNativeV25FrozenSignalCore.cs'
+      - 'research/nq/ninjatrader/NQNativeV25FrozenImporter.cs'
+      - 'research/nq/ninjatrader/NQNativeV25ParityAudit.cs'
+      - 'research/nq/ninjatrader/NQNativeV25NativeBarsReader.cs'
+      - 'research/nq/ninjatrader/NQNativeV25OneShotValidation.cs'
+      - 'research/nq/ninjatrader/nt8/NQ_V25_FrozenAnalyzer.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeV25BridgeCoreTest.cs'
+      - 'tools/nq-v25-native/NQNativeV25Console.cs'
+      - 'tools/nq-v25-native/NQNativeV25OneShot.csproj'
+      - '.github/workflows/nq-v25-one-shot-native-handoff-qa.yml'
+  pull_request:
+    paths:
+      - 'research/nq/ninjatrader/NQNativeV25FrozenSignalCore.cs'
+      - 'research/nq/ninjatrader/NQNativeV25FrozenImporter.cs'
+      - 'research/nq/ninjatrader/NQNativeV25ParityAudit.cs'
+      - 'research/nq/ninjatrader/NQNativeV25NativeBarsReader.cs'
+      - 'research/nq/ninjatrader/NQNativeV25OneShotValidation.cs'
+      - 'research/nq/ninjatrader/nt8/NQ_V25_FrozenAnalyzer.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeV25BridgeCoreTest.cs'
+      - 'tools/nq-v25-native/NQNativeV25Console.cs'
+      - 'tools/nq-v25-native/NQNativeV25OneShot.csproj'
+      - '.github/workflows/nq-v25-one-shot-native-handoff-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  v25-build-and-bridge-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {lfs: false}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Compile V23+V24 economic suite and V25 native handoff / CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build tools/nq-v25-native/NQNativeV25OneShot.csproj --configuration Release --nologo
+          dotnet run --project tools/nq-v25-native/NQNativeV25OneShot.csproj --no-build --configuration Release -- --version | grep S0.86_V25_FROZEN_ONE_SHOT_NATIVE_1
+          echo NQ_V25_CORE_BUILDS_WITH_PINNED_V23_V24_ECONOMIC_RESEARCH
+      - name: Prevent native live order activation and historical OOS optimization
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'ArmHistoricalValidation=false' research/nq/ninjatrader/nt8/NQ_V25_FrozenAnalyzer.cs
+          grep -q 'State!=State.Historical' research/nq/ninjatrader/nt8/NQ_V25_FrozenAnalyzer.cs
+          grep -q 'BarsPeriodType.Minute' research/nq/ninjatrader/nt8/NQ_V25_FrozenAnalyzer.cs
+          grep -q 'NinjaTraderMinuteStart(Time\[0\])' research/nq/ninjatrader/nt8/NQ_V25_FrozenAnalyzer.cs
+          grep -q 'V25_NO_REAL_DEV_APPROVED' research/nq/ninjatrader/NQNativeV25FrozenImporter.cs
+          grep -q 'V25_EXTERNAL_GATE_REJECT_FINAL_UNOPENED' research/nq/ninjatrader/NQNativeV25OneShotValidation.cs
+          ! grep -Eq '(NQEvolutionEngineV12|RunWithJournal|Random\(|Optimize\()' research/nq/ninjatrader/NQNativeV25*.cs
+          echo NQ_V25_DISARMED_HISTORICAL_ONLY_NO_GA_ON_OOS
+  v25-synthetic-differential-and-frozen-safety:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with: {lfs: false}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: 120 family exact V19 parity and signed V23 handoff safety tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/nqv25"
+          cat > "$RUNNER_TEMP/nqv25/test.csproj" <<XML
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>disable</Nullable>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+            <ItemGroup>
+              <ProjectReference Include="$GITHUB_WORKSPACE/tools/nq-v25-native/NQNativeV25OneShot.csproj" />
+            </ItemGroup>
+          </Project>
+          XML
+          cp research/nq/ninjatrader/tests/NQNativeV25BridgeCoreTest.cs "$RUNNER_TEMP/nqv25/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/nqv25/test.csproj" --configuration Release
+      - name: Verify command outputs do not claim any real NQ market validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'NO_ACTUAL_NQ_FROZEN_PORTFOLIO_OR_NATIVE_NT8_RUN' research/nq/ninjatrader/tests/NQNativeV25BridgeCoreTest.cs
+          echo NQ_V25_OFFLINE_HARNESS_ONLY_NO_NT8_NATIVE_COMPILE_OR_BACKTEST_CLAIM
