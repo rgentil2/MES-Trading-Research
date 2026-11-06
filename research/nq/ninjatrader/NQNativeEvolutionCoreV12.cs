@@ -233,7 +233,7 @@ namespace NinjaTrader.NinjaScript.Strategies
                     bool restart=gen>0 && resetNext;
                     bool immigrant=gen==0||restart||
                         rng.Next(100)<cfg.ImmigrantPercent;
-                    string kind;
+                    string kind="IMMIGRANT";
                     int[] child=immigrant||parents.Count==0?RandomGenes():
                         Breed(parents,false,out kind);
                     if(immigrant)
