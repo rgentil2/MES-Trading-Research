@@ -13,7 +13,7 @@ namespace NinjaTrader.NinjaScript.Strategies
         {
             // EMA of price*volume / EMA of volume. The zero-volume
             // edge case uses close, never a future quote.
-            double a=M.EMA(b,at,n,4),s=0;
+            double a=M.EMA(b,at,n,4);
             double alpha=2.0/(n+1);
             int from=Math.Max(0,at-3*n-5);
             double numerator=b[from].Close*b[from].Volume;
