@@ -149,6 +149,39 @@ internal static class V23CompleteGeneratorTest
                 .Contains("finalOosOpened=false"),
               "2023+ OOS remains totally unopened");
 
+            // Positive *serialization only* test for 3 and 5
+            // externally qualified FIXTURE genomes. No real GA result
+            // in this test passed portfolio risk, so no positive actual
+            // V23 frozen campaign is being claimed.
+            string paramsFixture=Path.Combine(Path.GetTempPath(),
+                "NQ_V23_FROZEN_GENE_FIXTURE_"+
+                Guid.NewGuid().ToString("N")+".tsv");
+            try
+            {
+                var five=new List<NQFrozenCandidateV16>();
+                for(int k=0;k<5;k++)
+                {
+                    int[] g=(int[])Base.Clone();
+                    g[1]=396+k*11;
+                    g[3]=789+k*11;
+                    five.Add(new NQFrozenCandidateV16("FIXTURE_"+k,g,
+                        NQNativeExitCanonicalV19.Analyze));
+                }
+                NQNativeCompleteGeneratorV23.WriteFrozenParameterFile(
+                    paramsFixture,five.Take(3).ToList());
+                A(File.ReadAllLines(paramsFixture).Length==61 &&
+                  File.ReadAllText(paramsFixture).Contains("stopTicks") &&
+                  File.ReadAllText(paramsFixture).Contains("signalType"),
+                  "3 frozen fixture genomes export exactly 60 parameters");
+                NQNativeCompleteGeneratorV23.WriteFrozenParameterFile(
+                    paramsFixture,five);
+                A(File.ReadAllLines(paramsFixture).Length==101&&
+                  File.ReadAllText(paramsFixture).Contains(
+                    NQNativeConditionCatalogV19.Name(396)),
+                  "5 frozen fixture genomes export 100 exact signal/exit parameters");
+            }
+            finally
+            {if(File.Exists(paramsFixture))File.Delete(paramsFixture);}
             string oldPackage=first.PackageSHA256;
             var resumed=NQNativeCompleteGeneratorV23.Run(data,cfg);
             NQNativeCompleteGeneratorV23.Verify(dir);
@@ -165,6 +198,27 @@ internal static class V23CompleteGeneratorTest
                    a.Genome.Canonical.RuntimeKey==
                       b.Genome.Canonical.RuntimeKey).All(x=>x),
               "same deterministic genetic search ranking after resume");
+
+            // The fixed V23 risk contract may be TIGHTENED but never
+            // silently relaxed, including cutoff / annual robustness.
+            cfg.Research.Robustness.CostMultiplier=1.0;
+            try{cfg.Validate();throw new Exception("V23_WEAK_COST_ACCEPTED");}
+            catch(ArgumentException ex)
+            {A(ex.Message.Contains("WEAKEN"),
+                "less than 1.5x cost stress fails config");}
+            cfg.Research.Robustness.CostMultiplier=1.5;
+            cfg.Audit.MinimumPositiveDevelopmentYears=2;
+            try{cfg.Validate();throw new Exception("V23_WEAK_YEAR_ACCEPTED");}
+            catch(ArgumentException ex)
+            {A(ex.Message.Contains("WEAKEN"),
+                "less than all three development years fails config");}
+            cfg.Audit.MinimumPositiveDevelopmentYears=3;
+            cfg.Research.FinalCutoffExclusive=new DateTime(2027,1,1);
+            try{cfg.Validate();throw new Exception("V23_CHANGED_CUTOFF_ACCEPTED");}
+            catch(ArgumentException ex)
+            {A(ex.Message.Contains("WEAKEN"),
+                "frozen 2026-11-01 OOS cutoff cannot drift");}
+            cfg.Research.FinalCutoffExclusive=new DateTime(2026,11,1);
 
             cfg.RankingCount=6;
             try
@@ -219,7 +273,8 @@ internal static class V23CompleteGeneratorTest
                 " newBacktestsOnResume="+resumed.FreshBacktests+
                 " outputByteExactReplay=TRUE"+
                 " changedConfigGuard=TRUE changedBarsGuard=TRUE"+
-                " checksumTamperGuard=TRUE externalFinalUnopened=TRUE");
+                " checksumTamperGuard=TRUE frozenParamFixture3And5=TRUE"+
+                " fixedRiskContract=TRUE externalFinalUnopened=TRUE");
             Console.WriteLine("SOURCE_IS_SYNTHETIC_2020_2022_NO_NQ_DEC2026_PROFIT_CLAIMS");
             return 0;
         }
