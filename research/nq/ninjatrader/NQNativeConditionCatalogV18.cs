@@ -32,7 +32,7 @@ namespace NinjaTrader.NinjaScript.Strategies
             "Elder force-index / ATR and volume",               // 20
             "Ease-of-movement scaled pressure",                 // 21
             "Wilder directional movement +DI minus -DI",       // 22
-            "Directional movement weighted by ADX",            // 23
+            "Directional movement weighted by local DX (ADX proxy)",            // 23
             "Aroon oscillator",                                 // 24
             "Vortex oscillator",                                // 25
             "Signed Kaufman efficiency ratio",                 // 26
