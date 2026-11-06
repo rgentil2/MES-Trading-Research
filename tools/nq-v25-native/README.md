@@ -56,10 +56,10 @@ No se inicia ni se recomienda esta campaña hasta disponer de un expediente V23 
 ```powershell
 dotnet build tools/nq-v25-native/NQNativeV25OneShot.csproj -c Release
 
-dotnet run --project tools/nq-v25-native/NQNativeV25OneShot.csproj -- --prepare "V23_APROBADO" "V25_HANToff.tsv"
+dotnet run --project tools/nq-v25-native/NQNativeV25OneShot.csproj -- --prepare "V23_APROBADO" "V25_handoff.tsv"
 ```
 
-`--prepare` verifica `artifacts.sha256`, `campaign.lock`, `run_summary.txt`, `portfolio_decision.tsv`, `settings_snapshot.tsv` y los **20 genes canónicos por estrategia**. Si V23 no aprobó **3–5 sistemas**, se detiene. La salida `V25_HANToff.tsv` fija `V25LockSHA256`, identificación de 3–5 candidatos, sus genes y el SHA de sus informes.
+`--prepare` verifica `artifacts.sha256`, `campaign.lock`, `run_summary.txt`, `portfolio_decision.tsv`, `settings_snapshot.tsv` y los **20 genes canónicos por estrategia**. Si V23 no aprobó **3–5 sistemas**, se detiene. La salida `V25_handoff.tsv` fija `V25LockSHA256`, identificación de 3–5 candidatos, sus genes y el SHA de sus informes. Incluye `handoffContentSHA256` calculado sobre todas las filas de la entrega: el script NinjaTrader comprueba independientemente ese checksum y exige que los 20 genes y el ID canónico de cada candidato **coincidan exactamente con la entrega congelada**. Es un control de integridad local, no una firma criptográfica de un tercero.
 
 **Etapa 1 — desarrollo DEV 2020–2022:** configurar el Strategy Analyzer con solo el periodo DEV y la misma fuente M1. Para cada candidato, colocar `CandidateId`, `FrozenHandoffFile` (ruta absoluta), `FrozenV25LockSHA256`, `FrozenCanonicalBase64`, `FrozenGenes20` exactamente del handoff, `HistoricalScope=DEV`, `ArmHistoricalValidation=true` solo bajo Strategy Analyzer y `ConfirmEndStampedET=true`. Exportar `V25_<candidate>_DEV_bars.tsv` y `V25_<candidate>_DEV_native_trades.tsv` en la misma carpeta de reportes. Ejecutar **una vez**:
 
