@@ -32,8 +32,11 @@ internal static class V20FrozenExternalTest
                 for(int i=0;i<120;i++)
                 {
                     double open=price;
-                    price+=0.85+Math.Sin((i+11*m)*0.13)*1.3;
-                    if(altered)price+=0.15;
+                    if(!altered)
+                        price+=0.85+Math.Sin((i+11*m)*0.13)*1.3;
+                    // altered=true means a completely FLAT external
+                    // market; all three directional example signals
+                    // must fail, independently of the DEV approval stub.
                     bars.Add(new NQTimedBarV12(
                         date.AddHours(9).AddMinutes(30+i),
                         new NQBarV11(open,Math.Max(open,price)+0.55,
@@ -163,18 +166,19 @@ internal static class V20FrozenExternalTest
           "immutable versioned OOS digest for three V19 candidates");
         Locked(()=>campaign.EvaluateFinal(Source(2025,2026)),
             "FINAL_LOCKED_PENDING_EXTERNAL_PASS");
-        var result=campaign.EvaluateExternal(external);
+        var flatExternal=Source(2023,2024,true);
+        var result=campaign.EvaluateExternal(flatExternal);
         A(result.Valid&&result.Candidates.Count==3&&
           result.Candidates.All(x=>
               x.CanonicalId.StartsWith("EXCANv19:")&&
               x.Economic!=null&&x.Economic.Valid)&&
           result.AccountRisk.Valid,
           "all 3 frozen V19 genomes evaluated on 2023–24 OOS");
-        A(eva.SourceCacheBuilds==1,
-          "three frozen candidates reused the same external cache");
+        A(eva.SourceCacheBuilds==2,
+          "three frozen candidates reused one new flat OOS cache");
         A(!result.ProvisionalPass && !campaign.ExternalAccepted,
           "synthetic external series MUST NOT fabricate winning portfolio");
-        Locked(()=>campaign.EvaluateExternal(external),
+        Locked(()=>campaign.EvaluateExternal(flatExternal),
             "EXTERNAL_REEVALUATION_FORBIDDEN");
         Locked(()=>campaign.EvaluateFinal(Source(2025,2026)),
             "FINAL_LOCKED_PENDING_EXTERNAL_PASS");
