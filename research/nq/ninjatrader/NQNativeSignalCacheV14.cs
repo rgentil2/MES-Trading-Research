@@ -374,6 +374,23 @@ namespace NinjaTrader.NinjaScript.Strategies
             return GetSourceAtr(workingToOriginal[researchIndex],period);
         }
 
+        // V21: accepts an optional source-indexed signal provider but
+        // retains the same V14 compressed RTH working bars + original
+        // full-source ATR lookup; avoids divergent backtest fill paths.
+        // Provider sees ORIGINAL source index, never a compressed ordinal.
+        public NQHistoricalResultV12 EvaluateExpandedWithSignalProvider(
+            int[] genes,Func<int[],NQExitIdentityV11> canonicalizer,
+            Func<int,int,int,int> sourceSignal)
+        {
+            if(canonicalizer==null||sourceSignal==null)
+                throw new ArgumentNullException("V21 scorer inputs");
+            return NQNativeHistoricalEvaluatorV12.EvaluateCustom(
+                workingSnapshot,genes,
+                (i,type,period)=>sourceSignal(
+                    workingToOriginal[i],type,period),
+                true,GetWorkingAtr,canonicalizer);
+        }
+
         public NQHistoricalResultV12 EvaluateExpanded(int[] genes,
             Func<int[],NQExitIdentityV11> canonicalizer)
         {
