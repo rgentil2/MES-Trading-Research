@@ -3,12 +3,12 @@ on:
   push:
     paths:
       - 'research/nq/ninjatrader/*V11.cs'
-      - 'research/nq/ninjatrader/tests/*V11Test.cs'
+      - 'research/nq/ninjatrader/tests/*V11*Test.cs'
       - '.github/workflows/nq-v11-conditions-qa.yml'
   pull_request:
     paths:
       - 'research/nq/ninjatrader/*V11.cs'
-      - 'research/nq/ninjatrader/tests/*V11Test.cs'
+      - 'research/nq/ninjatrader/tests/*V11*Test.cs'
       - '.github/workflows/nq-v11-conditions-qa.yml'
   workflow_dispatch:
 permissions:
