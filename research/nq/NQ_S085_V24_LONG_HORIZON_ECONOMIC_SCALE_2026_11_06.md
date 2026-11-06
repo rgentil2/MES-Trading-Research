@@ -3,6 +3,16 @@
 **Fecha:** 2026-11-06.  
 **OBJETIVO FIJO DE V24:** rendimiento, memoria y escalamiento de **backtests económicos completos** durante los 36 meses de desarrollo 2020–2022, avanzando de pruebas controladas hacia ≥100.000 candidatos; sin redefinir el entregable V23 (generador/reports) ni adelantarse a V25 (única validación nativa NT8). Contrato: [NQ_FIXED_VERSION_SCOPE_V19_V25_2026_11_06.md](NQ_FIXED_VERSION_SCOPE_V19_V25_2026_11_06.md).
 
+## Cierre verificado de V24: 100.700 backtests económicos completos en 36 meses sintéticos
+
+**CI de capacidad [42293746661](https://github.com/rgentil2/MES-Trading-Research/actions/runs/42293746661), SUCCESS, job `hundred-thousand-full-m1-economic`.** El log final confirma:
+
+`NQ_V24_SCALE_ECONOMIC source=SYNTHETIC_36_MONTH_WEEKDAYS fullBacktests=100700 journalReused=0 workingBars=93960 seconds=354.388 backtestsPerSecond=284.1511 featurePayloadMiB=414.49 maxWorkingSetMiB=874.68`.
+
+**Resultados comprobados:** 100.700 genomas únicos EXCANv19 puntuados por **simulación V12 M1 completa**, no por un oráculo de fitness; **100.701 líneas de ledger económico con SHA** incluido encabezado, replay de la misma configuración con `fullBacktests=0 journalReused=100700` en **2,045 segundos**, ranking **idéntico byte a byte**, y registro CI `NQ_V24_100700_COMPLETE_36MONTH_ECONOMIC_BACKTESTS_AND_REPLAY_PASS`. La fuente tiene 164.430 velas sintéticas a lo largo de 2020–2022 y el bucle comprimido V12 cubre 93.960 barras RTH. Pico aproximado del proceso **874,68 MiB**, **NO** límite absoluto de RAM.
+
+**Interpretación correcta:** la meta V24 de capacidad ≥100.000 **está demostrada para un fixture sintético de 36 meses en el runner CI**, no para los precios reales de NQ DEC2026 ni un broker. El único objetivo V24 es CPU/memoria/escala económica; la selección de portafolios ya es V22/V23. V25 sigue siendo la única validación nativa final NT8. Es improcedente extrapolar 284 backtests/s a otro computador, histórico real o conjunto de estrategias sin repetir mediciones.
+
 ## Componentes V24 ya implementados
 
 - `NQNativePreparedEconomicV24.cs`: precalcula/prefetch **una sola vez por genoma** hasta cuatro tablas de valores de familias nuevas V19, manteniendo como **cache antiguo V14** las señales heredadas; evalúa con **idéntico simulador V12** de stop primero en vela ambigua, costos, slippage, intrabar proxy, ATR original, score V9 y señal EXCANv19. No cambia los genes ni fórmulas ni reglas G0.
@@ -38,12 +48,12 @@ El segundo workflow ejecuta, siempre sobre la misma muestra **sintética 36 mese
 - Segundo run: `fullBacktests=0 journalReused=1120 workingBars=93960 seconds=0.104`, archivo de ranking byte idéntico y diario sin filas añadidas; no se volvieron a simular las entradas/salidas.
 - Un único benchmark de runner CI: **19,98 backtests nuevos por segundo**, 56,065 s; **520 MiB** pico aproximado de memoria del proceso y 337,65 MiB de payload numérico residente. No es tasa garantizada, ni prueba NQ real, ni certificación de 100k.
 
-### 10.500 y 100.700 simulaciones — NO declarar éxito sin evidencia final
+### 10.500 y 100.700 simulaciones — verificación final completada
 
 - **10.500 BACKTESTS ECONÓMICOS V12 COMPLETOS CONFIRMADOS**: `economic-ten-thousand` en [workflow 42293251090](https://github.com/rgentil2/MES-Trading-Research/actions/runs/42293251090), **SUCCESS 2/2 jobs**. `fullBacktests=10500 journalReused=0 workingBars=93960 seconds=215.975 backtestsPerSecond=48.6167 featurePayloadMiB=414.49 maxWorkingSetMiB=712.01`. Diario con **10.501 filas** (incluido encabezado) y resultado real V12 económico net/PF/DD por cada genoma. Replay `fullBacktests=0 journalReused=10500 seconds=0.440` y ranking byte idéntico. Fuente: 36 meses **sintéticos** 2020–22, NO NQ del mercado.
-- `hundred-thousand-full-m1-economic` en [workflow 42293746661](https://github.com/rgentil2/MES-Trading-Research/actions/runs/42293746661): **100.700** candidatos únicos esperados, todos deben pasar realmente por el simulador V12 de 36 meses; salida de diario de 100.701 filas y reinicio sin evaluaciones si se completa. Al redactar este informe, el run había **comenzado, sin resultado verificado**. Límite de CI: 180 minutos; exceder tiempo o memoria se debe registrar como insuficiencia de capacidad, no como éxito.
+- **100.700 BACKTESTS ECONÓMICOS V12 COMPLETOS CONFIRMADOS:** `hundred-thousand-full-m1-economic` en [workflow 42293746661](https://github.com/rgentil2/MES-Trading-Research/actions/runs/42293746661), **SUCCESS**; `fullBacktests=100700 journalReused=0 workingBars=93960 seconds=354.388 backtestsPerSecond=284.1511 featurePayloadMiB=414.49 maxWorkingSetMiB=874.68`. Diario con **100.701 filas** incluido encabezado; replay **`fullBacktests=0 journalReused=100700 seconds=2.045`** y ranking idéntico. El registro `NQ_V24_100700_COMPLETE_36MONTH_ECONOMIC_BACKTESTS_AND_REPLAY_PASS` figura en el log final.
 
-**10.500 verificados y aprobados. Los 100.700 permanecen NO VERIFICADOS en este informe hasta revisar la conclusión del workflow.** Nunca confundir puntuación con oráculo sintético con un backtest económico real. 100.000 backtests de 36 meses **sintéticos** tampoco validan rentabilidad del NQ real.
+**Los tres tamaños 1.120, 10.500 y 100.700 han sido verificados con backtests económicos completos V12 de 36 meses SINTÉTICOS.** Esto NO demuestra ventaja real de mercado, PF/DD de estrategias reales ni paridad NinjaTrader, y no constituye una garantía de rendimiento para datos/hardware distintos.
 
 ## Decisiones inmutables y limitaciones
 
@@ -52,8 +62,11 @@ El segundo workflow ejecuta, siempre sobre la misma muestra **sintética 36 mese
 - **V25** seguirá siendo una única integración final a **NinjaTrader 8, NQ DEC2026**, cuando el software esté terminado. El usuario confirma datos M1 2020–22 visibles allí. No solicitarle exportaciones nuevas, compilar F5, auditar contratos/rollover ni correr pruebas nativas ahora.
 - Las cifras CI no son P&L real; la cuenta objetivo MFFU 50K y DD $2k requieren prueba de riesgo/orden intraminuto FINAL. V12 es conservador estimado, no estrategia aprobada o fondeo certificado.
 
-## Próximo criterio para llamar V24 completo
+## Criterios de V24 — resultado definitivo
 
-1. **CUMPLIDO EN CI SINTÉTICO:** ≥1.000 y ≥10.000 backtests completos de 36 meses con perfilado temporal/memoria, resultados económicos, persistencia SHA y 0 nuevas evaluaciones en replay. No equivale a NQ real.
-2. Si la capacidad es compatible con los límites operativos y del runner, ampliar hacia **≥100.000** backtests completos 36 meses; no aceptar un número de genomas con scores oráculo como evidencia económica.
-3. Documentar restricciones y requisitos de hardware / tiempo para el usuario y dejar el paquete de rendimiento integrado sin afectar la definición ni los outputs de V23.
+1. **CUMPLIDO:** ≥1.000 backtests completos de 36 meses sintéticos con tiempo, memoria, ledger SHA y 0 reevaluaciones en replay (1.120, 56,065 s).
+2. **CUMPLIDO:** ≥10.000 backtests completos en el mismo horizonte, sin oracle (10.500, 215,975 s, 48,6167/s).
+3. **CUMPLIDO:** ≥100.000 backtests completos y reanudación determinista sin recomputar (100.700, 354,388 s, 284,1511/s, 874,68 MiB pico observado).
+4. **LÍMITE EXPLÍCITO:** todos los benchmarks de capacidad usan OHLCV fabricado, nunca la serie real de NQ DEC2026; la implementación no implica rentabilidad, fills nativos iguales ni aptitud MFFU.
+
+**Estado técnico:** V24 lista para consolidar en `main` como desarrollo de rendimiento; V25 conserva intacto su objetivo de **una sola migración y validación final en NinjaTrader 8**.
