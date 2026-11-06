@@ -130,8 +130,8 @@ internal static class V11ShimTest {
         int[] slots={1,3,5,7};
         var visited=new HashSet<int>();
         foreach(int[] genes in o.Genomes)
-            for(int s=0;s<genes[0];s++)
-                visited.Add(genes[slots[s]]);
+            for(int slot=0;slot<genes[0];slot++)
+                visited.Add(genes[slots[slot]]);
         T(visited.Count==132,"all 132 catalog types sampled in active genomes "+
             visited.Count);
         T(o.Genomes.Select(g=>g[16]).Distinct().Count()>1,
