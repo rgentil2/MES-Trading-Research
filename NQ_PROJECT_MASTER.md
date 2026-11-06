@@ -1,3 +1,13 @@
+## 2026-11-06 — V24 CONSOLIDADA EN MAIN — PR #83 FUSIONADO
+
+**Hecho verificado:** PR acumulado [#83](https://github.com/rgentil2/MES-Trading-Research/pull/83) **FUSIONADO a `main` por squash**, commit **`ea5279626d8f19f7d64719a42e46d77e43b3eae8`**, después de que las dos suites de regresión V21 y V24 del último commit pasaran en CI. V23 ya estaba fusionado previamente mediante PR #82. No quedan PR de integración V24 pendientes.
+
+**Prueba de capacidad real del simulador sobre OHLCV sintético de horizonte completo:** [CI 42293746661](https://github.com/rgentil2/MES-Trading-Research/actions/runs/42293746661) **SUCCESS**: 100.700 backtests V12 M1 económicos completos a lo largo de 36 meses **SINTÉTICOS** 2020–22, **354,388 s**, **284,1511 backtests/s**, ~**874,68 MiB** working-set máximo, **100.701 filas** en ledger, replay **0 nuevos backtests** en **2,045 s** y ranking idéntico. Los benchmarks de 1.120/10.500 y paridad V21/V24 también pasaron. No son datos reales NQ DEC2026 ni demuestran rentabilidad, PF/DD reales, fills nativos o viabilidad MFFU.
+
+**Contratos de versiones intactos:** V23 = generador/reportes completos; **V24 = escalamiento económico COMPLETADO** como código + QA sintético; **V25 = única integración y validación final en NinjaTrader 8 con NQ DEC2026**, todavía por completar. No reintroducir auditorías de contratos/rollovers ni solicitar compilaciones/exports/backtests NT8 intermedios; la prueba de NT8 solo ocurrirá al final.
+
+---
+
 ## 2026-11-06 — S0.85 V24: ESCALAMIENTO ECONÓMICO DE 36 MESES — 100.700 SIMULACIONES COMPLETAS CONFIRMADAS
 
 **Objetivos de versión invariables:** V23 = generador completo + reportes + consolidación a `main` (PR #82); **V24 = rendimiento y escalamiento de backtests económicos M1 de 36 meses**, sin renombrar tareas; **V25 = integración y validación única final en NinjaTrader 8 NQ DEC2026**. [Contrato definitivo](research/nq/NQ_FIXED_VERSION_SCOPE_V19_V25_2026_11_06.md).
