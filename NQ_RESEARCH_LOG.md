@@ -1504,3 +1504,17 @@ Entregado por conversación un **prototipo descargable** de motor masivo V10 (NQ
 
 ---
 
+
+
+---
+
+### 2026-11-06 — S0.77 / DECISIÓN EXPRESA DE PRODUCTO — NQ DEC2026, terminar generador primero
+
+- **Objetivo/mecanismo:** consolidar el reemplazo de StrategyQuant en C#, priorizando la capacidad del generador y el motor de evaluación; **no** dedicar nuevas etapas a auditar contratos ni a migrar prematuramente a NinjaTrader.
+- **Decisión confirmada por usuario:** el instrumento utilizado directamente en NT8 es **`NQ DEC2026`** y NinjaTrader ya permite visualizar **M1 2020–2022** en esa serie. **No se requiere una validación adicional de contratos ni rollovers para este proyecto** antes de terminar el generador. Las verificaciones independientes de merge y de TXT quedan fuera del camino crítico; no afirmar que por ello se certificó la calidad del empalme.
+- **Orden pactado:** (P0) completar **generador 100.000+** — combinaciones únicas efectivamente puntuadas, motores evolutivos, diversidad, parámetros, caché, persistencia y pruebas masivas; (P1) terminar ranking, G0, costes, Monte Carlo, walk-forward y portafolio compartido; (P2) **UNA sola migración e integración/validación final** en NT8 con `NQ DEC2026`, sin compilaciones, exportaciones ni backtests intermedios solicitados al usuario.
+- **Fuente / ventanas reservadas:** el histórico 2020–2022 visible en NT8 será el universo de desarrollo cuando llegue la validación final. Tramos 2023–2024 y 2025–2026 permanecen separados para prueba externa/final. No usar datos futuros para seleccionar parámetros.
+- **Estado real de código:** V11–V16 en borradores PR #70–#75 con CI sintético; V16 flujo headless y partición OOS implementados. Sin 100.000 NQ candidatos puntuados sobre mercado real; sin portafolio profitable auditado; sin compilación nativa NT8. La prioridad se redefine sin borrar resultados históricos.
+- **Corrección:** las instrucciones previas (S0.69/S0.70) que pedían F5/pruebas intermedias de 20/250 estrategias, los pedidos de exportación o el control de rollovers **quedan superadas para el orden actual**. No ejecutarlas de nuevo salvo petición explícita del usuario.
+- **Gate/decisión:** **CAMBIO DE PRIORIDAD APROBADO POR EL USUARIO**; ninguna estrategia se ha aceptado para operar. **Siguiente bloque P0: escalamiento y persistencia del generador**.
+- **Evidencia:** actualización del [maestro](NQ_PROJECT_MASTER.md) en rama `feat/nq-v16-data-adapter-oos-gates` y [PR #75](https://github.com/rgentil2/MES-Trading-Research/pull/75); este registro es una decisión de alcance, no un resultado de backtest.
