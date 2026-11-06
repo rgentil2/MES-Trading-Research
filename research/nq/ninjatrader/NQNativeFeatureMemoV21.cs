@@ -186,6 +186,8 @@ namespace NinjaTrader.NinjaScript.Strategies
             }
             return entry.Values;
         }
+        internal bool SharesSource(NQNativeSignalCacheV14 cache)
+        {return Object.ReferenceEquals(original,cache);}
         internal int SourceOrdinal(int sourceIndex)
         {
             if(sourceIndex<0||sourceIndex>=ordinalBySource.Length)
