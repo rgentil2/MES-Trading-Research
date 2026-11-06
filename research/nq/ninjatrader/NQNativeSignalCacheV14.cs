@@ -31,6 +31,8 @@ namespace NinjaTrader.NinjaScript.Strategies
         private readonly Dictionary<long,Table> tables=new Dictionary<long,Table>();
         private readonly LinkedList<long> age=new LinkedList<long>();
         private readonly List<Session> sessions=new List<Session>();
+        private readonly int catalogCount;
+        private readonly Func<IList<NQBarV11>,int,int,int> signalReader;
         private readonly int[] rthOrdinalBySource;
         private readonly ReadOnlyCollection<NQTimedBarV12> snapshot;
         private readonly ReadOnlyCollection<NQTimedBarV12> workingSnapshot;
@@ -55,8 +57,17 @@ namespace NinjaTrader.NinjaScript.Strategies
 
         public NQNativeSignalCacheV14(IList<NQTimedBarV12> source,
                                       long maxSignalCacheBytes,
-                                      long maxAtrCacheBytes=67108864)
+                                      long maxAtrCacheBytes=67108864,
+                                      int conditionCount=NQNativeConditionsV11.Count,
+                                      Func<IList<NQBarV11>,int,int,int> reader=null)
         {
+            if(conditionCount<NQNativeConditionsV11.Count||
+               conditionCount>10000||
+               conditionCount>NQNativeConditionsV11.Count&&reader==null)
+                throw new ArgumentException(
+                    "Extended catalog requires a validated external signal reader");
+            catalogCount=conditionCount;
+            signalReader=reader;
             if(source==null||source.Count==0)
                 throw new ArgumentException("Nonempty source required");
             if(maxSignalCacheBytes<1)
@@ -215,12 +226,25 @@ namespace NinjaTrader.NinjaScript.Strategies
                     prefix.Add(bar);
                     if(prefix.Count>=needed)
                     {
-                        bool bull,bear;
-                        if(!NQNativeConditionsV11.TryEvaluate(prefix,condition,
-                                period,out bull,out bear) || bull&&bear)
-                            throw new InvalidOperationException(
-                                "Nonfinite, invalid or ambiguous condition");
-                        signal[offset]=bull?(byte)1:bear?(byte)2:(byte)0;
+                        if(signalReader!=null)
+                        {
+                            int direction=signalReader(prefix,condition,period);
+                            if(direction< -1||direction>1)
+                                throw new InvalidOperationException(
+                                    "Invalid expanded signal reader state");
+                            signal[offset]=direction==1?(byte)1:
+                                direction==-1?(byte)2:(byte)0;
+                        }
+                        else
+                        {
+                            bool bull,bear;
+                            if(!NQNativeConditionsV11.TryEvaluate(
+                                prefix,condition,period,out bull,out bear)||
+                               bull&&bear)
+                                throw new InvalidOperationException(
+                                    "Nonfinite, invalid or ambiguous condition");
+                            signal[offset]=bull?(byte)1:bear?(byte)2:(byte)0;
+                        }
                     }
                     offset++;
                 }
@@ -232,7 +256,7 @@ namespace NinjaTrader.NinjaScript.Strategies
 
         private byte[] Ensure(int condition,int period)
         {
-            if(condition<0||condition>=NQNativeConditionsV11.Count ||
+            if(condition<0||condition>=catalogCount ||
                period<NQNativeConditionsV11.MinPeriod ||
                period>NQNativeConditionsV11.MaxPeriod)
                 throw new ArgumentOutOfRangeException("condition/period");
@@ -348,6 +372,16 @@ namespace NinjaTrader.NinjaScript.Strategies
             if(researchIndex<0||researchIndex>=workingToOriginal.Length)
                 throw new ArgumentOutOfRangeException("researchIndex");
             return GetSourceAtr(workingToOriginal[researchIndex],period);
+        }
+
+        public NQHistoricalResultV12 EvaluateExpanded(int[] genes,
+            Func<int[],NQExitIdentityV11> canonicalizer)
+        {
+            if(canonicalizer==null)
+                throw new ArgumentNullException("canonicalizer");
+            return NQNativeHistoricalEvaluatorV12.EvaluateCustom(
+                workingSnapshot,genes,GetWorkingSignal,true,
+                GetWorkingAtr,canonicalizer);
         }
 
         public NQHistoricalResultV12 Evaluate(int[] genes)
