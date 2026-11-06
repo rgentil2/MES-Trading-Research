@@ -189,16 +189,44 @@ namespace NinjaTrader.NinjaScript.Strategies
                 sourceValidated,cachedAtr,2020,2022,true);
         }
 
+        // Research-only V18 extension: existing conservative entry/exit,
+        // costs and V9 score are EXACTLY reused, while the caller provides
+        // a versioned expanded-conditions identity and signal source.
+        internal static NQHistoricalResultV12 EvaluateCustom(
+            IList<NQTimedBarV12> source,int[] genes,
+            Func<int,int,int,int> cachedSignal,bool sourceValidated,
+            Func<int,int,double> cachedAtr,
+            Func<int[],NQExitIdentityV11> canonical)
+        {
+            if(cachedSignal==null||canonical==null)
+                throw new ArgumentNullException("V18 signals/canonical");
+            return EvaluateCore(source,genes,cachedSignal,
+                sourceValidated,cachedAtr,2020,2022,true,canonical);
+        }
+
         private static NQHistoricalResultV12 EvaluateCore(
             IList<NQTimedBarV12> source,int[] genes,
             Func<int,int,int,int> cachedSignal,bool sourceValidated,
             Func<int,int,double> cachedAtr,int firstYear,int lastYear,
             bool discovery)
         {
+            return EvaluateCore(source,genes,cachedSignal,
+                sourceValidated,cachedAtr,firstYear,lastYear,
+                discovery,null);
+        }
+
+        private static NQHistoricalResultV12 EvaluateCore(
+            IList<NQTimedBarV12> source,int[] genes,
+            Func<int,int,int,int> cachedSignal,bool sourceValidated,
+            Func<int,int,double> cachedAtr,int firstYear,int lastYear,
+            bool discovery,
+            Func<int[],NQExitIdentityV11> canonicalize)
+        {
             if(source==null||genes==null||source.Count==0)
                 return Reject("NULL_OR_EMPTY");
             NQExitIdentityV11 canonical;
-            try{canonical=NQNativeExitCanonicalV11.Analyze(genes);}
+            try{canonical=canonicalize==null?
+                NQNativeExitCanonicalV11.Analyze(genes):canonicalize(genes);}
             catch(ArgumentException){return Reject("INVALID_GENES");}
             if(canonical.IsRedundant)
                 return Reject("REDUNDANT_BOOLEAN");
