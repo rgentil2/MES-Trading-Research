@@ -88,6 +88,13 @@ namespace NinjaTrader.NinjaScript.Strategies
             GroupName="V25 Gate Authorization",Order=9)]
         public string StageGateDirectory{get;set;}
 
+        private static string ContentHash(string text)
+        {
+            using(var sha=SHA256.Create())
+                return BitConverter.ToString(sha.ComputeHash(
+                    Encoding.UTF8.GetBytes(text)))
+                    .Replace("-","").ToLowerInvariant();
+        }
         private static string FileHash(string path)
         {
             using(var stream=File.OpenRead(path))
@@ -103,7 +110,7 @@ namespace NinjaTrader.NinjaScript.Strategies
                 throw new InvalidOperationException(
                     "V25_REQUIRE_PREPARED_FROZEN_HANDOFF_FILE");
             string[] rows=File.ReadAllLines(FrozenHandoffFile);
-            if(rows.Length<8||rows.Length>10||
+            if(rows.Length<9||rows.Length>11||
                rows[0]!="V25LockSHA256\t"+FrozenV25LockSHA256||
                !rows[1].StartsWith("V23ArtifactsSHA256\t",
                    StringComparison.Ordinal)||
@@ -114,13 +121,18 @@ namespace NinjaTrader.NinjaScript.Strategies
                rows[4]!="candidateId\tcanonicalBase64\tgenes20")
                 throw new InvalidOperationException(
                     "V25_FROZEN_HANDOFF_SHA_OR_HEADER_MISMATCH");
-            int candidates=rows.Length-5;
+            if(rows[rows.Length-1]!="handoffContentSHA256\t"+
+                    ContentHash(String.Join("\n",
+                        rows.Take(rows.Length-1).ToArray())+"\n"))
+                throw new InvalidOperationException(
+                    "V25_FROZEN_HANDOFF_CONTENT_SHA_CHANGED");
+            int candidates=rows.Length-6;
             if(candidates<3||candidates>5)
                 throw new InvalidOperationException(
                     "V25_REQUIRE_THREE_TO_FIVE_FROZEN_STRATEGIES");
             int found=0;
             var unique=new HashSet<string>(StringComparer.Ordinal);
-            for(int i=5;i<rows.Length;i++)
+            for(int i=5;i<rows.Length-1;i++)
             {
                 var cols=rows[i].Split('\t');
                 if(cols.Length!=3||!unique.Add(cols[0]))
