@@ -1,3 +1,13 @@
+## 2026-11-05 — S0.70 diagnóstico V8 completo internamente: transición a búsqueda masiva
+
+Se procesó el Output V8 de 20 candidatos únicos (60 resúmenes anuales, 240 mensuales, 20 rechazos G0 únicos; una evaluación repetida). Para los 15 candidatos con ExitMode > 0: señales brutas 2021/2022 = 234708/235486; bloqueadas por TryCompute ATR 134562/223245 (57.3% a 94.8%); operaciones 3960 a 725. Para 5 variantes ExitMode = 0, operaciones 2569 a 2580: frecuencia estable. El problema principal de 2022 no es desaparición de señales sino límite de stop/target ATR; max 55 ticks = 13.75 puntos NQ. No ampliar el stop de NQ 1 contrato sin preservar presupuesto riesgo US$300.
+
+PF máximo de 20 = 1.1074, cero cumplen PF >= 1.25, solo uno DD cerrado <= US$2000, ninguno aprueba G0. En pantalla Performance = -1e12 es score de rechazo del G0RiskFitnessV7, no PnL del instrumento. En MAIN ya están NQNativeDiscoveryScoreV9.cs y NQNativeDiscoveryFitnessV9.cs para ranking continuo exploratorio sin alterar G0 estricto final.
+
+Entregado por conversación un **prototipo descargable** de motor masivo V10 (NQMassKernelV10.cs + NQNativeMassDiscoveryV10.cs) y reporte reproducible de log: 20 a 5000 combinaciones simuladas en un recorrido M1, 10 familias de señales x 5 períodos, hasta 4 combinadores, stops ATR/fijos, riesgo dólares, ranking y CSV. IMPORTANTE: V10 todavía NO se compiló F5 en NinjaTrader, no se integró al repositorio GitHub como fuente, NO ejecuta órdenes nativas, no certifica fills/ticks/trailing MFFU, ni incorpora las 132 fórmulas experimentales en NT8. La carpeta entregada corresponde a investigación y QA pendiente. El siguiente gate es F5 en NT8 y una sola ejecución de 250 hipótesis; luego paridad de shortlist con orden nativa de NT8. OOS 2023-2026 sellados.
+
+---
+
 ## 2026-11-05 — S0.69 V8 REAL NT8: ONE-CANDIDATE SMOKE CORRECTO PERO 20-CANDIDATE AUDITORÍA BLOQUEADA POR RANGOS FIJOS
 
 Usuario mostró Strategy Analyzer en **NQNativeGeneticLabV8Audit + NQNativeUniqueOptimizerV5 + NQNativeG0RiskFitnessV7**, semilla 20261102, target20, attempts2000, NQ DEC26 M1 2020–22. Screenshot revela que **TODOS los genes tienen MIN=MAX**, p. ej. ConditionCount `2;2;1`, AType `0;0;1`, APeriod `12;12;1`, BType `7;7;1`, BPeriod `14;14;1`, ExitMode `0;0;1` (todos 20 fijos). Por ello `NQ_V5 END executed=1 generatedUnique=1 attempted=2000 equivalentFingerprintSkipped=1999 structuralRedundantSkipped=0 invalidSkipped=0 failure=0 exhausted=True`. **NO ES fallas de compilación V8 ni de datos**. Debe **recuperarse plantilla ORIGINAL V5/G0V7 con RANGOS** de búsqueda (min,max,increment) para las 20 mutaciones reproducibles; NO usar plantilla de Backtest con valores fijos. Misma semilla sin rangos no puede replicar los 20 IDs. Mantener preservadas versiones V5/V6/V7.
