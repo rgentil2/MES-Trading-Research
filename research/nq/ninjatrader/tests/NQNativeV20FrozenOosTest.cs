@@ -18,7 +18,9 @@ internal static class V20FrozenExternalTest
             0,0,0,0,20,32,2,0,14,15,25};
     }
     private static NQDataLoadV16 Source(int first,int last,
-                                        bool altered=false)
+                                        bool altered=false,
+                                        bool smoothUptrend=false,
+                                        int finalMonth=12)
     {
         var bars=new List<NQTimedBarV12>(27000);
         var days=new[]{1,5,9,13,17,21,25,28};
@@ -28,12 +30,14 @@ internal static class V20FrozenExternalTest
           for(int m=1;m<=12;m++)
             foreach(int day in days)
             {
+                if(y==last&&m>finalMonth)continue;
                 var date=new DateTime(y,m,day);
                 for(int i=0;i<120;i++)
                 {
                     double open=price;
                     if(!altered)
-                        price+=0.85+Math.Sin((i+11*m)*0.13)*1.3;
+                        price+=smoothUptrend?1.25:
+                            0.85+Math.Sin((i+11*m)*0.13)*1.3;
                     // altered=true means a completely FLAT external
                     // market; all three directional example signals
                     // must fail, independently of the DEV approval stub.
@@ -50,7 +54,9 @@ internal static class V20FrozenExternalTest
             NQDataPartitionV16.FinalHoldout2025_2026;
         var manifest=new NQDataManifestV16(partition,"NQ DEC2026",
             "NT8_VISIBLE_SERIES_ASSUMED",
-            altered?new string('b',64):new string('c',64),
+            altered?new string('b',64):
+                smoothUptrend&&first==2025?new string('d',64):
+                new string('c',64),
             new DateTime(first,1,1),new DateTime(last,12,31),
             new DateTime(first,1,1),new DateTime(last,12,31),
             bars.Count,bars.Count,monthly.Sum(),monthly);
@@ -188,6 +194,44 @@ internal static class V20FrozenExternalTest
             4*1024*1024),new[]{36,57,100});
         A(original.FreezeDigest!=different.FreezeDigest,
           "any V19 frozen genome change produces different freeze SHA");
+        // POSITIVE synthetic monotonic series: prove BOTH versioned OOS
+        // partitions can be traversed once, in order, with exactly
+        // the SAME frozen 3 EXCANv19 genes. This is contrived software QA
+        // and NOT any evidence of NQ profitable strategies.
+        var positiveEvaluator=new NQNativeV20OosEvaluator(4*1024*1024);
+        var positive=Campaign(positiveEvaluator,new[]{36,37,38});
+        var growingExternal=Source(2023,2024,false,true);
+        var growingFinal=Source(2025,2026,false,true,10);
+        A(growingFinal.Manifest.FullSessionsByMonth.Take(22)
+            .All(x=>x==8)&&
+          growingFinal.Manifest.FullSessionsByMonth.Skip(22)
+            .All(x=>x==0),
+          "final bars only 2025 Jan–2026 Oct");
+        Locked(()=>positive.EvaluateFinal(growingFinal),
+            "FINAL_LOCKED_PENDING_EXTERNAL_PASS");
+        var approved=positive.EvaluateExternal(growingExternal);
+        A(approved.Valid&&approved.ProvisionalPass&&
+          positive.ExternalAccepted&&
+          approved.Candidates.Count==3 &&
+          approved.Candidates.All(x=>x.Economic.PeriodGatePass),
+          "synthetic contrived uptrend allows the external success branch");
+        var finished=positive.EvaluateFinal(growingFinal);
+        A(finished.Valid&&finished.ProvisionalPass&&
+          finished.Candidates.Count==3&&positive.FinalConsumed,
+          "synthetic final branch unlocked ONLY after external approval");
+        A(finished.EndExclusive==new DateTime(2026,11,1) &&
+          approved.FreezeDigest==finished.FreezeDigest,
+          "same 3 frozen genomes and 2026-Nov-01 cutoff");
+        A(finished.Candidates.Zip(approved.Candidates,(a,b)=>
+            a.Id==b.Id&&a.CanonicalId==b.CanonicalId).All(x=>x),
+          "no mutations between external and final OOS");
+        A(positiveEvaluator.SourceCacheBuilds==2,
+          "one shared V19 signals cache per frozen OOS partition");
+        Locked(()=>positive.EvaluateExternal(growingExternal),
+            "EXTERNAL_REEVALUATION_FORBIDDEN");
+        Locked(()=>positive.EvaluateFinal(growingFinal),
+            "FINAL_HOLDOUT_REUSE_FORBIDDEN");
+
         // Detect contaminated non-OOS input before any OOS evaluator call.
         try
         {
@@ -205,7 +249,8 @@ internal static class V20FrozenExternalTest
             " oosScore=NONE combinedChronology=TRUE"+
             " sourceCacheBuilds="+eva.SourceCacheBuilds+
             " oneShotExternal=TRUE finalLockedOnFail=TRUE"+
-            " freezeDigestBound=TRUE");
+            " freezeDigestBound=TRUE"+
+            " passingSyntheticExternalAndFinal=TRUE");
         Console.WriteLine("FROZEN_PORTFOLIO_PASS_WAS_SYNTHETIC_STUB_NOT_MARKET_DATA");
         return 0;
     }
