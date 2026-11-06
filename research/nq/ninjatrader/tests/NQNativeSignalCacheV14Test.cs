@@ -35,6 +35,32 @@ internal static class V14CacheTest
         }
         return b;
     }
+    private static List<NQTimedBarV12> WithExtraHours()
+    {
+        var raw=Source();
+        var widened=new List<NQTimedBarV12>();
+        for(int day=0;day<12;day++)
+        {
+            var daily=raw.GetRange(day*120,120);
+            DateTime early=daily[0].Time.Date.AddHours(8);
+            double reference=daily[0].Bar.Open;
+            for(int i=0;i<90;i++)
+            {
+                double px=reference+Math.Sin(i/13.0)*5;
+                widened.Add(new NQTimedBarV12(early.AddMinutes(i),
+                    new NQBarV11(px,px+2,px-2,px,300)));
+            }
+            widened.AddRange(daily);
+            DateTime late=daily[119].Time.AddMinutes(1);
+            for(int i=0;i<60;i++)
+            {
+                double px=daily[119].Bar.Close+Math.Sin(i/11.0)*3;
+                widened.Add(new NQTimedBarV12(late.AddMinutes(i),
+                    new NQBarV11(px,px+2,px-2,px,150)));
+            }
+        }
+        return widened;
+    }
     private static void Equal(NQHistoricalResultV12 slow,
                               NQHistoricalResultV12 fast,string label)
     {
@@ -64,10 +90,13 @@ internal static class V14CacheTest
     }
     public static int Main()
     {
-        var src=Source();
+        var src=WithExtraHours();
         var cache=new NQNativeSignalCacheV14(src,16*1024*1024);
         Check(cache.SourceBars==src.Count&&cache.RthBars==12*118,
             "RTH-only cached bars excluding 11:28 and 11:29");
+        Check(cache.CompressionActive&&cache.WorkingBars==12*120 &&
+            cache.WorkingBars<cache.SourceBars/2,
+            "complete sessions reduce overnight scanning by more than 50%");
         Check(cache.CacheMisses==0&&cache.UsedSignalBytes==0,
             "lazy cache at construction");
 
@@ -134,11 +163,13 @@ internal static class V14CacheTest
         timer.Stop();long cachedMs=timer.ElapsedMilliseconds;
         Check(cache.UsedSignalBytes<=cache.MaxSignalBytes,
             "cache never exceeds signal-array memory cap");
+        Check(cache.UsedAtrBytes<=cache.MaxAtrBytes,
+            "ATR caches are also bounded");
 
         // Strong no-lookahead property: modifying the later source list
         // cannot change earlier cached or evaluated results, because the
         // V14 source copy was frozen when constructed.
-        int checkIndex=100;
+        int checkIndex=200;
         int original=cache.GetSignal(checkIndex,3,12);
         var prior=cache.Evaluate(genomes[0]);
         var old=src[src.Count-1];
@@ -148,7 +179,38 @@ internal static class V14CacheTest
             "cache remains frozen after source list mutation");
         Equal(prior,cache.Evaluate(genomes[0]),"snapshot immutability");
 
-        // Tiny cache is intentionally bounded; LRU must evict old keys.
+        // A single missing 11:29 M1 bar forces full-source fallback.
+        // Never omit a bar required for a late time exit.
+        var incomplete=WithExtraHours();
+        int removeAt=incomplete.FindIndex(x=>
+            x.Time.Date==new DateTime(2021,6,4) &&
+            x.Time.Hour==11 && x.Time.Minute==29);
+        Check(removeAt>=0,"synthetic missing-bar fixture");
+        incomplete.RemoveAt(removeAt);
+        var fallback=new NQNativeSignalCacheV14(incomplete,16*1024*1024);
+        Check(!fallback.CompressionActive &&
+            fallback.WorkingBars==fallback.SourceBars,
+            "incomplete research session must disable compaction");
+        foreach(var genes in genomes.Take(12))
+            Equal(NQNativeHistoricalEvaluatorV12.Evaluate(incomplete,genes),
+                  fallback.Evaluate(genes),"fallback");
+
+        // ATR memoization is based on unfiltered source (including
+        // overnight input) with a strict, independently bounded LRU.
+        var limitedAtr=new NQNativeSignalCacheV14(WithExtraHours(),
+            4*1024*1024,8L*src.Count);
+        var atrGenome=(int[])genomes[0].Clone();
+        atrGenome[0]=1;atrGenome[1]=0;atrGenome[2]=6;
+        atrGenome[16]=1;atrGenome[17]=7;
+        limitedAtr.Evaluate(atrGenome);
+        atrGenome[17]=14;
+        limitedAtr.Evaluate(atrGenome);
+        Check(limitedAtr.AtrCacheMisses>=2 &&
+              limitedAtr.AtrCacheEvictions>=1 &&
+              limitedAtr.UsedAtrBytes<=limitedAtr.MaxAtrBytes,
+              "ATR full-source LRU respects single-table budget");
+
+        // Tiny signal cache is intentionally bounded; LRU evicts keys.
         var tiny=new NQNativeSignalCacheV14(Source(),2L*12*118);
         tiny.GetSignal(90,0,6);
         tiny.GetSignal(90,1,6);
@@ -200,6 +262,9 @@ internal static class V14CacheTest
             " uniqueGenomes="+genomes.Count+" tables="+cache.Entries+
             " hits="+cache.CacheHits+" misses="+cache.CacheMisses+
             " signalBytes="+cache.UsedSignalBytes+
+            " originalBars="+cache.SourceBars+
+            " workingBars="+cache.WorkingBars+
+            " atrBytes="+cache.UsedAtrBytes+
             " baselineMs="+uncachedMs+" cachedMs="+cachedMs+
             " tinyEvictions="+tiny.CacheEvictions);
         Console.WriteLine("NQ_V14_CACHE_PARITY_V12_ESTIMATE_ONLY_NO_REAL_NQ_DATA");
