@@ -31,7 +31,9 @@ namespace NinjaTrader.NinjaScript.Strategies
             int[] baseline,NQResearchConfigV16 cfg,
             string ledgerPath,string rankingPath,string fillsPath,
             int shortlist,int featureCacheBytes,
-            NQPortfolioAuditConfigV22 auditConfig=null)
+            NQPortfolioAuditConfigV22 auditConfig=null,
+            Action<string,string,NQHistoricalResultV12,
+                NQRobustnessResultV13> auditObserver=null)
         {
             var r=new NQResearchRunV22{
                 Completed=false,HasFrozenCandidates=false,
@@ -81,24 +83,35 @@ namespace NinjaTrader.NinjaScript.Strategies
             {
                 r.RobustnessChecked++;
                 int[] genes=candidate.Genome.Genes;
+                string key=candidate.Genome.Canonical.RuntimeKey;
                 var run=memo.Evaluate(genes);
-                if(!run.Valid)continue;
+                if(!run.Valid)
+                {
+                    if(auditObserver!=null)
+                        auditObserver(key,null,run,null);
+                    continue;
+                }
                 var robust=NQNativeRobustnessV13.Evaluate(
                     run.Trades,cfg.Robustness);
                 if(!robust.Valid||!robust.ProvisionalRobustPass)
+                {
+                    if(auditObserver!=null)
+                        auditObserver(key,null,run,robust);
                     continue;
+                }
                 // V12's detailed fill ledger must fully reconcile with
                 // closed trade list before a candidate enters the portfolio.
                 if(run.Executed.Count!=run.Trades.Count)
                     throw new InvalidOperationException(
                         "V12 executed-fill ledger is incomplete");
-                string key=candidate.Genome.Canonical.RuntimeKey;
                 string id="NQ-"+r.RobustnessPassed.ToString("D5");
                 r.RobustnessPassed++;
                 qualified.Add(new NQPortfolioExecutionCandidateV15(
                     id,run.Trades,run.Executed));
                 genesById.Add(id,(int[])genes.Clone());
                 r.RobustCandidateKeys.Add(key);
+                if(auditObserver!=null)
+                    auditObserver(key,id,run,robust);
             }
             r.Completed=true;
             if(qualified.Count<cfg.Portfolio.TargetStrategies)
