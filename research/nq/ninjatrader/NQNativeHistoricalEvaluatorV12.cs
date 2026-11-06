@@ -151,6 +151,22 @@ namespace NinjaTrader.NinjaScript.Strategies
             return EvaluateWithSignals(source,genes,null,false);
         }
 
+        // V16 FROZEN external validation: the *same* conservative
+        // fills/entry/exit simulator can measure 2023–24 or 2025–26
+        // with NO V9/V7 2020–22 training score. This method has no GA
+        // callback and must not be used to select/tune candidates.
+        public static NQHistoricalResultV12 EvaluateHeldout(
+            IList<NQTimedBarV12> source,int[] genes,
+            NQDataPartitionV16 partition)
+        {
+            int from=NQNativeDataLoaderV16.FirstYear(partition);
+            int through=NQNativeDataLoaderV16.LastYear(partition);
+            if(partition==NQDataPartitionV16.Development2020_2022)
+                return Reject("DEVELOPMENT_NOT_A_HELDOUT");
+            return EvaluateCore(source,genes,null,false,null,
+                from,through,false);
+        }
+
         // Internal research fast path. The V14 cache is responsible for
         // creating and validating an immutable source snapshot; ordinary
         // public calls still independently validate every input bar.
@@ -170,6 +186,16 @@ namespace NinjaTrader.NinjaScript.Strategies
             Func<int,int,int,int> cachedSignal,bool sourceValidated,
             Func<int,int,double> cachedAtr)
         {
+            return EvaluateCore(source,genes,cachedSignal,
+                sourceValidated,cachedAtr,2020,2022,true);
+        }
+
+        private static NQHistoricalResultV12 EvaluateCore(
+            IList<NQTimedBarV12> source,int[] genes,
+            Func<int,int,int,int> cachedSignal,bool sourceValidated,
+            Func<int,int,double> cachedAtr,int firstYear,int lastYear,
+            bool discovery)
+        {
             if(source==null||genes==null||source.Count==0)
                 return Reject("NULL_OR_EMPTY");
             NQExitIdentityV11 canonical;
@@ -182,8 +208,8 @@ namespace NinjaTrader.NinjaScript.Strategies
             if(!sourceValidated)
             for(int i=0;i<source.Count;i++)
             {
-                if(source[i]==null||source[i].Time.Year<2020 ||
-                   source[i].Time.Year>2022 ||
+                if(source[i]==null||source[i].Time.Year<firstYear ||
+                   source[i].Time.Year>lastYear ||
                    i>0 && (source[i].Time<=source[i-1].Time ||
                      source[i].Time-source[i-1].Time>TimeSpan.FromDays(5)))
                     return Reject("UNSORTED_OUTSIDE_IST_OR_LARGE_GAP");
@@ -314,9 +340,19 @@ namespace NinjaTrader.NinjaScript.Strategies
             if(side!=0||pendingEntry||pendingFlat)
                 return Reject("MISSING_LAST_EXIT_OR_ENTRY_BAR");
             r.Net=equity;
-            r.Discovery=NQNativeDiscoveryScoreV9.Evaluate(r.Trades,equity);
-            r.Score=r.Discovery==null||!r.Discovery.Valid?
-                NQNativeDiscoveryScoreV9.InvalidScore:r.Discovery.Score;
+            if(discovery)
+            {
+                r.Discovery=NQNativeDiscoveryScoreV9.Evaluate(r.Trades,equity);
+                r.Score=r.Discovery==null||!r.Discovery.Valid?
+                    NQNativeDiscoveryScoreV9.InvalidScore:r.Discovery.Score;
+            }
+            else
+            {
+                // Never evaluate V9 (whose economic gate expects 2020-22)
+                // or leak an external segment's rank into the GA.
+                r.Reason="FROZEN_EXTERNAL_ESTIMATE_ONLY";
+                r.Score=NQNativeDiscoveryScoreV9.InvalidScore;
+            }
             return r;
         }
     }
