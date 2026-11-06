@@ -59,6 +59,9 @@ namespace NinjaTrader.NinjaScript.Strategies
             if(Research.Portfolio.TargetStrategies<3||
                Research.Portfolio.TargetStrategies>5||
                Research.Robustness.CostMultiplier<1.5||
+               Research.Robustness.MaxBootstrapP95ClosedDDUSD>2000||
+               Audit.MinimumPositiveDevelopmentYears!=3||
+               Research.FinalCutoffExclusive!=new DateTime(2026,11,1)||
                Research.AccountRisk.MaxAccountStressDDUSD>2000||
                Research.AccountRisk.MaxSessionPeakToTroughUSD>1000||
                Research.AccountRisk.MaxConcurrentAdverseUSD>1000||
