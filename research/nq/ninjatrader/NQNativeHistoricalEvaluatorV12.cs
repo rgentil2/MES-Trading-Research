@@ -157,14 +157,13 @@ namespace NinjaTrader.NinjaScript.Strategies
         // callback and must not be used to select/tune candidates.
         public static NQHistoricalResultV12 EvaluateHeldout(
             IList<NQTimedBarV12> source,int[] genes,
-            NQDataPartitionV16 partition)
+            int firstYear,int lastYear)
         {
-            int from=NQNativeDataLoaderV16.FirstYear(partition);
-            int through=NQNativeDataLoaderV16.LastYear(partition);
-            if(partition==NQDataPartitionV16.Development2020_2022)
-                return Reject("DEVELOPMENT_NOT_A_HELDOUT");
+            if(!((firstYear==2023&&lastYear==2024)||
+                 (firstYear==2025&&lastYear==2026)))
+                return Reject("ONLY_FROZEN_EXTERNAL_OR_FINAL_YEARS");
             return EvaluateCore(source,genes,null,false,null,
-                from,through,false);
+                firstYear,lastYear,false);
         }
 
         // Internal research fast path. The V14 cache is responsible for
