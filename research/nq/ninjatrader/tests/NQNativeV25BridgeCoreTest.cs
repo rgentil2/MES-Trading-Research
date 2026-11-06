@@ -218,9 +218,12 @@ internal static class NQNativeV25BridgeCoreTest
               "3 approved fixture candidates map to exact 20 genes and risks");
             string handoff=Path.Combine(dir,"handoff.tsv");
             NQNativeV25FrozenImporter.WriteHandoff(three,handoff);
-            A(File.ReadAllLines(handoff).Length==8&&
+            A(File.ReadAllLines(handoff).Length==9&&
               File.ReadAllText(handoff).Contains(three.V25LockSHA256),
               "versioned frozen transfer contains same immutable 3 genomes");
+            A(File.ReadAllText(handoff).Contains(
+                "handoffContentSHA256"),
+              "V25 handoff has SHA footer covering frozen candidate rows");
             Fixture(package,5,true);
             var five=NQNativeV25FrozenImporter.Load(package);
             A(five.Candidates.Count==5&&
