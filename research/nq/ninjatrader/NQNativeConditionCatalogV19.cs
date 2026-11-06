@@ -139,6 +139,35 @@ namespace NinjaTrader.NinjaScript.Strategies
 
         private static bool Finite(double x)
         {return !Double.IsNaN(x)&&!Double.IsInfinity(x);}
+
+        // Shared V19 truth semantics for V21 numeric-feature memo.
+        // Never invent a signal on a nonfinite feature.
+        internal static int ResolveRule(double x,double y,double z,int rule)
+        {
+            if(!Finite(x)||!Finite(y)||!Finite(z)||rule<0||rule>=Rules)
+                return -2;
+            bool bull=false,bear=false;
+            switch(rule)
+            {
+                case 0: bull=x>0;bear=x<0;break;
+                case 1: bull=x>y;bear=x<y;break;
+                case 2: bull=y<=0&&x>0;bear=y>=0&&x<0;break;
+                case 3: bull=x>0.15;bear=x< -0.15;break;
+                case 4: bull=x>0.35;bear=x< -0.35;break;
+                case 5: bull=x>0.60;bear=x< -0.60;break;
+                case 6: bull=y<=0.15&&x>0.15;
+                        bear=y>=-0.15&&x< -0.15;break;
+                case 7: bull=y<=0.35&&x>0.35;
+                        bear=y>=-0.35&&x< -0.35;break;
+                case 8: bull=y< -0.60&&x>=-0.60;
+                        bear=y>0.60&&x<=0.60;break;
+                case 9: bull=x-2*y+z>1e-9;
+                        bear=x-2*y+z< -1e-9;break;
+                case 10: bull=x>0&&y>0;bear=x<0&&y<0;break;
+            }
+            if(bull&&bear)return -2;
+            return bull?1:bear?-1:0;
+        }
         public static bool TryEvaluate(IList<NQBarV11> bars,int type,
             int period,out bool bull,out bool bear)
         {
@@ -156,30 +185,9 @@ namespace NinjaTrader.NinjaScript.Strategies
             double z=Feature(bars,at-2,family,period);
             if(!Finite(x)||!Finite(y)||!Finite(z))
                 return false;
-            switch(rule)
-            {
-                case 0: bull=x>0;bear=x<0;break;
-                case 1: bull=x>y;bear=x<y;break;
-                case 2:
-                    bull=y<=0&&x>0;bear=y>=0&&x<0;break;
-                case 3: bull=x>0.15;bear=x< -0.15;break;
-                case 4: bull=x>0.35;bear=x< -0.35;break;
-                case 5: bull=x>0.60;bear=x< -0.60;break;
-                case 6:
-                    bull=y<=0.15&&x>0.15;
-                    bear=y>=-0.15&&x< -0.15;break;
-                case 7:
-                    bull=y<=0.35&&x>0.35;
-                    bear=y>=-0.35&&x< -0.35;break;
-                case 8:
-                    bull=y< -0.60&&x>=-0.60;
-                    bear=y>0.60&&x<=0.60;break;
-                case 9:
-                    bull=x-2*y+z>1e-9;
-                    bear=x-2*y+z< -1e-9;break;
-                case 10:
-                    bull=x>0&&y>0;bear=x<0&&y<0;break;
-            }
+            int direction=ResolveRule(x,y,z,rule);
+            if(direction== -2)return false;
+            bull=direction==1;bear=direction==-1;
             return true;
         }
     }
