@@ -152,11 +152,25 @@ namespace NinjaTrader.NinjaScript.Strategies
                     return M.Div(trend,
                         Math.Max(Math.Sqrt(ulcer/n),M.Eps));
                 }
-                case 93: // Chande-Kroll protective channel distance
+                case 93: // Chande-Kroll trailing stop envelope breakout
                 {
-                    double hi=M.Highest(b,at,n,2)-2*atr;
-                    double lo=M.Lowest(b,at,n,3)+2*atr;
-                    return (p-(hi+lo)/2)/atr;
+                    // Unlike a symmetric midpoint (which cancels ATR and
+                    // duplicates Donchian center), the LONG stop is the
+                    // maximum of historical ATR-adjusted highs; the SHORT
+                    // stop is the minimum of ATR-adjusted lows.
+                    double longStop=Double.NegativeInfinity,
+                        shortStop=Double.PositiveInfinity;
+                    for(int k=at-h+1;k<=at;k++)
+                    {
+                        double a=M.ATR(b,k,n);
+                        longStop=Math.Max(longStop,
+                            M.Highest(b,k,n,2)-2*a);
+                        shortStop=Math.Min(shortStop,
+                            M.Lowest(b,k,n,3)+2*a);
+                    }
+                    if(p>longStop)return (p-longStop)/atr;
+                    if(p<shortStop)return (p-shortStop)/atr;
+                    return 0;
                 }
                 case 94: // Supertrend stop-band signed close distance
                 {
