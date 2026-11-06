@@ -168,18 +168,58 @@ internal static class V25NativeSyntaxHarness
                 NinjaTrader.NinjaScript.Strategies
                 .NQNativeExitCanonicalV19.Analyze(genome).RuntimeKey));
         locked.ReportDirectory=System.IO.Path.GetTempPath();
+        string handoff=System.IO.Path.Combine(
+            System.IO.Path.GetTempPath(),"V25_HANDOFF_STUB_"+
+            Guid.NewGuid().ToString("N")+".tsv");
         try
         {
-            locked.Invoke(NinjaTrader.NinjaScript.State.DataLoaded);
-            throw new Exception("V25_FINAL_WITHOUT_EXTERNAL_PASSED");
+            System.IO.File.WriteAllText(handoff,
+                "V25LockSHA256\t"+locked.FrozenV25LockSHA256+"\n"+
+                "V23ArtifactsSHA256\t"+new string('b',64)+"\n"+
+                "sourceBarsSHA256\t"+new string('c',64)+"\n"+
+                "frozenCampaignDigest\t"+new string('d',64)+"\n"+
+                "candidateId\tcanonicalBase64\tgenes20\n"+
+                "NQ-00001\t"+locked.FrozenCanonicalBase64+"\t"+
+                    locked.FrozenGenes20+"\n"+
+                "NQ-00002\t"+locked.FrozenCanonicalBase64+"\t"+
+                    locked.FrozenGenes20+"\n"+
+                "NQ-00003\t"+locked.FrozenCanonicalBase64+"\t"+
+                    locked.FrozenGenes20+"\n");
+            locked.FrozenHandoffFile=handoff;
+            try
+            {
+                locked.Invoke(NinjaTrader.NinjaScript.State.DataLoaded);
+                throw new Exception("V25_FINAL_WITHOUT_EXTERNAL_PASSED");
+            }
+            catch(InvalidOperationException ex)
+            {A(ex.Message.Contains("PREVIOUS_NATIVE_GATE_SHA"),
+                "native adapter forbids final until signed prior stage exists");}
+            locked.HistoricalScope="DEV";
+            locked.FrozenGenes20=String.Join("/",new[]{
+                1,407,12,789,12,999,12,1319,12,
+                0,0,0,0,20,32,2,0,14,15,25});
+            locked.FrozenCanonicalBase64=Convert.ToBase64String(
+                System.Text.Encoding.UTF8.GetBytes(
+                    NinjaTrader.NinjaScript.Strategies
+                    .NQNativeExitCanonicalV19.Analyze(
+                        new[]{1,407,12,789,12,999,12,1319,12,
+                            0,0,0,0,20,32,2,0,14,15,25}).RuntimeKey));
+            try
+            {
+                locked.Invoke(NinjaTrader.NinjaScript.State.DataLoaded);
+                throw new Exception("V25_REPLACED_FROZEN_GENES_ACCEPTED");
+            }
+            catch(InvalidOperationException ex)
+            {A(ex.Message.Contains("NATIVE_GENES_NOT_IN_VERIFIED"),
+                "native adapter must use exact 20 handoff genes");}
         }
-        catch(InvalidOperationException ex)
-        {A(ex.Message.Contains("PREVIOUS_NATIVE_GATE_SHA"),
-            "native adapter forbids final until signed prior stage exists");}
+        finally
+        {if(System.IO.File.Exists(handoff))System.IO.File.Delete(handoff);}
         Console.WriteLine("NQ_V25_NT8_API_STUB_PASS "+
             "syntaxCompiledWithSurrogate=TRUE"+
             " defaultDisabled=TRUE noLiveChartActivation=TRUE"+
             " finalWithoutExternalDenied=TRUE"+
+            " changedGeneHandoffRejected=TRUE"+
             " note=NOT_A_REAL_NINJATRADER_DLL_COMPILATION");
         return 0;
     }
