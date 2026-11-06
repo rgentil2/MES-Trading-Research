@@ -18,7 +18,7 @@ namespace NinjaTrader.NinjaScript.Strategies
     public class NQNativeGeneticLabV8Audit : NQNativeGeneticLabV5
     {
         // Counter semantics: every bar counted once when relevant.
-        private const int Bars=0, Window=1, Warm=2, Raw=3,
+        private const int KBar=0, Window=1, Warm=2, Raw=3,
             NoDirection=4, BlockPosition=5, BlockDailyCount=6,
             BlockATR=7, BlockStopBudget=8, BlockDailyLoss=9,
             EligibleSubmit=10, InvalidGenes=11;
@@ -97,7 +97,7 @@ namespace NinjaTrader.NinjaScript.Strategies
             }
             else auditDayBars++;
 
-            y[yi,Bars]++;
+            y[yi,KBar]++;
             V8MarkEquity(yi);
 
             if(CurrentBar<3)return;
