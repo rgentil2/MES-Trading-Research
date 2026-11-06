@@ -104,9 +104,9 @@ internal static class V10ShimTest {
         int[] before=NQUniqueSearchV5.Names.Select(
             name=>(int)s.GetType().GetProperty(name).GetValue(s,null)).ToArray();
         var o=new NinjaTrader.NinjaScript.Optimizers.NQNativeResearchOptimizerV10();
-        o.Simulate(s,200,20261105,20000,true);
-        T(o.Executed==200,"fixed UI ranges must yield 200 unique runs");
-        T(o.Ids.Count==200,"unique runtime canonical keys");
+        o.Simulate(s,1000,20261105,40000,true);
+        T(o.Executed==1000,"fixed UI ranges must yield 1000 unique runs");
+        T(o.Ids.Count==1000,"unique runtime canonical keys");
         T(NinjaTrader.Code.Output.Logs.Any(x=>x.Contains("RANGES=INTERNAL_GUI_MINMAX_IGNORED")),
             "must state explicit override of GUI ranges");
         for(int i=0;i<20;i++) {
@@ -123,9 +123,23 @@ internal static class V10ShimTest {
 
         // Reproducibility by seed.
         var second=new NinjaTrader.NinjaScript.Optimizers.NQNativeResearchOptimizerV10();
-        second.Simulate(Filled(),200,20261105,20000,true);
-        T(second.Ids.SequenceEqual(o.Ids),"deterministic 200 candidates");
-        Console.WriteLine("NQ_V10_SOURCE_SHIM_PASS=200_UNIQUE_REPLAY_AND_GUARDS");
+        second.Simulate(Filled(),1000,20261105,40000,true);
+        T(second.Ids.SequenceEqual(o.Ids),"deterministic 1000 candidates");
+        // Exit-frozen mode: search structural identities without changing baseline
+        // protective exit genes, despite all GUI ranges being fixed.
+        var frozen=Filled();
+        int[] frozenBaseline=NQUniqueSearchV5.Names.Select(
+            n=>(int)frozen.GetType().GetProperty(n).GetValue(frozen,null)).ToArray();
+        var frozenOpt=new NinjaTrader.NinjaScript.Optimizers.NQNativeResearchOptimizerV10();
+        frozenOpt.Simulate(frozen,500,20261106,30000,false);
+        T(frozenOpt.Executed==500,"500 exit-frozen structural candidates");
+        T(frozenOpt.Ids.Count==500,"unique frozen-exit candidates");
+        for(int i=13;i<20;i++) {
+            string n=NQUniqueSearchV5.Names[i];
+            T((int)frozen.GetType().GetProperty(n).GetValue(frozen,null)
+                ==frozenBaseline[i],"frozen baseline restored "+n);
+        }
+        Console.WriteLine("NQ_V10_SOURCE_SHIM_PASS=1000_UNIQUE_500_FROZEN_REPLAY_AND_GUARDS");
         Console.WriteLine("REAL_NT8_WINDOWS_COMPILE_AND_BACKTEST_NOT_VERIFIED");
         return 0;
     }
