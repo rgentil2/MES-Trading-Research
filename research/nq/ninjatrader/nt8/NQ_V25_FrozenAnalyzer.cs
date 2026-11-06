@@ -95,6 +95,13 @@ namespace NinjaTrader.NinjaScript.Strategies
                 HistoricalScope="DEV";
                 ReportDirectory="";
             }
+            else if(State==State.Configure)
+            {
+                // NT8 disables historical Trade objects by default
+                // in Strategy Analyzer. V25 needs exact native
+                // trade receipts for bar-by-bar comparison.
+                IncludeTradeHistoryInBacktest=true;
+            }
             else if(State==State.DataLoaded)
             {
                 if(!ArmHistoricalValidation)return;
