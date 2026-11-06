@@ -1,0 +1,54 @@
+name: NQ V17 100k+ genetically-scored unique search capacity
+on:
+  push:
+    paths:
+      - 'research/nq/ninjatrader/tests/NQNative100kEvolutionV17Test.cs'
+      - 'research/nq/ninjatrader/NQNativeEvolutionCoreV12.cs'
+      - '.github/workflows/nq-v17-100k-generator-qa.yml'
+  pull_request:
+    paths:
+      - 'research/nq/ninjatrader/tests/NQNative100kEvolutionV17Test.cs'
+      - 'research/nq/ninjatrader/NQNativeEvolutionCoreV12.cs'
+      - '.github/workflows/nq-v17-100k-generator-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  genetic-100k:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile actual C# V11 canonical conditions and V12 evolutionary core for a 109464-unique synthetic fitness capacity test
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/nqv17"
+          cat > "$RUNNER_TEMP/nqv17/nqv17.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <Nullable>disable</Nullable>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeUniqueSearchV11 NQNativeEvolutionCoreV12; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/nqv17/"
+          done
+          cp research/nq/ninjatrader/tests/NQNative100kEvolutionV17Test.cs "$RUNNER_TEMP/nqv17/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/nqv17/nqv17.csproj" --configuration Release
+      - name: Assert only independent C# genetic research, not NinjaTrader fill or live orders
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Eq '\b(EnterLong|EnterShort|ExitLong|ExitShort|RunIteration|SetProfitTarget)\s*\(' research/nq/ninjatrader/tests/NQNative100kEvolutionV17Test.cs
+          grep -q '109464' research/nq/ninjatrader/tests/NQNative100kEvolutionV17Test.cs
+          echo 'NQ_V17_SYNTHETIC_CAPACITY_ONLY_NOT_REAL_MARKET_EVALUATIONS'
