@@ -11,6 +11,7 @@ on:
       - 'research/nq/ninjatrader/NQNativeScoreJournalV17.cs'
       - 'research/nq/ninjatrader/tests/NQNativeConditionCatalogV18Test.cs'
       - 'research/nq/ninjatrader/tests/NQNativeExpandedResearchV18Test.cs'
+      - 'research/nq/ninjatrader/tests/NQNative100kExpandedV18Test.cs'
       - '.github/workflows/nq-v18-expanded-conditions-qa.yml'
   pull_request:
     paths:
@@ -19,6 +20,7 @@ on:
       - 'research/nq/ninjatrader/NQNativeExpandedResearchV18.cs'
       - 'research/nq/ninjatrader/tests/NQNativeConditionCatalogV18Test.cs'
       - 'research/nq/ninjatrader/tests/NQNativeExpandedResearchV18Test.cs'
+      - 'research/nq/ninjatrader/tests/NQNative100kExpandedV18Test.cs'
       - '.github/workflows/nq-v18-expanded-conditions-qa.yml'
   workflow_dispatch:
 permissions:
@@ -94,3 +96,34 @@ jobs:
           grep -q 'const int LegacyFamilies=12' research/nq/ninjatrader/NQNativeConditionCatalogV18.cs
           grep -q 'NQNativeExitCanonicalV18.Analyze' research/nq/ninjatrader/NQNativeExpandedResearchV18.cs
           echo 'NQ_V18_RESEARCH_ONLY_396_RULES_AND_FROZEN_LEGACY'
+  expanded-100k-capacity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Execute 109464 unique canonical V18 genomes using synthetic fitness and verify all 396 conditions explored
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v18capacity"
+          cat > "$RUNNER_TEMP/v18capacity/v18capacity.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <Nullable>disable</Nullable>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeConditionCatalogV18 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeExitCanonicalV18 NQNativeUniqueSearchV11 NQNativeEvolutionCoreV12; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/v18capacity/"
+          done
+          cp research/nq/ninjatrader/tests/NQNative100kExpandedV18Test.cs "$RUNNER_TEMP/v18capacity/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/v18capacity/v18capacity.csproj" --configuration Release
