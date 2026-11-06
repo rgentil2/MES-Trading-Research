@@ -208,6 +208,11 @@ namespace NinjaTrader.NinjaScript.Strategies
                 .NinjaTraderMinuteStart(Time[0]);
             if(start.Year<2020||start>=new DateTime(2026,11,1))
                 return; // strict final holdout cutoff.
+            int clock=Clock(start);
+            // V16 source and V12 research both use 08:00–11:29 ET.
+            // Exclude ETH overnight bars so the native bar export
+            // recreates the EXACT V12 source window and ATR seed.
+            if(clock<80000||clock>112900)return;
             var bar=new NQBarV11(Open[0],High[0],Low[0],Close[0],
                 Volume[0]);
             var signal=core.PushCompletedBar(start,bar);
@@ -224,7 +229,6 @@ namespace NinjaTrader.NinjaScript.Strategies
                 Num(bar.Close),Num(bar.Volume)
             }));
             if(++exportBars%10000==0)barWriter.Flush();
-            int clock=Clock(start);
             if(clock>=NQNativeV25FrozenSignalCore.FlattenSubmit)
             {
                 // OnBarClose 11:28 ET -> NT8 market exit next open,
