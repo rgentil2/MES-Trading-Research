@@ -101,10 +101,14 @@ namespace NinjaTrader.NinjaScript.Strategies
                 // in Strategy Analyzer. V25 needs exact native
                 // trade receipts for bar-by-bar comparison.
                 IncludeTradeHistoryInBacktest=true;
+                IncludeCommission=true;
             }
             else if(State==State.DataLoaded)
             {
                 if(!ArmHistoricalValidation)return;
+                if(!IsInStrategyAnalyzer)
+                    throw new InvalidOperationException(
+                        "V25_ONLY_STRATEGY_ANALYZER_HISTORICAL_NO_LIVE_CHARTS");
                 if(!ConfirmEndStampedET)
                     throw new InvalidOperationException(
                         "V25_SET_PLATFORM_TIMESTAMPS_TO_NEW_YORK_ET_AND_CONFIRM");
@@ -209,6 +213,7 @@ namespace NinjaTrader.NinjaScript.Strategies
         protected override void OnBarUpdate()
         {
             if(BarsInProgress!=0||!validated||
+               !IsInStrategyAnalyzer||
                State!=State.Historical)return; // NEVER live orders.
             if(CurrentBar<0)return;
             DateTime start=NQNativeV25FrozenSignalCore
