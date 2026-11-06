@@ -3,7 +3,9 @@ on:
   push:
     paths:
       - 'research/nq/ninjatrader/NQNativeEvolutionCoreV12.cs'
+      - 'research/nq/ninjatrader/NQNativeHistoricalEvaluatorV12.cs'
       - 'research/nq/ninjatrader/tests/NQNativeEvolutionCoreV12Test.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeHistoricalEvaluatorV12Test.cs'
       - '.github/workflows/nq-v12-evolution-qa.yml'
   pull_request:
     paths:
@@ -55,3 +57,34 @@ jobs:
           grep -q 'Func<NQGenomeV11,double> fitness' research/nq/ninjatrader/NQNativeEvolutionCoreV12.cs
           grep -q 'HashSet<string>' research/nq/ninjatrader/NQNativeEvolutionCoreV12.cs
           echo 'NQ_V12_PURE_GENETIC_RESEARCH_SOURCE_ONLY'
+  historical-estimate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile exact offline NQ M1 evaluator and V9 economic scoring with synthetic OHLCV
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v12m1"
+          cat > "$RUNNER_TEMP/v12m1/v12m1.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <Nullable>disable</Nullable>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeATRExitMathV5 NQNativeG0RulesV6 NQNativeG0DiagnosticsV7 NQNativeDiscoveryScoreV9 NQNativeHistoricalEvaluatorV12; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/v12m1/"
+          done
+          cp research/nq/ninjatrader/tests/NQNativeHistoricalEvaluatorV12Test.cs "$RUNNER_TEMP/v12m1/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/v12m1/v12m1.csproj" --configuration Release
