@@ -22,7 +22,7 @@ GitHub Actions workflow: `.github/workflows/nq-v14-cache-qa.yml`.
 2. Exact trade-by-trade differential validation for **120 unique V11 genomes** with all exits, stop/target collisions, fees, MAE/MFE, signal gates and total V9 score. Source includes 08:00–12:29 pre/post RTH bars; ATR must match full data.
 3. End-to-end GA comparison: **same 66 unique candidate genomes, same order, same per-candidate scores and same winner over 3 generations** between uncached V12 pipeline and V14 pipeline.
 4. Immutable original snapshot, no OOS 2023+ leakage, strict signal/ATR cache caps and LRU evictions, fallback to full source if 11:29 missing, and minimum 15 complete sessions for 36 months production heuristic.
-5. Synthetic scale benchmark: 45 full 24-hour days = **64,800 M1 bars** with 160 unique genomes; V14 filters to **5,400 research bars**. Initial CI run (runner and JIT dependent): original V12 **606 ms**, V14 cold **489 ms**, V14 warm **37 ms**. Warm-cache ratio **16.4x** on this specific synthetic fixture. Do **not** extrapolate the speed ratio to 100,000 strategies on real NQ.
+5. Synthetic scale benchmark: 45 full 24-hour days = **64,800 M1 bars** with 160 unique genomes; V14 filters to **5,400 research bars**. Two passing CI samples (runner and JIT dependent): original V12 **606 / 646 ms**, V14 cold **489 / 640 ms**, V14 warm **37 / 85 ms**. The warm-cache ratio was **approximately 7.6x–16.4x** on this specific synthetic fixture; cold-cache benefit fluctuated markedly. These are exploratory single-run timings, **not a statistically calibrated benchmark**. Do **not** extrapolate these ratios to 100,000 strategies on real NQ.
 
 ## What is still not done
 
