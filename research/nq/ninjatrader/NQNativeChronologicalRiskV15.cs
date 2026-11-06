@@ -71,14 +71,12 @@ namespace NinjaTrader.NinjaScript.Strategies
         public static NQChronologicalRiskResultV15 EvaluateHeldout(
             IList<NQTimedBarV12> source,
             IList<NQExecutionFillV12> fills,
-            NQChronologicalRiskConfigV15 cfg,
-            NQDataPartitionV16 partition)
+            NQChronologicalRiskConfigV15 cfg,int firstYear,int lastYear)
         {
-            if(partition==NQDataPartitionV16.Development2020_2022)
-                return Fail("DEVELOPMENT_NOT_HELDOUT");
-            return EvaluateCore(source,fills,cfg,
-                NQNativeDataLoaderV16.FirstYear(partition),
-                NQNativeDataLoaderV16.LastYear(partition));
+            if(!((firstYear==2023&&lastYear==2024)||
+                 (firstYear==2025&&lastYear==2026)))
+                return Fail("ONLY_FROZEN_EXTERNAL_OR_FINAL_YEARS");
+            return EvaluateCore(source,fills,cfg,firstYear,lastYear);
         }
 
         private static NQChronologicalRiskResultV15 EvaluateCore(
