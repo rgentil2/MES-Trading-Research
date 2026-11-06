@@ -21,6 +21,24 @@ namespace NinjaTrader.NinjaScript.Strategies
         {Time=time;Bar=bar;}
     }
 
+    // One completed synthetic M1 fill round trip, with BOTH entry and exit
+    // prices. These are filled by V12 conservative OFFLINE estimates only,
+    // not proprietary NinjaTrader orders. No OOS or actual broker receipts.
+    public sealed class NQExecutionFillV12
+    {
+        public readonly DateTime EntryTime,ExitTime;
+        public readonly int Side,Quantity;
+        public readonly double EntryPrice,ExitPrice,RoundTripFeesUSD;
+        public NQExecutionFillV12(DateTime entryTime,DateTime exitTime,
+            int side,int quantity,double entryPrice,double exitPrice,
+            double feesUSD)
+        {
+            EntryTime=entryTime;ExitTime=exitTime;Side=side;
+            Quantity=quantity;EntryPrice=entryPrice;ExitPrice=exitPrice;
+            RoundTripFeesUSD=feesUSD;
+        }
+    }
+
     public sealed class NQHistoricalResultV12
     {
         public bool Valid;
@@ -31,6 +49,8 @@ namespace NinjaTrader.NinjaScript.Strategies
         public int AmbiguousStops, StopFills, TargetFills, TimeFills;
         public readonly List<NQG0RiskTradeV7> Trades=
             new List<NQG0RiskTradeV7>();
+        public readonly List<NQExecutionFillV12> Executed=
+            new List<NQExecutionFillV12>();
         public NQDiscoveryResultV9 Discovery;
     }
 
@@ -209,6 +229,8 @@ namespace NinjaTrader.NinjaScript.Strategies
                     double pnl=(exit-entry)*side*DollarPerPoint-FeeRT;
                     r.Trades.Add(new NQG0RiskTradeV7(entryAt,item.Time,
                         pnl,mae,mfe));
+                    r.Executed.Add(new NQExecutionFillV12(entryAt,
+                        item.Time,side,1,entry,exit,FeeRT));
                     r.TimeFills++;equity+=pnl;side=0;pendingFlat=false;
                 }
                 if(side!=0)
@@ -239,6 +261,8 @@ namespace NinjaTrader.NinjaScript.Strategies
                         double pnl=(exit-entry)*side*DollarPerPoint-FeeRT;
                         r.Trades.Add(new NQG0RiskTradeV7(entryAt,item.Time,
                             pnl,mae,mfe));
+                        r.Executed.Add(new NQExecutionFillV12(entryAt,
+                            item.Time,side,1,entry,exit,FeeRT));
                         equity+=pnl;side=0;pendingFlat=false;
                     }
                 }
