@@ -13,7 +13,7 @@ on:
 permissions:
   contents: read
 jobs:
-  1000-36-month-economic:
+  economic-one-thousand:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -45,8 +45,8 @@ jobs:
           name: nq-v24-1120-economic-36month-benchmark
           path: ${{ runner.temp }}/scale1k
           retention-days: 14
-  10000-36-month-economic:
-    needs: [1000-36-month-economic]
+  economic-ten-thousand:
+    needs: [economic-one-thousand]
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
