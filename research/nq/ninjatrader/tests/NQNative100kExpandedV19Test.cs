@@ -47,7 +47,7 @@ internal static class V19LargeScale
         var ranges=NQNativeExitCanonicalV19.DefaultDomains(
             Baseline,true);
         foreach(int slot in new[]{1,3,5,7})
-            A(ranges[slot].Min==0&&ranges[slot].Max==395,
+            A(ranges[slot].Min==0&&ranges[slot].Max==1319,
               "all 1320 conditions searchable per active leaf");
         var timer=Stopwatch.StartNew();
         var run=new NQEvolutionEngineV12(
@@ -61,7 +61,7 @@ internal static class V19LargeScale
             .Distinct(StringComparer.Ordinal).Count()==Expected,
           "zero repeated canonical V19 identities");
         A(run.Evaluated.All(x=>
-            x.Genome.Canonical.RuntimeKey.StartsWith("EXCANv18:")&&
+            x.Genome.Canonical.RuntimeKey.StartsWith("EXCANv19:")&&
             !x.Genome.Canonical.IsRedundant&&
             !Double.IsNaN(x.Score)&&!Double.IsInfinity(x.Score)),
           "valid versioned, nonredundant numeric scores");
