@@ -1,0 +1,100 @@
+name: NQ V22 full G0 Monte Carlo $2k/$1k portfolio WF frozen audit
+on:
+  push:
+    paths:
+      - 'research/nq/ninjatrader/NQNativePortfolioAuditV22.cs'
+      - 'research/nq/ninjatrader/NQNativeResearchRunnerV22.cs'
+      - 'research/nq/ninjatrader/tests/NQNativePortfolioAuditV22Test.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeFullFunnelV22Test.cs'
+      - '.github/workflows/nq-v22-risk-portfolio-qa.yml'
+  pull_request:
+    paths:
+      - 'research/nq/ninjatrader/NQNativePortfolioAuditV22.cs'
+      - 'research/nq/ninjatrader/NQNativeResearchRunnerV22.cs'
+      - 'research/nq/ninjatrader/tests/NQNativePortfolioAuditV22Test.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeFullFunnelV22Test.cs'
+      - '.github/workflows/nq-v22-risk-portfolio-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  positive-and-negative-portfolio-gates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with: {lfs: false}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Compile and audit NQNativePortfolioAuditV22Test on strict synthetic 2020–22 M1
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/positive-and-negative-portfolio-gates"
+          cat > "$RUNNER_TEMP/positive-and-negative-portfolio-gates/test.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>disable</Nullable>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeConditionCatalogV18 NQFeatureMathV19 NQTrendFeaturesV19 NQMomentumFeaturesV19 NQVolatilityFeaturesV19 NQVolumeActionFeaturesV19 NQNativeConditionCatalogV19 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeExitCanonicalV18 NQNativeExitCanonicalV19 NQNativeUniqueSearchV11 NQNativeEvolutionCoreV12 NQNativeATRExitMathV5 NQNativeG0RulesV6 NQNativeG0DiagnosticsV7 NQNativeDiscoveryScoreV9 NQNativeHistoricalEvaluatorV12 NQNativeSignalCacheV14 NQNativeWalkForwardV15 NQNativeWalkForwardV20 NQNativeRobustnessV13 NQNativePortfolioV13 NQNativeChronologicalRiskV15 NQNativeIntegratedPortfolioRiskV15 NQNativeDataLoaderV16 NQNativeFrozenCampaignV16 NQNativeScoreJournalV17 NQNativeExpandedResearchV19 NQNativeHeldoutSignalsV20 NQNativeV20OosEvaluator NQNativeResearchRunnerV16 NQNativeResearchRunnerV20 NQNativeFeatureMemoV21 NQNativeEconomicLedgerV21 NQNativeBulkEconomicV21 NQNativeResearchRunnerV21 NQNativePortfolioAuditV22 NQNativeResearchRunnerV22; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/positive-and-negative-portfolio-gates/"
+          done
+          cp "research/nq/ninjatrader/tests/NQNativePortfolioAuditV22Test.cs" "$RUNNER_TEMP/positive-and-negative-portfolio-gates/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/positive-and-negative-portfolio-gates/test.csproj" --configuration Release
+      - name: Preserve user filters, V19 canonical identity, and no live orders
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'NQNativeRobustnessV13.Evaluate' research/nq/ninjatrader/NQNativePortfolioAuditV22.cs
+          grep -q 'NQNativeIntegratedPortfolioRiskV15' research/nq/ninjatrader/NQNativePortfolioAuditV22.cs
+          grep -q 'NQNativeWalkForwardV20' research/nq/ninjatrader/NQNativeResearchRunnerV22.cs
+          grep -q 'NQNativePortfolioAuditV22.Evaluate' research/nq/ninjatrader/NQNativeResearchRunnerV22.cs
+          grep -q 'NQNativeExitCanonicalV19.Analyze' research/nq/ninjatrader/NQNativePortfolioAuditV22.cs
+          ! grep -Eq '\\b(EnterLong|EnterShort|ExitLong|ExitShort|SetStopLoss|SetProfitTarget)\\s*\\(' research/nq/ninjatrader/NQNativePortfolioAuditV22.cs research/nq/ninjatrader/NQNativeResearchRunnerV22.cs
+          echo NQ_V22_1320_CONDITIONS_WF_3_5_PORTFOLIO_RESEARCH_ONLY
+  v21-to-v22-full-funnel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with: {lfs: false}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Compile and audit NQNativeFullFunnelV22Test on strict synthetic 2020–22 M1
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v21-to-v22-full-funnel"
+          cat > "$RUNNER_TEMP/v21-to-v22-full-funnel/test.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>disable</Nullable>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeConditionCatalogV18 NQFeatureMathV19 NQTrendFeaturesV19 NQMomentumFeaturesV19 NQVolatilityFeaturesV19 NQVolumeActionFeaturesV19 NQNativeConditionCatalogV19 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeExitCanonicalV18 NQNativeExitCanonicalV19 NQNativeUniqueSearchV11 NQNativeEvolutionCoreV12 NQNativeATRExitMathV5 NQNativeG0RulesV6 NQNativeG0DiagnosticsV7 NQNativeDiscoveryScoreV9 NQNativeHistoricalEvaluatorV12 NQNativeSignalCacheV14 NQNativeWalkForwardV15 NQNativeWalkForwardV20 NQNativeRobustnessV13 NQNativePortfolioV13 NQNativeChronologicalRiskV15 NQNativeIntegratedPortfolioRiskV15 NQNativeDataLoaderV16 NQNativeFrozenCampaignV16 NQNativeScoreJournalV17 NQNativeExpandedResearchV19 NQNativeHeldoutSignalsV20 NQNativeV20OosEvaluator NQNativeResearchRunnerV16 NQNativeResearchRunnerV20 NQNativeFeatureMemoV21 NQNativeEconomicLedgerV21 NQNativeBulkEconomicV21 NQNativeResearchRunnerV21 NQNativePortfolioAuditV22 NQNativeResearchRunnerV22; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/v21-to-v22-full-funnel/"
+          done
+          cp "research/nq/ninjatrader/tests/NQNativeFullFunnelV22Test.cs" "$RUNNER_TEMP/v21-to-v22-full-funnel/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/v21-to-v22-full-funnel/test.csproj" --configuration Release
+      - name: Preserve user filters, V19 canonical identity, and no live orders
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'NQNativeRobustnessV13.Evaluate' research/nq/ninjatrader/NQNativePortfolioAuditV22.cs
+          grep -q 'NQNativeIntegratedPortfolioRiskV15' research/nq/ninjatrader/NQNativePortfolioAuditV22.cs
+          grep -q 'NQNativeWalkForwardV20' research/nq/ninjatrader/NQNativeResearchRunnerV22.cs
+          grep -q 'NQNativePortfolioAuditV22.Evaluate' research/nq/ninjatrader/NQNativeResearchRunnerV22.cs
+          grep -q 'NQNativeExitCanonicalV19.Analyze' research/nq/ninjatrader/NQNativePortfolioAuditV22.cs
+          ! grep -Eq '\\b(EnterLong|EnterShort|ExitLong|ExitShort|SetStopLoss|SetProfitTarget)\\s*\\(' research/nq/ninjatrader/NQNativePortfolioAuditV22.cs research/nq/ninjatrader/NQNativeResearchRunnerV22.cs
+          echo NQ_V22_1320_CONDITIONS_WF_3_5_PORTFOLIO_RESEARCH_ONLY

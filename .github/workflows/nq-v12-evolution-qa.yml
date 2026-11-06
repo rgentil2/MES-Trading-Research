@@ -1,0 +1,123 @@
+name: NQ V12 fitness-guided evolutionary core QA
+on:
+  push:
+    paths:
+      - 'research/nq/ninjatrader/NQNativeEvolutionCoreV12.cs'
+      - 'research/nq/ninjatrader/NQNativeHistoricalEvaluatorV12.cs'
+      - 'research/nq/ninjatrader/NQNativeResearchPipelineV12.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeEvolutionCoreV12Test.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeHistoricalEvaluatorV12Test.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeResearchPipelineV12Test.cs'
+      - '.github/workflows/nq-v12-evolution-qa.yml'
+  pull_request:
+    paths:
+      - 'research/nq/ninjatrader/NQNativeEvolutionCoreV12.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeEvolutionCoreV12Test.cs'
+      - '.github/workflows/nq-v12-evolution-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  scored-evolution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile production evolutionary source and execute deterministic synthetic fitness benchmark
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v12"
+          cat > "$RUNNER_TEMP/v12/v12.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <Nullable>disable</Nullable>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          cp research/nq/ninjatrader/NQNativeConditionsV11.cs "$RUNNER_TEMP/v12/"
+          cp research/nq/ninjatrader/NQNativeBooleanCanonicalV11.cs "$RUNNER_TEMP/v12/"
+          cp research/nq/ninjatrader/NQNativeExitCanonicalV11.cs "$RUNNER_TEMP/v12/"
+          cp research/nq/ninjatrader/NQNativeUniqueSearchV11.cs "$RUNNER_TEMP/v12/"
+          cp research/nq/ninjatrader/NQNativeEvolutionCoreV12.cs "$RUNNER_TEMP/v12/"
+          cp research/nq/ninjatrader/tests/NQNativeEvolutionCoreV12Test.cs "$RUNNER_TEMP/v12/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/v12/v12.csproj" --configuration Release
+      - name: Enforce read-only research and no live/order calls in GA core
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Eq '\b(EnterLong|EnterShort|ExitLong|ExitShort|SetStopLoss|SetProfitTarget|RunIteration)\s*\(' research/nq/ninjatrader/NQNativeEvolutionCoreV12.cs
+          grep -q 'Func<NQGenomeV11,double> fitness' research/nq/ninjatrader/NQNativeEvolutionCoreV12.cs
+          grep -q 'HashSet<string>' research/nq/ninjatrader/NQNativeEvolutionCoreV12.cs
+          echo 'NQ_V12_PURE_GENETIC_RESEARCH_SOURCE_ONLY'
+  historical-estimate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile exact offline NQ M1 evaluator and V9 economic scoring with synthetic OHLCV
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v12m1"
+          cat > "$RUNNER_TEMP/v12m1/v12m1.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <Nullable>disable</Nullable>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeATRExitMathV5 NQNativeG0RulesV6 NQNativeG0DiagnosticsV7 NQNativeDiscoveryScoreV9 NQNativeHistoricalEvaluatorV12; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/v12m1/"
+          done
+          cp research/nq/ninjatrader/tests/NQNativeHistoricalEvaluatorV12Test.cs "$RUNNER_TEMP/v12m1/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/v12m1/v12m1.csproj" --configuration Release
+  pipeline-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: End-to-end V12 genetic search drives the actual V9 economic scorer on synthetic M1 fills
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v12pipe"
+          cat > "$RUNNER_TEMP/v12pipe/v12pipe.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <Nullable>disable</Nullable>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeUniqueSearchV11 NQNativeEvolutionCoreV12 NQNativeATRExitMathV5 NQNativeG0RulesV6 NQNativeG0DiagnosticsV7 NQNativeDiscoveryScoreV9 NQNativeHistoricalEvaluatorV12 NQNativeResearchPipelineV12; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/v12pipe/"
+          done
+          cp research/nq/ninjatrader/tests/NQNativeResearchPipelineV12Test.cs "$RUNNER_TEMP/v12pipe/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/v12pipe/v12pipe.csproj" --configuration Release

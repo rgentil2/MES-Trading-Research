@@ -1,0 +1,89 @@
+name: NQ V14 bounded RTH signal cache and differential M1 QA
+on:
+  push:
+    paths:
+      - 'research/nq/ninjatrader/NQNativeSignalCacheV14.cs'
+      - 'research/nq/ninjatrader/NQNativeHistoricalEvaluatorV12.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeSignalCacheV14Test.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeSignalCacheV14Benchmark.cs'
+      - '.github/workflows/nq-v14-cache-qa.yml'
+  pull_request:
+    paths:
+      - 'research/nq/ninjatrader/NQNativeSignalCacheV14.cs'
+      - 'research/nq/ninjatrader/NQNativeHistoricalEvaluatorV12.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeSignalCacheV14Test.cs'
+      - '.github/workflows/nq-v14-cache-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  cache-differential:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile production source and differential test 132 signal conditions plus 120 genomes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/nqv14"
+          cat > "$RUNNER_TEMP/nqv14/nqv14.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <Nullable>disable</Nullable>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeUniqueSearchV11 NQNativeEvolutionCoreV12 NQNativeATRExitMathV5 NQNativeG0RulesV6 NQNativeG0DiagnosticsV7 NQNativeDiscoveryScoreV9 NQNativeHistoricalEvaluatorV12 NQNativeResearchPipelineV12 NQNativeSignalCacheV14; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/nqv14/"
+          done
+          cp research/nq/ninjatrader/tests/NQNativeSignalCacheV14Test.cs "$RUNNER_TEMP/nqv14/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/nqv14/nqv14.csproj" --configuration Release
+      - name: Verify V14 does not submit trading orders or consume 2023 out of sample
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Eq '\b(EnterLong|EnterShort|ExitLong|ExitShort|SetStopLoss|SetProfitTarget|RunIteration)\s*\(' research/nq/ninjatrader/NQNativeSignalCacheV14.cs
+          grep -q 'item.Time.Year>2022' research/nq/ninjatrader/NQNativeSignalCacheV14.cs
+          grep -q 'EvaluateWithSignals' research/nq/ninjatrader/NQNativeSignalCacheV14.cs
+          echo 'NQ_V14_PURE_CACHED_RESEARCH_SOURCE'
+  cache-performance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Measure cold and warm V14 cache versus full-bar V12 on 45 synthetic full-24h days
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/nqv14bench"
+          cat > "$RUNNER_TEMP/nqv14bench/nqv14bench.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <Nullable>disable</Nullable>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeUniqueSearchV11 NQNativeEvolutionCoreV12 NQNativeATRExitMathV5 NQNativeG0RulesV6 NQNativeG0DiagnosticsV7 NQNativeDiscoveryScoreV9 NQNativeHistoricalEvaluatorV12 NQNativeSignalCacheV14; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/nqv14bench/"
+          done
+          cp research/nq/ninjatrader/tests/NQNativeSignalCacheV14Benchmark.cs "$RUNNER_TEMP/nqv14bench/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/nqv14bench/nqv14bench.csproj" --configuration Release

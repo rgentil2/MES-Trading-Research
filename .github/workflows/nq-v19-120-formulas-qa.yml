@@ -1,0 +1,130 @@
+name: NQ V19 120 technical formula families and 1320 conditions QA
+on:
+  push:
+    paths:
+      - 'research/nq/ninjatrader/NQFeatureMathV19.cs'
+      - 'research/nq/ninjatrader/NQTrendFeaturesV19.cs'
+      - 'research/nq/ninjatrader/NQMomentumFeaturesV19.cs'
+      - 'research/nq/ninjatrader/NQVolatilityFeaturesV19.cs'
+      - 'research/nq/ninjatrader/NQVolumeActionFeaturesV19.cs'
+      - 'research/nq/ninjatrader/NQNativeConditionCatalogV19.cs'
+      - 'research/nq/ninjatrader/NQNativeExitCanonicalV19.cs'
+      - 'research/nq/ninjatrader/NQNativeExpandedResearchV19.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeFormulaV19Test.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeIntegratedV19Test.cs'
+      - 'research/nq/ninjatrader/tests/NQNative100kExpandedV19Test.cs'
+      - '.github/workflows/nq-v19-120-formulas-qa.yml'
+  pull_request:
+    paths:
+      - 'research/nq/ninjatrader/NQFeatureMathV19.cs'
+      - 'research/nq/ninjatrader/NQTrendFeaturesV19.cs'
+      - 'research/nq/ninjatrader/NQMomentumFeaturesV19.cs'
+      - 'research/nq/ninjatrader/NQVolatilityFeaturesV19.cs'
+      - 'research/nq/ninjatrader/NQVolumeActionFeaturesV19.cs'
+      - 'research/nq/ninjatrader/NQNativeConditionCatalogV19.cs'
+      - 'research/nq/ninjatrader/NQNativeExitCanonicalV19.cs'
+      - 'research/nq/ninjatrader/NQNativeExpandedResearchV19.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeFormulaV19Test.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeIntegratedV19Test.cs'
+      - 'research/nq/ninjatrader/tests/NQNative100kExpandedV19Test.cs'
+      - '.github/workflows/nq-v19-120-formulas-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  catalog-mathematics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {lfs: false}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Evaluate all 1320 conditions and 84 new formula reference checks, V11 and V18 unchanged
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/nqv19formulas"
+          cat > "$RUNNER_TEMP/nqv19formulas/test.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>disable</Nullable>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeConditionCatalogV18 NQFeatureMathV19 NQTrendFeaturesV19 NQMomentumFeaturesV19 NQVolatilityFeaturesV19 NQVolumeActionFeaturesV19 NQNativeConditionCatalogV19; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/nqv19formulas/"
+          done
+          cp research/nq/ninjatrader/tests/NQNativeFormulaV19Test.cs "$RUNNER_TEMP/nqv19formulas/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/nqv19formulas/test.csproj" --configuration Release
+  integrated-economic-fitness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {lfs: false}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Verify 120-feature V19 GA, V12 trade-for-trade backward parity, V14 cache and V17 journal
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/nqv19integration"
+          cat > "$RUNNER_TEMP/nqv19integration/test.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>disable</Nullable>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeConditionCatalogV18 NQFeatureMathV19 NQTrendFeaturesV19 NQMomentumFeaturesV19 NQVolatilityFeaturesV19 NQVolumeActionFeaturesV19 NQNativeConditionCatalogV19 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeExitCanonicalV18 NQNativeExitCanonicalV19 NQNativeUniqueSearchV11 NQNativeEvolutionCoreV12 NQNativeATRExitMathV5 NQNativeG0RulesV6 NQNativeG0DiagnosticsV7 NQNativeDiscoveryScoreV9 NQNativeHistoricalEvaluatorV12 NQNativeSignalCacheV14 NQNativeScoreJournalV17 NQNativeExpandedResearchV18 NQNativeExpandedResearchV19; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/nqv19integration/"
+          done
+          cp research/nq/ninjatrader/tests/NQNativeIntegratedV19Test.cs "$RUNNER_TEMP/nqv19integration/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/nqv19integration/test.csproj" --configuration Release
+  full-1320-condition-100k-genetic-capacity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {lfs: false}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Prove 109464 unique V19 canonical scored candidates with synthetic objective exploring all 1320 rules
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/nqv19mass"
+          cat > "$RUNNER_TEMP/nqv19mass/test.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>disable</Nullable>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeConditionCatalogV18 NQFeatureMathV19 NQTrendFeaturesV19 NQMomentumFeaturesV19 NQVolatilityFeaturesV19 NQVolumeActionFeaturesV19 NQNativeConditionCatalogV19 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeExitCanonicalV18 NQNativeExitCanonicalV19 NQNativeUniqueSearchV11 NQNativeEvolutionCoreV12; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/nqv19mass/"
+          done
+          cp research/nq/ninjatrader/tests/NQNative100kExpandedV19Test.cs "$RUNNER_TEMP/nqv19mass/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/nqv19mass/test.csproj" --configuration Release
+      - name: Assert V19 is non-trading research with exactly 120 formulas
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Eq '\b(EnterLong|EnterShort|ExitLong|ExitShort|RunIteration|SetStopLoss|SetProfitTarget)\s*\(' research/nq/ninjatrader/NQNativeExpandedResearchV19.cs research/nq/ninjatrader/NQNativeConditionCatalogV19.cs
+          grep -q 'const int NewFamilies=84' research/nq/ninjatrader/NQNativeConditionCatalogV19.cs
+          grep -q 'const int Families=120' research/nq/ninjatrader/NQNativeConditionCatalogV19.cs
+          grep -q 'NQNativeExitCanonicalV19.Analyze' research/nq/ninjatrader/NQNativeExpandedResearchV19.cs
+          echo 'NQ_V19_120_FORMULAS_ONLY_NO_NATIVE_NT8_TRADING'

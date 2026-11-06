@@ -1,0 +1,127 @@
+name: NQ V15 chronological risk and train-only walk-forward QA
+on:
+  push:
+    paths:
+      - 'research/nq/ninjatrader/NQNativeHistoricalEvaluatorV12.cs'
+      - 'research/nq/ninjatrader/NQNativeChronologicalRiskV15.cs'
+      - 'research/nq/ninjatrader/NQNativeWalkForwardV15.cs'
+      - 'research/nq/ninjatrader/NQNativeIntegratedPortfolioRiskV15.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeChronologicalRiskV15Test.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeWalkForwardV15Test.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeIntegratedPortfolioRiskV15Test.cs'
+      - '.github/workflows/nq-v15-risk-walkforward-qa.yml'
+  pull_request:
+    paths:
+      - 'research/nq/ninjatrader/NQNativeChronologicalRiskV15.cs'
+      - 'research/nq/ninjatrader/NQNativeWalkForwardV15.cs'
+      - 'research/nq/ninjatrader/NQNativeIntegratedPortfolioRiskV15.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeChronologicalRiskV15Test.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeWalkForwardV15Test.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeIntegratedPortfolioRiskV15Test.cs'
+      - '.github/workflows/nq-v15-risk-walkforward-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  risk-chronology:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile V15 chronological open-equity account stress + exact V12 ledger
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v15risk"
+          cat > "$RUNNER_TEMP/v15risk/v15risk.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <Nullable>disable</Nullable>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeATRExitMathV5 NQNativeG0RulesV6 NQNativeG0DiagnosticsV7 NQNativeDiscoveryScoreV9 NQNativeHistoricalEvaluatorV12 NQNativeChronologicalRiskV15; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/v15risk/"
+          done
+          cp research/nq/ninjatrader/tests/NQNativeChronologicalRiskV15Test.cs "$RUNNER_TEMP/v15risk/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/v15risk/v15risk.csproj" --configuration Release
+  train-only-walkforward:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile exact V15 rolling genetic walk-forward with synthetic 36-month M1 series
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v15wf"
+          cat > "$RUNNER_TEMP/v15wf/v15wf.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <Nullable>disable</Nullable>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeUniqueSearchV11 NQNativeEvolutionCoreV12 NQNativeATRExitMathV5 NQNativeG0RulesV6 NQNativeG0DiagnosticsV7 NQNativeDiscoveryScoreV9 NQNativeHistoricalEvaluatorV12 NQNativeSignalCacheV14 NQNativeWalkForwardV15; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/v15wf/"
+          done
+          cp research/nq/ninjatrader/tests/NQNativeWalkForwardV15Test.cs "$RUNNER_TEMP/v15wf/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/v15wf/v15wf.csproj" --configuration Release
+      - name: Fail if V15 reads 2023–26 in generator or enters live orders
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Eq '\b(EnterLong|EnterShort|ExitLong|ExitShort|SetStopLoss|SetProfitTarget)\s*\(' research/nq/ninjatrader/NQNativeWalkForwardV15.cs research/nq/ninjatrader/NQNativeChronologicalRiskV15.cs
+          grep -q 'b.Time.Year>2022' research/nq/ninjatrader/NQNativeWalkForwardV15.cs
+          grep -q 'var trainCache=' research/nq/ninjatrader/NQNativeWalkForwardV15.cs
+          grep -q 'var testCache=' research/nq/ninjatrader/NQNativeWalkForwardV15.cs
+          echo 'NQ_V15_SOURCE_NO_LIVE_ORDERS_AND_YEAR_LOCK'
+  integrated-portfolio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile original V13 selection plus V15 chronological risk and verify overlapping-position stress
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v15portfolio"
+          cat > "$RUNNER_TEMP/v15portfolio/v15portfolio.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <Nullable>disable</Nullable>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeATRExitMathV5 NQNativeG0RulesV6 NQNativeG0DiagnosticsV7 NQNativeDiscoveryScoreV9 NQNativeHistoricalEvaluatorV12 NQNativeRobustnessV13 NQNativePortfolioV13 NQNativeChronologicalRiskV15 NQNativeIntegratedPortfolioRiskV15; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/v15portfolio/"
+          done
+          cp research/nq/ninjatrader/tests/NQNativeIntegratedPortfolioRiskV15Test.cs "$RUNNER_TEMP/v15portfolio/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/v15portfolio/v15portfolio.csproj" --configuration Release

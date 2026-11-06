@@ -1,0 +1,59 @@
+name: NQ V10 native discovery fixed-range and uniqueness QA
+on:
+  push:
+    paths:
+      - 'research/nq/ninjatrader/NQNativeResearchOptimizerV10.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeResearchOptimizerV10ShimTest.cs'
+      - '.github/workflows/nq-v10-native-discovery-qa.yml'
+  pull_request:
+    paths:
+      - 'research/nq/ninjatrader/NQNativeResearchOptimizerV10.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeResearchOptimizerV10ShimTest.cs'
+      - '.github/workflows/nq-v10-native-discovery-qa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-shim:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile exact V10 optimizer with controlled NT8 API shim and run 200-candidate test
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v10"
+          cat > "$RUNNER_TEMP/v10/v10.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <Nullable>disable</Nullable>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          cp research/nq/ninjatrader/NQNativeBooleanCanonicalV3.cs "$RUNNER_TEMP/v10/"
+          cp research/nq/ninjatrader/NQNativeExitCanonicalV5.cs "$RUNNER_TEMP/v10/"
+          cp research/nq/ninjatrader/NQNativeUniqueSearchV5.cs "$RUNNER_TEMP/v10/"
+          cp research/nq/ninjatrader/NQNativeResearchOptimizerV10.cs "$RUNNER_TEMP/v10/"
+          cp research/nq/ninjatrader/tests/NQNativeResearchOptimizerV10ShimTest.cs "$RUNNER_TEMP/v10/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/v10/v10.csproj" --configuration Release
+      - name: Fail if the optimizer introduces orders or changes frozen V5
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Eq '\b(EnterLong|EnterShort|ExitLong|ExitShort|SetStopLoss|SetProfitTarget)\s*\(' research/nq/ninjatrader/NQNativeResearchOptimizerV10.cs
+          grep -q 'RunIteration();' research/nq/ninjatrader/NQNativeResearchOptimizerV10.cs
+          grep -q 'RANGES=INTERNAL_GUI_MINMAX_IGNORED' research/nq/ninjatrader/NQNativeResearchOptimizerV10.cs
+          grep -q 'NQNativeDiscoveryFitnessV9' research/nq/ninjatrader/NQNativeDiscoveryFitnessV9.cs
+          echo "V10_SOURCE_CONTRACT_PASS_REAL_NT8_COMPILE_STILL_REQUIRED"

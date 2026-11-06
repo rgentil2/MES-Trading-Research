@@ -1,0 +1,140 @@
+name: NQ V11 132-condition numeric and native optimizer shim QA
+on:
+  push:
+    paths:
+      - 'research/nq/ninjatrader/*V11.cs'
+      - 'research/nq/ninjatrader/tests/*V11*Test.cs'
+      - '.github/workflows/nq-v11-conditions-qa.yml'
+  pull_request:
+    paths:
+      - 'research/nq/ninjatrader/*V11.cs'
+      - 'research/nq/ninjatrader/tests/*V11*Test.cs'
+      - '.github/workflows/nq-v11-conditions-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  numeric:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile original 132-condition C# and execute numeric assertions
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v11numeric"
+          cat > "$RUNNER_TEMP/v11numeric/v11numeric.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <Nullable>disable</Nullable>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          cp research/nq/ninjatrader/NQNativeConditionsV11.cs "$RUNNER_TEMP/v11numeric/"
+          cp research/nq/ninjatrader/tests/NQNativeConditionsV11Test.cs "$RUNNER_TEMP/v11numeric/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/v11numeric/v11numeric.csproj" --configuration Release
+  unique-search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile original V11 optimizer with NT8 interface shim
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v11shim"
+          cat > "$RUNNER_TEMP/v11shim/v11shim.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <Nullable>disable</Nullable>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          cp research/nq/ninjatrader/NQNativeConditionsV11.cs "$RUNNER_TEMP/v11shim/"
+          cp research/nq/ninjatrader/NQNativeBooleanCanonicalV11.cs "$RUNNER_TEMP/v11shim/"
+          cp research/nq/ninjatrader/NQNativeExitCanonicalV11.cs "$RUNNER_TEMP/v11shim/"
+          cp research/nq/ninjatrader/NQNativeUniqueSearchV11.cs "$RUNNER_TEMP/v11shim/"
+          cp research/nq/ninjatrader/NQNativeResearchOptimizerV11.cs "$RUNNER_TEMP/v11shim/"
+          cp research/nq/ninjatrader/tests/NQNativeResearchOptimizerV11ShimTest.cs "$RUNNER_TEMP/v11shim/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/v11shim/v11shim.csproj" --configuration Release
+      - name: Fail if V11 changes frozen risk and order protection
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          old=Path('research/nq/ninjatrader/NQNativeGeneticLabV5.cs').read_text()
+          new=Path('research/nq/ninjatrader/NQNativeSignalLabV11.cs').read_text()
+          def region(src,start,end):
+              assert start in src and end in src
+              return src.split(start,1)[1].split(end,1)[0]
+          for start,end in [
+              ('int intendedStopTicks, intendedTargetTicks;', 'bool bull, bear;'),
+              ('// Set protective offsets BEFORE the entry submission.',
+               '// Every property is an optimizer gene.'),
+              ('else if (State == State.Configure)', 'private int[]'),
+          ]:
+              a=region(old,start,end)
+              b=region(new,start,end)
+              assert a==b, "V11 has changed V5 protective order/risk region: "+start
+          for required in ('State != State.Historical','BarsPeriodType.Minute',
+               'Time[0].Year < 2020 || Time[0].Year > 2022',
+               'NQNativeConditionsV11.TryEvaluate','rthBars.Count < required'):
+              assert required in new, required
+          assert 'RunIteration();' in Path(
+              'research/nq/ninjatrader/NQNativeResearchOptimizerV11.cs').read_text()
+          print("NQ_V11_V5_RISK_EXIT_CONTRACT_UNCHANGED")
+          print("REAL_NT8_WINDOWS_COMPILE_AND_HISTORICAL_BACKTEST_STILL_REQUIRED")
+          PY
+  strategy-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile actual V11 strategy and exercise historical guards under mock NT8 runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v11strategy"
+          cat > "$RUNNER_TEMP/v11strategy/v11strategy.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <Nullable>disable</Nullable>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          cp research/nq/ninjatrader/NQNativeConditionsV11.cs "$RUNNER_TEMP/v11strategy/"
+          cp research/nq/ninjatrader/NQNativeBooleanCanonicalV11.cs "$RUNNER_TEMP/v11strategy/"
+          cp research/nq/ninjatrader/NQNativeExitCanonicalV11.cs "$RUNNER_TEMP/v11strategy/"
+          cp research/nq/ninjatrader/NQNativeATRExitMathV5.cs "$RUNNER_TEMP/v11strategy/"
+          cp research/nq/ninjatrader/NQNativeSignalLabV11.cs "$RUNNER_TEMP/v11strategy/"
+          cp research/nq/ninjatrader/tests/NQNativeSignalLabV11ShimTest.cs "$RUNNER_TEMP/v11strategy/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/v11strategy/v11strategy.csproj" --configuration Release
