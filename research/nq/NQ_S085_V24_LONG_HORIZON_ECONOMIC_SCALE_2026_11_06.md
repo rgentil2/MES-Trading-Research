@@ -40,10 +40,10 @@ El segundo workflow ejecuta, siempre sobre la misma muestra **sintética 36 mese
 
 ### 10.500 y 100.700 simulaciones — NO declarar éxito sin evidencia final
 
-- `economic-ten-thousand` en [workflow 42293251090](https://github.com/rgentil2/MES-Trading-Research/actions/runs/42293251090): **10.500** candidatos económicos completos en la misma muestra sintética de 36 meses y reinicio posterior sin backtests. Al redactar este informe, la etapa se encontraba **ejecutándose**.
+- **10.500 BACKTESTS ECONÓMICOS V12 COMPLETOS CONFIRMADOS**: `economic-ten-thousand` en [workflow 42293251090](https://github.com/rgentil2/MES-Trading-Research/actions/runs/42293251090), **SUCCESS 2/2 jobs**. `fullBacktests=10500 journalReused=0 workingBars=93960 seconds=215.975 backtestsPerSecond=48.6167 featurePayloadMiB=414.49 maxWorkingSetMiB=712.01`. Diario con **10.501 filas** (incluido encabezado) y resultado real V12 económico net/PF/DD por cada genoma. Replay `fullBacktests=0 journalReused=10500 seconds=0.440` y ranking byte idéntico. Fuente: 36 meses **sintéticos** 2020–22, NO NQ del mercado.
 - `hundred-thousand-full-m1-economic` en [workflow 42293746661](https://github.com/rgentil2/MES-Trading-Research/actions/runs/42293746661): **100.700** candidatos únicos esperados, todos deben pasar realmente por el simulador V12 de 36 meses; salida de diario de 100.701 filas y reinicio sin evaluaciones si se completa. Al redactar este informe, el run había **comenzado, sin resultado verificado**. Límite de CI: 180 minutos; exceder tiempo o memoria se debe registrar como insuficiencia de capacidad, no como éxito.
 
-**Los resultados de 10.500/100.700 permanecen NO VERIFICADOS en este informe hasta revisar la conclusión del workflow.** Nunca confundir puntuación con oráculo sintético con un backtest económico real. 100.000 backtests de 36 meses **sintéticos** tampoco validan rentabilidad del NQ real.
+**10.500 verificados y aprobados. Los 100.700 permanecen NO VERIFICADOS en este informe hasta revisar la conclusión del workflow.** Nunca confundir puntuación con oráculo sintético con un backtest económico real. 100.000 backtests de 36 meses **sintéticos** tampoco validan rentabilidad del NQ real.
 
 ## Decisiones inmutables y limitaciones
 
@@ -54,6 +54,6 @@ El segundo workflow ejecuta, siempre sobre la misma muestra **sintética 36 mese
 
 ## Próximo criterio para llamar V24 completo
 
-1. Ejecutar y guardar evidencia de **≥1.000** y **≥10.000** backtests completos 36 meses con perfilado temporal/memoria, reproducibilidad y todas las operaciones de V12 por candidato dentro de su simulación.
+1. **CUMPLIDO EN CI SINTÉTICO:** ≥1.000 y ≥10.000 backtests completos de 36 meses con perfilado temporal/memoria, resultados económicos, persistencia SHA y 0 nuevas evaluaciones en replay. No equivale a NQ real.
 2. Si la capacidad es compatible con los límites operativos y del runner, ampliar hacia **≥100.000** backtests completos 36 meses; no aceptar un número de genomas con scores oráculo como evidencia económica.
 3. Documentar restricciones y requisitos de hardware / tiempo para el usuario y dejar el paquete de rendimiento integrado sin afectar la definición ni los outputs de V23.
