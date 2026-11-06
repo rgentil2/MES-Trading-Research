@@ -30,7 +30,7 @@ Se ha identificado el cuello de botella: `NQNativeATRExitMathV5.TryCompute` devu
 
 1. Conservar todos los archivos existentes. Instalar **solo dos** archivos nuevos en `Documentos\\NinjaTrader 8\\bin\\Custom\\`:
    - `NQNativeDiscoveryScoreV9.cs` dentro de `Strategies`;
-   - `NQNativeDiscoveryFitnessV9.cs` dentro de `Optimization Fitnesses` (también puede colocarse en una carpeta NinjaScript Custom compilable si el namespace es correcto).
+   - `NQNativeDiscoveryFitnessV9.cs` dentro de `OptimizationFitnesses` (también puede colocarse en una carpeta NinjaScript Custom compilable si el namespace es correcto).
 2. Abrir NinjaScript Editor, compilar con F5. Los nombres deben aparecer en Strategy Analyzer.
 3. Ejecutar **primero** con `Strategy=NQNativeGeneticLabV5`, `Optimizer=NQNativeUniqueOptimizerV5`, `Optimize on=NQNativeDiscoveryFitnessV9`, `UniqueCandidates=100`, `Seed=20261102`, `MaxAttempts=10000`, `Keep best # results=50`. **No usar V8 observador para toda la búsqueda**: el coste de logs es innecesario. RTH M1 Last NQ continuo, 2020-01-01 a 2022-12-31, comisiones reales y slippage 2. Nunca fechas 2023+ en esta fase.
 4. Reabrir rangos en `01 Generation`; evitar `Min=Max` en todos los genes. Ejemplo de rango exploratorio: ConditionCount 1..4; A/B tipos 0..9, periodos 6..30 increment3; C/D tipos 0..9, periodos 6..30 inc3; AB/BC/CD/reverse 0..1; ExitMode 0..3; ATRPeriod 7..28 inc7; ATRStopX10 10..30 inc5; ATRTargetX10 10..50 inc5; StopTicks=20, TargetTicks=32 y MaxDailyEntrySubmissions=2 inicialmente constantes. Estos rangos son de exploración, no parámetros optimizados validados.
