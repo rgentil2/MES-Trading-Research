@@ -229,22 +229,31 @@ namespace NinjaTrader.NinjaScript.Strategies
             string path)
         {
             if(pkg==null||pkg.Candidates.Count<3||
-               pkg.Candidates.Count>5)
-                throw new ArgumentException("V25_APPROVED_FROZEN_PACKAGE_REQUIRED");
-            using(var w=new StreamWriter(path,false,new UTF8Encoding(false)))
-            {
-                w.WriteLine("V25LockSHA256\t"+pkg.V25LockSHA256);
-                w.WriteLine("V23ArtifactsSHA256\t"+
-                    pkg.V23ArtifactManifestSHA256);
-                w.WriteLine("sourceBarsSHA256\t"+pkg.SourceBarsSHA256);
-                w.WriteLine("frozenCampaignDigest\t"+pkg.FreezeDigest);
-                w.WriteLine("candidateId\tcanonicalBase64\tgenes20");
-                foreach(var x in pkg.Candidates)
-                    w.WriteLine(x.Id+"\t"+
-                        Convert.ToBase64String(Encoding.UTF8.GetBytes(
-                            x.CanonicalId))+"\t"+
-                        String.Join("/",x.Genes.Select(v=>v.ToString(I))));
-            }
+               pkg.Candidates.Count>5||
+               String.IsNullOrWhiteSpace(path))
+                throw new ArgumentException(
+                    "V25_APPROVED_FROZEN_PACKAGE_REQUIRED");
+            // Canonical LF-joined payload SHA detects accidental edits to
+            // any candidate's 20 genes, even when the operator manually
+            // modifies the row and matching NinjaScript inputs. This is
+            // an integrity checksum, NOT an adversary-proof signature.
+            var rows=new List<string>{
+                "V25LockSHA256\t"+pkg.V25LockSHA256,
+                "V23ArtifactsSHA256\t"+pkg.V23ArtifactManifestSHA256,
+                "sourceBarsSHA256\t"+pkg.SourceBarsSHA256,
+                "frozenCampaignDigest\t"+pkg.FreezeDigest,
+                "candidateId\tcanonicalBase64\tgenes20"
+            };
+            foreach(var x in pkg.Candidates)
+                rows.Add(x.Id+"\t"+
+                    Convert.ToBase64String(Encoding.UTF8.GetBytes(
+                        x.CanonicalId))+"\t"+
+                    String.Join("/",x.Genes.Select(v=>v.ToString(I))));
+            string data=String.Join("\n",rows)+"\n";
+            rows.Add("handoffContentSHA256\t"+
+                NQNativeReproducibilityV23.SHA(data));
+            File.WriteAllText(path,String.Join("\n",rows)+"\n",
+                new UTF8Encoding(false));
         }
     }
 }
