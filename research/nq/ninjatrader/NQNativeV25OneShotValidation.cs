@@ -216,6 +216,69 @@ namespace NinjaTrader.NinjaScript.Strategies
             }
         }
 
+        // These stage entrypoints power the durable FINAL one-shot
+        // operator workflow. DEV must be checked against the original
+        // V23 training source; EXTERNAL and FINAL are accessible only
+        // when the previous signed report SHA has been verified by
+        // the CLI. No genetic search/selection is exposed here.
+        public static NQNativeV25StageResult AuditDevelopment(
+            NQNativeV25FrozenPackage pkg,NQDataLoadV16 original,
+            string nativeReportsDirectory,
+            NQNativeV25ParityTolerance tolerances=null)
+        {
+            if(pkg==null||original==null||pkg.Candidates.Count<3)
+                throw new ArgumentException("V25_FROZEN_DEV_REQUIRED");
+            return SafeAuditStage(pkg,
+                NQDataPartitionV16.Development2020_2022,
+                "DEV",nativeReportsDirectory,original,
+                tolerances??new NQNativeV25ParityTolerance());
+        }
+        public static NQNativeV25StageResult AuditExternal(
+            NQNativeV25FrozenPackage pkg,string nativeReportsDirectory,
+            string provenDevGateSHA256,
+            NQNativeV25ParityTolerance tolerances=null)
+        {
+            if(pkg==null||provenDevGateSHA256==null||
+               provenDevGateSHA256.Length!=64)
+                throw new InvalidOperationException(
+                    "V25_EXTERNAL_LOCKED_PENDING_DEV_PASS");
+            return SafeAuditStage(pkg,
+                NQDataPartitionV16.ExternalValidation2023_2024,
+                "EXTERNAL",nativeReportsDirectory,null,
+                tolerances??new NQNativeV25ParityTolerance());
+        }
+        public static NQNativeV25StageResult AuditFinal(
+            NQNativeV25FrozenPackage pkg,string nativeReportsDirectory,
+            string provenExternalGateSHA256,
+            NQNativeV25ParityTolerance tolerances=null)
+        {
+            if(pkg==null||provenExternalGateSHA256==null||
+               provenExternalGateSHA256.Length!=64)
+                throw new InvalidOperationException(
+                    "V25_FINAL_LOCKED_PENDING_EXTERNAL_PASS");
+            return SafeAuditStage(pkg,
+                NQDataPartitionV16.FinalHoldout2025_2026,
+                "FINAL",nativeReportsDirectory,null,
+                tolerances??new NQNativeV25ParityTolerance());
+        }
+        public static void WriteStageReport(string path,
+            NQNativeV25FrozenPackage pkg,
+            NQNativeV25StageResult stage)
+        {
+            if(pkg==null||stage==null)
+                throw new ArgumentNullException("V25_REPORT_SCOPE");
+            var r=new NQNativeV25FinalResult{
+                FreezeLock=pkg.V25LockSHA256,
+                Status=stage.Status,
+                FullPass=stage.Scope=="FINAL"&&stage.Passed,
+                DevelopmentPassed=stage.Scope=="DEV"&&stage.Passed,
+                ExternalPassed=stage.Scope=="EXTERNAL"&&stage.Passed,
+                FinalPassed=stage.Scope=="FINAL"&&stage.Passed
+            };
+            r.Stages.Add(stage);
+            WriteReport(path,r);
+        }
+
         // One final audit consumes already-created Native Analyzer
         // receipts, reading DEV first; no OOS file is read if a prior
         // gate rejects. The 3 scopes are one planned final campaign
