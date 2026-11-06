@@ -1,3 +1,13 @@
+## 2026-11-06 — S0.81 V20: EMBUDO INTEGRADO DE 1.320 CONDICIONES / RIESGO / PORTAFOLIO / OOS
+
+**CI [42274607818](https://github.com/rgentil2/MES-Trading-Research/actions/runs/42274607818) SUCCESS, 2/2 jobs.** V20 ahora enlaza la búsqueda genética V19 de **120 fórmulas y 1.320 señales** con evaluación económica conservadora M1 V12/V9, robustez G0 V13 (costo 1,5× y Monte Carlo), riesgo conjunto y selección de **3–5 estrategias** V13/V15, `NQNativeWalkForwardV20` (cuatro folds train-only 2020–22) y una `NQNativeFrozenCampaignV16` con identidad **EXCANv19** y OOS 2023–24 seguido —solo si pasa— por 2025–oct2026 (corte 2026-11-01). La caché de señales V19 para OOS es acotada y reutiliza el simulador de fills sin ranking/GA futuro. Reanudación del score journal V17 opcional en el runner.
+
+**Resultado real de QA, SIN DATOS NQ DEL MERCADO:** `geneticUnique=22 robustAudited=10 robustPass=5 result=PORTFOLIO_RISK_OR_DIVERSITY_REJECT folds=4 foldedGenomes=88`; el conjunto fue correctamente rechazado, **NO** se inventó portafolio ganador. Para OOS, 4.056 señales direct-vs-cache; pruebas de tres genes congelados sintéticos: camino plano que bloquea final y camino de tendencia artificial que permite external→final con los mismos genes y bloquea evaluaciones repetidas. El aprobador de desarrollo OOS fue un **stub de prueba** y no una aprobación real. [Informe completo S0.81](research/nq/NQ_S081_V20_VERSIONED_FULL_FUNNEL_2026_11_06.md).
+
+**Usuario — decisión vigente:** usar `NQ DEC2026`, cuyo M1 2020–22 se visualiza directamente en NinjaTrader. NO auditar contratos/rollovers ni hacer compilaciones/backtests/exportaciones intermedias. Completar generador, velocidad económica 100k+, reportes y selección **primero**; migrar al final y hacer **UNA única prueba integral NinjaTrader**. V20 demuestra cableado y QA sintético de puertas, **NO** 100k backtests de mercado, Edge/PF/DD real, paridad fills nativos ni fondeo aprobado. **Siguiente P0 V21:** rendimiento de evaluación económica real masiva con persistencia de operaciones, informes y shortlist, sin abrir holdouts para selección.
+
+---
+
 ## 2026-11-06 — S0.80 V19: META DE 120 FÓRMULAS TÉCNICAS ALCANZADA (CI 3/3 SUCCESS)
 
 **Estado real:** catálogo C# **120 fórmulas matemáticas OHLCV programadas** (12 V11 + 24 V18 + **84 V19**) y **1.320 condiciones direccionales** (11 reglas por familia), con IDs antiguos 0–395 preservados y 396–1319 nuevos. No confundir **120 fórmulas** con 120 señales estadísticamente independientes ni con paridad exacta de todos los indicadores nativos NinjaTrader; algunas implementaciones son aproximaciones científicas basadas en OHLCV (sin bid/ask ni order-flow real).
