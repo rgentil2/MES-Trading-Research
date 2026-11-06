@@ -42,7 +42,7 @@ jobs:
             </PropertyGroup>
           </Project>
           XML
-          for file in NQNativeConditionsV11 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeUniqueSearchV11 NQNativeEvolutionCoreV12 NQNativeATRExitMathV5 NQNativeG0RulesV6 NQNativeG0DiagnosticsV7 NQNativeDiscoveryScoreV9 NQNativeHistoricalEvaluatorV12 NQNativeSignalCacheV14; do
+          for file in NQNativeConditionsV11 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeUniqueSearchV11 NQNativeEvolutionCoreV12 NQNativeATRExitMathV5 NQNativeG0RulesV6 NQNativeG0DiagnosticsV7 NQNativeDiscoveryScoreV9 NQNativeHistoricalEvaluatorV12 NQNativeResearchPipelineV12 NQNativeSignalCacheV14; do
             cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/nqv14/"
           done
           cp research/nq/ninjatrader/tests/NQNativeSignalCacheV14Test.cs "$RUNNER_TEMP/nqv14/Program.cs"
