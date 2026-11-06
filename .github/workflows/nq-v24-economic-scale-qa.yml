@@ -60,7 +60,7 @@ jobs:
           while IFS= read -r rel; do
             if [ "$rel" = "NQNativeV24Console.cs" ]; then continue; fi
             cp "tools/nq-v24-scale/$rel" "$RUNNER_TEMP/nqv24/"
-          done < <(sed -n 's/.*<Compile Include="\\([^"]*\\.cs\\)".*/\\1/p' tools/nq-v24-scale/NQResearchV24.csproj)
+          done < <(grep '<Compile Include=' tools/nq-v24-scale/NQResearchV24.csproj | cut -d '"' -f 2)
           cp research/nq/ninjatrader/tests/NQNativeLongHorizonV24Test.cs "$RUNNER_TEMP/nqv24/Program.cs"
           dotnet run --project "$RUNNER_TEMP/nqv24/test.csproj" --configuration Release
       - name: V24 remains economic-scoring-only and never touches held-out OOS
@@ -102,6 +102,6 @@ jobs:
           while IFS= read -r rel; do
             if [ "$rel" = "NQNativeV24Console.cs" ]; then continue; fi
             cp "tools/nq-v24-scale/$rel" "$RUNNER_TEMP/nqv21regression/"
-          done < <(sed -n 's/.*<Compile Include="\\([^"]*\\.cs\\)".*/\\1/p' tools/nq-v24-scale/NQResearchV24.csproj)
+          done < <(grep '<Compile Include=' tools/nq-v24-scale/NQResearchV24.csproj | cut -d '"' -f 2)
           cp research/nq/ninjatrader/tests/NQNativeFeatureMemoV21Test.cs "$RUNNER_TEMP/nqv21regression/Program.cs"
           dotnet run --project "$RUNNER_TEMP/nqv21regression/test.csproj" --configuration Release
