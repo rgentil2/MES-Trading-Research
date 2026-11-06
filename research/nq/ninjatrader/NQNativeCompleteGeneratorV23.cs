@@ -524,8 +524,10 @@ namespace NinjaTrader.NinjaScript.Strategies
                 w.WriteLine("indicatorFormulas=120");
                 w.WriteLine("conditionTypes=1320");
                 w.WriteLine("GAUniqueGenomes="+result.Generated);
-                w.WriteLine("fullEconomicsNew="+result.FreshBacktests);
-                w.WriteLine("fullEconomicsReused="+result.ReusedBacktests);
+                // Replay must produce byte-identical reports. Fresh vs
+                // reused callbacks belong to the CLI runtime message,
+                // not to the canonical frozen research package.
+                w.WriteLine("economicGenomeRows="+result.Generated);
                 w.WriteLine("robustAudited="+result.Audited);
                 w.WriteLine("individualPassed="+result.IndividualPassed);
                 w.WriteLine("frozenForExternal="+result.FreezeCount);
