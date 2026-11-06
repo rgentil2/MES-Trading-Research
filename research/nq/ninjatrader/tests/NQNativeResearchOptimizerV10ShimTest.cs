@@ -170,12 +170,13 @@ internal static class V10ShimTest {
         // Min=Max. This remains a real-NT8 runtime uncertainty, so the correct
         // behavior is fail closed, not a claimed successful optimization.
         var strict=Filled();
-        var strictParam=strict.OptimizationParameters[0];
-        var sp=(NinjaTrader.NinjaScript.Parameter)strictParam;
-        strict.OptimizationParameters[0]=new NinjaTrader.NinjaScript.StrictRangeParameter{
-            Name=sp.Name,Min=sp.Min,Max=sp.Max,Increment=sp.Increment,
-            Value=sp.Value
-        };
+        for(int k=0;k<strict.OptimizationParameters.Count;k++) {
+            var sp=(NinjaTrader.NinjaScript.Parameter)strict.OptimizationParameters[k];
+            strict.OptimizationParameters[k]=new NinjaTrader.NinjaScript.StrictRangeParameter{
+                Name=sp.Name,Min=sp.Min,Max=sp.Max,Increment=sp.Increment,
+                Value=sp.Value
+            };
+        }
         var failsafe=new NinjaTrader.NinjaScript.Optimizers.NQNativeResearchOptimizerV10();
         failsafe.Simulate(strict,20,20261105,500,true);
         T(failsafe.Executed==0,
