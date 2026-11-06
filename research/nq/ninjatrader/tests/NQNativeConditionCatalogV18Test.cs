@@ -106,7 +106,7 @@ internal static class V18CatalogTest
         foreach(int family in new[]{
             12,13,17,18,19,20,21,22,23,24,25,26,27,28,29,30,32,33,34})
         {
-            bool riseBull,riseBear,fallBull,fallBear;
+            bool riseBull=false,riseBear=false,fallBull=false,fallBear=false;
             Check(NQNativeConditionCatalogV18.TryEvaluate(rising,
                 family*11,12,out riseBull,out riseBear)&&
                 NQNativeConditionCatalogV18.TryEvaluate(falling,
