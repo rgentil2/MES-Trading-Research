@@ -1,0 +1,174 @@
+{
+  "source": "User native NinjaTrader 8 Strategy Analyzer screenshot and Output 1, 2026-11-05",
+  "record_status": "Real NT8 V8 partial validation 1 candidate, NOT 20-candidate parity",
+  "configuration": {
+    "strategy": "NQNativeGeneticLabV8Audit",
+    "optimizer": "NQNativeUniqueOptimizerV5",
+    "fitness": "NQNativeG0RiskFitnessV7",
+    "instrument": "NQ DEC26 merged Last M1",
+    "studyPeriod": "2020-01-01 to 2022-12-31",
+    "uniqueTarget": 20,
+    "randomSeed": 20261102,
+    "maxAttempts": 2000,
+    "rootCause": "Screenshot all optimization genes fixed min=max, e.g. Condition count 2;2;1, A type 0;0;1, A period 12;12;1, B type 7;7;1, B period 14;14;1, exit mode 0;0;1"
+  },
+  "optimizer": {
+    "executed": 1,
+    "generatedUnique": 1,
+    "attempted": 2000,
+    "structuralRedundantSkipped": 0,
+    "equivalentFingerprintSkipped": 1999,
+    "invalidSkipped": 0,
+    "failure": 0,
+    "exhausted": true
+  },
+  "candidate": {
+    "id": "NQEX5_C32ED8FFDFE24551612CF7AD",
+    "genes": "2/0/12/7/14/4/18/6/20/0/0/0/0/20/32/2/0/14/15/25",
+    "effective": 2,
+    "netUSD": -43554.96,
+    "profitFactor": 0.6385,
+    "completedTrades": 1546,
+    "closedDrawdownUSD": 44380.44,
+    "barCloseMaxDrawdownUSD": 44475.44,
+    "maeMfeStressDrawdownUSD": 44535.44,
+    "monthsBelowFive": 0,
+    "worstMaeUSD": 110,
+    "initialG0RejectReasons": [
+      "NEGATIVE_NET",
+      "LOW_PROFIT_FACTOR",
+      "EXCESS_CLOSED_DRAWDOWN",
+      "EXCESS_M1_MAE_MFE_STRESS_DD"
+    ],
+    "V8Bars": 337189,
+    "nonFiniteEquity": 0,
+    "yearly": [
+      {
+        "year": 2020,
+        "m1": 110424,
+        "signalWindow": 29115,
+        "afterWarmup": 25499,
+        "rawDirectional": 16352,
+        "noDirection": 9147,
+        "blockedPosition": 516,
+        "blockedDailyCount": 15322,
+        "blockedATR": 0,
+        "blockedStopBudget": 0,
+        "blockedDailyLoss": 0,
+        "predictedSubmissions": 514,
+        "actualCompletedTrades": 514,
+        "riskBarCloseDD": 13156.12,
+        "maxDailyBarCloseDD": 356.52,
+        "worstDailyFromFirstBar": -231.52
+      },
+      {
+        "year": 2021,
+        "m1": 112589,
+        "signalWindow": 29153,
+        "afterWarmup": 25541,
+        "rawDirectional": 16182,
+        "noDirection": 9359,
+        "blockedPosition": 271,
+        "blockedDailyCount": 15395,
+        "blockedATR": 0,
+        "blockedStopBudget": 0,
+        "blockedDailyLoss": 0,
+        "predictedSubmissions": 516,
+        "actualCompletedTrades": 516,
+        "riskBarCloseDD": 14990,
+        "maxDailyBarCloseDD": 336.52,
+        "worstDailyFromFirstBar": -231.52
+      },
+      {
+        "year": 2022,
+        "m1": 114176,
+        "signalWindow": 29152,
+        "afterWarmup": 25540,
+        "rawDirectional": 16405,
+        "noDirection": 9135,
+        "blockedPosition": 47,
+        "blockedDailyCount": 15842,
+        "blockedATR": 0,
+        "blockedStopBudget": 0,
+        "blockedDailyLoss": 0,
+        "predictedSubmissions": 516,
+        "actualCompletedTrades": 516,
+        "riskBarCloseDD": 16801.4,
+        "maxDailyBarCloseDD": 346.52,
+        "worstDailyFromFirstBar": -231.52
+      }
+    ],
+    "months2022": [
+      {
+        "month": 1,
+        "raw": 1425,
+        "entries": 42
+      },
+      {
+        "month": 2,
+        "raw": 1265,
+        "entries": 40
+      },
+      {
+        "month": 3,
+        "raw": 1513,
+        "entries": 46
+      },
+      {
+        "month": 4,
+        "raw": 1265,
+        "entries": 40
+      },
+      {
+        "month": 5,
+        "raw": 1411,
+        "entries": 44
+      },
+      {
+        "month": 6,
+        "raw": 1432,
+        "entries": 44
+      },
+      {
+        "month": 7,
+        "raw": 1257,
+        "entries": 42
+      },
+      {
+        "month": 8,
+        "raw": 1530,
+        "entries": 46
+      },
+      {
+        "month": 9,
+        "raw": 1350,
+        "entries": 44
+      },
+      {
+        "month": 10,
+        "raw": 1311,
+        "entries": 42
+      },
+      {
+        "month": 11,
+        "raw": 1316,
+        "entries": 44
+      },
+      {
+        "month": 12,
+        "raw": 1330,
+        "entries": 42
+      }
+    ]
+  },
+  "repeat": "The log repeats V8_BEGIN..END and G0 REJECT for the same candidate after row selection, not a second unique candidate",
+  "conclusions": [
+    "V8 derived class compiled and executed one unique historical candidate successfully; no nonfinite equity and G0V7 rejected as expected; technical partial smoke PASS.",
+    "Optimizer cannot produce 20 from fixed genotype ranges. Restore original V5 G0 V7 optimization parameter RANGE configuration (not just the same currently shown defaults), leave V8 Strategy, V5 optimizer, G0V7 fitness and seed unchanged.",
+    "Yearly trade counts 514,516,516 show no frequency collapse for this specific candidate; earlier 2022 52 trades belongs to a different configuration (e.g. exit variant), remains to be diagnosed on that candidate.",
+    "For this candidate, daily entry cap dominates a parallel diagnostic funnel: 15,322, 15,395 and 15,842 raw signal-bars marked blocked due to daily cap. This is not evidence that increasing cap improves profitability.",
+    "Risk numbers are comparable: closed 44,380.44 < bar close M1 44,475.44 < historical MAE/MFE stress 44,535.44. The observed ordering is specific to this sample and not a mathematical guarantee for all strategies.",
+    "Predicted submissions equal actual 1546 for this candidate, but equivalence is not guaranteed for all others. The predictor evaluates gates after base V5.OnBarUpdate and is diagnostic not a certified full order trace.",
+    "Holdouts 2023-2026 remain unused. No strategy/code changes necessary to resolve one-unique limitation."
+  ]
+}
