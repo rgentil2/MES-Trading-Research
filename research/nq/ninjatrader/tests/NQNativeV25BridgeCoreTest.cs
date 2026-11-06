@@ -276,11 +276,57 @@ internal static class NQNativeV25BridgeCoreTest
             catch(InvalidDataException ex)
             {A(ex.Message.Contains("SOURCE_MISMATCH"),
                 "a single volume difference fails source parity");}
+            // One final campaign MUST not inspect the external or
+            // final files after a DEV reference/receipt failure.
+            var gated=NQNativeV25OneShotValidation.RunAll(
+                three,synthetic,Path.Combine(dir,"NO_NATIVE_OUTPUT"),
+                new NQNativeV25ParityTolerance());
+            A(!gated.FullPass&&!gated.DevelopmentPassed&&
+              gated.Stages.Count==1&&
+              gated.Status=="V25_DEV_NATIVE_GATE_REJECT_FINAL_UNOPENED"&&
+              !gated.ExternalPassed&&!gated.FinalPassed,
+              "missing native or mismatched source blocks external and final");
+            string rejectReport=Path.Combine(dir,"rejectedNative.tsv");
+            NQNativeV25OneShotValidation.WriteReport(
+                rejectReport,gated);
+            A(File.ReadAllText(rejectReport).Contains(
+                "FINAL_UNOPENED"),
+              "rejection still leaves an auditable, one-time receipt report");
+            // The native receipt parser is frozen-SHA and EXCANv19
+            // bound. Same trades under a different freeze cannot enter.
+            string nativeTrades=Path.Combine(dir,"native_trades.tsv");
+            var identity=three.Candidates[0].CanonicalId;
+            string encoded=Convert.ToBase64String(
+                Encoding.UTF8.GetBytes(identity));
+            File.WriteAllText(nativeTrades,
+                "V25LockSHA256\t"+three.V25LockSHA256+"\n"+
+                "canonicalBase64\tentryET\texitET\tside"+
+                "\tcontracts\tentryPrice\texitPrice"+
+                "\tnativeProfitCurrency\tnetUsingV12Fee\n"+
+                encoded+"\t2020-01-02T10:00:00\t2020-01-02T10:03:00"+
+                "\t1\t1\t15000\t15002\t40\t35.32\n");
+            var loaded=NQNativeV25ParityAudit.LoadNativeTsv(
+                nativeTrades,identity,three.V25LockSHA256);
+            A(loaded.Count==1&&
+              Math.Abs(loaded[0].NetUnderResearchFee-35.32)<1e-6,
+              "canonical SHA bound real native receipt numeric fee parser");
+            try
+            {
+                NQNativeV25ParityAudit.LoadNativeTsv(
+                    nativeTrades,identity,new string('f',64));
+                throw new Exception("V25_ACCEPTED_UNFROZEN_NATIVE_RECEIPT");
+            }
+            catch(InvalidDataException ex)
+            {A(ex.Message.Contains("LOCK_MISMATCH"),
+                "refuse native ledger from another frozen portfolio");}
+
             Console.WriteLine("NQ_V25_FROZEN_HANDOFF_PASS "+
                 "approvedFixture3And5=TRUE rejectedDevFailClosed=TRUE"+
                 " alteredGeneSHARejected=TRUE"+
                 " strictNativeBars=164430"+
-                " sourceBarMismatchRejected=TRUE");
+                " sourceBarMismatchRejected=TRUE"+
+                " noOosReadAfterDevReject=TRUE"+
+                " nativeReceiptLockBinding=TRUE");
             Console.WriteLine("V25_CI_SYNTHETIC_OR_FIXED_FIXTURES_ONLY "+
                 "NO_ACTUAL_NQ_FROZEN_PORTFOLIO_OR_NATIVE_NT8_RUN");
             return 0;
