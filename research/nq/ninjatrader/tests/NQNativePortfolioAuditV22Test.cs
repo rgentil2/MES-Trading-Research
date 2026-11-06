@@ -377,6 +377,8 @@ internal static class V22RiskPortfolioAuditTest
 
         Console.WriteLine("NQ_V22_G0_PORTFOLIO_PASS "+
             "acceptedSyntheticStrategies="+good.Frozen.Count+
+            " acceptedFour="+fourAccepted.Frozen.Count+
+            " acceptedFive="+fiveAccepted.Frozen.Count+
             " tradesPerStrategy="+good.Strategies[0].TotalTrades+
             " monthsVerified=36 yearsPositive=3 "+
             "costMultiplier=1.5 bootstrapPaths=500"+
