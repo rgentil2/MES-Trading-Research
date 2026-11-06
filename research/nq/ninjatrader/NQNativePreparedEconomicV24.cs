@@ -25,8 +25,7 @@ namespace NinjaTrader.NinjaScript.Strategies
             NQNativeFeatureMemoV21 featureMemo)
         {
             if(historical==null||featureMemo==null||
-               historical.SourceBars!=featureMemo.RthBars&&
-               historical.RthBars!=featureMemo.RthBars)
+               !featureMemo.SharesSource(historical))
                 throw new ArgumentException(
                     "V24_REQUIRES_MATCHED_V14_AND_V21_RESEARCH_SOURCE");
             source=historical;features=featureMemo;
