@@ -138,6 +138,18 @@ namespace NinjaTrader.NinjaScript.Strategies
             IList<NQTimedBarV12> source,int[] genes,
             Func<int,int,int,int> cachedSignal,bool sourceValidated)
         {
+            return EvaluateWithSignals(source,genes,cachedSignal,
+                sourceValidated,null);
+        }
+
+        // Optional ATR lookup must reproduce the original SIMPLE TR mean
+        // over the UNFILTERED M1 source, even when the research loop omits
+        // overnight bars. Returning <=0 rejects an unavailable ATR.
+        internal static NQHistoricalResultV12 EvaluateWithSignals(
+            IList<NQTimedBarV12> source,int[] genes,
+            Func<int,int,int,int> cachedSignal,bool sourceValidated,
+            Func<int,int,double> cachedAtr)
+        {
             if(source==null||genes==null||source.Count==0)
                 return Reject("NULL_OR_EMPTY");
             NQExitIdentityV11 canonical;
@@ -246,8 +258,20 @@ namespace NinjaTrader.NinjaScript.Strategies
                 if(rth.Count<Required(genes))continue;
                 if(equity-sessionBase<=-600)continue;
                 double atr=0;
-                if(genes[16]!=0&&!TryAtr(source,i,genes[17],out atr))
-                {r.AtrBlocked++;continue;}
+                if(genes[16]!=0)
+                {
+                    if(cachedAtr==null)
+                    {
+                        if(!TryAtr(source,i,genes[17],out atr))
+                        {r.AtrBlocked++;continue;}
+                    }
+                    else
+                    {
+                        atr=cachedAtr(i,genes[17]);
+                        if(!Finite(atr)||atr<=0)
+                        {r.AtrBlocked++;continue;}
+                    }
+                }
                 int stop,target;
                 if(!NQNativeATRExitMathV5.TryCompute(genes[16],atr,
                     Tick,genes[13],genes[14],genes[18],genes[19],
