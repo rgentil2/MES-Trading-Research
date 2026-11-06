@@ -174,11 +174,11 @@ namespace NinjaTrader.NinjaScript.Strategies
                 }
                 if(side!=0)
                 {
-                    double stop=entry-side*stopTicks*Tick;
-                    double target=entry+side*targetTicks*Tick;
-                    bool stopHit=side==1?b.Low<=stop:b.High>=stop;
+                    double stopPx=entry-side*stopTicks*Tick;
+                    double targetPx=entry+side*targetTicks*Tick;
+                    bool stopHit=side==1?b.Low<=stopPx:b.High>=stopPx;
                     bool targetHit=targetTicks>0 &&
-                        (side==1?b.High>=target:b.Low<=target);
+                        (side==1?b.High>=targetPx:b.Low<=targetPx);
                     double worst=side==1?entry-b.Low:b.High-entry;
                     double best=side==1?b.High-entry:entry-b.Low;
                     mae=Math.Max(mae,Math.Max(0,worst*DollarPerPoint));
@@ -192,11 +192,11 @@ namespace NinjaTrader.NinjaScript.Strategies
                             // If the next bar opens beyond the stop, execute
                             // at the worse of stop/open plus two ticks.
                             double price=side==1?
-                                Math.Min(stop,b.Open):Math.Max(stop,b.Open);
+                                Math.Min(stopPx,b.Open):Math.Max(stopPx,b.Open);
                             exit=price-side*SlipTicks*Tick;
                             r.StopFills++;
                         }
-                        else{exit=target;r.TargetFills++;}
+                        else{exit=targetPx;r.TargetFills++;}
                         double pnl=(exit-entry)*side*DollarPerPoint-FeeRT;
                         r.Trades.Add(new NQG0RiskTradeV7(entryAt,item.Time,
                             pnl,mae,mfe));
