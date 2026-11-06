@@ -23,6 +23,20 @@ internal static class V18CatalogTest
         }
         return b;
     }
+    static List<NQBarV11> Ramp(bool up)
+    {
+        var bars=new List<NQBarV11>();
+        double p=15000;
+        for(int i=0;i<250;i++)
+        {
+            double open=p,close=up?p+1:p-1;
+            bars.Add(up?
+                new NQBarV11(open,close,open-1,close,100):
+                new NQBarV11(open,open+1,close,close,100));
+            p=close;
+        }
+        return bars;
+    }
     public static int Main()
     {
         Check(NQNativeConditionsV11.Count==132&&
@@ -84,6 +98,25 @@ internal static class V18CatalogTest
                 altered.GetRange(0,150),type,12,out c,out d)&&
                 a==c&&b==d,"future bars cannot change prior signal");
         }
+        // Independent closed-form sign checks on upward/downward
+        // monotonic bars. These protect against simply labeling all
+        // newly registered indicators as interchangeable pseudo-signals.
+        int checkedRamps=0;
+        var rising=Ramp(true);var falling=Ramp(false);
+        foreach(int family in new[]{
+            12,13,17,18,19,20,21,22,23,24,25,26,27,28,29,30,32,33,34})
+        {
+            bool riseBull,riseBear,fallBull,fallBear;
+            Check(NQNativeConditionCatalogV18.TryEvaluate(rising,
+                family*11,12,out riseBull,out riseBear)&&
+                NQNativeConditionCatalogV18.TryEvaluate(falling,
+                family*11,12,out fallBull,out fallBear),
+                "formula must compute on both monotonic directions "+family);
+            Check(riseBull&&!riseBear&&!fallBull&&fallBear,
+                "reference monotonic sign symmetry family "+family);
+            checkedRamps++;
+        }
+        Check(checkedRamps==19,"19 mathematically directional features");
         // Flat OHLCV in every new formula must never yield NaN/Infinity.
         var flat=Enumerable.Range(0,200).Select(i=>
             new NQBarV11(15000,15000,15000,15000,0)).ToList();
@@ -110,7 +143,8 @@ internal static class V18CatalogTest
             "newFeatures=24 totalFamilies=36 totalRules=396 "+
             "sampleComparisons="+comparisons+
             " directional="+nonneutral+
-            " flatNeutral="+neutral);
+            " flatNeutral="+neutral+
+            " rampDirectionalReference="+checkedRamps);
         Console.WriteLine("V18_FORMULAS_NOT_VENDOR_NT8_PARITY_OR_396_INDEPENDENT_INDICATORS");
         return 0;
     }
