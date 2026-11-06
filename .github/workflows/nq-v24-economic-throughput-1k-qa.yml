@@ -1,0 +1,80 @@
+name: NQ V24 actual 36-month economic GA 1k then 10k capacity
+on:
+  push:
+    paths:
+      - 'research/nq/ninjatrader/NQNativeFeatureMemoV21.cs'
+      - 'research/nq/ninjatrader/NQNativePreparedEconomicV24.cs'
+      - 'research/nq/ninjatrader/NQNativeEconomicScaleV24.cs'
+      - 'research/nq/ninjatrader/NQNativeSynthetic36V24.cs'
+      - 'tools/nq-v24-scale/NQNativeV24Console.cs'
+      - 'tools/nq-v24-scale/NQResearchV24.csproj'
+      - '.github/workflows/nq-v24-economic-throughput-1k-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  1000-36-month-economic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with: {lfs: false}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Compile same pinned V23 sources plus V24 performance layer
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build tools/nq-v24-scale/NQResearchV24.csproj -c Release --nologo
+      - name: 1120 unique 36-month REAL V12 economic backtests then ZERO-repeat restart
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/scale1k"
+          dotnet run --project tools/nq-v24-scale/NQResearchV24.csproj --no-build -c Release -- --bench-synthetic36 "$RUNNER_TEMP/scale1k" 200 6 512 256 | tee "$RUNNER_TEMP/v24_first.log"
+          grep 'fullBacktests=1120 journalReused=0' "$RUNNER_TEMP/v24_first.log"
+          test "$(wc -l < "$RUNNER_TEMP/scale1k/v24_economics_ledger.tsv")" -eq 1121
+          cp "$RUNNER_TEMP/scale1k/v24_top_ranking.tsv" "$RUNNER_TEMP/ranking_before.tsv"
+          dotnet run --project tools/nq-v24-scale/NQResearchV24.csproj --no-build -c Release -- --bench-synthetic36 "$RUNNER_TEMP/scale1k" 200 6 512 256 | tee "$RUNNER_TEMP/v24_replay.log"
+          grep 'fullBacktests=0 journalReused=1120' "$RUNNER_TEMP/v24_replay.log"
+          cmp "$RUNNER_TEMP/ranking_before.tsv" "$RUNNER_TEMP/scale1k/v24_top_ranking.tsv"
+          test "$(wc -l < "$RUNNER_TEMP/scale1k/v24_economics_ledger.tsv")" -eq 1121
+          echo NQ_V24_1120_ECONOMIC_BACKTESTS_36MONTH_REPLAY_PASS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-v24-1120-economic-36month-benchmark
+          path: ${{ runner.temp }}/scale1k
+          retention-days: 14
+  10000-36-month-economic:
+    needs: [1000-36-month-economic]
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with: {lfs: false}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Pinned V24 economic scale build
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build tools/nq-v24-scale/NQResearchV24.csproj -c Release --nologo
+      - name: 10500 real complete 36-month V12 M1 economic backtests plus reproducible full ledger replay
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/scale10k"
+          dotnet run --project tools/nq-v24-scale/NQResearchV24.csproj --no-build -c Release -- --bench-synthetic36 "$RUNNER_TEMP/scale10k" 600 19 512 256 | tee "$RUNNER_TEMP/v24_10k_first.log"
+          grep 'fullBacktests=10500 journalReused=0' "$RUNNER_TEMP/v24_10k_first.log"
+          test "$(wc -l < "$RUNNER_TEMP/scale10k/v24_economics_ledger.tsv")" -eq 10501
+          cp "$RUNNER_TEMP/scale10k/v24_top_ranking.tsv" "$RUNNER_TEMP/ranking_10k_before.tsv"
+          dotnet run --project tools/nq-v24-scale/NQResearchV24.csproj --no-build -c Release -- --bench-synthetic36 "$RUNNER_TEMP/scale10k" 600 19 512 256 | tee "$RUNNER_TEMP/v24_10k_replay.log"
+          grep 'fullBacktests=0 journalReused=10500' "$RUNNER_TEMP/v24_10k_replay.log"
+          cmp "$RUNNER_TEMP/ranking_10k_before.tsv" "$RUNNER_TEMP/scale10k/v24_top_ranking.tsv"
+          test "$(wc -l < "$RUNNER_TEMP/scale10k/v24_economics_ledger.tsv")" -eq 10501
+          echo NQ_V24_10500_ECONOMIC_BACKTESTS_36MONTH_REPLAY_PASS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nq-v24-10500-economic-36month-benchmark
+          path: ${{ runner.temp }}/scale10k
+          retention-days: 14
