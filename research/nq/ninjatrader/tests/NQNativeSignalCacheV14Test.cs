@@ -258,6 +258,37 @@ internal static class V14CacheTest
             Check(ex.Message.Contains("held-out"),
                 "OOS data never enter 2020–22 research cache");
         }
+        // The full multi-generation economic research loop must choose
+        // the IDENTICAL sequence of V11 genes, V9 scores and best candidate
+        // when the callback is replaced by the cached V14 evaluator.
+        int[] baseline={2,0,12,44,12,77,12,121,12,
+            0,0,0,0,20,32,2,0,14,15,25};
+        var ga=new NQEvolutionConfigV12{
+            Population=24,Generations=3,Elites=3,Tournament=3,
+            ImmigrantPercent=25,MutationPercent=20,Seed=20261106,
+            MaxAttempts=10000
+        };
+        var referenceSearch=new NQNativeResearchPipelineV12(
+            WithExtraHours(),baseline,ga,true,false).Run();
+        var cachedSearch=new NQNativeCachedPipelineV14(
+            WithExtraHours(),baseline,ga,true,false,4*1024*1024).Run();
+        Check(referenceSearch.Evaluated.Count==cachedSearch.Evaluated.Count &&
+              cachedSearch.Evaluated.Count==66,
+              "multi-generation cached GA has identical number of runs");
+        for(int i=0;i<referenceSearch.Evaluated.Count;i++)
+            Check(referenceSearch.Evaluated[i].Genome.Canonical.RuntimeKey==
+                  cachedSearch.Evaluated[i].Genome.Canonical.RuntimeKey &&
+                  referenceSearch.Evaluated[i].Score==
+                  cachedSearch.Evaluated[i].Score,
+                  "cached and original genetic search must have identical "+
+                  "selection order, genome identities and fitness");
+        Check(referenceSearch.Best.Genome.Canonical.RuntimeKey==
+              cachedSearch.Best.Genome.Canonical.RuntimeKey,
+              "identical best strategy under cached V9 economic feedback");
+
+        Console.WriteLine("NQ_V14_GENETIC_PIPELINE_PARITY generations="+
+            cachedSearch.GenerationBest.Count+" unique="+
+            cachedSearch.Evaluated.Count+" sameBest=TRUE");
         Console.WriteLine("NQ_V14_CACHE_PASS signalComparisons="+comparisons+
             " uniqueGenomes="+genomes.Count+" tables="+cache.Entries+
             " hits="+cache.CacheHits+" misses="+cache.CacheMisses+
