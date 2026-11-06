@@ -114,7 +114,14 @@ namespace NinjaTrader.NinjaScript.Strategies
                         devCache=new NQNativeSignalCacheV14(
                             source.Bars,64L*1024*1024,64L*1024*1024,
                             NQNativeConditionCatalogV19.Count,
-                            NQNativeExpandedResearchV19.Direction);
+                            (bars,type,period)=>
+                            {
+                                bool b,s;
+                                if(!NQNativeConditionCatalogV19.TryEvaluate(
+                                    bars,type,period,out b,out s)||
+                                   b&&s)return -2;
+                                return b?1:s?-1:0;
+                            });
                     }
                     r.Bars=source.Bars.Count;
                     r.Sessions=source.Manifest.CompleteRthDays;
