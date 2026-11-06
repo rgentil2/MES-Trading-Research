@@ -189,7 +189,7 @@ internal static class V22RiskPortfolioAuditTest
         // synthetic candidate streams, including chronology-aware
         // staggered execution rather than five concurrent contracts.
         var d=Candidate("D",3);
-        var e=Candidate("E",4);
+        var fifth=Candidate("E",4);
         var four=new[]{a,b,c,d};
         var fourPortfolio=Portfolio();fourPortfolio.TargetStrategies=4;
         var fourAccepted=Audit(four,Genomes(four),wf,
@@ -198,7 +198,7 @@ internal static class V22RiskPortfolioAuditTest
           fourAccepted.ProfitConcentration<=0.40&&
           fourAccepted.MaximumMonthlyCorrelation<=0.45,
           "four diversified members must pass their combined real M1 stress");
-        var five=new[]{a,b,c,d,e};
+        var five=new[]{a,b,c,d,fifth};
         var fivePortfolio=Portfolio();fivePortfolio.TargetStrategies=5;
         var fiveAccepted=Audit(five,Genomes(five),wf,
             null,null,fivePortfolio);
