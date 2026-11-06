@@ -193,6 +193,8 @@ internal static class V19FormulaTest
         var paths=new[]{Bars(111),Bars(222),Bars(333),
             bullishEngulf,narrowBreakout};
         var fingerprints=new HashSet<string>(StringComparer.Ordinal);
+        var fingerprintMembers=new Dictionary<string,List<int>>(
+            StringComparer.Ordinal);
         int varying=0;
         for(int f=36;f<120;f++)
         {
@@ -203,10 +205,18 @@ internal static class V19FormulaTest
                         series,last,f,12));
             A(values.All(x=>!Double.IsNaN(x)&&!Double.IsInfinity(x)),
               "finite sampled formula "+f);
-            fingerprints.Add(String.Join("|",values.Select(x=>
-                x.ToString("R",System.Globalization.CultureInfo.InvariantCulture))));
+            string signature=String.Join("|",values.Select(x=>
+                x.ToString("R",System.Globalization.CultureInfo.InvariantCulture)));
+            fingerprints.Add(signature);
+            List<int> members;
+            if(!fingerprintMembers.TryGetValue(signature,out members))
+            {members=new List<int>();fingerprintMembers.Add(signature,members);}
+            members.Add(f);
             if(values.Max()-values.Min()>1e-10)varying++;
         }
+        Console.WriteLine("NQ_V19_FORMULA_COLLISIONS="+
+            String.Join(";",fingerprintMembers.Values.Where(x=>x.Count>1)
+                .Select(x=>String.Join(",",x))));
         A(fingerprints.Count==84,
             "all 84 numeric formulas distinguishable across random and event fixtures");
         A(varying==84,
