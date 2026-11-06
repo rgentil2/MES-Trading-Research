@@ -192,6 +192,30 @@ namespace NinjaTrader.NinjaScript.Strategies
             return r;
         }
 
+        private static NQNativeV25StageResult SafeAuditStage(
+            NQNativeV25FrozenPackage pkg,NQDataPartitionV16 scope,
+            string name,string nativeDirectory,NQDataLoadV16 original,
+            NQNativeV25ParityTolerance tol)
+        {
+            try{return AuditStage(pkg,scope,name,nativeDirectory,
+                    original,tol);}
+            catch(Exception ex)
+            {
+                if(!(ex is InvalidDataException)&&
+                   !(ex is IOException)&&
+                   !(ex is ArgumentException)&&
+                   !(ex is InvalidOperationException))
+                    throw;
+                return new NQNativeV25StageResult{
+                    Scope=name,Passed=false,
+                    Status="V25_"+name+"_SOURCE_OR_EVIDENCE_REJECT_"+
+                        ex.GetType().Name+":"+
+                        ex.Message.Replace("\t"," ")
+                                  .Replace("\r"," ").Replace("\n"," ")
+                };
+            }
+        }
+
         // One final audit consumes already-created Native Analyzer
         // receipts, reading DEV first; no OOS file is read if a prior
         // gate rejects. The 3 scopes are one planned final campaign
@@ -212,20 +236,20 @@ namespace NinjaTrader.NinjaScript.Strategies
                 FreezeLock=pkg.V25LockSHA256,
                 Status="FINAL_NEVER_EVALUATED"
             };
-            var dev=AuditStage(pkg,
+            var dev=SafeAuditStage(pkg,
                 NQDataPartitionV16.Development2020_2022,
                 "DEV",nativeReportsDirectory,originalDevelopment,tolerances);
             r.Stages.Add(dev);
             r.DevelopmentPassed=dev.Passed;
             if(!dev.Passed)
             {r.Status="V25_DEV_NATIVE_GATE_REJECT_FINAL_UNOPENED";return r;}
-            var ext=AuditStage(pkg,
+            var ext=SafeAuditStage(pkg,
                 NQDataPartitionV16.ExternalValidation2023_2024,
                 "EXTERNAL",nativeReportsDirectory,null,tolerances);
             r.Stages.Add(ext);r.ExternalPassed=ext.Passed;
             if(!ext.Passed)
             {r.Status="V25_EXTERNAL_GATE_REJECT_FINAL_UNOPENED";return r;}
-            var final=AuditStage(pkg,
+            var final=SafeAuditStage(pkg,
                 NQDataPartitionV16.FinalHoldout2025_2026,
                 "FINAL",nativeReportsDirectory,null,tolerances);
             r.Stages.Add(final);r.FinalPassed=final.Passed;
