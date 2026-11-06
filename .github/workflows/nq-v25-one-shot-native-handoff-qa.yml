@@ -9,6 +9,7 @@ on:
       - 'research/nq/ninjatrader/NQNativeV25OneShotValidation.cs'
       - 'research/nq/ninjatrader/nt8/NQ_V25_FrozenAnalyzer.cs'
       - 'research/nq/ninjatrader/tests/NQNativeV25BridgeCoreTest.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeV25NinjaScriptApiStub.cs'
       - 'tools/nq-v25-native/NQNativeV25Console.cs'
       - 'tools/nq-v25-native/NQNativeV25OneShot.csproj'
       - '.github/workflows/nq-v25-one-shot-native-handoff-qa.yml'
@@ -21,6 +22,7 @@ on:
       - 'research/nq/ninjatrader/NQNativeV25OneShotValidation.cs'
       - 'research/nq/ninjatrader/nt8/NQ_V25_FrozenAnalyzer.cs'
       - 'research/nq/ninjatrader/tests/NQNativeV25BridgeCoreTest.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeV25NinjaScriptApiStub.cs'
       - 'tools/nq-v25-native/NQNativeV25Console.cs'
       - 'tools/nq-v25-native/NQNativeV25OneShot.csproj'
       - '.github/workflows/nq-v25-one-shot-native-handoff-qa.yml'
@@ -90,3 +92,42 @@ jobs:
           set -euo pipefail
           grep -q 'NO_ACTUAL_NQ_FROZEN_PORTFOLIO_OR_NATIVE_NT8_RUN' research/nq/ninjatrader/tests/NQNativeV25BridgeCoreTest.cs
           echo NQ_V25_OFFLINE_HARNESS_ONLY_NO_NT8_NATIVE_COMPILE_OR_BACKTEST_CLAIM
+  v25-ninjascript-syntax-stub-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {lfs: false}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Check NT8-only source for C# syntax/API shape against SURROGATE, not NinjaTrader vendor binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/nqv25stub"
+          cat > "$RUNNER_TEMP/nqv25stub/test.csproj" <<XML
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>disable</Nullable>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+            <ItemGroup>
+              <ProjectReference Include="$GITHUB_WORKSPACE/tools/nq-v25-native/NQNativeV25OneShot.csproj" />
+            </ItemGroup>
+          </Project>
+          XML
+          cp research/nq/ninjatrader/tests/NQNativeV25NinjaScriptApiStub.cs "$RUNNER_TEMP/nqv25stub/Program.cs"
+          cp research/nq/ninjatrader/nt8/NQ_V25_FrozenAnalyzer.cs "$RUNNER_TEMP/nqv25stub/"
+          dotnet run --project "$RUNNER_TEMP/nqv25stub/test.csproj" -c Release
+      - name: Never mislabel stub compilation as genuine NinjaTrader 8 integration
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'NOT_A_REAL_NINJATRADER_DLL_COMPILATION' research/nq/ninjatrader/tests/NQNativeV25NinjaScriptApiStub.cs
+          grep -q 'IsInStrategyAnalyzer' research/nq/ninjatrader/nt8/NQ_V25_FrozenAnalyzer.cs
+          grep -q 'IncludeTradeHistoryInBacktest=true' research/nq/ninjatrader/nt8/NQ_V25_FrozenAnalyzer.cs
+          grep -q 'IncludeCommission=true' research/nq/ninjatrader/nt8/NQ_V25_FrozenAnalyzer.cs
+          echo NQ_V25_NATIVE_Vendor_DLL_UNAVAILABLE_NO_REAL_NT8_CLAIM
