@@ -18,7 +18,6 @@ namespace NinjaTrader.NinjaScript.Strategies
     {
         private readonly List<NQBarV11> rthBars = new List<NQBarV11>();
         private DateTime lastSession = DateTime.MinValue;
-        private int barsThisSession = 0;
         private int entrySubmissionsToday = 0;
         private double firstClosedCumProfit = 0.0;
 
@@ -188,12 +187,9 @@ namespace NinjaTrader.NinjaScript.Strategies
             {
                 lastSession = Time[0].Date;
                 rthBars.Clear();
-                barsThisSession = 0;
                 entrySubmissionsToday = 0;
                 firstClosedCumProfit = SystemPerformance.AllTrades.TradesPerformance.Currency.CumProfit;
             }
-            else
-                barsThisSession++;
 
             // No IST backtest may score held-out 2023/24/25/26.
             // The Strategy Analyzer's date selection MUST also be 2020-22.
