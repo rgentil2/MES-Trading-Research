@@ -25,6 +25,7 @@ namespace NinjaTrader.NinjaScript.Strategies
         private readonly Dictionary<string,double> known=
             new Dictionary<string,double>(StringComparer.Ordinal);
         private readonly int flushEvery;
+        private readonly Func<int[],NQExitIdentityV11> canonicalizer;
         private bool disposed;
         private int pending;
         public readonly string CampaignHash,SourceSHA256;
@@ -76,12 +77,14 @@ namespace NinjaTrader.NinjaScript.Strategies
         }
 
         public NQNativeScoreJournalV17(string path,string sourceSha,
-            string campaignHash,int flushInterval=64)
+            string campaignHash,int flushInterval=64,
+            Func<int[],NQExitIdentityV11> canonical=null)
         {
             if(String.IsNullOrWhiteSpace(path)||
                !ValidHexSha(sourceSha)||!ValidHexSha(campaignHash)||
                flushInterval<1||flushInterval>10000)
                 throw new ArgumentException("File path, source SHA, campaign hash and flush interval required");
+            canonicalizer=canonical??NQNativeExitCanonicalV11.Analyze;
             SourceSHA256=sourceSha;
             CampaignHash=campaignHash;
             string header=Format+Sep+sourceSha+Sep+campaignHash;
@@ -122,7 +125,7 @@ namespace NinjaTrader.NinjaScript.Strategies
                     catch(FormatException ex)
                     {throw new InvalidDataException("Invalid genes",ex);}
                     if(g.Length!=20 ||
-                       NQNativeExitCanonicalV11.Analyze(g).RuntimeKey!=key ||
+                       canonicalizer(g).RuntimeKey!=key ||
                        !known.TryAdd(key,score))
                         throw new InvalidDataException(
                             "Duplicate or noncanonical journal genome");
