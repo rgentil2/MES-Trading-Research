@@ -1,0 +1,108 @@
+name: NQ V20 1320-condition full robustness walk-forward frozen OOS QA
+on:
+  push:
+    paths:
+      - 'research/nq/ninjatrader/NQNativeWalkForwardV20.cs'
+      - 'research/nq/ninjatrader/NQNativeHistoricalEvaluatorV12.cs'
+      - 'research/nq/ninjatrader/NQNativeFrozenCampaignV16.cs'
+      - 'research/nq/ninjatrader/NQNativeHeldoutSignalsV20.cs'
+      - 'research/nq/ninjatrader/NQNativeV20OosEvaluator.cs'
+      - 'research/nq/ninjatrader/NQNativeResearchRunnerV20.cs'
+      - 'research/nq/ninjatrader/NQNativeExpandedResearchV19.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeV20DevelopmentWalkForwardTest.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeV20FrozenOosTest.cs'
+      - '.github/workflows/nq-v20-versioned-portfolio-qa.yml'
+  pull_request:
+    paths:
+      - 'research/nq/ninjatrader/NQNativeWalkForwardV20.cs'
+      - 'research/nq/ninjatrader/NQNativeHistoricalEvaluatorV12.cs'
+      - 'research/nq/ninjatrader/NQNativeFrozenCampaignV16.cs'
+      - 'research/nq/ninjatrader/NQNativeHeldoutSignalsV20.cs'
+      - 'research/nq/ninjatrader/NQNativeV20OosEvaluator.cs'
+      - 'research/nq/ninjatrader/NQNativeResearchRunnerV20.cs'
+      - 'research/nq/ninjatrader/NQNativeExpandedResearchV19.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeV20DevelopmentWalkForwardTest.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeV20FrozenOosTest.cs'
+      - '.github/workflows/nq-v20-versioned-portfolio-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  development-walkforward:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with: {lfs: false}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Compile V20 versioned complete source and run NQNativeV20DevelopmentWalkForwardTest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/development-walkforward"
+          cat > "$RUNNER_TEMP/development-walkforward/test.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>disable</Nullable>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeConditionCatalogV18 NQFeatureMathV19 NQTrendFeaturesV19 NQMomentumFeaturesV19 NQVolatilityFeaturesV19 NQVolumeActionFeaturesV19 NQNativeConditionCatalogV19 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeExitCanonicalV18 NQNativeExitCanonicalV19 NQNativeUniqueSearchV11 NQNativeEvolutionCoreV12 NQNativeATRExitMathV5 NQNativeG0RulesV6 NQNativeG0DiagnosticsV7 NQNativeDiscoveryScoreV9 NQNativeHistoricalEvaluatorV12 NQNativeSignalCacheV14 NQNativeWalkForwardV15 NQNativeWalkForwardV20 NQNativeRobustnessV13 NQNativePortfolioV13 NQNativeChronologicalRiskV15 NQNativeIntegratedPortfolioRiskV15 NQNativeDataLoaderV16 NQNativeFrozenCampaignV16 NQNativeScoreJournalV17 NQNativeExpandedResearchV19 NQNativeHeldoutSignalsV20 NQNativeV20OosEvaluator NQNativeResearchRunnerV20; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/development-walkforward/"
+          done
+          cp research/nq/ninjatrader/tests/NQNativeV20DevelopmentWalkForwardTest.cs "$RUNNER_TEMP/development-walkforward/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/development-walkforward/test.csproj" --configuration Release
+      - name: Reject live NinjaTrader order APIs and verify correct versioned gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Eq '\\b(EnterLong|EnterShort|ExitLong|ExitShort|RunIteration|SetProfitTarget|SetStopLoss)\\s*\\(' research/nq/ninjatrader/NQNativeResearchRunnerV20.cs research/nq/ninjatrader/NQNativeWalkForwardV20.cs research/nq/ninjatrader/NQNativeV20OosEvaluator.cs
+          grep -q 'NQNativeExitCanonicalV19' research/nq/ninjatrader/NQNativeResearchRunnerV20.cs
+          grep -q 'NQNativeExitCanonicalV19' research/nq/ninjatrader/NQNativeWalkForwardV20.cs
+          grep -q 'NQNativeHistoricalEvaluatorV12.EvaluateHeldoutCustom' research/nq/ninjatrader/NQNativeV20OosEvaluator.cs
+          grep -q 'NQDataPartitionV16.Development2020_2022' research/nq/ninjatrader/NQNativeResearchRunnerV20.cs
+          echo 'NQ_V20_VERSIONED_1320_ONLY_NO_NATIVE_NT8_ORDERS'
+  frozen-versioned-oos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with: {lfs: false}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Compile V20 versioned complete source and run NQNativeV20FrozenOosTest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/frozen-versioned-oos"
+          cat > "$RUNNER_TEMP/frozen-versioned-oos/test.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>disable</Nullable>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeConditionCatalogV18 NQFeatureMathV19 NQTrendFeaturesV19 NQMomentumFeaturesV19 NQVolatilityFeaturesV19 NQVolumeActionFeaturesV19 NQNativeConditionCatalogV19 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeExitCanonicalV18 NQNativeExitCanonicalV19 NQNativeUniqueSearchV11 NQNativeEvolutionCoreV12 NQNativeATRExitMathV5 NQNativeG0RulesV6 NQNativeG0DiagnosticsV7 NQNativeDiscoveryScoreV9 NQNativeHistoricalEvaluatorV12 NQNativeSignalCacheV14 NQNativeWalkForwardV15 NQNativeWalkForwardV20 NQNativeRobustnessV13 NQNativePortfolioV13 NQNativeChronologicalRiskV15 NQNativeIntegratedPortfolioRiskV15 NQNativeDataLoaderV16 NQNativeFrozenCampaignV16 NQNativeScoreJournalV17 NQNativeExpandedResearchV19 NQNativeHeldoutSignalsV20 NQNativeV20OosEvaluator NQNativeResearchRunnerV20; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/frozen-versioned-oos/"
+          done
+          cp research/nq/ninjatrader/tests/NQNativeV20FrozenOosTest.cs "$RUNNER_TEMP/frozen-versioned-oos/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/frozen-versioned-oos/test.csproj" --configuration Release
+      - name: Reject live NinjaTrader order APIs and verify correct versioned gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Eq '\\b(EnterLong|EnterShort|ExitLong|ExitShort|RunIteration|SetProfitTarget|SetStopLoss)\\s*\\(' research/nq/ninjatrader/NQNativeResearchRunnerV20.cs research/nq/ninjatrader/NQNativeWalkForwardV20.cs research/nq/ninjatrader/NQNativeV20OosEvaluator.cs
+          grep -q 'NQNativeExitCanonicalV19' research/nq/ninjatrader/NQNativeResearchRunnerV20.cs
+          grep -q 'NQNativeExitCanonicalV19' research/nq/ninjatrader/NQNativeWalkForwardV20.cs
+          grep -q 'NQNativeHistoricalEvaluatorV12.EvaluateHeldoutCustom' research/nq/ninjatrader/NQNativeV20OosEvaluator.cs
+          grep -q 'NQDataPartitionV16.Development2020_2022' research/nq/ninjatrader/NQNativeResearchRunnerV20.cs
+          echo 'NQ_V20_VERSIONED_1320_ONLY_NO_NATIVE_NT8_ORDERS'
