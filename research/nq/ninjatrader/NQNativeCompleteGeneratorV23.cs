@@ -467,37 +467,10 @@ namespace NinjaTrader.NinjaScript.Strategies
                     research.FrozenCampaign==null?"":research.FrozenCampaign.FreezeDigest
                 }));
             });
-            Atomic(Path.Combine(target,"definitive_parameters.tsv"),w=>
-            {
-                w.WriteLine("strategyId\tcanonicalBase64\tgeneIndex"+
-                    "\tparameter\tvalue\tdescription");
-                if(research.Audit!=null)
-                    foreach(var x in research.Audit.Frozen.OrderBy(
-                        s=>s.Id,StringComparer.Ordinal))
-                    {
-                        var g=x.Genes;
-                        for(int j=0;j<g.Length;j++)
-                        {
-                            string param=j==0?"leafCount":
-                                j<=8?(j%2==1?"signalType":"period"):
-                                j<=11?"booleanOperator":
-                                j==12?"reverse":j==13?"stopTicks":
-                                j==14?"profitTargetTicks":
-                                j==15?"dailyTradeLimit":
-                                j==16?"exitMode":j==17?"atrPeriod":
-                                j==18?"atrStopFactor":
-                                "atrTakeProfitFactor";
-                            string meaning="";
-                            if(j<=8&&j>=1&&j%2==1&&
-                               (j-1)/2<g[0])
-                                meaning=NQNativeConditionCatalogV19.Name(g[j]);
-                            w.WriteLine(String.Join("\t",new[]{
-                                Safe(x.Id),B64(x.CanonicalId),
-                                Int(j),param,Int(g[j]),Safe(meaning)
-                            }));
-                        }
-                    }
-            });
+            WriteFrozenParameterFile(Path.Combine(target,
+                "definitive_parameters.tsv"),
+                research.Audit==null?new NQFrozenCandidateV16[0]:
+                    research.Audit.Frozen);
             Atomic(Path.Combine(target,"settings_snapshot.tsv"),w=>
             {
                 w.WriteLine("configurationKey\tcanonicalValue");
@@ -562,6 +535,50 @@ namespace NinjaTrader.NinjaScript.Strategies
             result.ArtifactNames.Add("artifacts.sha256");
             result.PackageSHA256=NQNativeReproducibilityV23.SHAFile(
                 checksumPath);
+        }
+
+        // Pure serializer, independently testable with approved
+        // synthetic fixture genes. This method does NOT declare the
+        // supplied genomes profitable or automatically approve a freeze.
+        public static void WriteFrozenParameterFile(string path,
+            IList<NQFrozenCandidateV16> frozen)
+        {
+            if(String.IsNullOrWhiteSpace(path)||frozen==null||
+               frozen.Count>5)
+                throw new ArgumentException(
+                    "V23_FROZEN_PARAMETER_EXPORT_REQUIRES_0_TO_5_GENOMES");
+            Atomic(path,w=>
+            {
+                w.WriteLine("strategyId\tcanonicalBase64\tgeneIndex"+
+                    "\tparameter\tvalue\tdescription");
+                if(frozen!=null)
+                    foreach(var x in frozen.OrderBy(
+                        s=>s.Id,StringComparer.Ordinal))
+                    {
+                        var g=x.Genes;
+                        for(int j=0;j<g.Length;j++)
+                        {
+                            string param=j==0?"leafCount":
+                                j<=8?(j%2==1?"signalType":"period"):
+                                j<=11?"booleanOperator":
+                                j==12?"reverse":j==13?"stopTicks":
+                                j==14?"profitTargetTicks":
+                                j==15?"dailyTradeLimit":
+                                j==16?"exitMode":j==17?"atrPeriod":
+                                j==18?"atrStopFactor":
+                                "atrTakeProfitFactor";
+                            string meaning="";
+                            if(j<=8&&j>=1&&j%2==1&&
+                               (j-1)/2<g[0])
+                                meaning=NQNativeConditionCatalogV19.Name(g[j]);
+                            w.WriteLine(String.Join("\t",new[]{
+                                Safe(x.Id),B64(x.CanonicalId),
+                                Int(j),param,Int(g[j]),Safe(meaning)
+                            }));
+                        }
+                    }
+            });
+
         }
 
         public static void Verify(string directory)
