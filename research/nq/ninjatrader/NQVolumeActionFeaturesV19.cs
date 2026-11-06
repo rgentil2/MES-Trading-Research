@@ -160,12 +160,12 @@ namespace NinjaTrader.NinjaScript.Strategies
                     return M.Div(price-b[at-half].Close,atr)*
                         M.Div(b[at].Volume,
                             Math.Max(1,M.SMA(b,at,n,4)));
-                case 112: // tick-free candle direction volume-delta proxy
+                case 112: // tick-free proportional body/volume delta
                 {
                     double delta=0;
                     for(int k=start;k<=at;k++)
-                        delta+=Math.Sign(b[k].Close-b[k].Open)*
-                            b[k].Volume;
+                        delta+=M.Div(b[k].Close-b[k].Open,
+                            b[k].High-b[k].Low)*b[k].Volume;
                     return M.Div(delta,volume);
                 }
                 case 113: // Heikin Ashi causal candle body strength
