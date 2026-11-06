@@ -242,9 +242,19 @@ internal static class V14CacheTest
         }
         catch(InvalidOperationException ex)
         {
-            Check(ex.Message.Contains("Missing at least one"),
-                "full development period gate");
+            Check(ex.Message.Contains(">=15") &&
+                  ex.Message.Contains("36 months"),
+                "full development session coverage gate");
         }
+        int[] monthCount=Enumerable.Repeat(20,36).ToArray();
+        Check(NQNativeSignalCacheV14.MeetsMonthlyCoverage(monthCount),
+            "20 complete RTH sessions in every month pass presence gate");
+        monthCount[24]=14;
+        Check(!NQNativeSignalCacheV14.MeetsMonthlyCoverage(monthCount),
+            "one month with 14 sessions fails full 36-month coverage");
+        Check(!NQNativeSignalCacheV14.MeetsMonthlyCoverage(
+            Enumerable.Repeat(1,36).ToArray()),
+            "one bar/month not accepted as complete historical coverage");
         var lookahead=Source();
         lookahead.Add(new NQTimedBarV12(new DateTime(2023,1,1,9,30,0),
             new NQBarV11(100,102,98,101,100)));
