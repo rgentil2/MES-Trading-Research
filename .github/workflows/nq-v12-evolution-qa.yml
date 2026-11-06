@@ -4,8 +4,10 @@ on:
     paths:
       - 'research/nq/ninjatrader/NQNativeEvolutionCoreV12.cs'
       - 'research/nq/ninjatrader/NQNativeHistoricalEvaluatorV12.cs'
+      - 'research/nq/ninjatrader/NQNativeResearchPipelineV12.cs'
       - 'research/nq/ninjatrader/tests/NQNativeEvolutionCoreV12Test.cs'
       - 'research/nq/ninjatrader/tests/NQNativeHistoricalEvaluatorV12Test.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeResearchPipelineV12Test.cs'
       - '.github/workflows/nq-v12-evolution-qa.yml'
   pull_request:
     paths:
@@ -88,3 +90,34 @@ jobs:
           done
           cp research/nq/ninjatrader/tests/NQNativeHistoricalEvaluatorV12Test.cs "$RUNNER_TEMP/v12m1/Program.cs"
           dotnet run --project "$RUNNER_TEMP/v12m1/v12m1.csproj" --configuration Release
+  pipeline-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: End-to-end V12 genetic search drives the actual V9 economic scorer on synthetic M1 fills
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v12pipe"
+          cat > "$RUNNER_TEMP/v12pipe/v12pipe.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <Nullable>disable</Nullable>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeUniqueSearchV11 NQNativeEvolutionCoreV12 NQNativeATRExitMathV5 NQNativeG0RulesV6 NQNativeG0DiagnosticsV7 NQNativeDiscoveryScoreV9 NQNativeHistoricalEvaluatorV12 NQNativeResearchPipelineV12; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/v12pipe/"
+          done
+          cp research/nq/ninjatrader/tests/NQNativeResearchPipelineV12Test.cs "$RUNNER_TEMP/v12pipe/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/v12pipe/v12pipe.csproj" --configuration Release
