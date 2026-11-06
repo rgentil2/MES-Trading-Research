@@ -43,6 +43,8 @@ namespace NinjaTrader.NinjaScript.Strategies
         private readonly long maxAtrCacheBytes;
         private long usedAtrBytes;
         private int atrHits,atrMisses,atrEvictions;
+        public const int MinimumFullSessionsPerMonth=15;
+        private readonly int[] completeSessionsByMonth=new int[36];
         private readonly int signalBytesPerTable;
         private readonly long maxCacheBytes;
         private long usedCacheBytes;
@@ -125,15 +127,21 @@ namespace NinjaTrader.NinjaScript.Strategies
                 }
                 if(dayIndices.Count>0)
                 {
-                    if(dayIndices.Count!=120)
-                        complete=false;
-                    else
+                    bool dayComplete=dayIndices.Count==120;
+                    if(dayComplete)
                     {
                         DateTime expected=copy[dayIndices[0]].Time.Date
                             .AddHours(9).AddMinutes(30);
                         for(int k=0;k<120;k++)
                             if(copy[dayIndices[k]].Time!=expected.AddMinutes(k))
-                            {complete=false;break;}
+                            {dayComplete=false;break;}
+                    }
+                    if(!dayComplete)complete=false;
+                    else
+                    {
+                        int month=(copy[cursor].Time.Year-2020)*12+
+                            copy[cursor].Time.Month-1;
+                        completeSessionsByMonth[month]++;
                     }
                     researchIndices.AddRange(dayIndices);
                 }
@@ -161,6 +169,21 @@ namespace NinjaTrader.NinjaScript.Strategies
         public IList<NQTimedBarV12> Snapshot {get{return snapshot;}}
         public bool CompressionActive {get{return compressed;}}
         public int WorkingBars {get{return workingSnapshot.Count;}}
+        public bool HasSufficientMonthCoverage
+        {get{return MeetsMonthlyCoverage(completeSessionsByMonth);}}
+
+        // A conservative data presence gate, NOT an exchange-calendar or
+        // rollover-adjusted comprehensive historical data-quality audit.
+        // It rejects 1-bar-per-month input that passed the earlier V12 test.
+        public static bool MeetsMonthlyCoverage(IList<int> sessionsPerMonth)
+        {
+            if(sessionsPerMonth==null||sessionsPerMonth.Count!=36)
+                return false;
+            for(int i=0;i<36;i++)
+                if(sessionsPerMonth[i]<MinimumFullSessionsPerMonth)
+                    return false;
+            return true;
+        }
         public int SourceBars {get{return snapshot.Count;}}
         public int RthBars {get{return signalBytesPerTable;}}
         public long MaxSignalBytes {get{return maxCacheBytes;}}
@@ -354,15 +377,10 @@ namespace NinjaTrader.NinjaScript.Strategies
             baseline=(int[])genes.Clone();
             cfg=config;exploreExits=explore;
             cache=new NQNativeSignalCacheV14(bars,maxSignalCacheBytes);
-            if(requireFull36Months)
-            {
-                bool[] covered=new bool[36];
-                foreach(var b in cache.Snapshot)
-                    covered[(b.Time.Year-2020)*12+b.Time.Month-1]=true;
-                if(covered.Any(x=>!x))
-                    throw new InvalidOperationException(
-                        "Missing at least one 2020-22 development month");
-            }
+            if(requireFull36Months && !cache.HasSufficientMonthCoverage)
+                throw new InvalidOperationException(
+                    "Incomplete 2020-22 development coverage: require >=15 "+
+                    "complete 09:30-11:29 sessions in EACH of 36 months");
         }
         public NQEvolutionSummaryV12 Run()
         {
