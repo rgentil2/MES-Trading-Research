@@ -67,6 +67,30 @@ internal static class V22RiskPortfolioAuditTest
             id,trades,fills);
     }
 
+    private static NQPortfolioExecutionCandidateV15 ChangeLoss(
+        NQPortfolioExecutionCandidateV15 candidate,double lossUSD)
+    {
+        var trades=new List<NQG0RiskTradeV7>();
+        var fills=new List<NQExecutionFillV12>();
+        for(int i=0;i<candidate.Trades.Count;i++)
+        {
+            var original=candidate.Trades[i];
+            var fill=candidate.Executions[i];
+            double net=original.NetProfitUSD<0?-lossUSD:
+                original.NetProfitUSD;
+            trades.Add(new NQG0RiskTradeV7(
+                original.EntryTime,original.ExitTime,net,
+                Math.Max(0,-net),Math.Max(0,net)));
+            double exit=fill.EntryPrice+
+                (net+fill.RoundTripFeesUSD)/(20*fill.Side);
+            fills.Add(new NQExecutionFillV12(
+                fill.EntryTime,fill.ExitTime,fill.Side,fill.Quantity,
+                fill.EntryPrice,exit,fill.RoundTripFeesUSD));
+        }
+        return new NQPortfolioExecutionCandidateV15(
+            candidate.Id,trades,fills);
+    }
+
     private static NQRobustnessConfigV13 Robust()
     {return new NQRobustnessConfigV13{
         BootstrapPaths=500,BlockLengthTrades=8,Seed=20261106,
@@ -240,7 +264,27 @@ internal static class V22RiskPortfolioAuditTest
             x.Contains("INSUFFICIENT_TRADES")),
           "149 trades fail 150-operation minimum");
 
-        // 3. Increasing additional costs must break otherwise
+        // 3. Profit factor BELOW 1.25 even when every month has
+        // 10 trades and total net is STILL positive must reject.
+        var pfLow=ChangeLoss(a,210);
+        var lowPf=Audit(new[]{pfLow,b,c},genes,wf);
+        A(!lowPf.ProvisionalPass &&
+          lowPf.Strategies[0].TotalTrades==360&&
+          lowPf.Strategies[0].NetUSD>0&&
+          lowPf.Strategies[0].ProfitFactor<1.25&&
+          lowPf.Rejections.Any(x=>x.Contains("LOW_PROFIT_FACTOR")),
+          "profit factor 1.25 gate independent of gross profitability");
+
+        // 4. Negative net with all 36 months adequately populated.
+        var negative=ChangeLoss(a,300);
+        var negNet=Audit(new[]{negative,b,c},genes,wf);
+        A(!negNet.ProvisionalPass&&
+          negNet.Strategies[0].TotalTrades==360&&
+          negNet.Strategies[0].NetUSD<0&&
+          negNet.Rejections.Any(x=>x.Contains("NEGATIVE_NET")),
+          "negative net forbidden even with 10 trades in every month");
+
+        // 5. Increasing additional costs must break otherwise
         // economically positive candidate selection.
         var costs=Robust();
         costs.CostMultiplier=5.0;
@@ -345,7 +389,7 @@ internal static class V22RiskPortfolioAuditTest
             " dailyPeakLoss="+
               good.CombinedSessionLossUSD.ToString("F2")+
             " completedWfGates="+good.WfPassingFolds+
-            " mandatoryRejections=12"+
+            " mandatoryRejections=14"+
             " frozenKeys=EXCANv19");
         Console.WriteLine("POSITIVE_WF_IS_TEST_FIXTURE_NOT_EMPIRICAL_WINNER;"+
             " ALL_BARS_AND_TRADES_SYNTHETIC_NO_NT8_MARKET_EDGE");
