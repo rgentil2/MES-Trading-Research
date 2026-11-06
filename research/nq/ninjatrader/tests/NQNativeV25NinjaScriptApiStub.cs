@@ -151,9 +151,35 @@ internal static class V25NativeSyntaxHarness
         catch(InvalidOperationException ex)
         {A(ex.Message.Contains("ONLY_STRATEGY_ANALYZER"),
             "armed V25 must reject live chart contexts");}
+        var locked=new NinjaTrader.NinjaScript.Strategies
+            .NQ_V25_FrozenAnalyzer();
+        locked.Invoke(NinjaTrader.NinjaScript.State.SetDefaults);
+        locked.ArmHistoricalValidation=true;
+        locked.ConfirmEndStampedET=true;
+        locked.IsInStrategyAnalyzer=true;
+        locked.HistoricalScope="FINAL";
+        locked.FrozenV25LockSHA256=new string('a',64);
+        locked.CandidateId="NQ-00001";
+        int[] genome={1,396,12,789,12,999,12,1319,12,
+            0,0,0,0,20,32,2,0,14,15,25};
+        locked.FrozenGenes20=String.Join("/",genome);
+        locked.FrozenCanonicalBase64=Convert.ToBase64String(
+            System.Text.Encoding.UTF8.GetBytes(
+                NinjaTrader.NinjaScript.Strategies
+                .NQNativeExitCanonicalV19.Analyze(genome).RuntimeKey));
+        locked.ReportDirectory=System.IO.Path.GetTempPath();
+        try
+        {
+            locked.Invoke(NinjaTrader.NinjaScript.State.DataLoaded);
+            throw new Exception("V25_FINAL_WITHOUT_EXTERNAL_PASSED");
+        }
+        catch(InvalidOperationException ex)
+        {A(ex.Message.Contains("PREVIOUS_NATIVE_GATE_SHA"),
+            "native adapter forbids final until signed prior stage exists");}
         Console.WriteLine("NQ_V25_NT8_API_STUB_PASS "+
             "syntaxCompiledWithSurrogate=TRUE"+
             " defaultDisabled=TRUE noLiveChartActivation=TRUE"+
+            " finalWithoutExternalDenied=TRUE"+
             " note=NOT_A_REAL_NINJATRADER_DLL_COMPILATION");
         return 0;
     }
