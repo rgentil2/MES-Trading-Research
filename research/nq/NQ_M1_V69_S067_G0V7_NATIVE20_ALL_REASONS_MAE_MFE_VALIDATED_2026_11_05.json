@@ -1,0 +1,369 @@
+{
+  "study": "S0.67 — Windows NinjaTrader 8 V7 native smoke, same 20 deterministic V5 candidates",
+  "record_date": "2026-11-05",
+  "source": "User pasted 20 unique `NQ_G0_V7 REJECT` lines and 1 duplicate on reselecting `NQEX5_010D3F69BD586F67ABA39B85`, plus `NQ_V5_EXIT_RUNTIME` for that duplicate; raw console from user message (not separately uploaded)",
+  "system": {
+    "strategy": "NQNativeGeneticLabV5",
+    "optimizer": "NQNativeUniqueOptimizerV5",
+    "fitness": "NQNativeG0RiskFitnessV7",
+    "signals_and_session": "Unchanged V5 S0.63 / G0 V6 S0.65 20 fixed candidates seed 20261102 2020-2022 NQ Last M1",
+    "risk": "G0 V7 MAE/MFE bar M1 stress proxy, not true intrabar chronological drawdown nor funding-specific trailing drawdown"
+  },
+  "summary": {
+    "unique": 20,
+    "positive": 4,
+    "pf_fail": 20,
+    "closed_dd_fail": 19,
+    "stress_fail": 19,
+    "monthly_fail": 15,
+    "negative": 16,
+    "trades_fail": 2
+  },
+  "all_rejected": true,
+  "pass_count": 0,
+  "unique_ids": 20,
+  "log_line_count": 21,
+  "duplicate_reject_id": "NQEX5_010D3F69BD586F67ABA39B85",
+  "no_visible_exception": true,
+  "no_visible_pnl_mismatch": true,
+  "all_stress_greater_or_equal_to_closed": true,
+  "g0_pass_path_live_nt8_tested": false,
+  "previous_sample_g0_v6_replay_reproduced": true,
+  "not_executed_on_reserved_years": "2023-2026",
+  "economic_finalists": 0,
+  "analysis": "All 20 PF below 1.25 and 19 DD stress >2000; 90-trade candidate with stressDD 1681.28 still fails frequency, 150 trades and PF. 4 positive net candidates have DD >2000. No apparent actual 2020-22 trade PnL discrepancies. Can advance technical validation but not capital deployment.",
+  "rows": [
+    {
+      "id": "NQEX5_010D3F69BD586F67ABA39B85",
+      "trades": 690,
+      "net_usd": -15309.4,
+      "profit_factor": 0.8583,
+      "closed_dd_usd": 20899.88,
+      "stress_dd_usd": 21522.76,
+      "months_below5": 9,
+      "worst_mae_usd": 285,
+      "reasons": [
+        "MONTHLY_FREQUENCY",
+        "NEGATIVE_NET",
+        "LOW_PROFIT_FACTOR",
+        "EXCESS_CLOSED_DRAWDOWN",
+        "EXCESS_M1_MAE_MFE_STRESS_DD"
+      ]
+    },
+    {
+      "id": "NQEX5_835C7DF27E09E96434C5D185",
+      "trades": 718,
+      "net_usd": -12615.68,
+      "profit_factor": 0.8338,
+      "closed_dd_usd": 13818.36,
+      "stress_dd_usd": 14113.92,
+      "months_below5": 8,
+      "worst_mae_usd": 285,
+      "reasons": [
+        "MONTHLY_FREQUENCY",
+        "NEGATIVE_NET",
+        "LOW_PROFIT_FACTOR",
+        "EXCESS_CLOSED_DRAWDOWN",
+        "EXCESS_M1_MAE_MFE_STRESS_DD"
+      ]
+    },
+    {
+      "id": "NQEX5_008BC7F43FE6C705994FFC50",
+      "trades": 622,
+      "net_usd": 4102.28,
+      "profit_factor": 1.0364,
+      "closed_dd_usd": 11834.92,
+      "stress_dd_usd": 12830.68,
+      "months_below5": 10,
+      "worst_mae_usd": 285,
+      "reasons": [
+        "MONTHLY_FREQUENCY",
+        "LOW_PROFIT_FACTOR",
+        "EXCESS_CLOSED_DRAWDOWN",
+        "EXCESS_M1_MAE_MFE_STRESS_DD"
+      ]
+    },
+    {
+      "id": "NQEX5_A9EBF3EC09E94D0E4B242F92",
+      "trades": 1546,
+      "net_usd": -47219.96,
+      "profit_factor": 0.6131,
+      "closed_dd_usd": 47576.92,
+      "stress_dd_usd": 47608.44,
+      "months_below5": 0,
+      "worst_mae_usd": 110,
+      "reasons": [
+        "NEGATIVE_NET",
+        "LOW_PROFIT_FACTOR",
+        "EXCESS_CLOSED_DRAWDOWN",
+        "EXCESS_M1_MAE_MFE_STRESS_DD"
+      ]
+    },
+    {
+      "id": "NQEX5_D7328649568FBA937A346DF7",
+      "trades": 601,
+      "net_usd": -3266.76,
+      "profit_factor": 0.9684,
+      "closed_dd_usd": 18265.12,
+      "stress_dd_usd": 19265.88,
+      "months_below5": 10,
+      "worst_mae_usd": 285,
+      "reasons": [
+        "MONTHLY_FREQUENCY",
+        "NEGATIVE_NET",
+        "LOW_PROFIT_FACTOR",
+        "EXCESS_CLOSED_DRAWDOWN",
+        "EXCESS_M1_MAE_MFE_STRESS_DD"
+      ]
+    },
+    {
+      "id": "NQEX5_AE8F62797858CA6799E1DB11",
+      "trades": 602,
+      "net_usd": -18572.52,
+      "profit_factor": 0.8274,
+      "closed_dd_usd": 22537.36,
+      "stress_dd_usd": 22938.88,
+      "months_below5": 10,
+      "worst_mae_usd": 285,
+      "reasons": [
+        "MONTHLY_FREQUENCY",
+        "NEGATIVE_NET",
+        "LOW_PROFIT_FACTOR",
+        "EXCESS_CLOSED_DRAWDOWN",
+        "EXCESS_M1_MAE_MFE_STRESS_DD"
+      ]
+    },
+    {
+      "id": "NQEX5_62FE48C30D9954BFA1647E62",
+      "trades": 620,
+      "net_usd": -6346.2,
+      "profit_factor": 0.9428,
+      "closed_dd_usd": 29134.48,
+      "stress_dd_usd": 30130.24,
+      "months_below5": 10,
+      "worst_mae_usd": 285,
+      "reasons": [
+        "MONTHLY_FREQUENCY",
+        "NEGATIVE_NET",
+        "LOW_PROFIT_FACTOR",
+        "EXCESS_CLOSED_DRAWDOWN",
+        "EXCESS_M1_MAE_MFE_STRESS_DD"
+      ]
+    },
+    {
+      "id": "NQEX5_EBCBD749DAD8A1C884A7B397",
+      "trades": 691,
+      "net_usd": -16405.16,
+      "profit_factor": 0.8505,
+      "closed_dd_usd": 24171,
+      "stress_dd_usd": 24686,
+      "months_below5": 9,
+      "worst_mae_usd": 285,
+      "reasons": [
+        "MONTHLY_FREQUENCY",
+        "NEGATIVE_NET",
+        "LOW_PROFIT_FACTOR",
+        "EXCESS_CLOSED_DRAWDOWN",
+        "EXCESS_M1_MAE_MFE_STRESS_DD"
+      ]
+    },
+    {
+      "id": "NQEX5_F48DC6F11B4ADB1976857523",
+      "trades": 687,
+      "net_usd": -13922.12,
+      "profit_factor": 0.8694,
+      "closed_dd_usd": 19983.48,
+      "stress_dd_usd": 20243.04,
+      "months_below5": 9,
+      "worst_mae_usd": 285,
+      "reasons": [
+        "MONTHLY_FREQUENCY",
+        "NEGATIVE_NET",
+        "LOW_PROFIT_FACTOR",
+        "EXCESS_CLOSED_DRAWDOWN",
+        "EXCESS_M1_MAE_MFE_STRESS_DD"
+      ]
+    },
+    {
+      "id": "NQEX5_260B8A4041DC0221ECD6D839",
+      "trades": 1545,
+      "net_usd": -42699.2,
+      "profit_factor": 0.6437,
+      "closed_dd_usd": 42737.68,
+      "stress_dd_usd": 42812.68,
+      "months_below5": 0,
+      "worst_mae_usd": 110,
+      "reasons": [
+        "NEGATIVE_NET",
+        "LOW_PROFIT_FACTOR",
+        "EXCESS_CLOSED_DRAWDOWN",
+        "EXCESS_M1_MAE_MFE_STRESS_DD"
+      ]
+    },
+    {
+      "id": "NQEX5_E009F097EDDF92452472B324",
+      "trades": 611,
+      "net_usd": 1320.64,
+      "profit_factor": 1.0124,
+      "closed_dd_usd": 23474.24,
+      "stress_dd_usd": 24475,
+      "months_below5": 10,
+      "worst_mae_usd": 285,
+      "reasons": [
+        "MONTHLY_FREQUENCY",
+        "LOW_PROFIT_FACTOR",
+        "EXCESS_CLOSED_DRAWDOWN",
+        "EXCESS_M1_MAE_MFE_STRESS_DD"
+      ]
+    },
+    {
+      "id": "NQEX5_DD8A4C0EDD5D6558BDEE85F9",
+      "trades": 99,
+      "net_usd": -25.24,
+      "profit_factor": 0.9978,
+      "closed_dd_usd": 2009.32,
+      "stress_dd_usd": 2291.6,
+      "months_below5": 26,
+      "worst_mae_usd": 275,
+      "reasons": [
+        "INSUFFICIENT_TRADES",
+        "MONTHLY_FREQUENCY",
+        "NEGATIVE_NET",
+        "LOW_PROFIT_FACTOR",
+        "EXCESS_CLOSED_DRAWDOWN",
+        "EXCESS_M1_MAE_MFE_STRESS_DD"
+      ]
+    },
+    {
+      "id": "NQEX5_3BAA229559F8DF051F948EA3",
+      "trades": 1546,
+      "net_usd": -43834.96,
+      "profit_factor": 0.6361,
+      "closed_dd_usd": 44725.24,
+      "stress_dd_usd": 44760.24,
+      "months_below5": 0,
+      "worst_mae_usd": 110,
+      "reasons": [
+        "NEGATIVE_NET",
+        "LOW_PROFIT_FACTOR",
+        "EXCESS_CLOSED_DRAWDOWN",
+        "EXCESS_M1_MAE_MFE_STRESS_DD"
+      ]
+    },
+    {
+      "id": "NQEX5_51ECCD7C0683E83ED94881EB",
+      "trades": 690,
+      "net_usd": -15409.4,
+      "profit_factor": 0.8574,
+      "closed_dd_usd": 20999.88,
+      "stress_dd_usd": 21622.76,
+      "months_below5": 9,
+      "worst_mae_usd": 285,
+      "reasons": [
+        "MONTHLY_FREQUENCY",
+        "NEGATIVE_NET",
+        "LOW_PROFIT_FACTOR",
+        "EXCESS_CLOSED_DRAWDOWN",
+        "EXCESS_M1_MAE_MFE_STRESS_DD"
+      ]
+    },
+    {
+      "id": "NQEX5_2B1A99A8F1CBB76694D656BF",
+      "trades": 689,
+      "net_usd": -21508.64,
+      "profit_factor": 0.8069,
+      "closed_dd_usd": 22847.24,
+      "stress_dd_usd": 23217.24,
+      "months_below5": 10,
+      "worst_mae_usd": 285,
+      "reasons": [
+        "MONTHLY_FREQUENCY",
+        "NEGATIVE_NET",
+        "LOW_PROFIT_FACTOR",
+        "EXCESS_CLOSED_DRAWDOWN",
+        "EXCESS_M1_MAE_MFE_STRESS_DD"
+      ]
+    },
+    {
+      "id": "NQEX5_9463CA257F984AD66C178763",
+      "trades": 571,
+      "net_usd": 5436.04,
+      "profit_factor": 1.0579,
+      "closed_dd_usd": 12423.76,
+      "stress_dd_usd": 12604.52,
+      "months_below5": 10,
+      "worst_mae_usd": 285,
+      "reasons": [
+        "MONTHLY_FREQUENCY",
+        "LOW_PROFIT_FACTOR",
+        "EXCESS_CLOSED_DRAWDOWN",
+        "EXCESS_M1_MAE_MFE_STRESS_DD"
+      ]
+    },
+    {
+      "id": "NQEX5_20E3912683C3DDA48153AB96",
+      "trades": 1546,
+      "net_usd": -32549.96,
+      "profit_factor": 0.7187,
+      "closed_dd_usd": 33989.76,
+      "stress_dd_usd": 33995.52,
+      "months_below5": 0,
+      "worst_mae_usd": 110,
+      "reasons": [
+        "NEGATIVE_NET",
+        "LOW_PROFIT_FACTOR",
+        "EXCESS_CLOSED_DRAWDOWN",
+        "EXCESS_M1_MAE_MFE_STRESS_DD"
+      ]
+    },
+    {
+      "id": "NQEX5_1C6C2B06AE74B3500AA909DE",
+      "trades": 1545,
+      "net_usd": -43114.2,
+      "profit_factor": 0.641,
+      "closed_dd_usd": 44004.48,
+      "stress_dd_usd": 44039.48,
+      "months_below5": 0,
+      "worst_mae_usd": 110,
+      "reasons": [
+        "NEGATIVE_NET",
+        "LOW_PROFIT_FACTOR",
+        "EXCESS_CLOSED_DRAWDOWN",
+        "EXCESS_M1_MAE_MFE_STRESS_DD"
+      ]
+    },
+    {
+      "id": "NQEX5_3ACB6BE4331093028252C5D4",
+      "trades": 90,
+      "net_usd": 746.6,
+      "profit_factor": 1.1074,
+      "closed_dd_usd": 1491.28,
+      "stress_dd_usd": 1681.28,
+      "months_below5": 26,
+      "worst_mae_usd": 275,
+      "reasons": [
+        "INSUFFICIENT_TRADES",
+        "MONTHLY_FREQUENCY",
+        "LOW_PROFIT_FACTOR"
+      ]
+    },
+    {
+      "id": "NQEX5_F5594D1E76250A020B2B43B5",
+      "trades": 690,
+      "net_usd": -20414.4,
+      "profit_factor": 0.8126,
+      "closed_dd_usd": 22243.04,
+      "stress_dd_usd": 22393.8,
+      "months_below5": 10,
+      "worst_mae_usd": 285,
+      "reasons": [
+        "MONTHLY_FREQUENCY",
+        "NEGATIVE_NET",
+        "LOW_PROFIT_FACTOR",
+        "EXCESS_CLOSED_DRAWDOWN",
+        "EXCESS_M1_MAE_MFE_STRESS_DD"
+      ]
+    }
+  ],
+  "next": "Keep V5+G0 V6+G0 V7 frozen, perform next stage instrument true chronological trade risk (M1 bar mark-to-market / ticks optionally) and investigate low 2022 frequency and greater entry diversity prior to mass-scale. Do not use fitness tie score -1e12 to rank rejected candidates."
+}
