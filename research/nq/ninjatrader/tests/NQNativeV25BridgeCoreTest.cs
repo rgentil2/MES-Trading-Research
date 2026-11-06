@@ -320,13 +320,56 @@ internal static class NQNativeV25BridgeCoreTest
             {A(ex.Message.Contains("LOCK_MISMATCH"),
                 "refuse native ledger from another frozen portfolio");}
 
+            // Prior stage authorizations are SHA-bound to BOTH the
+            // frozen package and actual native audit report. Neither
+            // EXTERNAL nor FINAL may be opened without these approvals.
+            string gates=Path.Combine(dir,"gates");
+            Directory.CreateDirectory(gates);
+            string devReport=Path.Combine(gates,"V25_DEV_audit.tsv");
+            File.WriteAllText(devReport,
+                "freezeSHA256\t"+three.V25LockSHA256+"\n"+
+                "status\tV25_DEV_PROVISIONAL_NATIVE_PARITY_PASS\n");
+            NQNativeV25StageAuthorization.Approve(
+                gates,"DEV",three.V25LockSHA256,devReport,"");
+            string devToken=NQNativeV25StageAuthorization.Verify(
+                gates,"DEV",three.V25LockSHA256,"");
+            A(devToken.Length==64,"SHA chain DEV stage token");
+            string extReport=Path.Combine(gates,"V25_EXTERNAL_audit.tsv");
+            File.WriteAllText(extReport,
+                "freezeSHA256\t"+three.V25LockSHA256+"\n"+
+                "status\tV25_EXTERNAL_PROVISIONAL_NATIVE_PARITY_PASS\n");
+            NQNativeV25StageAuthorization.Approve(
+                gates,"EXTERNAL",three.V25LockSHA256,
+                extReport,devToken);
+            string extToken=NQNativeV25StageAuthorization.Verify(
+                gates,"EXTERNAL",three.V25LockSHA256,devToken);
+            A(extToken.Length==64,
+                "external token chained to authorized prior DEV report");
+            File.AppendAllText(devReport,"TAMPER");
+            try
+            {
+                NQNativeV25StageAuthorization.Verify(
+                    gates,"DEV",three.V25LockSHA256,"");
+                throw new Exception("V25_ACCEPTED_CHANGED_DEV_GATE");
+            }
+            catch(InvalidDataException ex)
+            {A(ex.Message.Contains("CHANGED"),
+                "changed DEV report invalidates authorization");}
+            File.WriteAllText(devReport,
+                "freezeSHA256\t"+three.V25LockSHA256+"\n"+
+                "status\tV25_DEV_PROVISIONAL_NATIVE_PARITY_PASS\n");
+            A(NQNativeV25StageAuthorization.Verify(
+                gates,"EXTERNAL",three.V25LockSHA256,devToken)==extToken,
+                "restoring exact same report restores SHA chain");
+
             Console.WriteLine("NQ_V25_FROZEN_HANDOFF_PASS "+
                 "approvedFixture3And5=TRUE rejectedDevFailClosed=TRUE"+
                 " alteredGeneSHARejected=TRUE"+
                 " strictNativeBars=164430"+
                 " sourceBarMismatchRejected=TRUE"+
                 " noOosReadAfterDevReject=TRUE"+
-                " nativeReceiptLockBinding=TRUE");
+                " nativeReceiptLockBinding=TRUE"+
+                " stageShaAuthorizations=TRUE tamperChainGuard=TRUE");
             Console.WriteLine("V25_CI_SYNTHETIC_OR_FIXED_FIXTURES_ONLY "+
                 "NO_ACTUAL_NQ_FROZEN_PORTFOLIO_OR_NATIVE_NT8_RUN");
             return 0;
