@@ -21,7 +21,7 @@ namespace NinjaTrader.NinjaScript.Strategies
             "V19_120_FEATURES_1320_PREDICATES_V12_FILLS_V9_FITNESS_V1";
         public NQNativeSignalCacheV14 Cache{get{return cache;}}
 
-        private static int Direction(
+        internal static int Direction(
             IList<NQBarV11> bars,int type,int period)
         {
             bool bull,bear;
