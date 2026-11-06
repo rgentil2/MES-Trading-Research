@@ -5,15 +5,19 @@ on:
       - 'research/nq/ninjatrader/NQNativeHistoricalEvaluatorV12.cs'
       - 'research/nq/ninjatrader/NQNativeChronologicalRiskV15.cs'
       - 'research/nq/ninjatrader/NQNativeWalkForwardV15.cs'
+      - 'research/nq/ninjatrader/NQNativeIntegratedPortfolioRiskV15.cs'
       - 'research/nq/ninjatrader/tests/NQNativeChronologicalRiskV15Test.cs'
       - 'research/nq/ninjatrader/tests/NQNativeWalkForwardV15Test.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeIntegratedPortfolioRiskV15Test.cs'
       - '.github/workflows/nq-v15-risk-walkforward-qa.yml'
   pull_request:
     paths:
       - 'research/nq/ninjatrader/NQNativeChronologicalRiskV15.cs'
       - 'research/nq/ninjatrader/NQNativeWalkForwardV15.cs'
+      - 'research/nq/ninjatrader/NQNativeIntegratedPortfolioRiskV15.cs'
       - 'research/nq/ninjatrader/tests/NQNativeChronologicalRiskV15Test.cs'
       - 'research/nq/ninjatrader/tests/NQNativeWalkForwardV15Test.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeIntegratedPortfolioRiskV15Test.cs'
       - '.github/workflows/nq-v15-risk-walkforward-qa.yml'
   workflow_dispatch:
 permissions:
@@ -90,3 +94,34 @@ jobs:
           grep -q 'var trainCache=' research/nq/ninjatrader/NQNativeWalkForwardV15.cs
           grep -q 'var testCache=' research/nq/ninjatrader/NQNativeWalkForwardV15.cs
           echo 'NQ_V15_SOURCE_NO_LIVE_ORDERS_AND_YEAR_LOCK'
+  integrated-portfolio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile original V13 selection plus V15 chronological risk and verify overlapping-position stress
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v15portfolio"
+          cat > "$RUNNER_TEMP/v15portfolio/v15portfolio.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <Nullable>disable</Nullable>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeATRExitMathV5 NQNativeG0RulesV6 NQNativeG0DiagnosticsV7 NQNativeDiscoveryScoreV9 NQNativeHistoricalEvaluatorV12 NQNativeRobustnessV13 NQNativePortfolioV13 NQNativeChronologicalRiskV15 NQNativeIntegratedPortfolioRiskV15; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/v15portfolio/"
+          done
+          cp research/nq/ninjatrader/tests/NQNativeIntegratedPortfolioRiskV15Test.cs "$RUNNER_TEMP/v15portfolio/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/v15portfolio/v15portfolio.csproj" --configuration Release
