@@ -166,6 +166,28 @@ namespace NinjaTrader.NinjaScript.Strategies
                 firstYear,lastYear,false);
         }
 
+        // V20 versioned frozen EXTERNAL/final scoring: same conservative
+        // V12 fills and chronology, but V19 completed-bar signal callback
+        // + versioned EXIT canonicalizer. NO 2020–22 rank/V9 score and
+        // NO genetic callback here. Caller must freeze genes first.
+        // This method preserves the existing V11 EvaluateHeldout entry.
+        public static NQHistoricalResultV12 EvaluateHeldoutCustom(
+            IList<NQTimedBarV12> source,int[] genes,
+            int firstYear,int lastYear,
+            Func<int,int,int,int> signal,
+            Func<int[],NQExitIdentityV11> identity)
+        {
+            if(!((firstYear==2023&&lastYear==2024)||
+                 (firstYear==2025&&lastYear==2026)))
+                return Reject("ONLY_FROZEN_EXTERNAL_OR_FINAL_YEARS");
+            if(signal==null||identity==null)
+                return Reject("MISSING_VERSIONED_HOLDOUT_SIGNAL_READER");
+            // Strict source-validation in EvaluateCore; no trusted
+            // prevalidated shortcut for externally supplied OOS.
+            return EvaluateCore(source,genes,signal,false,null,
+                firstYear,lastYear,false,identity);
+        }
+
         // Internal research fast path. The V14 cache is responsible for
         // creating and validating an immutable source snapshot; ordinary
         // public calls still independently validate every input bar.
