@@ -62,14 +62,38 @@ namespace NinjaTrader.NinjaScript.Strategies
             IList<NQExecutionFillV12> fills,
             NQChronologicalRiskConfigV15 cfg)
         {
+            return EvaluateCore(source,fills,cfg,2020,2022);
+        }
+
+        // Only externally frozen portfolios may use this entrypoint.
+        // It shares exactly the same M1 risk loop but never accepts
+        // 2020–22 as a holdout. Does not expose GA or candidate tuning.
+        public static NQChronologicalRiskResultV15 EvaluateHeldout(
+            IList<NQTimedBarV12> source,
+            IList<NQExecutionFillV12> fills,
+            NQChronologicalRiskConfigV15 cfg,
+            NQDataPartitionV16 partition)
+        {
+            if(partition==NQDataPartitionV16.Development2020_2022)
+                return Fail("DEVELOPMENT_NOT_HELDOUT");
+            return EvaluateCore(source,fills,cfg,
+                NQNativeDataLoaderV16.FirstYear(partition),
+                NQNativeDataLoaderV16.LastYear(partition));
+        }
+
+        private static NQChronologicalRiskResultV15 EvaluateCore(
+            IList<NQTimedBarV12> source,
+            IList<NQExecutionFillV12> fills,
+            NQChronologicalRiskConfigV15 cfg,int firstYear,int lastYear)
+        {
             if(source==null||source.Count==0||fills==null||cfg==null)
                 return Fail("NULL_OR_EMPTY");
             cfg.Validate();
             var byTimestamp=new Dictionary<DateTime,int>();
             for(int i=0;i<source.Count;i++)
             {
-                if(source[i]==null||source[i].Time.Year<2020||
-                   source[i].Time.Year>2022||
+                if(source[i]==null||source[i].Time.Year<firstYear||
+                   source[i].Time.Year>lastYear||
                    i>0&&source[i].Time<=source[i-1].Time)
                     return Fail("INVALID_OR_OUT_OF_SAMPLE_BARS");
                 byTimestamp.Add(source[i].Time,i);
