@@ -198,7 +198,8 @@ namespace NinjaTrader.NinjaScript.Strategies
                     NetUSD=robust.HistoricalNetUSD,
                     CostStressNetUSD=robust.CostStressNetUSD,
                     BootstrapP95DDUSD=robust.BootstrapP95ClosedDrawdownUSD,
-                    ProfitFactor=robust.G0Diagnostics==null?0:
+                    ProfitFactor=robust.G0Diagnostics==null||
+                      robust.G0Diagnostics.Economic==null?0:
                       robust.G0Diagnostics.Economic.ProfitFactor
                 };
                 var fails=new List<string>();
