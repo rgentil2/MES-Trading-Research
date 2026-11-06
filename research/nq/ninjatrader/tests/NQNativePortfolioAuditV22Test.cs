@@ -43,11 +43,18 @@ internal static class V22RiskPortfolioAuditTest
                 int m=(year-2020)*12+month-1;
                 double wave=family==0?Math.Sin(m*0.7):
                     family==1?Math.Cos(m*1.1):
-                    Math.Sin(m*1.7+0.4);
+                    family==2?Math.Sin(m*1.7+0.4):
+                    family==3?Math.Cos(m*2.3+0.7):
+                    Math.Sin(m*2.9+0.2);
                 for(int day=1;day<=10;day++)
                 {
-                    var start=new DateTime(year,month,day,9,31,0);
-                    var end=new DateTime(year,month,day,9,36,0);
+                    // Families 3/4 trade AFTER original 0/1/2 have
+                    // closed. This verifies 5 systems without making
+                    // one guaranteed 5-way simultaneous exposure.
+                    var start=new DateTime(year,month,day,
+                        9,family>=3?37:31,0);
+                    var end=new DateTime(year,month,day,
+                        9,family>=3?39:36,0);
                     double p=day<=8?65+8*wave:-100;
                     double exit=1000+(p+4.68)/20.0;
                     trades.Add(new NQG0RiskTradeV7(
@@ -178,6 +185,31 @@ internal static class V22RiskPortfolioAuditTest
           good.WfValidatedFolds==4&&
           good.WfPassingFolds==4&&good.WfPositiveFolds==4,
           "all $2000/$1000, correlation/concentration and four WF gates");
+        // Positive selection of FOUR and FIVE genuine independent
+        // synthetic candidate streams, including chronology-aware
+        // staggered execution rather than five concurrent contracts.
+        var d=Candidate("D",3);
+        var e=Candidate("E",4);
+        var four=new[]{a,b,c,d};
+        var fourPortfolio=Portfolio();fourPortfolio.TargetStrategies=4;
+        var fourAccepted=Audit(four,Genomes(four),wf,
+            null,null,fourPortfolio);
+        A(fourAccepted.ProvisionalPass&&fourAccepted.Frozen.Count==4&&
+          fourAccepted.ProfitConcentration<=0.40&&
+          fourAccepted.MaximumMonthlyCorrelation<=0.45,
+          "four diversified members must pass their combined real M1 stress");
+        var five=new[]{a,b,c,d,e};
+        var fivePortfolio=Portfolio();fivePortfolio.TargetStrategies=5;
+        var fiveAccepted=Audit(five,Genomes(five),wf,
+            null,null,fivePortfolio);
+        A(fiveAccepted.ProvisionalPass&&fiveAccepted.Frozen.Count==5&&
+          fiveAccepted.ProfitConcentration<=0.40&&
+          fiveAccepted.MaximumMonthlyCorrelation<=0.45&&
+          fiveAccepted.CombinedStressDDUSD<2000&&
+          fiveAccepted.CombinedSessionLossUSD<1000&&
+          fiveAccepted.CombinedConcurrentAdverseUSD<1000,
+          "five staggered diversified strategy fills obey all default $ limits");
+
         var reproduced=Audit(chosen,genes,wf);
         A(reproduced.ProvisionalPass&&
           good.Frozen.Zip(reproduced.Frozen,(x,y)=>
