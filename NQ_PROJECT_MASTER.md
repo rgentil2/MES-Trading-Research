@@ -1,3 +1,13 @@
+## 2026-11-06 — S0.80 V19: META DE 120 FÓRMULAS TÉCNICAS ALCANZADA (CI 3/3 SUCCESS)
+
+**Estado real:** catálogo C# **120 fórmulas matemáticas OHLCV programadas** (12 V11 + 24 V18 + **84 V19**) y **1.320 condiciones direccionales** (11 reglas por familia), con IDs antiguos 0–395 preservados y 396–1319 nuevos. No confundir **120 fórmulas** con 120 señales estadísticamente independientes ni con paridad exacta de todos los indicadores nativos NinjaTrader; algunas implementaciones son aproximaciones científicas basadas en OHLCV (sin bid/ask ni order-flow real).
+
+**CI [GitHub Actions 42266634058](https://github.com/rgentil2/MES-Trading-Research/actions/runs/42266634058) SUCCESS 3/3:** 29.040 verificaciones de condiciones y 8.712 comparaciones de paridad V11/V18, 84/84 fórmulas nuevas distinguibles y variables en datos controlados (incluye eventos de patrones de velas), 180 genomas con scoring económico V12/V9 **sobre M1 sintético**, 36 genomas V11/V18 con P&L y timestamps idénticos, 10 familias nuevas direct-vs-cache iguales; **109.464 genomas únicos** de 120 familias y 1.320 reglas exploradas con fitness **sintético**, no backtests reales del mercado. Se detectó y corrigió duplicación algebraica de la primera versión f93 (Chande-Kroll): ahora trailing stop verdadero con banda ATR. [Informe S0.80](research/nq/NQ_S080_V19_120_FORMULAS_1320_RULES_2026_11_06.md).
+
+**Decisión del usuario sigue vigente:** destino **NQ DEC2026**, histórico M1 2020–2022 ya visible directamente en NinjaTrader; NO auditar rollovers/contratos, NO F5/exports/backtests intermedios. **Terminar todo el generador y la selección de portafolios ANTES de una única migración y validación final NinjaTrader.** Siguiente P0 **V20**: conectar identidades V19 `EXCANv19` a walk-forward V15, filtros de riesgo V13, portafolio V15 y congelación OOS V16, optimizar puntuación real masiva y reportes. El mercado NQ real no se ha evaluado con V19 y no hay beneficio/edge demostrado; no ejecutar live.
+
+---
+
 ## 2026-11-06 — S0.79 V18: 36 FÓRMULAS / 396 CONDICIONES / GENÉTICA AMPLIADA CI VERDE
 
 **Resultado de GitHub Actions [42257874795](https://github.com/rgentil2/MES-Trading-Research/actions/runs/42257874795): SUCCESS 3/3 jobs.** V18 añade **24 familias técnicas matemáticamente distintas** a las 12 de V11, con **396 condiciones direccionales = 36 fórmulas × 11 predicados**. Los 132 IDs antiguos permanecen fijos; pruebas de 17.424 comparaciones de condiciones y 19 contrastes monótonos de referencia, todos sin cambios en V11. **36 fórmulas != 100 indicadores independientes, y 396 condiciones != 396 indicadores independientes.**
