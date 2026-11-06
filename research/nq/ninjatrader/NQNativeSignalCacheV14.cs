@@ -33,6 +33,16 @@ namespace NinjaTrader.NinjaScript.Strategies
         private readonly List<Session> sessions=new List<Session>();
         private readonly int[] rthOrdinalBySource;
         private readonly ReadOnlyCollection<NQTimedBarV12> snapshot;
+        private readonly ReadOnlyCollection<NQTimedBarV12> workingSnapshot;
+        private readonly int[] workingToOriginal;
+        private readonly bool compressed;
+        private readonly object atrGate=new object();
+        private readonly Dictionary<int,double[]> atrTables=
+            new Dictionary<int,double[]>();
+        private readonly LinkedList<int> atrAge=new LinkedList<int>();
+        private readonly long maxAtrCacheBytes;
+        private long usedAtrBytes;
+        private int atrHits,atrMisses,atrEvictions;
         private readonly int signalBytesPerTable;
         private readonly long maxCacheBytes;
         private long usedCacheBytes;
@@ -42,12 +52,16 @@ namespace NinjaTrader.NinjaScript.Strategies
         {return t.Hour*10000+t.Minute*100+t.Second;}
 
         public NQNativeSignalCacheV14(IList<NQTimedBarV12> source,
-                                      long maxSignalCacheBytes)
+                                      long maxSignalCacheBytes,
+                                      long maxAtrCacheBytes=67108864)
         {
             if(source==null||source.Count==0)
                 throw new ArgumentException("Nonempty source required");
             if(maxSignalCacheBytes<1)
                 throw new ArgumentOutOfRangeException("maxSignalCacheBytes");
+            if(maxAtrCacheBytes<1)
+                throw new ArgumentOutOfRangeException("maxAtrCacheBytes");
+            this.maxAtrCacheBytes=maxAtrCacheBytes;
             maxCacheBytes=maxSignalCacheBytes;
             var copy=new NQTimedBarV12[source.Count];
             rthOrdinalBySource=new int[source.Count];
@@ -88,9 +102,65 @@ namespace NinjaTrader.NinjaScript.Strategies
                 throw new ArgumentException(
                     "Cache cap too small to store one full RTH signal table");
             snapshot=Array.AsReadOnly(copy);
+
+            // A complete 09:30..11:29 research window per recorded day
+            // permits excluding overnight M1 bars while retaining exact
+            // 11:28 exit submission / 11:29 execution chronology.
+            // If even one day is incomplete, fail over to the full source.
+            var researchIndices=new List<int>();
+            bool complete=true;
+            int cursor=0;
+            while(cursor<copy.Length)
+            {
+                int until=cursor+1;
+                while(until<copy.Length &&
+                      copy[until].Time.Date==copy[cursor].Time.Date)
+                    until++;
+                var dayIndices=new List<int>(120);
+                for(int i=cursor;i<until;i++)
+                {
+                    int time=HHmmss(copy[i].Time);
+                    if(time>=93000&&time<=112900)
+                        dayIndices.Add(i);
+                }
+                if(dayIndices.Count>0)
+                {
+                    if(dayIndices.Count!=120)
+                        complete=false;
+                    else
+                    {
+                        DateTime expected=copy[dayIndices[0]].Time.Date
+                            .AddHours(9).AddMinutes(30);
+                        for(int k=0;k<120;k++)
+                            if(copy[dayIndices[k]].Time!=expected.AddMinutes(k))
+                            {complete=false;break;}
+                    }
+                    researchIndices.AddRange(dayIndices);
+                }
+                cursor=until;
+            }
+
+            compressed=complete && researchIndices.Count>0 &&
+                researchIndices.Count<copy.Length;
+            if(compressed)
+            {
+                workingToOriginal=researchIndices.ToArray();
+                var onlyRth=new NQTimedBarV12[workingToOriginal.Length];
+                for(int i=0;i<onlyRth.Length;i++)
+                    onlyRth[i]=copy[workingToOriginal[i]];
+                workingSnapshot=Array.AsReadOnly(onlyRth);
+            }
+            else
+            {
+                workingToOriginal=new int[copy.Length];
+                for(int i=0;i<copy.Length;i++)workingToOriginal[i]=i;
+                workingSnapshot=snapshot;
+            }
         }
 
         public IList<NQTimedBarV12> Snapshot {get{return snapshot;}}
+        public bool CompressionActive {get{return compressed;}}
+        public int WorkingBars {get{return workingSnapshot.Count;}}
         public int SourceBars {get{return snapshot.Count;}}
         public int RthBars {get{return signalBytesPerTable;}}
         public long MaxSignalBytes {get{return maxCacheBytes;}}
@@ -99,6 +169,10 @@ namespace NinjaTrader.NinjaScript.Strategies
         public int CacheHits {get{lock(gate)return hits;}}
         public int CacheMisses {get{lock(gate)return misses;}}
         public int CacheEvictions {get{lock(gate)return evictions;}}
+        public long MaxAtrBytes {get{return maxAtrCacheBytes;}}
+        public long UsedAtrBytes {get{lock(atrGate)return usedAtrBytes;}}
+        public int AtrCacheMisses {get{lock(atrGate)return atrMisses;}}
+        public int AtrCacheEvictions {get{lock(atrGate)return atrEvictions;}}
 
         private static long Key(int condition,int period)
         {
@@ -186,12 +260,81 @@ namespace NinjaTrader.NinjaScript.Strategies
             return s==1?1:s==2?-1:0;
         }
 
+        private double ComputeSourceAtr(int index,int period)
+        {
+            if(index<period||period<1)return 0;
+            double sum=0;
+            for(int k=index-period+1;k<=index;k++)
+            {
+                NQBarV11 b=snapshot[k].Bar;
+                double prev=snapshot[k-1].Bar.Close;
+                sum+=Math.Max(b.High-b.Low,Math.Max(
+                    Math.Abs(b.High-prev),Math.Abs(b.Low-prev)));
+            }
+            return sum/period;
+        }
+
+        private double GetSourceAtr(int originalIndex,int period)
+        {
+            if(originalIndex<0||originalIndex>=snapshot.Count ||
+               period<7||period>28)
+                throw new ArgumentOutOfRangeException("ATR index/period");
+            if(8L*snapshot.Count>maxAtrCacheBytes)
+                return ComputeSourceAtr(originalIndex,period);
+
+            lock(atrGate)
+            {
+                double[] table;
+                if(atrTables.TryGetValue(period,out table))
+                {
+                    atrHits++;
+                    atrAge.Remove(period);
+                    atrAge.AddFirst(period);
+                    return table[originalIndex];
+                }
+                table=new double[snapshot.Count];
+                for(int k=period;k<table.Length;k++)
+                    table[k]=ComputeSourceAtr(k,period);
+                long bytes=8L*table.Length;
+                while(usedAtrBytes+bytes>maxAtrCacheBytes &&
+                      atrAge.Last!=null)
+                {
+                    int oldest=atrAge.Last.Value;
+                    usedAtrBytes-=8L*atrTables[oldest].Length;
+                    atrTables.Remove(oldest);
+                    atrAge.RemoveLast();
+                    atrEvictions++;
+                }
+                atrTables.Add(period,table);
+                atrAge.AddFirst(period);
+                usedAtrBytes+=bytes;
+                atrMisses++;
+                return table[originalIndex];
+            }
+        }
+
+        private int GetWorkingSignal(int researchIndex,int type,int period)
+        {
+            if(researchIndex<0||researchIndex>=workingToOriginal.Length)
+                throw new ArgumentOutOfRangeException("researchIndex");
+            return GetSignal(workingToOriginal[researchIndex],type,period);
+        }
+
+        private double GetWorkingAtr(int researchIndex,int period)
+        {
+            if(researchIndex<0||researchIndex>=workingToOriginal.Length)
+                throw new ArgumentOutOfRangeException("researchIndex");
+            return GetSourceAtr(workingToOriginal[researchIndex],period);
+        }
+
         public NQHistoricalResultV12 Evaluate(int[] genes)
         {
-            // Exactly the V12 position, SL/TP, time-exit and V9 fitness
-            // calculation, with cached directional leaves only.
+            // Same V12 SL/TP, time-exit and V9 score; only scanning a
+            // reduced M1 window if ALL observed days have exactly 120
+            // contiguous research bars. ATR uses ORIGINAL unfiltered
+            // bars and the original summation order to preserve parity.
             return NQNativeHistoricalEvaluatorV12.EvaluateWithSignals(
-                snapshot,genes,GetSignal,true);
+                workingSnapshot,genes,GetWorkingSignal,true,GetWorkingAtr);
         }
     }
 
