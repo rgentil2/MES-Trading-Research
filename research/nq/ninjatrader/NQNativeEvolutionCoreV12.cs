@@ -62,6 +62,28 @@ namespace NinjaTrader.NinjaScript.Strategies
 
     public sealed class NQEvolutionEngineV12
     {
+        // Explicit 20-gene V12 research domains; no OOS data used.
+        public static NQGeneRangeV11[] DefaultDomains(int[] baseline,
+                                                       bool exploreExits)
+        {
+            if(baseline==null||baseline.Length!=20)
+                throw new ArgumentException("Exactly 20 baseline genes");
+            Func<int,int,int,NQGeneRangeV11> r=(lo,hi,step)=>
+                new NQGeneRangeV11(lo,hi,step);
+            var d=new NQGeneRangeV11[]{
+                r(1,4,1),r(0,131,1),r(6,24,3),
+                r(0,131,1),r(6,24,3),r(0,131,1),r(6,24,3),
+                r(0,131,1),r(6,24,3),
+                r(0,1,1),r(0,1,1),r(0,1,1),r(0,1,1),
+                r(12,50,2),r(16,96,4),r(1,2,1),
+                r(0,3,1),r(7,28,7),r(10,30,5),r(10,50,5)
+            };
+            if(!exploreExits)
+                for(int i=13;i<20;i++)
+                    d[i]=new NQGeneRangeV11(baseline[i],baseline[i],1);
+            return d;
+        }
+
         private readonly NQGeneRangeV11[] ranges;
         private readonly NQEvolutionConfigV12 cfg;
         private readonly Random rng;
@@ -190,6 +212,7 @@ namespace NinjaTrader.NinjaScript.Strategies
                 throw new InvalidOperationException("Create a new V12 engine per run");
             var parents=new List<NQEvolutionIndividualV12>();
             int stalled=0;
+            bool resetNext=false;
             double previousBest=Double.NegativeInfinity;
             for(int gen=0;gen<cfg.Generations;gen++)
             {
@@ -207,8 +230,7 @@ namespace NinjaTrader.NinjaScript.Strategies
                 while(cohort.Count<cfg.Population &&
                       summary.Attempts<cfg.MaxAttempts)
                 {
-                    bool restart=gen>0 &&
-                        stalled>=cfg.ResetAfterStagnantGenerations;
+                    bool restart=gen>0 && resetNext;
                     bool immigrant=gen==0||restart||
                         rng.Next(100)<cfg.ImmigrantPercent;
                     string kind;
@@ -219,13 +241,14 @@ namespace NinjaTrader.NinjaScript.Strategies
                         summary.ImmigrantChildren++;
                         kind="IMMIGRANT";
                     }
-                    else kind="EVOLVED";
+                    else if(parents.Count==0) kind="IMMIGRANT";
                     var evaluatedChild=EvaluateUnique(child,gen,kind,fitness);
                     if(evaluatedChild==null)continue;
                     cohort.Add(evaluatedChild);births++;
                 }
                 if(cohort.Count<cfg.Population)summary.IncompleteGenerations++;
                 if(cohort.Count==0)break;
+                resetNext=false;
                 parents=cohort.OrderByDescending(x=>x.Score)
                     .ThenBy(x=>x.Genome.Canonical.RuntimeKey,
                             StringComparer.Ordinal).ToList();
@@ -240,8 +263,10 @@ namespace NinjaTrader.NinjaScript.Strategies
                 if(stalled>=cfg.ResetAfterStagnantGenerations)
                 {
                     summary.Resets++;
-                    // Next cohort keeps elite survivors; fills the remaining
-                    // slots with immigrants. Do not erase best ever.
+                    resetNext=true;
+                    stalled=0;
+                    // Next cohort keeps elite survivors; fills remaining
+                    // slots with immigrants. Best-ever is preserved.
                 }
                 if(summary.Attempts>=cfg.MaxAttempts)break;
             }
