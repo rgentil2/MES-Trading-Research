@@ -59,8 +59,21 @@ namespace NinjaTrader.NinjaScript.Strategies
             int half=Math.Max(2,n/2),start=at-n+1;
             switch(f)
             {
-                case 57: // Williams %R recentered on zero
-                    return Stoch(b,at,n);
+                case 57: // Williams accumulation/distribution (WAD)
+                {
+                    double ad=0,scale=0;
+                    for(int k=start;k<=at;k++)
+                    {
+                        double prev=b[k-1].Close;
+                        double reference=b[k].Close>prev?
+                            Math.Min(b[k].Low,prev):
+                            b[k].Close<prev?Math.Max(b[k].High,prev):
+                            b[k].Close;
+                        ad+=b[k].Close-reference;
+                        scale+=M.TR(b,k);
+                    }
+                    return M.Div(ad,scale);
+                }
                 case 58: // Ultimate oscillator with 7/14/28 scaled by n
                 {
                     double value=0;
