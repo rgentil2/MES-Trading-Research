@@ -1,0 +1,95 @@
+name: NQ V16 native UTC export, DST, frozen OOS campaign QA
+on:
+  push:
+    paths:
+      - 'research/nq/ninjatrader/NQNativeHistoricalEvaluatorV12.cs'
+      - 'research/nq/ninjatrader/NQNativeChronologicalRiskV15.cs'
+      - 'research/nq/ninjatrader/NQNativeDataLoaderV16.cs'
+      - 'research/nq/ninjatrader/NQNativeFrozenCampaignV16.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeDataLoaderV16Test.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeFrozenCampaignV16Test.cs'
+      - '.github/workflows/nq-v16-native-data-frozen-qa.yml'
+  pull_request:
+    paths:
+      - 'research/nq/ninjatrader/NQNativeHistoricalEvaluatorV12.cs'
+      - 'research/nq/ninjatrader/NQNativeChronologicalRiskV15.cs'
+      - 'research/nq/ninjatrader/NQNativeDataLoaderV16.cs'
+      - 'research/nq/ninjatrader/NQNativeFrozenCampaignV16.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeDataLoaderV16Test.cs'
+      - 'research/nq/ninjatrader/tests/NQNativeFrozenCampaignV16Test.cs'
+      - '.github/workflows/nq-v16-native-data-frozen-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-utc-loader:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile strict NT8 UTC end-of-minute export adapter and test DST/session/partition guards
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v16load"
+          cat > "$RUNNER_TEMP/v16load/v16load.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <Nullable>disable</Nullable>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeHistoricalEvaluatorV12 NQNativeDataLoaderV16 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeATRExitMathV5 NQNativeG0RulesV6 NQNativeG0DiagnosticsV7 NQNativeDiscoveryScoreV9; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/v16load/"
+          done
+          cp research/nq/ninjatrader/tests/NQNativeDataLoaderV16Test.cs "$RUNNER_TEMP/v16load/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/v16load/v16load.csproj" --configuration Release
+  frozen-external-and-final:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile V16 development-frozen 2023–24 external and 2025–26 final, including 3-strategy account-risk gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v16frozen"
+          cat > "$RUNNER_TEMP/v16frozen/v16frozen.csproj" <<'XML'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <Nullable>disable</Nullable>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+          </Project>
+          XML
+          for file in NQNativeConditionsV11 NQNativeBooleanCanonicalV11 NQNativeExitCanonicalV11 NQNativeUniqueSearchV11 NQNativeEvolutionCoreV12 NQNativeATRExitMathV5 NQNativeG0RulesV6 NQNativeG0DiagnosticsV7 NQNativeDiscoveryScoreV9 NQNativeHistoricalEvaluatorV12 NQNativeSignalCacheV14 NQNativeWalkForwardV15 NQNativeRobustnessV13 NQNativePortfolioV13 NQNativeChronologicalRiskV15 NQNativeIntegratedPortfolioRiskV15 NQNativeDataLoaderV16 NQNativeFrozenCampaignV16; do
+            cp "research/nq/ninjatrader/${file}.cs" "$RUNNER_TEMP/v16frozen/"
+          done
+          cp research/nq/ninjatrader/tests/NQNativeFrozenCampaignV16Test.cs "$RUNNER_TEMP/v16frozen/Program.cs"
+          dotnet run --project "$RUNNER_TEMP/v16frozen/v16frozen.csproj" --configuration Release
+      - name: Fail closed on native trading actions or training-on-heldout in V16 source
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Eq '\b(EnterLong|EnterShort|ExitLong|ExitShort|SetStopLoss|SetProfitTarget|RunIteration)\s*\(' research/nq/ninjatrader/NQNativeDataLoaderV16.cs research/nq/ninjatrader/NQNativeFrozenCampaignV16.cs
+          grep -q 'EXTERNAL_REEVALUATION_FORBIDDEN' research/nq/ninjatrader/NQNativeFrozenCampaignV16.cs
+          grep -q 'FINAL_HOLDOUT_REUSE_FORBIDDEN' research/nq/ninjatrader/NQNativeFrozenCampaignV16.cs
+          grep -q 'TimeZoneInfo.ConvertTimeFromUtc' research/nq/ninjatrader/NQNativeDataLoaderV16.cs
+          echo 'NQ_V16_NO_LIVE_ORDERS_AND_STRICT_OOS_GATES'
