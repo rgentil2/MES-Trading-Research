@@ -16,8 +16,12 @@ internal static class V16ResearchRunnerTest
         int[] full=new int[36];
         for(int y=2020;y<=2022;y++)
             for(int m=1;m<=12;m++)
-                for(int d=1;d<=29;d+=2)
+                for(int k=0;k<15;k++)
                 {
+                    // Leap and non-leap February both need exactly 15
+                    // observed sessions without inventing Feb 29.
+                    int d=k==14?Math.Min(29,DateTime.DaysInMonth(y,m)):
+                        1+2*k;
                     if(incomplete&&y==2021&&m==3&&d==29)continue;
                     DateTime start=new DateTime(y,m,d,9,30,0);
                     for(int i=0;i<120;i++)
