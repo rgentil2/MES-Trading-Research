@@ -1,3 +1,13 @@
+## 2026-11-06 — S0.79 V18: 36 FÓRMULAS / 396 CONDICIONES / GENÉTICA AMPLIADA CI VERDE
+
+**Resultado de GitHub Actions [42257874795](https://github.com/rgentil2/MES-Trading-Research/actions/runs/42257874795): SUCCESS 3/3 jobs.** V18 añade **24 familias técnicas matemáticamente distintas** a las 12 de V11, con **396 condiciones direccionales = 36 fórmulas × 11 predicados**. Los 132 IDs antiguos permanecen fijos; pruebas de 17.424 comparaciones de condiciones y 19 contrastes monótonos de referencia, todos sin cambios en V11. **36 fórmulas != 100 indicadores independientes, y 396 condiciones != 396 indicadores independientes.**
+
+**Generador realmente conectado:** GA V12 con `EXCANv18`, caché V14 y diario SHA V17 evalúa los 396 IDs y el mismo score económico de V12/V9 (simulador conservador M1). Prueba con 180 genomas sobre barras sintéticas: 36 familias exploradas y 24 genomas V11 con P&L/operaciones/fitness idénticos. **Escala:** 109.464 genomas únicos con fitness **SINTÉTICO**, 396/396 condiciones visitadas; todavía NO 109.464 backtests reales ni estrategias rentables demostradas. [Reporte](research/nq/NQ_S079_V18_EXPANDED_396_CONDITIONS_2026_11_06.md).
+
+**Sigue vigente la decisión S0.77**: el usuario usa `NQ DEC2026` y ve M1 2020–2022 en NinjaTrader; NO auditar más contratos/rollovers, NO hacer F5/backtests/exportaciones intermedias, **terminar generador y todo el sistema primero; migrar a NT8 una sola vez al final**. Falta ampliar fórmulas técnicamente diversas hasta la meta del usuario, optimizar evaluación histórica masiva M1 y conectar V18 a filtros V13, walk-forward V15 y congelación V16 que hoy siguen V11. Sin P&L real ni aprobación para operar.
+
+---
+
 ## 2026-11-06 — S0.78 V17: 109.464 GENOMAS ÚNICOS PUNTUADOS + REANUDACIÓN DE FITNESS (CI VERDE)
 
 **Estado real:** CI [42243570744](https://github.com/rgentil2/MES-Trading-Research/actions/runs/42243570744) **SUCCESS**, 2/2 pruebas. Motor C# V12/V11: 190 generaciones, 600 individuos, 24 élites, **109.464 candidatos únicos** evaluados con **fitness sintético**, 132 condiciones exploradas. Duplicados rechazados 4.447, redundantes 170; 73.757 mutaciones, 66.753 cruces. Tiempo núcleo genético de CI 1,475–2,014 ms **sin evaluar mercado real**. Resultado sin probar P&L real ni 100k backtests del NQ.
