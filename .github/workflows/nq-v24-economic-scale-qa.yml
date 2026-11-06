@@ -44,18 +44,18 @@ jobs:
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/nqv24"
           cat > "$RUNNER_TEMP/nqv24/test.csproj" <<XML
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>disable</ImplicitUsings>
-    <Nullable>disable</Nullable>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="$GITHUB_WORKSPACE/tools/nq-v24-scale/NQResearchV24.csproj" />
-  </ItemGroup>
-</Project>
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>disable</Nullable>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+            <ItemGroup>
+              <ProjectReference Include="$GITHUB_WORKSPACE/tools/nq-v24-scale/NQResearchV24.csproj" />
+            </ItemGroup>
+          </Project>
           XML
           cp research/nq/ninjatrader/tests/NQNativeLongHorizonV24Test.cs "$RUNNER_TEMP/nqv24/Program.cs"
           dotnet run --project "$RUNNER_TEMP/nqv24/test.csproj" --configuration Release
@@ -82,18 +82,18 @@ jobs:
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/nqv21regression"
           cat > "$RUNNER_TEMP/nqv21regression/test.csproj" <<XML
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>disable</ImplicitUsings>
-    <Nullable>disable</Nullable>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="$GITHUB_WORKSPACE/tools/nq-v24-scale/NQResearchV24.csproj" />
-  </ItemGroup>
-</Project>
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>disable</Nullable>
+              <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            </PropertyGroup>
+            <ItemGroup>
+              <ProjectReference Include="$GITHUB_WORKSPACE/tools/nq-v24-scale/NQResearchV24.csproj" />
+            </ItemGroup>
+          </Project>
           XML
           cp research/nq/ninjatrader/tests/NQNativeFeatureMemoV21Test.cs "$RUNNER_TEMP/nqv21regression/Program.cs"
           dotnet run --project "$RUNNER_TEMP/nqv21regression/test.csproj" --configuration Release
