@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../ninjatrader/NQNativeG0RulesV6.cs" Link="NQNativeG0RulesV6.cs" />
+    <Compile Include="../../ninjatrader/NQNativeG0DiagnosticsV7.cs" Link="NQNativeG0DiagnosticsV7.cs" />
+    <Compile Include="../../ninjatrader/NQNativeDiscoveryScoreV9.cs" Link="NQNativeDiscoveryScoreV9.cs" />
+  </ItemGroup>
+</Project>
