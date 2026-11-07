@@ -55,11 +55,37 @@ namespace NinjaTrader.NinjaScript.Strategies
         private static int HHmmss(DateTime t)
         {return t.Hour*10000+t.Minute*100+t.Second;}
 
+        // A research caller may remove audited incomplete sessions.
+        // A >5-calendar-day time gap is ONLY accepted when every
+        // intervening WEEKDAY is explicitly recorded as excluded.
+        // Weekends are not sessions; gaps longer than 12 days are
+        // rejected even if the caller has a broad exclusion list.
+        // This is opt-in: all existing V14/V21/V23 usage stays strict.
+        private static bool IsAuditedRemovedSessionGap(DateTime previous,
+            DateTime current,ISet<DateTime> auditedExcludedSessions)
+        {
+            if(auditedExcludedSessions==null||
+               current-previous>TimeSpan.FromDays(12)||
+               current.Date<=previous.Date.AddDays(1))
+                return false;
+            bool found=false;
+            for(DateTime d=previous.Date.AddDays(1);
+                d<current.Date;d=d.AddDays(1))
+            {
+                if(d.DayOfWeek==DayOfWeek.Saturday||
+                   d.DayOfWeek==DayOfWeek.Sunday)continue;
+                if(!auditedExcludedSessions.Contains(d))return false;
+                found=true;
+            }
+            return found;
+        }
+
         public NQNativeSignalCacheV14(IList<NQTimedBarV12> source,
                                       long maxSignalCacheBytes,
                                       long maxAtrCacheBytes=67108864,
                                       int conditionCount=NQNativeConditionsV11.Count,
-                                      Func<IList<NQBarV11>,int,int,int> reader=null)
+                                      Func<IList<NQBarV11>,int,int,int> reader=null,
+                                      ISet<DateTime> auditedExcludedSessions=null)
         {
             if(conditionCount<NQNativeConditionsV11.Count||
                conditionCount>10000||
@@ -89,7 +115,9 @@ namespace NinjaTrader.NinjaScript.Strategies
                 var item=source[i];
                 if(item==null||item.Time.Year<2020||item.Time.Year>2022||
                    item.Time<=last||
-                   i>0 && item.Time-last>TimeSpan.FromDays(5))
+                   i>0 && item.Time-last>TimeSpan.FromDays(5) &&
+                   !IsAuditedRemovedSessionGap(last,item.Time,
+                       auditedExcludedSessions))
                     throw new ArgumentException(
                         "Invalid, unordered, >5-day gap or held-out 2023+ bar");
                 // NQTimedBarV12 and NQBarV11 contain immutable data.
