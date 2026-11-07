@@ -16,7 +16,7 @@
 
 ### Archivos matemáticos C# puros que deben acompañar la estrategia en NinjaTrader
 
-Los archivos fuente que necesitará el editor NinjaScript **para la validación final**, y solo entonces:
+Los **16 archivos fuente C#** que necesitará el editor NinjaScript para la validación final (o para comprobar anticipadamente la compilación, sin activar la estrategia):
 
 ```text
 research/nq/ninjatrader/NQNativeConditionsV11.cs
@@ -29,13 +29,15 @@ research/nq/ninjatrader/NQVolumeActionFeaturesV19.cs
 research/nq/ninjatrader/NQNativeConditionCatalogV19.cs
 research/nq/ninjatrader/NQNativeBooleanCanonicalV11.cs
 research/nq/ninjatrader/NQNativeExitCanonicalV11.cs
+research/nq/ninjatrader/NQNativeUniqueSearchV11.cs
+research/nq/ninjatrader/NQNativeEvolutionCoreV12.cs
 research/nq/ninjatrader/NQNativeExitCanonicalV19.cs
 research/nq/ninjatrader/NQNativeATRExitMathV5.cs
 research/nq/ninjatrader/NQNativeV25FrozenSignalCore.cs
 research/nq/ninjatrader/nt8/NQ_V25_FrozenAnalyzer.cs
 ```
 
-**No importa los otros 42 módulos de investigación .NET8 en NinjaScript**: V23/V24 trabajan fuera de NinjaTrader y pueden utilizar APIs .NET que difieren de la versión interna de NT8. Solo el adaptador y sus dependencias mínimas se probarán con DLL nativas durante la **única validación final**.
+**Nota de dependencias:** `NQNativeExitCanonicalV19.cs` contiene un método de dominios que referencia `NQGeneRangeV11` y `NQEvolutionEngineV12`, por lo que `NQNativeUniqueSearchV11.cs` y `NQNativeEvolutionCoreV12.cs` también se deben copiar aunque V25 no ejecute una búsqueda genética. No importa los otros 42 módulos de investigación .NET8 en NinjaScript: V23/V24 trabajan fuera de NinjaTrader y pueden utilizar APIs .NET que difieren de la versión interna de NT8. Solo el adaptador y sus dependencias mínimas se probarán con DLL nativas durante la **única validación final**.
 
 ## Condiciones de seguridad operativa
 
