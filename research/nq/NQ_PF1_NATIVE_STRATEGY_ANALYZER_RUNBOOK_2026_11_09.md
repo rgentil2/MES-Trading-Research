@@ -16,7 +16,7 @@ Este documento complementa y **NO modifica** [contrato PF1 v1.0.0](NQ_PORTFOLIO_
 2. El script produjo automáticamente `NQ_100K_..._ALL_CANDIDATES.tsv`, `..._SUMMARY.tsv` y registros del motor. **No fue necesario ejecutar Python para generarlos**.
 3. El origen de M1 admitido ya tiene identificadores en el ledger: `usableBarsSHA256=d35d429f71e37da175c02eb5c199d42a30a5f813af7fc0f1a26c5f5327a310fb`; el archivo `ALL_CANDIDATES` observado y verificado tiene `SHA256=be94604c3a735d6396fe71194c81dc56e8826f3dcf9aa1714282a3cc558c6980`.
 4. La reauditoría anterior de 7 ternas obtuvo 0 aprobadas después de Monte Carlo. Eso era sobre un **embudo anterior**, no prueba de PF1 con un ejecutor común de 1 NQ.
-5. El anterior `NQ_V25_FrozenAnalyzer` es un **puente de validación final de genes congelados**, no un generador de 100.000 ni un portafolio central. Ver [decisión nativa preexistente de Strategy Analyzer](NQ_NATIVE_STRATEGY_ANALYZER_ARCHITECTURE_DECISION.md) del PR V25 #84. No mezclar objetivos.
+5. El anterior `NQ_V25_FrozenAnalyzer` es un **puente de validación final de genes congelados**, no un generador de 100.000 ni un portafolio central. Ver [decisión nativa preexistente de Strategy Analyzer (PR V25 #84)](https://github.com/rgentil2/MES-Trading-Research/blob/feat/nq-v25-one-shot-ninjatrader-native-validation/research/nq/NQ_NATIVE_STRATEGY_ANALYZER_ARCHITECTURE_DECISION.md) del PR V25 #84. No mezclar objetivos.
 6. Se hizo un intento con `NQ_PF1_E1_E3.py` y `EJECUTAR_PF1.cmd`, con resultados de preselección. **Ese paquete queda SUPERADO para ejecutar PF1** porque viola la decisión de usar solamente Strategy Analyzer. Los filtros/conteos pueden servir de referencia para QA, pero **no** se exige usar ese programa.
 
 ## 3. Mapa único del nuevo embudo
