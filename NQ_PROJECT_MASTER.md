@@ -1,3 +1,7 @@
+> **PRIORIDAD ACTUAL — NUEVO EMBUDO PF1 (2026-11-09):** [Contrato congelado de portafolios NQ PF1](research/nq/NQ_PORTFOLIO_FUNNEL_PF1_CONTRACT_2026_11_09.md) · [Reglas JSON](research/nq/NQ_PORTFOLIO_FUNNEL_PF1_RULES_2026_11_09.json) · [control de cambios](research/nq/NQ_PORTFOLIO_FUNNEL_PF1_CHANGELOG.md). **Estado SPEC_ONLY, no implementado, no hay portafolio autorizado.** Este documento conserva íntegro el historial V19–V25 que sigue abajo, no reinterpretar versiones.
+
+---
+
 ## 2026-11-06 — V24 CONSOLIDADA EN MAIN — PR #83 FUSIONADO
 
 **Hecho verificado:** PR acumulado [#83](https://github.com/rgentil2/MES-Trading-Research/pull/83) **FUSIONADO a `main` por squash**, commit **`ea5279626d8f19f7d64719a42e46d77e43b3eae8`**, después de que las dos suites de regresión V21 y V24 del último commit pasaran en CI. V23 ya estaba fusionado previamente mediante PR #82. No quedan PR de integración V24 pendientes.

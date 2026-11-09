@@ -1,0 +1,974 @@
+{
+  "id": "NQ_PF1",
+  "version": "1.0.0",
+  "locked_at": "2026-11-09",
+  "status": "SPEC_ONLY",
+  "approved_for_trading": false,
+  "instrument": "NQ",
+  "portfolio_components_min": 3,
+  "portfolio_components_max": 5,
+  "max_open_NQ": 1,
+  "is_window": [
+    "2020-01-01",
+    "2022-12-31"
+  ],
+  "oos_1": [
+    "2023-01-01",
+    "2024-12-31"
+  ],
+  "oos_2": [
+    "2025-01-01",
+    "2026-10-31"
+  ],
+  "paper_forward_required": false,
+  "legacy_version_scopes_unchanged": [
+    "V19",
+    "V20",
+    "V21",
+    "V22",
+    "V23",
+    "V24",
+    "V25"
+  ],
+  "implementation_note": "Existing V19-V25 gates, C# and PR #84 are not proof of PF1 implementation",
+  "stages": [
+    {
+      "id": 1,
+      "name": "Banco de estrategias e integridad",
+      "period": "IS 2020–2022",
+      "rules": [
+        {
+          "filter": "Banco inicial",
+          "operator": "eq",
+          "value": 100000,
+          "unit": "estrategias",
+          "display": "100.000 estrategias"
+        },
+        {
+          "filter": "Genes por estrategia",
+          "operator": "eq",
+          "value": 20,
+          "unit": "genes",
+          "display": "20 genes"
+        },
+        {
+          "filter": "Formulas tecnicas",
+          "operator": "eq",
+          "value": 120,
+          "unit": "formulas",
+          "display": "120 formulas"
+        },
+        {
+          "filter": "Condiciones direccionales",
+          "operator": "eq",
+          "value": 1320,
+          "unit": "condiciones",
+          "display": "1.320 condiciones"
+        },
+        {
+          "filter": "Temporalidad",
+          "operator": "eq",
+          "value": 1,
+          "unit": "minuto",
+          "display": "1 minuto"
+        },
+        {
+          "filter": "Meses IS",
+          "operator": "eq",
+          "value": 36,
+          "unit": "meses",
+          "display": "36 meses"
+        },
+        {
+          "filter": "Genomas invalidos",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        },
+        {
+          "filter": "Duplicados canonicos",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        },
+        {
+          "filter": "Referencias a futuro",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        },
+        {
+          "filter": "IDs y parametros trazables",
+          "operator": "eq",
+          "value": 100,
+          "unit": "%",
+          "display": "100 %"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Preseleccion individual ligera",
+      "period": "IS 2020–2022",
+      "rules": [
+        {
+          "filter": "Operaciones historicas minimas",
+          "operator": "gte",
+          "value": 30,
+          "unit": "trades",
+          "display": "≥30 trades"
+        },
+        {
+          "filter": "Contratos por senal",
+          "operator": "eq",
+          "value": 1,
+          "unit": "NQ",
+          "display": "1 NQ"
+        },
+        {
+          "filter": "Entradas sin stop",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        },
+        {
+          "filter": "Riesgo planificado por operacion",
+          "operator": "lte",
+          "value": 200,
+          "unit": "USD",
+          "display": "≤200 USD"
+        },
+        {
+          "filter": "Slippage entrada",
+          "operator": "eq",
+          "value": 2,
+          "unit": "ticks",
+          "display": "2 ticks"
+        },
+        {
+          "filter": "Slippage salida",
+          "operator": "eq",
+          "value": 2,
+          "unit": "ticks",
+          "display": "2 ticks"
+        },
+        {
+          "filter": "Comision ida/vuelta",
+          "operator": "eq",
+          "value": 4.68,
+          "unit": "USD",
+          "display": "4,68 USD"
+        },
+        {
+          "filter": "Costo base ida/vuelta",
+          "operator": "eq",
+          "value": 24.68,
+          "unit": "USD",
+          "display": "24,68 USD"
+        },
+        {
+          "filter": "Multiplicador base",
+          "operator": "eq",
+          "value": 1,
+          "unit": "x",
+          "display": "1 x"
+        },
+        {
+          "filter": "Genomas redundantes",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        },
+        {
+          "filter": "Errores contables",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Construccion de portafolios",
+      "period": "IS 2020–2022",
+      "rules": [
+        {
+          "filter": "Estrategias por portafolio",
+          "operator": "range",
+          "value": [
+            3,
+            5
+          ],
+          "unit": "estrategias",
+          "display": "3–5 estrategias"
+        },
+        {
+          "filter": "Tamanos explorados",
+          "operator": "set",
+          "value": [
+            3,
+            4,
+            5
+          ],
+          "unit": "estrategias",
+          "display": "3, 4, 5 estrategias"
+        },
+        {
+          "filter": "Correlacion mensual positiva entre miembros",
+          "operator": "lte",
+          "value": 0.45,
+          "unit": "rho",
+          "display": "≤0,45 rho"
+        },
+        {
+          "filter": "Concentracion beneficio bruto ganador por miembro",
+          "operator": "lte",
+          "value": 40,
+          "unit": "%",
+          "display": "≤40 %"
+        },
+        {
+          "filter": "Identidades duplicadas",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        },
+        {
+          "filter": "Combinaciones repetidas",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        },
+        {
+          "filter": "Contratos simultaneos previstos",
+          "operator": "lte",
+          "value": 1,
+          "unit": "NQ",
+          "display": "≤1 NQ"
+        },
+        {
+          "filter": "Slippage ida/vuelta supuesto",
+          "operator": "eq",
+          "value": 4,
+          "unit": "ticks",
+          "display": "4 ticks"
+        },
+        {
+          "filter": "Costo base por trade",
+          "operator": "eq",
+          "value": 24.68,
+          "unit": "USD",
+          "display": "24,68 USD"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Ejecutor central de NQ",
+      "period": "IS 2020–2022",
+      "rules": [
+        {
+          "filter": "Contratos simultaneos",
+          "operator": "lte",
+          "value": 1,
+          "unit": "NQ",
+          "display": "≤1 NQ"
+        },
+        {
+          "filter": "Posiciones simultaneas",
+          "operator": "lte",
+          "value": 1,
+          "unit": "posicion",
+          "display": "≤1 posicion"
+        },
+        {
+          "filter": "Riesgo planificado por entrada",
+          "operator": "lte",
+          "value": 200,
+          "unit": "USD",
+          "display": "≤200 USD"
+        },
+        {
+          "filter": "Slippage entrada",
+          "operator": "eq",
+          "value": 2,
+          "unit": "ticks",
+          "display": "2 ticks"
+        },
+        {
+          "filter": "Slippage salida",
+          "operator": "eq",
+          "value": 2,
+          "unit": "ticks",
+          "display": "2 ticks"
+        },
+        {
+          "filter": "Comision RT",
+          "operator": "eq",
+          "value": 4.68,
+          "unit": "USD",
+          "display": "4,68 USD"
+        },
+        {
+          "filter": "Costo base RT",
+          "operator": "eq",
+          "value": 24.68,
+          "unit": "USD",
+          "display": "24,68 USD"
+        },
+        {
+          "filter": "Pausa preventiva por perdida diaria",
+          "operator": "eq",
+          "value": 500,
+          "unit": "USD",
+          "display": "500 USD"
+        },
+        {
+          "filter": "Cierre preventivo por perdida diaria",
+          "operator": "eq",
+          "value": 750,
+          "unit": "USD",
+          "display": "750 USD"
+        },
+        {
+          "filter": "Bloqueo preventivo de DD equity",
+          "operator": "eq",
+          "value": 1600,
+          "unit": "USD",
+          "display": "1.600 USD"
+        },
+        {
+          "filter": "DD objetivo maximo",
+          "operator": "lte",
+          "value": 2000,
+          "unit": "USD",
+          "display": "≤2.000 USD"
+        },
+        {
+          "filter": "Perdida diaria objetivo maxima",
+          "operator": "lte",
+          "value": 1000,
+          "unit": "USD",
+          "display": "≤1.000 USD"
+        },
+        {
+          "filter": "Entradas sin stop",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        },
+        {
+          "filter": "Entradas por encima del riesgo",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        },
+        {
+          "filter": "Posiciones fuera de horario",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Economia y riesgo del portafolio ejecutado",
+      "period": "IS 2020–2022",
+      "rules": [
+        {
+          "filter": "Beneficio neto",
+          "operator": "gt",
+          "value": 0,
+          "unit": "USD",
+          "display": ">0 USD"
+        },
+        {
+          "filter": "Profit Factor neto",
+          "operator": "gte",
+          "value": 1.25,
+          "unit": "ratio",
+          "display": "≥1,25"
+        },
+        {
+          "filter": "Operaciones totales",
+          "operator": "gte",
+          "value": 150,
+          "unit": "trades",
+          "display": "≥150 trades"
+        },
+        {
+          "filter": "Operaciones por mes completo",
+          "operator": "gte",
+          "value": 5,
+          "unit": "trades",
+          "display": "≥5 trades"
+        },
+        {
+          "filter": "Meses evaluados",
+          "operator": "eq",
+          "value": 36,
+          "unit": "meses",
+          "display": "36 meses"
+        },
+        {
+          "filter": "Meses con frecuencia inferior",
+          "operator": "eq",
+          "value": 0,
+          "unit": "meses",
+          "display": "0 meses"
+        },
+        {
+          "filter": "Stability",
+          "operator": "gt",
+          "value": 30,
+          "unit": "%",
+          "display": ">30 %"
+        },
+        {
+          "filter": "Symmetry",
+          "operator": "gt",
+          "value": 30,
+          "unit": "%",
+          "display": ">30 %"
+        },
+        {
+          "filter": "DD cerrado",
+          "operator": "lte",
+          "value": 2000,
+          "unit": "USD",
+          "display": "≤2.000 USD"
+        },
+        {
+          "filter": "DD adverso M1",
+          "operator": "lte",
+          "value": 2000,
+          "unit": "USD",
+          "display": "≤2.000 USD"
+        },
+        {
+          "filter": "Perdida diaria maxima",
+          "operator": "lte",
+          "value": 1000,
+          "unit": "USD",
+          "display": "≤1.000 USD"
+        },
+        {
+          "filter": "Exposicion adversa simultanea",
+          "operator": "lte",
+          "value": 1000,
+          "unit": "USD",
+          "display": "≤1.000 USD"
+        },
+        {
+          "filter": "Costo base RT",
+          "operator": "eq",
+          "value": 24.68,
+          "unit": "USD",
+          "display": "24,68 USD"
+        },
+        {
+          "filter": "Multiplicador de costos estresados",
+          "operator": "eq",
+          "value": 1.5,
+          "unit": "x",
+          "display": "1,5 x"
+        },
+        {
+          "filter": "Costo estresado RT",
+          "operator": "eq",
+          "value": 37.02,
+          "unit": "USD",
+          "display": "37,02 USD"
+        },
+        {
+          "filter": "Beneficio con costos 1.5x",
+          "operator": "gt",
+          "value": 0,
+          "unit": "USD",
+          "display": ">0 USD"
+        },
+        {
+          "filter": "Años IS con beneficio positivo",
+          "operator": "eq",
+          "value": 3,
+          "unit": "de 3",
+          "display": "3 de 3"
+        },
+        {
+          "filter": "PF minimo por año",
+          "operator": "gte",
+          "value": 1,
+          "unit": "ratio",
+          "display": "≥1"
+        },
+        {
+          "filter": "Concentracion beneficio bruto ganador",
+          "operator": "lte",
+          "value": 40,
+          "unit": "%",
+          "display": "≤40 %"
+        },
+        {
+          "filter": "Contratos simultaneos",
+          "operator": "lte",
+          "value": 1,
+          "unit": "NQ",
+          "display": "≤1 NQ"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Robustez: Monte Carlo del portafolio",
+      "period": "IS 2020–2022",
+      "rules": [
+        {
+          "filter": "Simulaciones exploratorias",
+          "operator": "eq",
+          "value": 500,
+          "unit": "caminos",
+          "display": "500 caminos"
+        },
+        {
+          "filter": "Simulaciones confirmatorias",
+          "operator": "eq",
+          "value": 5000,
+          "unit": "caminos",
+          "display": "5.000 caminos"
+        },
+        {
+          "filter": "Bloque bootstrap",
+          "operator": "eq",
+          "value": 8,
+          "unit": "trades",
+          "display": "8 trades"
+        },
+        {
+          "filter": "Percentil drawdown",
+          "operator": "eq",
+          "value": 95,
+          "unit": "P",
+          "display": "95 P"
+        },
+        {
+          "filter": "DD Monte Carlo P95",
+          "operator": "lte",
+          "value": 2000,
+          "unit": "USD",
+          "display": "≤2.000 USD"
+        },
+        {
+          "filter": "Multiplicador de costos",
+          "operator": "eq",
+          "value": 1.5,
+          "unit": "x",
+          "display": "1,5 x"
+        },
+        {
+          "filter": "Costo adicional por trade sobre neto base",
+          "operator": "eq",
+          "value": 12.34,
+          "unit": "USD",
+          "display": "12,34 USD"
+        },
+        {
+          "filter": "Beneficio total estresado",
+          "operator": "gt",
+          "value": 0,
+          "unit": "USD",
+          "display": ">0 USD"
+        },
+        {
+          "filter": "Portafolios aprobados que incumplen P95",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Validacion nativa NinjaTrader y congelacion",
+      "period": "IS 2020–2022",
+      "rules": [
+        {
+          "filter": "Temporalidad",
+          "operator": "eq",
+          "value": 1,
+          "unit": "minuto",
+          "display": "1 minuto"
+        },
+        {
+          "filter": "Contratos simultaneos",
+          "operator": "lte",
+          "value": 1,
+          "unit": "NQ",
+          "display": "≤1 NQ"
+        },
+        {
+          "filter": "Beneficio neto nativo",
+          "operator": "gt",
+          "value": 0,
+          "unit": "USD",
+          "display": ">0 USD"
+        },
+        {
+          "filter": "PF nativo",
+          "operator": "gte",
+          "value": 1.25,
+          "unit": "ratio",
+          "display": "≥1,25"
+        },
+        {
+          "filter": "Operaciones nativas",
+          "operator": "gte",
+          "value": 150,
+          "unit": "trades",
+          "display": "≥150 trades"
+        },
+        {
+          "filter": "Stability nativa",
+          "operator": "gt",
+          "value": 30,
+          "unit": "%",
+          "display": ">30 %"
+        },
+        {
+          "filter": "Symmetry nativa",
+          "operator": "gt",
+          "value": 30,
+          "unit": "%",
+          "display": ">30 %"
+        },
+        {
+          "filter": "DD nativo",
+          "operator": "lte",
+          "value": 2000,
+          "unit": "USD",
+          "display": "≤2.000 USD"
+        },
+        {
+          "filter": "Perdida diaria nativa",
+          "operator": "lte",
+          "value": 1000,
+          "unit": "USD",
+          "display": "≤1.000 USD"
+        },
+        {
+          "filter": "MC P95 DD de ejecuciones nativas",
+          "operator": "lte",
+          "value": 2000,
+          "unit": "USD",
+          "display": "≤2.000 USD"
+        },
+        {
+          "filter": "Costos bajo estres",
+          "operator": "eq",
+          "value": 1.5,
+          "unit": "x",
+          "display": "1,5 x"
+        },
+        {
+          "filter": "Operaciones duplicadas",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        },
+        {
+          "filter": "Senales sin reconciliar",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        },
+        {
+          "filter": "Entradas sin stop",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        },
+        {
+          "filter": "Violaciones de contratos",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        },
+        {
+          "filter": "Diferencias monetarias injustificadas",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        },
+        {
+          "filter": "Cambios de parametros tras congelar",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "OOS historico cronologico del sistema congelado",
+      "period": "OOS 2023–octubre 2026",
+      "rules": [
+        {
+          "filter": "OOS 1",
+          "operator": "date",
+          "value": [
+            "2023-01-01",
+            "2024-12-31"
+          ],
+          "unit": "fechas",
+          "display": "2023-01-01 a 2024-12-31"
+        },
+        {
+          "filter": "OOS 2",
+          "operator": "date",
+          "value": [
+            "2025-01-01",
+            "2026-10-31"
+          ],
+          "unit": "fechas",
+          "display": "2025-01-01 a 2026-10-31"
+        },
+        {
+          "filter": "Meses OOS completos",
+          "operator": "eq",
+          "value": 46,
+          "unit": "meses",
+          "display": "46 meses"
+        },
+        {
+          "filter": "Beneficio neto por bloque OOS",
+          "operator": "gt",
+          "value": 0,
+          "unit": "USD",
+          "display": ">0 USD"
+        },
+        {
+          "filter": "PF minimo por bloque OOS",
+          "operator": "gte",
+          "value": 1.25,
+          "unit": "ratio",
+          "display": "≥1,25"
+        },
+        {
+          "filter": "PF OOS acumulado",
+          "operator": "gte",
+          "value": 1.25,
+          "unit": "ratio",
+          "display": "≥1,25"
+        },
+        {
+          "filter": "Operaciones por mes completo OOS",
+          "operator": "gte",
+          "value": 5,
+          "unit": "trades",
+          "display": "≥5 trades"
+        },
+        {
+          "filter": "Stability OOS acumulada",
+          "operator": "gt",
+          "value": 30,
+          "unit": "%",
+          "display": ">30 %"
+        },
+        {
+          "filter": "Symmetry OOS acumulada",
+          "operator": "gt",
+          "value": 30,
+          "unit": "%",
+          "display": ">30 %"
+        },
+        {
+          "filter": "DD OOS continuo sin reinicio anual",
+          "operator": "lte",
+          "value": 2000,
+          "unit": "USD",
+          "display": "≤2.000 USD"
+        },
+        {
+          "filter": "Perdida diaria maxima OOS",
+          "operator": "lte",
+          "value": 1000,
+          "unit": "USD",
+          "display": "≤1.000 USD"
+        },
+        {
+          "filter": "Estres de costos OOS",
+          "operator": "eq",
+          "value": 1.5,
+          "unit": "x",
+          "display": "1,5 x"
+        },
+        {
+          "filter": "Beneficio OOS estresado",
+          "operator": "gt",
+          "value": 0,
+          "unit": "USD",
+          "display": ">0 USD"
+        },
+        {
+          "filter": "Monte Carlo OOS P95 DD",
+          "operator": "lte",
+          "value": 2000,
+          "unit": "USD",
+          "display": "≤2.000 USD"
+        },
+        {
+          "filter": "Contratos simultaneos OOS",
+          "operator": "lte",
+          "value": 1,
+          "unit": "NQ",
+          "display": "≤1 NQ"
+        },
+        {
+          "filter": "Reoptimizaciones usando OOS",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        },
+        {
+          "filter": "Cambios despues de observar OOS",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Decision de habilitacion operativa NQ",
+      "period": "Despues de aprobar 1–8",
+      "rules": [
+        {
+          "filter": "Embudos anteriores aprobados",
+          "operator": "eq",
+          "value": 8,
+          "unit": "de 8",
+          "display": "8 de 8"
+        },
+        {
+          "filter": "Contratos simultaneos",
+          "operator": "lte",
+          "value": 1,
+          "unit": "NQ",
+          "display": "≤1 NQ"
+        },
+        {
+          "filter": "Stability final",
+          "operator": "gt",
+          "value": 30,
+          "unit": "%",
+          "display": ">30 %"
+        },
+        {
+          "filter": "Symmetry final",
+          "operator": "gt",
+          "value": 30,
+          "unit": "%",
+          "display": ">30 %"
+        },
+        {
+          "filter": "PF final",
+          "operator": "gte",
+          "value": 1.25,
+          "unit": "ratio",
+          "display": "≥1,25"
+        },
+        {
+          "filter": "DD objetivo",
+          "operator": "lte",
+          "value": 2000,
+          "unit": "USD",
+          "display": "≤2.000 USD"
+        },
+        {
+          "filter": "Perdida diaria objetivo",
+          "operator": "lte",
+          "value": 1000,
+          "unit": "USD",
+          "display": "≤1.000 USD"
+        },
+        {
+          "filter": "Monte Carlo P95 DD",
+          "operator": "lte",
+          "value": 2000,
+          "unit": "USD",
+          "display": "≤2.000 USD"
+        },
+        {
+          "filter": "Estrategias seleccionadas",
+          "operator": "range",
+          "value": [
+            3,
+            5
+          ],
+          "unit": "estrategias",
+          "display": "3–5 estrategias"
+        },
+        {
+          "filter": "Entradas sin stop",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        },
+        {
+          "filter": "Ordenes rechazadas sin gestionar",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        },
+        {
+          "filter": "Errores criticos sin resolver",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        },
+        {
+          "filter": "Reoptimizaciones con OOS",
+          "operator": "eq",
+          "value": 0,
+          "unit": "casos",
+          "display": "0 casos"
+        }
+      ]
+    }
+  ],
+  "definitions": {
+    "stability": "Stability[%] =100*R2(OLS of daily EOD net portfolio equity vs consecutive eligible trading-day index), only if regression slope > 0; otherwise 0. Undefined when insufficient sample/variance -> FAIL. Include all valid no-trade days as flat equity. PROJECT-SPECIFIC proxy, NOT guaranteed StrategyQuant proprietary formula.",
+    "symmetry": "L=total net realized PnL of executed Long trades; S=total net realized PnL of executed Short trades; if L>0 && S>0 then Symmetry[%]=100*min(L,S)/max(L,S), else 0. Computed from central executor fills only.",
+    "concentration": "Per-strategy ratio of positive gross PnL on centrally executed winning trades attributed to strategy over sum positive gross PnL of all centrally executed winning trades; undefined denominator -> FAIL.",
+    "correlation": "Pearson positive monthly net PnL across individual strategy vectors on same 36 IS months, pairwise; undefined -> FAIL, max positive rho <=0.45. Used only for preselection, not a substitute for central portfolio risk.",
+    "mc": "Moving block bootstrap with replacement of 8 consecutive chronological closed trades from central executor; 500 exploratory and 5000 confirmatory; P95 of max closed DD <=USD2000. Fixed RNG seed plus code hashes recorded per run. Additional USD12.34 only on trade PnL already net of baseline USD24.68.",
+    "cost": "Baseline 2 adverse entry ticks +2 adverse exit ticks at USD5 per NQ tick=USD20 slippage; USD4.68 RT fee; total USD24.68. Stress 1.5x total=USD37.02; extra=USD12.34 when base already net. No double-charge; handle order types and actual native fills.",
+    "stop_risk": "One-NQ stop loss dollars + total base cost USD24.68 <= USD200; discard too-risky signals, do not compress original/ATR stop retroactively.",
+    "oos": "2023-24 and 2025-Oct2026 frozen historical OOS, no change of genome/portfolio/params after IS freeze. This is NOT rolling-reoptimization walk-forward; 0 reoptimizations in OOS.",
+    "risk": "Soft pause daily loss 500; emergency daily 750; equity-DD preventive lock 1600. Limits 1000 daily, 2000 overall are evaluation goals; bar-close controls do not guarantee never exceeding.",
+    "provenance": "Baseline proposed values (30 operations, USD200/500/750/1600, 5000 MC) now frozen as PF1 v1.0 design for implementation; not empirically proven optimals."
+  }
+}
