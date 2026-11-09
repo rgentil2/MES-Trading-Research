@@ -1,5 +1,7 @@
 # MES Trading Research
 
+> **Nuevo contrato NQ PF1 (2026-11-09):** [NQ PF1 — NUEVO EMBUDO CONGELADO (v1.0.0)](research/nq/NQ_PORTFOLIO_FUNNEL_PF1_CONTRACT_2026_11_09.md) — 9 etapas, 121 reglas, Stability/Symmetry >30%, exposición máxima 1 NQ y OOS 2023–oct2026. Es **especificación sin implementación**, independiente de los objetivos V19–V25; no autoriza operaciones.
+
 > **INVESTIGACIÓN ACTIVA NQ/MNQ — PUNTO DE ENTRADA OBLIGATORIO**
 >
 > - **[NQ_PROJECT_MASTER.md — objetivo, reglas, estados, decisiones, backlog y prompt para otro chat](NQ_PROJECT_MASTER.md)**
