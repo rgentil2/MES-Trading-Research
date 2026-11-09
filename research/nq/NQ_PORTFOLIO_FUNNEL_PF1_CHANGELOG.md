@@ -22,3 +22,12 @@
 - Estado aprobado / rechazado / pendiente:
 
 No editar entradas anteriores; agregar una nueva. Si falta aprobación, no cambiar los valores.
+
+
+## 2026-11-09 — PF1 v1.0.0: enmienda de ejecución NO normativa
+
+- Corrección de implementación sin cambio de umbrales: todo PF1 corre desde NinjaTrader 8 → Strategy Analyzer; no Python, PowerShell ni CLI externa.
+- El generador nativo previo produjo 100.000 genomas y TSV desde Analyzer. El prototipo Python de embudos 1–3 queda SUPERADO como herramienta de ejecución, no se borra su evidencia.
+- Guia: [Arquitectura nativa PF1](NQ_PF1_NATIVE_STRATEGY_ANALYZER_RUNBOOK_2026_11_09.md).
+- Entrega C# NQ_PF1_Analyzer: importación del ledger de NT8, cribado y propuestas; pendiente F5/backtest real, aún no aprobó embudo 3; embudos 4–9 pendientes.
+- No se modifican Stability >30%, Symmetry >30%, costos, OOS, limites de 1 NQ, ni objetivos V19–V25. No se habilitan operaciones.

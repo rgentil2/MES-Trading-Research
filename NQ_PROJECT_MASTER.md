@@ -1,3 +1,5 @@
+> **ARQUITECTURA PF1 DE EJECUCIÓN (2026-11-09):** todo el nuevo embudo debe ejecutarse desde **NinjaTrader 8 → Strategy Analyzer**, sin Python/PowerShell/.cmd ni exportaciones manuales. [Runbook nativo PF1](research/nq/NQ_PF1_NATIVE_STRATEGY_ANALYZER_RUNBOOK_2026_11_09.md). El primer adaptador NinjaScript E1/E2/E3 es **preliminar y no habilita operaciones ni OOS**. Contrato PF1 v1.0.0 y objetivos V19–V25 intactos.
+
 > **PRIORIDAD ACTUAL — NUEVO EMBUDO PF1 (2026-11-09):** [Contrato congelado de portafolios NQ PF1](research/nq/NQ_PORTFOLIO_FUNNEL_PF1_CONTRACT_2026_11_09.md) · [Reglas JSON](research/nq/NQ_PORTFOLIO_FUNNEL_PF1_RULES_2026_11_09.json) · [control de cambios](research/nq/NQ_PORTFOLIO_FUNNEL_PF1_CHANGELOG.md). **Estado SPEC_ONLY, no implementado, no hay portafolio autorizado.** Este documento conserva íntegro el historial V19–V25 que sigue abajo, no reinterpretar versiones.
 
 ---
