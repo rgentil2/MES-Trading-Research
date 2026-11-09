@@ -1,0 +1,19 @@
+name: NQ PF1 - Frozen Portfolio Funnel Contract
+on:
+  push:
+    paths:
+      - research/nq/NQ_PORTFOLIO_FUNNEL_PF1_*
+      - tools/nq-pf1/**
+      - .github/workflows/nq-pf1-contract.yml
+  pull_request:
+    paths:
+      - research/nq/NQ_PORTFOLIO_FUNNEL_PF1_*
+      - tools/nq-pf1/**
+      - .github/workflows/nq-pf1-contract.yml
+jobs:
+  frozen-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate PF1 JSON vs documentation and frozen thresholds
+        run: python3 tools/nq-pf1/validate_contract.py
