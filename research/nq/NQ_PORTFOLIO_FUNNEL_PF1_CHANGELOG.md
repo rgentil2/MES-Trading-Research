@@ -47,3 +47,14 @@ No editar entradas anteriores; agregar una nueva. Si falta aprobación, no cambi
 - **Seguridad:** Cero órdenes reales, OOS cerrado; resultados solo REPLAY_DIAGNOSTIC_ONLY. F5 y backtest real aún no comprobados; falla o ausencia de evidencia = pendiente, no PASS.
 - **Vínculo:** [runbook E4 R1](NQ_PF1_E4_NATIVE_REPLAY_R1_RUNBOOK_2026_11_09.md).
 - **Contrato:** PF1 v1.0.0, 121 filtros, Stability >30%, Symmetry >30%, y objetivos históricos V19–V25 sin modificaciones.
+
+
+## 2026-11-09 — PF1 E4+E5 R1: módulo económico nativo, contrato sin cambios
+
+- E4 R1 comprobado por el usuario: Strategy Analyzer NQ DEC26, 3 portafolios, 12 miembros, 160.770 barras válidas, 9 días excluidos, OOS LOCKED; solo replay diagnóstico.
+- Nuevo módulo C# E4+E5 R1 en ZIP compacto con instalador CMD, ejecución exclusiva desde Strategy Analyzer y sin alterar NQ_PF1_Analyzer R2.
+- E5 calcula PF, Stability >30%, Symmetry >30%, 150 trades, 5/mes, DD, pérdidas diarias y simultáneas, 3/3 años, costos 1,5x, correlación y concentración a nivel del portafolio.
+- Corregida separación contable de DD cerrado vs. mark-to-market M1; informe separado de fechas y motivos de días excluidos.
+- Estado: fuente/instalador revisados estáticamente; E5 aún NO compilado ni ejecutado en instalación NT8 del usuario; sin portafolios aprobados; E6 MC, E7 paridad y E8 OOS pendientes.
+- Fuente del ZIP: SHA256 `4a807cdfad75912ed9863ee84421f6586758b47213727e1e11e18bf4e7997e9e`. Archivo CS: SHA256 `841c130c97d599d5cdf998210d9a2ebd4a5e50283492c792a53585a0610cd3dd`.
+- [Runbook E4+E5](NQ_PF1_E4E5_NATIVE_ECONOMICS_R1_RUNBOOK_2026_11_09.md). Ninguno de los 121 umbrales PF1 v1.0.0 ni los objetivos V19–V25 se modificaron.
