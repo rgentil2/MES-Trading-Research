@@ -1,3 +1,5 @@
+> **PF1 E4 (siguiente paso):** [NQ E4 R1 — ejecutor central NQ desde Strategy Analyzer](research/nq/NQ_PF1_E4_NATIVE_REPLAY_R1_RUNBOOK_2026_11_09.md). Instalar desde ZIP CMD + NinjaScript, no desde Python. Estado: diagnóstico de investigación pendiente de F5 y backtest real.
+
 # MES Trading Research
 
 > **Flujo nativo PF1:** [Strategy Analyzer en NinjaTrader 8 — ejecución, instalación y estados](research/nq/NQ_PF1_NATIVE_STRATEGY_ANALYZER_RUNBOOK_2026_11_09.md). El ZIP Python anterior no es el camino operativo del proyecto.
