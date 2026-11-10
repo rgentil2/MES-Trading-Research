@@ -38,3 +38,12 @@ No editar entradas anteriores; agregar una nueva. Si falta aprobación, no cambi
 - **Evidencia:** SHA completo del ledger 100K `be94604c3a735d6396fe71194c81dc56e8826f3dcf9aa1714282a3cc558c6980` verificado; fuente IS `d35d429f71e37da175c02eb5c199d42a30a5f813af7fc0f1a26c5f5327a310fb`.
 - **Cambio:** solo constante `SourceUsableBarsSha256` en el NinjaScript + identificador build R2 en código e instalador + instrucciones actualizadas. **No** se debilita validación del ledger ni cambian las 121 reglas del contrato PF1.
 - **Estado:** ZIP R2 entregado; aún requiere compilación F5 y backtest NT8 para verificar `PF1_NATIVE_END`.
+
+## 2026-11-09 — PF1 E4 R1 — nuevo ejecutor nativo de diagnóstico (sin cambio contractual)
+
+- **Objetivo de ingeniería:** motor de replay conjunto de 3–5 estrategias con máximo 1 NQ desde Strategy Analyzer, usando ledger original 100k y propuestas R2. Se prepara con instalador CMD y NinjaScript C#; el R2 estable no se modifica.
+- **Primer lote:** 1 propuesta de 3, 1 de 4 y 1 de 5; posibilidad de ampliar hasta las 300. Reproduce señales originales V19, ATR/stop, prioridad causal, costo RT US$24,68 y riesgos preventivos 500/750/1600.
+- **Fuente y ZIP SHA256:** ZIP e9f4486032f7e728a7b272b7b4ebd66735663847792725a9028ff0a339513525; NinjaScript 9559ca3466b48c4f28f013e89e9e321e4fca22699ca1eecb1a8738de0283826b. Código entregado en chat; **solo documentación/versiones de entrega en este PR**, no fuente subido al repo.
+- **Seguridad:** Cero órdenes reales, OOS cerrado; resultados solo REPLAY_DIAGNOSTIC_ONLY. F5 y backtest real aún no comprobados; falla o ausencia de evidencia = pendiente, no PASS.
+- **Vínculo:** [runbook E4 R1](NQ_PF1_E4_NATIVE_REPLAY_R1_RUNBOOK_2026_11_09.md).
+- **Contrato:** PF1 v1.0.0, 121 filtros, Stability >30%, Symmetry >30%, y objetivos históricos V19–V25 sin modificaciones.
