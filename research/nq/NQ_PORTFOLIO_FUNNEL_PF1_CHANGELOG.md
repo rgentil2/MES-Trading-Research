@@ -31,3 +31,10 @@ No editar entradas anteriores; agregar una nueva. Si falta aprobación, no cambi
 - Guia: [Arquitectura nativa PF1](NQ_PF1_NATIVE_STRATEGY_ANALYZER_RUNBOOK_2026_11_09.md).
 - Entrega C# NQ_PF1_Analyzer: importación del ledger de NT8, cribado y propuestas; pendiente F5/backtest real, aún no aprobó embudo 3; embudos 4–9 pendientes.
 - No se modifican Stability >30%, Symmetry >30%, costos, OOS, limites de 1 NQ, ni objetivos V19–V25. No se habilitan operaciones.
+
+## 2026-11-09 — PF1 v1.0.0 / NinjaScript R2 — corrección de error de transcripción
+
+- **Causa:** versión nativa R1 rechazaba el ledger original por `PF1_LEDGER_SOURCE_BARS_SHA_MISMATCH`: se había escrito `...eb5a199...` cuando el origen íntegro dice `...eb5c199...`.
+- **Evidencia:** SHA completo del ledger 100K `be94604c3a735d6396fe71194c81dc56e8826f3dcf9aa1714282a3cc558c6980` verificado; fuente IS `d35d429f71e37da175c02eb5c199d42a30a5f813af7fc0f1a26c5f5327a310fb`.
+- **Cambio:** solo constante `SourceUsableBarsSha256` en el NinjaScript + identificador build R2 en código e instalador + instrucciones actualizadas. **No** se debilita validación del ledger ni cambian las 121 reglas del contrato PF1.
+- **Estado:** ZIP R2 entregado; aún requiere compilación F5 y backtest NT8 para verificar `PF1_NATIVE_END`.
