@@ -64,3 +64,19 @@ El trabajo siguiente deberá **extender el mismo punto de entrada lógico PF1 en
 - **Riesgo:** no abrir el OOS, no conectar a un broker, no entregar un bot de trading live basándose en esta fase.
 
 > **Regla de aceptación:** la interfaz para el usuario siempre será **NinjaTrader 8 Strategy Analyzer**. Si una nueva entrega exige Python, PowerShell, dotnet run, .cmd de ejecución de backtests, exportación de barras o importaciones manuales para completar PF1, esa entrega **no cumple** la arquitectura, aunque sus cálculos sean correctos.
+
+## 7. Corrección R2 — PF1_LEDGER_SOURCE_BARS_SHA_MISMATCH (2026-11-09)
+
+**Error observado en NinjaTrader:** `PF1_NATIVE_BEGIN ... R1`, seguido de `PF1_NATIVE_REJECTED InvalidOperationException PF1_LEDGER_SOURCE_BARS_SHA_MISMATCH`. **No era problema del instrumento, M1, zona horaria, fechas ni corrupción del registro.**
+
+**Causa raíz reproducida:** el NinjaScript R1 tenía **un carácter incorrecto** en la constante `SourceUsableBarsSha256` (posición 25, indexación 1):
+
+- **INCORRECTA R1:** `d35d429f71e37da175c02eb5a199d42a30a5f813af7fc0f1a26c5f5327a310fb`
+- **CORRECTA, metadata del ledger real:** `d35d429f71e37da175c02eb5c199d42a30a5f813af7fc0f1a26c5f5327a310fb`
+- **SHA-256 del fichero ledger original 100K:** `be94604c3a735d6396fe71194c81dc56e8826f3dcf9aa1714282a3cc558c6980` (verificado por contenido completo).
+
+**Resolución:** ZIP `NQ_PF1_Analyzer_SHA_CORREGIDO_R2_INSTALADOR_CMD.zip` con exactamente cuatro archivos, mismo instalador doble clic, `NQ_PF1_Analyzer.cs` de build `PF1_NATIVE_ANALYZER_STAGE1_3_PRELIMINARY_20261109_R2`, y `INSTALAR_NQ_PF1.js` que exige R2. Conserva SHA-256 completo del ledger, examen de metadata, controles de OOS y todos los números del contrato PF1 v1.0.0. El .cmd hace copia de seguridad del R1 si lo reemplaza. El ZIP se entregó en la conversación; **no se afirma compilación real NinjaTrader ni ejecución exitosa posterior a R2**.
+
+**Resultado esperado:** reinstalar mediante CMD, compilar F5 y correr el mismo Backtest NQ DEC26, Last, Minute 1, 2020–22. Ver `PF1_NATIVE_BEGIN ... _R2` y, si otras validaciones también pasan, `PF1_NATIVE_END status=PROPOSALS_ONLY`. No ejecutar búsqueda 100K otra vez. No cambiar filtros ni tocar 2023+.
+
+**Prevención:** antes de publicar un nuevo NinjaScript de PF1, comparar por bytes la metadata `usableBarsSHA256` extraída del ledger cuyo SHA completo esté anclado con el hash constante del código y comprobar que coinciden; no copiar hashes manualmente desde memoria ni eliminar validaciones.
