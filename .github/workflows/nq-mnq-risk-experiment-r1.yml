@@ -1,0 +1,27 @@
+name: NQ-MNQ R1 - risk sizing experiment (no market data)
+on:
+  push:
+    paths:
+      - research/nq/ninjatrader/NQMnqRiskSizingExperimentR1.cs
+      - tools/nq-mnq-risk-experiment/**
+      - .github/workflows/nq-mnq-risk-experiment-r1.yml
+  pull_request:
+    paths:
+      - research/nq/ninjatrader/NQMnqRiskSizingExperimentR1.cs
+      - tools/nq-mnq-risk-experiment/**
+      - .github/workflows/nq-mnq-risk-experiment-r1.yml
+
+permissions:
+  contents: read
+jobs:
+  sizing-math:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Verify isolated NQ / MNQ risk model
+        run: dotnet run --project tools/nq-mnq-risk-experiment/NQMnqRiskExperimentR1.csproj --configuration Release -- --self-test
+      - name: Print stop-distance comparison (examples, not backtests)
+        run: dotnet run --project tools/nq-mnq-risk-experiment/NQMnqRiskExperimentR1.csproj --configuration Release -- --examples
