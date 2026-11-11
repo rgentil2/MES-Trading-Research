@@ -53,7 +53,13 @@ internal static class Program
             NQMnqSizingStatusR1.RiskTooLarge, "MNQ 393 ticks rejected");
         Check(NQMnqRiskSizingExperimentR1.Size(
             NQMnqInstrumentR1.MNQ, 401).Status ==
-            NQMnqSizingStatusR1.InvalidStop, "experimental cap");
+            NQMnqSizingStatusR1.RiskTooLarge, "no artificial stop cap: risk rejection");
+        Check(NQMnqRiskSizingExperimentR1.Size(
+            NQMnqInstrumentR1.MNQ, 10000).Status ==
+            NQMnqSizingStatusR1.RiskTooLarge, "wide stop remains a valid candidate");
+        Check(NQMnqRiskSizingExperimentR1.Size(
+            NQMnqInstrumentR1.MNQ, int.MaxValue).Status ==
+            NQMnqSizingStatusR1.RiskTooLarge, "integer max stop no artificial cap");
         Check(NQMnqRiskSizingExperimentR1.Size(
             NQMnqInstrumentR1.MNQ, 0).Status ==
             NQMnqSizingStatusR1.InvalidStop, "zero stop");
@@ -69,12 +75,20 @@ internal static class Program
             13.76, 10, out ticks) && ticks == 56, "ATR over V5 55 cap");
         Check(NQMnqRiskSizingExperimentR1.TryAtrStopTicks(
             98.0, 10, out ticks) && ticks == 392, "ATR 98 points");
-        Check(!NQMnqRiskSizingExperimentR1.TryAtrStopTicks(
-            101.0, 10, out ticks) && ticks == 0, "ATR cap fail closed");
+        Check(NQMnqRiskSizingExperimentR1.TryAtrStopTicks(
+            101.0, 10, out ticks) && ticks == 404, "ATR above former 400 cap");
+        Check(NQMnqRiskSizingExperimentR1.Size(
+            NQMnqInstrumentR1.MNQ, ticks).Status ==
+            NQMnqSizingStatusR1.RiskTooLarge, "wide ATR stop correctly risk rejected");
         Check(!NQMnqRiskSizingExperimentR1.TryAtrStopTicks(
             double.NaN, 20, out ticks), "ATR NaN");
+        Check(NQMnqRiskSizingExperimentR1.TryAtrStopTicks(
+            12.0, 31, out ticks) && ticks == 149, "unrestricted positive ATR multiplier");
         Check(!NQMnqRiskSizingExperimentR1.TryAtrStopTicks(
-            12.0, 31, out ticks), "invalid multiplier");
+            12.0, 0, out ticks), "zero ATR multiplier invalid");
+        Check(!NQMnqRiskSizingExperimentR1.TryAtrStopTicks(
+            1000000000.0, 10, out ticks) && ticks == 0,
+            "stop beyond integer representation rejected");
         Console.WriteLine("MNQ_R1_TEST_PASS checks=" + _checks +
             " mode=OFFLINE_SYNTHETIC_RISK_MATH_ONLY OOS=LOCKED");
     }
