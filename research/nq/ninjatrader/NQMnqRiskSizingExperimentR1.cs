@@ -29,7 +29,6 @@ namespace NinjaTrader.NinjaScript.Strategies
     public static class NQMnqRiskSizingExperimentR1
     {
         public const int MaxMnqContracts = 5;
-        public const int MaxResearchStopTicks = 400; // 100 NQ points; R1 experimental only.
         public const int SlippageTicksPerSide = 2;
         public const decimal MaximumPlannedRiskUSD = 200m;
         public const decimal NqTickValueUSD = 5m;
@@ -63,8 +62,7 @@ namespace NinjaTrader.NinjaScript.Strategies
                 Status = NQMnqSizingStatusR1.InvalidStop
             };
             // Preserve the original stop. Never reduce it to force a trade.
-            if (originalStopTicks < 1 ||
-                originalStopTicks > MaxResearchStopTicks)
+            if (originalStopTicks < 1)
                 return result;
 
             decimal tickValue = instrument == NQMnqInstrumentR1.NQ
@@ -97,24 +95,26 @@ namespace NinjaTrader.NinjaScript.Strategies
         }
 
         // ATR is computed on a COMPLETED bar, outside this function.
-        // In contrast to the historic V5's 55-tick cap, this R1 experiment
-        // admits 1..400 ticks, without changing V5 or the PF1 contract.
+        // No discretionary maximum stop or ATR multiplier: only finite,
+        // positive inputs and integer tick representability are required.
+        // Risk eligibility is evaluated separately by Size().
+        // This does NOT change historic V5 or the frozen PF1 contract.
         public static bool TryAtrStopTicks(
             double atrPoints, int stopMultiplierX10, out int stopTicks)
         {
             stopTicks = 0;
             if (double.IsNaN(atrPoints) ||
                 double.IsInfinity(atrPoints) || atrPoints <= 0 ||
-                stopMultiplierX10 < 10 || stopMultiplierX10 > 30)
+                stopMultiplierX10 <= 0)
                 return false;
             double rawTicks = atrPoints * 4.0 *
                 (stopMultiplierX10 / 10.0);
             if (double.IsNaN(rawTicks) ||
                 double.IsInfinity(rawTicks) || rawTicks <= 0 ||
-                rawTicks > MaxResearchStopTicks)
+                rawTicks > int.MaxValue)
                 return false;
             int rounded = (int)Math.Ceiling(rawTicks);
-            if (rounded < 1 || rounded > MaxResearchStopTicks)
+            if (rounded < 1)
                 return false;
             stopTicks = rounded;
             return true;
